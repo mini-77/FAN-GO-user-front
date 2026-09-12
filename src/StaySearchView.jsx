@@ -502,11 +502,11 @@ export default function StaySearchView() {
             >
               {isLocationOnlyMode
                 ? selected
-                  ? `${selected.name}(으)로 정하기 →`
+                  ? `${selected.name}(으)로 정하기`
                   : '지도에서 장소를 골라주세요'
                 : nights
-                  ? `${nights}박 · 이 숙소로 ${editStay ? '수정' : '추가'} →`
-                  : `이 숙소로 ${editStay ? '수정' : '추가'} →`}
+                  ? `${nights}박 · 이 숙소로 ${editStay ? '수정' : '추가'}`
+                  : `이 숙소로 ${editStay ? '수정' : '추가'}`}
             </button>
           </div>
         </div>

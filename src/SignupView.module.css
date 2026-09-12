@@ -12,7 +12,7 @@
 /* 전체 틀 유지 */
 .card {
   width: 100%;
-  max-width: 390px;
+  max-width: 100%;
   background: #fff;
   border-radius: 32px;
   box-shadow: 0px 3px 10px rgba(181, 179, 193, 0.11);
@@ -392,7 +392,7 @@ select.input {
   }
 
   .card {
-    max-width: 390px;
+    max-width: 100%;
     min-height: 100vh;
     border-radius: 0;
     box-shadow: none;

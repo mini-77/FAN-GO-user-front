@@ -25,7 +25,7 @@ export const translations = {
       connectionError: '서버에 연결할 수 없어요. 잠시 후 다시 시도해주세요.',
       languageHint: (langName) =>
         `지금 보고 있는 언어는 ${langName}입니다. 상단에서 바로 바꿀 수 있고, 가입할 때 국적과 함께 계정에 저장됩니다.`,
-      loginButton: '로그인 →',
+      loginButton: '로그인',
       signupButton: '계정 만들기',
     },
     feedback: {
@@ -40,7 +40,7 @@ export const translations = {
       commentPlaceholder: '직접 남기고 싶은 후기가 있다면 적어 주세요 (선택)',
       placeSectionLabel: '장소 후기를 알려주세요',
       skipButton: '이번엔 넘길게요',
-      submitButton: '보내기 →',
+      submitButton: '보내기',
     },
   },
   en: {
@@ -66,7 +66,7 @@ export const translations = {
       connectionError: "Couldn't connect to the server. Please try again.",
       languageHint: (langName) =>
         `You're currently viewing this in ${langName}. You can change it above anytime — it's saved to your account along with your country when you sign up.`,
-      loginButton: 'Log in →',
+      loginButton: 'Log in',
       signupButton: 'Create account',
     },
     feedback: {
@@ -81,7 +81,7 @@ export const translations = {
       commentPlaceholder: 'Leave a note if you want (optional)',
       placeSectionLabel: 'Rate the places you visited',
       skipButton: 'Skip for now',
-      submitButton: 'Send →',
+      submitButton: 'Send',
     },
   },
   ja: {
@@ -107,7 +107,7 @@ export const translations = {
       connectionError: 'サーバーに接続できません。しばらくしてからもう一度お試しください。',
       languageHint: (langName) =>
         `現在の表示言語は${langName}です。上部でいつでも変更でき、登録時に国籍と一緒にアカウントに保存されます。`,
-      loginButton: 'ログイン →',
+      loginButton: 'ログイン',
       signupButton: 'アカウント作成',
     },
     feedback: {
@@ -122,7 +122,7 @@ export const translations = {
       commentPlaceholder: '感想があれば自由に書いてください (任意)',
       placeSectionLabel: '訪れた場所の感想を教えてください',
       skipButton: '今回はスキップ',
-      submitButton: '送信 →',
+      submitButton: '送信',
     },
   },
   'zh-CN': {
@@ -147,7 +147,7 @@ export const translations = {
       connectionError: '无法连接到服务器,请稍后重试。',
       languageHint: (langName) =>
         `您当前浏览的语言是${langName}。可以随时在顶部切换,注册时会与国籍一起保存到账户中。`,
-      loginButton: '登录 →',
+      loginButton: '登录',
       signupButton: '创建账户',
     },
     feedback: {
@@ -162,7 +162,7 @@ export const translations = {
       commentPlaceholder: '如果有想留下的评价,请在这里写下 (可选)',
       placeSectionLabel: '请对到访的地点进行评价',
       skipButton: '这次先跳过',
-      submitButton: '发送 →',
+      submitButton: '发送',
     },
   },
   'zh-TW': {
@@ -187,7 +187,7 @@ export const translations = {
       connectionError: '無法連接到伺服器,請稍後再試。',
       languageHint: (langName) =>
         `您目前瀏覽的語言是${langName}。可以隨時在上方切換,註冊時會與國籍一起儲存到帳戶中。`,
-      loginButton: '登入 →',
+      loginButton: '登入',
       signupButton: '建立帳戶',
     },
     feedback: {
@@ -202,7 +202,7 @@ export const translations = {
       commentPlaceholder: '如果有想留下的評價,請在這裡寫下 (選填)',
       placeSectionLabel: '請對到訪的地點留下評價',
       skipButton: '這次先跳過',
-      submitButton: '傳送 →',
+      submitButton: '傳送',
     },
   },
   th: {
@@ -228,7 +228,7 @@ export const translations = {
       connectionError: 'ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้ กรุณาลองใหม่อีกครั้ง',
       languageHint: (langName) =>
         `ขณะนี้คุณกำลังดูในภาษา${langName} คุณสามารถเปลี่ยนได้ที่ด้านบนได้ตลอดเวลา และจะถูกบันทึกไว้ในบัญชีพร้อมกับสัญชาติเมื่อสมัครสมาชิก`,
-      loginButton: 'เข้าสู่ระบบ →',
+      loginButton: 'เข้าสู่ระบบ',
       signupButton: 'สร้างบัญชี',
     },
     feedback: {
@@ -243,7 +243,7 @@ export const translations = {
       commentPlaceholder: 'หากมีรีวิวที่อยากเขียนเพิ่มเติม เขียนได้ที่นี่ (ไม่บังคับ)',
       placeSectionLabel: 'ให้คะแนนสถานที่ที่ไปมา',
       skipButton: 'ข้ามไปก่อน',
-      submitButton: 'ส่ง →',
+      submitButton: 'ส่ง',
     },
   },
   id: {
@@ -269,7 +269,7 @@ export const translations = {
       connectionError: 'Tidak dapat terhubung ke server. Silakan coba lagi.',
       languageHint: (langName) =>
         `Kamu sedang melihat dalam bahasa ${langName}. Bisa diganti kapan saja di atas, dan akan disimpan ke akunmu bersama kewarganegaraan saat mendaftar.`,
-      loginButton: 'Masuk →',
+      loginButton: 'Masuk',
       signupButton: 'Buat akun',
     },
     feedback: {
@@ -284,7 +284,7 @@ export const translations = {
       commentPlaceholder: 'Tulis ulasanmu di sini kalau ada (opsional)',
       placeSectionLabel: 'Beri ulasan untuk tempat yang dikunjungi',
       skipButton: 'Lewati dulu',
-      submitButton: 'Kirim →',
+      submitButton: 'Kirim',
     },
   },
 }

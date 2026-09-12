@@ -11,7 +11,7 @@
 
 .card {
   width: 100%;
-  max-width: 390px;
+  max-width: 100%;
   min-height: 844px;
   background: #F8F7FF;
   border-radius: 32px;
@@ -427,7 +427,7 @@
   }
 
   .card {
-    max-width: 390px;
+    max-width: 100%;
     min-height: 100vh;
     border-radius: 0;
     box-shadow: none;

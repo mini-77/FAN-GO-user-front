@@ -626,7 +626,7 @@ export default function TripDateView() {
         <div className={styles.footer}>
           <span className={styles['footer-summary']}>{tripSummary || ''}</span>
           <button type="button" className={styles['btn-primary']} onClick={goNext}>
-            다음: 액티비티 →
+            다음: 액티비티
           </button>
         </div>
       </div>
@@ -851,8 +851,8 @@ export default function TripDateView() {
                     : searchTarget === 'stay' && stayDateError
                       ? '체류 기간을 확인해주세요'
                       : searchTarget === 'stay'
-                        ? `${stayNights}박 · 이 숙소로 ${editingStayId != null ? '수정' : '추가'} →`
-                        : `${pickedPlace.name}(으)로 정하기 →`}
+                        ? `${stayNights}박 · 이 숙소로 ${editingStayId != null ? '수정' : '추가'}`
+                        : `${pickedPlace.name}(으)로 정하기`}
               </button>
             </div>
           </div>

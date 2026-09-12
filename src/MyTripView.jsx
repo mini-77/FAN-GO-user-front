@@ -151,7 +151,7 @@ export default function MyTripView() {
                   navigate('/trip/feedback')
                 }}
               >
-                여행 평가하기 →
+                여행 평가하기
               </button>
             </div>
           )}

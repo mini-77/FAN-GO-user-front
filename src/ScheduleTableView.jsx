@@ -296,7 +296,7 @@ export default function ScheduleTableView() {
             동선 수정
           </button>
           <button type="button" className={styles['btn-primary']} onClick={() => navigate('/trip/my')}>
-            다음: 확정→
+            다음: 확정
           </button>
         </div>
 

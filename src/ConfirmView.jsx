@@ -195,7 +195,7 @@ export default function ConfirmView() {
             className={styles['btn-primary']}
             onClick={handleCreateItinerary}
           >
-            동선 만들기 →
+            동선 만들기
           </button>
         </div>
       </div>

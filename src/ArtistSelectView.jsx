@@ -243,7 +243,7 @@ export default function ArtistSelectView() {
             className={`${styles['btn-primary']} ${!isFormValid || isSubmitting ? styles.disabled : ''}`}
             onClick={handleComplete}
           >
-            {isSubmitting ? '가입 중...' : '가입 완료 →'}
+            {isSubmitting ? '가입 중...' : '가입 완료'}
           </button>
         </div>
       </div>

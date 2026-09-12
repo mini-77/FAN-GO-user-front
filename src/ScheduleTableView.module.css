@@ -11,7 +11,7 @@
 
 .card {
   width: 100%;
-  max-width: 390px;
+  max-width: 100%;
   min-height: 844px;
   background: #fff;
   border-radius: 32px;
@@ -287,7 +287,7 @@
 
 .search-panel {
   width: 100%;
-  max-width: 390px;
+  max-width: 100%;
   background: #fff;
   border-radius: 24px 24px 0 0;
   padding: 16px;
@@ -411,7 +411,7 @@
   }
 
   .card {
-    max-width: 390px;
+    max-width: 100%;
     min-height: 100vh;
     border-radius: 0;
     box-shadow: none;

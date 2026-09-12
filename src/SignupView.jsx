@@ -649,7 +649,7 @@ export default function SignupView() {
             disabled={!isFormValid}
             style={!isFormValid ? { opacity: 0.5, cursor: 'default' } : undefined}
           >
-            다음 →
+            다음
           </button>
         </div>
         </div>

@@ -339,7 +339,7 @@ export default function LocationSearchModal({ title, initialPlace, onConfirm, on
             style={!pickedPlace ? { opacity: 0.45, cursor: 'default', width: '100%' } : { width: '100%' }}
             onClick={() => pickedPlace && onConfirm(pickedPlace)}
           >
-            {!pickedPlace ? '지도에서 장소를 골라주세요' : `${pickedPlace.name}(으)로 정하기 →`}
+            {!pickedPlace ? '지도에서 장소를 골라주세요' : `${pickedPlace.name}(으)로 정하기`}
           </button>
         </div>
       </div>

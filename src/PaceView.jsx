@@ -242,7 +242,7 @@ export default function PaceView() {
         {!isOpen && (
           <div className={styles.footer}>
             <button type="button" className={styles['btn-primary']} onClick={goNext}>
-              다음: 확인 →
+              다음: 확인
             </button>
           </div>
         )}

@@ -13,7 +13,7 @@
 .sheet {
   position: relative;
   width: 100%;
-  max-width: 390px;
+  max-width: 100%;
   max-height: 80vh;
   background: #fff;
   border-radius: 24px;
@@ -30,7 +30,7 @@
   }
 
   .sheet {
-    max-width: 390px;
+    max-width: 100%;
   }
 }
 

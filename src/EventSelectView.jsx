@@ -263,7 +263,7 @@ export default function EventSelectView() {
             style={!selectedCardData ? { opacity: 0.45, cursor: 'default' } : undefined}
             onClick={goNext}
           >
-            다음: 기간·숙소 →
+            다음: 기간·숙소
           </button>
         </div>
       </div>

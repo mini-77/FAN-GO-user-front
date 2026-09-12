@@ -427,7 +427,7 @@ export default function ItineraryEditView() {
             onClick={handleSave}
             disabled={isSaving || isLoading || stops.length === 0}
           >
-            {isSaving ? '저장 중...' : '동선 저장 →'}
+            {isSaving ? '저장 중...' : '동선 저장'}
           </button>
         </div>
       </div>
