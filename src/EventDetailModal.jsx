@@ -75,7 +75,8 @@ export default function EventDetailModal({ card, onClose }) {
             ) : (
               <div className={modalStyles['map-area']}>
                 <p className={modalStyles['map-label']}>MAP</p>
-                <p className={modalStyles['map-name']}>{detail.event_nm}</p>
+                {/* 나중에 실제 포스터 이미지(event_img_url)로 채워질 자리 - 지금은 자리 표시자만 둠 */}
+                <p className={modalStyles['map-name']}>IMAGE</p>
               </div>
             )}
 

@@ -53,7 +53,7 @@ export default function ChatbotFab() {
       onClick={() => navigate('/chat')}
       aria-label="트립 버디 챗봇 열기"
     >
-      <FenggoIcon size={34} />
+      <FenggoIcon size={56} />
     </button>
   )
 }
