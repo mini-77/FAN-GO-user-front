@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ktp-frondend-react</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" />
+    <style>
+      * {
+        font-family: 'Poppins', 'Pretendard', sans-serif !important;
+      }
+
+      /* 제목은 더 굵고 타이트하게 - 임팩트 살리기 */
+      h1, h2, h3 {
+        font-weight: 700 !important;
+        letter-spacing: -0.02em !important;
+      }
+
+      /* 버튼은 살짝 굵게 - 클릭 유도감 */
+      button {
+        font-weight: 600 !important;
+      }
+
+      /* 본문은 기본 굵기 유지 */
+      p, span, div {
+        font-weight: 400;
+      }
+    </style>
+
+    <!-- 여기 appkey= 뒤에 카카오디벨로퍼스에서 복사한 진짜 JavaScript 키를 붙여넣으세요 -->
+    <script
+      type="text/javascript"
+      src="//dapi.kakao.com/v2/maps/sdk.js?appkey=21bf969dc34b268b903eba3bc346a912&libraries=services&autoload=false"
+    ></script>
+  </head>
+  <body>
+
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

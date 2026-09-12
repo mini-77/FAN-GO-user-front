@@ -1,0 +1,177 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(27, 22, 63, 0.55);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  z-index: 1000;
+  padding: 6vh 8px 16px;
+}
+
+/* 화면 폭 거의 꽉 차게, 세로도 크게 */
+.sheet {
+  position: relative;
+  width: 100%;
+  max-width: 430px;
+  max-height: 90vh;
+  background: #fff;
+  border-radius: 24px;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+}
+
+.closeBtn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 2;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(0, 0, 0, 0.4);
+  color: #fff;
+  font-size: 13px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-wrap {
+  width: 100%;
+  height: 278px;
+  overflow: hidden;
+}
+
+.hero-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.map-area {
+  width: 100%;
+  height: 278px;
+  background: #EFEDFA;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.map-label {
+  color: #6D57FC;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  margin: 0 0 4px;
+}
+
+.map-name {
+  color: #1B163F;
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.body {
+  padding: 20px 20px 120px;
+}
+
+.map-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.photo-credit {
+  font-size: 8px;
+  color: rgba(27, 22, 63, 0.7);
+}
+
+.breadcrumb {
+  font-size: 12px;
+  color: #888;
+  margin: 8px 0 4px;
+}
+
+.title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #1A1A1A;
+  margin: 0 0 8px;
+}
+
+.meta {
+  font-size: 13px;
+  color: #888;
+  margin: 0;
+}
+
+.metaSub {
+  font-size: 12px;
+  color: #888;
+  margin: 4px 0 0;
+}
+
+.section {
+  margin-top: 20px;
+}
+
+.sectionLabel {
+  font-size: 12px;
+  color: #1A1A1A;
+  margin: 0 0 10px;
+}
+
+.chipRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  padding: 8px 14px;
+  background: #F4F1FF;
+  border-radius: 20px;
+  color: #6B4BFB;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.btn-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 28px;
+}
+
+.btn-outline,
+.btn-primary {
+  flex: 1;
+  padding: 12px 14px;
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+}
+
+.btn-outline {
+  background: #F8F7FF;
+  color: #1B163F;
+  border: 1px solid #E8E4FF;
+}
+
+.btn-primary {
+  background: #6D57FC;
+  color: #fff;
+  border: none;
+}
+
+.desc {
+  font-size: 13px;
+  color: rgba(27, 22, 63, 0.6);
+}

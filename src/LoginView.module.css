@@ -1,0 +1,262 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600&family=Urbanist:wght@400;600;700&family=Baloo+2:wght@700;800&display=swap');
+
+.screen {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  background: #ececec;
+  padding: 24px 16px;
+  font-family: 'IBM Plex Sans KR', sans-serif;
+}
+
+.card {
+  width: 100%;
+  max-width: 390px;
+  background: #fff;
+  border-radius: 32px;
+  box-shadow: 0px 3px 10px rgba(181, 179, 193, 0.11);
+  outline: 1px solid #EFEDFA;
+  outline-offset: -1px;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  position: relative;
+  text-align: left;
+  overflow: hidden;
+}
+
+.card * {
+  text-align: left;
+}
+
+.body {
+  flex: 1;
+  padding: 20px 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* 상단: 언어 선택(지구본) - 오른쪽 정렬 */
+.top-bar {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.langButtonWrap {
+  position: relative;
+  width: 34px;
+  height: 34px;
+}
+
+.globeIconBtn {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #F1F0F6;
+  color: #6D57FC;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.langSelectOverlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+  border: none;
+}
+
+/* 브랜드 마크 - 로고 크게 + 태그라인 */
+.brandBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 70px 0 4px;
+}
+
+.brandLogoText {
+  font-family: 'Baloo 2', 'Urbanist', sans-serif;
+  font-weight: 800;
+  font-size: 44px;
+  letter-spacing: -1.2px;
+  color: #6D57FC;
+  display: inline-block;
+  transform: scaleY(0.85);
+}
+
+.tagline {
+  margin: 10px 0 0;
+  font-size: 12.5px;
+  font-weight: 400;
+  color: rgba(27, 22, 63, 0.55);
+}
+
+/* 입력 폼 - 완전한 알약 모양 */
+.formBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.pillInput {
+  width: 100%;
+  box-sizing: border-box;
+  height: 48px;
+  padding: 0 18px;
+  border: 1px solid #E8E4FF;
+  border-radius: 999px;
+  background: #F8F7FF;
+  font-family: 'Urbanist', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: #0C0A1C;
+}
+
+.pillInput::placeholder {
+  color: rgba(12, 10, 28, 0.4);
+}
+
+.pillInput:focus {
+  outline: none;
+  border-color: #6D57FC;
+}
+
+.pillInputWithIcon {
+  width: 100%;
+  box-sizing: border-box;
+  height: 48px;
+  padding: 0 8px 0 18px;
+  border: 1px solid #E8E4FF;
+  border-radius: 999px;
+  background: #F8F7FF;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pillInputWithIcon:focus-within {
+  border-color: #6D57FC;
+}
+
+.pillInputBare {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: 'Urbanist', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: #0C0A1C;
+}
+
+.pillInputBare::placeholder {
+  color: rgba(12, 10, 28, 0.4);
+}
+
+.eyeToggle {
+  flex-shrink: 0;
+  width: 34px;
+  height: 34px;
+  border: none;
+  background: transparent;
+  color: #C0BCD8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.error {
+  color: #E64545;
+  font-size: 12px;
+  margin: -18px 0 0;
+  padding-left: 4px;
+}
+
+/* 이메일 주소 저장 / 자동 로그인 - 비밀번호 입력창 바로 아래 */
+.remember-row {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-top: 2px;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12.5px;
+  color: rgba(27, 22, 63, 0.7);
+  cursor: pointer;
+  user-select: none;
+}
+
+.checkbox {
+  width: 15px;
+  height: 15px;
+  accent-color: #6D57FC;
+  cursor: pointer;
+}
+
+/* 로그인 버튼 - 완전한 알약 */
+.pillPrimaryBtn {
+  width: 100%;
+  height: 50px;
+  border: none;
+  outline: none;
+  border-radius: 999px;
+  background: #6D57FC;
+  color: #fff;
+  font-size: 14.5px;
+  font-weight: 600;
+  letter-spacing: 0.21px;
+  cursor: pointer;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.pillPrimaryBtn:not(:disabled):hover {
+  background: #5a45e0;
+}
+
+/* 아이디 저장 / 자동 로그인 */
+.bottomTextRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.textToggle {
+  border: none;
+  background: transparent;
+  color: rgba(27, 22, 63, 0.55);
+  font-size: 12.5px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 4px 2px;
+}
+
+.dotSep {
+  color: rgba(27, 22, 63, 0.3);
+  font-size: 12px;
+}
+
+.hint {
+  font-size: 11.5px;
+  font-weight: 400;
+  line-height: 19.55px;
+  color: rgba(27, 22, 63, 0.5);
+  border-top: 1px solid #EFEDFA;
+  padding-top: 11px;
+  margin: 4px 0 0;
+  text-align: center;
+}

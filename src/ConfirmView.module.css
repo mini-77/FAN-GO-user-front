@@ -1,0 +1,257 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=Urbanist:wght@400;600;700&family=Inter:wght@400;600&display=swap');
+
+.screen {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  background: #ececec;
+  padding: 24px 16px;
+  font-family: 'IBM Plex Sans KR', sans-serif;
+}
+
+.card {
+  width: 100%;
+  max-width: 390px;
+  background: #fff;
+  border-radius: 32px;
+  box-shadow: 0px 3px 10px rgba(181, 179, 193, 0.11);
+  outline: 1px solid #EFEDFA;
+  outline-offset: -1px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  overflow: hidden;
+}
+
+.card * {
+  text-align: left;
+}
+
+.header {
+  padding: 14px 22px 12px;
+  border-bottom: 1px solid #EFEDFA;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.header-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.back-btn {
+  width: 30px;
+  height: 30px;
+  min-width: 30px;
+  border-radius: 15px;
+  background: #F8F7FF;
+  border: 1px solid #E8E4FF;
+  color: #5A45D6;
+  font-family: 'Urbanist', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.step-label {
+  margin-left: auto;
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  color: #201E1D;
+}
+
+.title {
+  font-size: 25px;
+  font-weight: 600;
+  line-height: 28px;
+  letter-spacing: 0.38px;
+  color: #201E1D;
+  margin: 0;
+}
+
+.progress-bar {
+  display: flex;
+  gap: 3px;
+  padding-top: 4px;
+}
+
+.progress-seg {
+  flex: 1;
+  height: 4px;
+  border-radius: 2px;
+  background: #F4F2FF;
+}
+
+.progress-seg.active {
+  background: #6D57FC;
+}
+
+/* 요약 리스트 */
+.summary-list {
+  display: flex;
+  flex-direction: column;
+  padding: 6px 22px;
+}
+
+.summary-row {
+  padding: 7px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.summary-label {
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.3px;
+  color: #B5B2C2;
+}
+
+.summary-value {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.45;
+  color: #201E1D;
+}
+
+.summary-sub {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #201E1D;
+}
+
+.event-item {
+  margin-top: 2px;
+  padding: 12px 14px;
+  background: #F0EEFF;
+  border: 1px solid #DCD5FF;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.event-title {
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.4;
+  color: #5a45e0;
+}
+
+.event-sub {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: rgba(90, 69, 224, 0.75);
+}
+
+/* 여유도 선택 */
+.pace-section {
+  padding: 14px 18px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.pace-label {
+  font-family: 'Urbanist', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1.4px;
+  color: rgba(27, 22, 63, 0.55);
+}
+
+.pace-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.pace-option {
+  padding: 14px;
+  background: #F8F7FF;
+  border-radius: 16px;
+  border: 1px solid #F4F2FF;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+}
+
+.pace-option.selected {
+  background: #E8E4FF;
+}
+
+.pace-letter {
+  width: 22px;
+  color: #49475B;
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.pace-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.pace-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: #49475B;
+}
+
+.pace-desc {
+  font-family: 'Urbanist', sans-serif;
+  font-size: 11.5px;
+  color: #0C0A1C;
+}
+
+.pace-check {
+  font-family: 'Urbanist', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  color: #201E1D;
+}
+
+/* 하단 */
+.footer {
+  padding: 12px 22px 22px;
+  border-top: 1px solid #EFEDFA;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer-note {
+  font-size: 11.5px;
+  font-weight: 400;
+  color: rgba(27, 22, 63, 0.55);
+}
+
+.btn-primary {
+  padding: 13.6px 18px 15.4px;
+  border: none;
+  border-radius: 100px;
+  background: #6D57FC;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.21px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.btn-primary:hover {
+  background: #5a45e0;
+}

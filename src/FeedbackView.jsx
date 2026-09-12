@@ -1,0 +1,290 @@
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useTrip } from './TripContext';
+import { apiFetch } from './api';
+import AppHeader from './AppHeader';
+import BottomNav from './BottomNav';
+import { useLanguage } from './LanguageContext';
+import styles from './FeedbackView.module.css';
+
+// 이 화면은 "오늘 하루"가 아니라 "여행 전체가 끝난 후" 딱 1번 뜨는 평가 화면임.
+// 정책: 여행이 완전히 끝난 후에만 제출 가능 (MyTripView에서 status==='완료'인 여행만 유도함).
+// 제출한다고 이미 짜여진 동선이 바뀌지는 않음 - 순수 소감 기록 + 다음 여행 추천 참고용.
+export default function FeedbackView() {
+  const navigate = useNavigate();
+  const { tripData } = useTrip();
+  const { t } = useLanguage();
+  const tripNo = tripData.tripNo;
+
+  const [rating, setRating] = useState(0);
+  const [hoverRating, setHoverRating] = useState(0);
+  const [selectedOptNo, setSelectedOptNo] = useState(null); // 단일선택 - GET /review-opts의 opt_no
+  const [comment, setComment] = useState('');
+
+  const [reviewOpts, setReviewOpts] = useState([]);
+  const [isLoadingOpts, setIsLoadingOpts] = useState(true);
+  const [optsError, setOptsError] = useState('');
+
+  // 장소별 좋아요 - 여행 전체 장소 목록 (여러 날짜에 걸친 trip_route_event 전부)
+  const [places, setPlaces] = useState([]);
+  const [isLoadingPlaces, setIsLoadingPlaces] = useState(true);
+  const [placesError, setPlacesError] = useState('');
+  const [likingIds, setLikingIds] = useState(new Set());
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
+
+  // '한마디 더' 칩 목록
+  useEffect(() => {
+    let cancelled = false;
+    async function loadOpts() {
+      setIsLoadingOpts(true);
+      setOptsError('');
+      try {
+        const res = await apiFetch('/review-opts');
+        if (!res.ok) throw new Error('한마디 목록을 불러오지 못했어요.');
+        const data = await res.json();
+        if (!cancelled) setReviewOpts(data);
+      } catch (e) {
+        if (!cancelled) setOptsError('한마디 목록을 불러오지 못했어요.');
+      } finally {
+        if (!cancelled) setIsLoadingOpts(false);
+      }
+    }
+    loadOpts();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  // 여행 전체 장소 목록 (날짜 구분 없이 전부) - visit_day를 안 주면 전체가 옴
+  useEffect(() => {
+    if (!tripNo) {
+      setIsLoadingPlaces(false);
+      return;
+    }
+    let cancelled = false;
+    async function loadPlaces() {
+      setIsLoadingPlaces(true);
+      setPlacesError('');
+      try {
+        const res = await apiFetch(`/trips/${tripNo}/routes`);
+        if (!res.ok) throw new Error('다녀온 장소 목록을 불러오지 못했어요.');
+        const data = await res.json();
+        // 일자별로 중첩된 걸 평평하게 펼침. 메인 이벤트(공연) 장소는 후기 대상이 아니므로 제외.
+        const mainEventNo = tripData.selectedEvent?.event_no;
+        const flat = (data || [])
+          .flatMap((day) => (day.events || []).map((ev) => ({ ...ev, visit_day: day.visit_day })))
+          .filter((ev) => ev.event_no !== mainEventNo);
+        if (!cancelled) setPlaces(flat);
+      } catch (e) {
+        if (!cancelled) setPlacesError('다녀온 장소 목록을 불러오지 못했어요.');
+      } finally {
+        if (!cancelled) setIsLoadingPlaces(false);
+      }
+    }
+    loadPlaces();
+    return () => {
+      cancelled = true;
+    };
+  }, [tripNo]);
+
+  async function togglePlaceLike(place) {
+    const id = place.trip_route_event_no;
+    if (likingIds.has(id)) return;
+    setLikingIds((prev) => new Set(prev).add(id));
+    const nextLiked = !place.liked;
+    setPlaces((prev) => prev.map((p) => (p.trip_route_event_no === id ? { ...p, liked: nextLiked } : p)));
+    try {
+      const res = await apiFetch(`/trip-route-events/${id}/like`, {
+        method: nextLiked ? 'POST' : 'DELETE',
+      });
+      if (!res.ok && res.status !== 204) throw new Error();
+    } catch (e) {
+      // 실패하면 되돌림
+      setPlaces((prev) => prev.map((p) => (p.trip_route_event_no === id ? { ...p, liked: !nextLiked } : p)));
+    } finally {
+      setLikingIds((prev) => {
+        const next = new Set(prev);
+        next.delete(id);
+        return next;
+      });
+    }
+  }
+
+  // "완료" 버튼 - 여기서만 리뷰 저장 API(POST /trips/{trip_no}/review)를 호출함.
+  const handleSubmit = async () => {
+    setSubmitError('');
+
+    if (!tripNo) {
+      setSubmitError('여행 정보를 찾을 수 없어요. 나의 일정에서 다시 들어와주세요.');
+      return;
+    }
+    // 서버 규칙: opt_no/rating/review_content 셋 다 비어있으면 422
+    if (!selectedOptNo && rating === 0 && !comment.trim()) {
+      setSubmitError('별점, 한마디, 코멘트 중 최소 하나는 입력해주세요.');
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      const res = await apiFetch(`/trips/${tripNo}/review`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          opt_no: selectedOptNo || undefined,
+          rating: rating > 0 ? rating : undefined,
+          review_content: comment.trim() || undefined,
+        }),
+      });
+
+      if (res.status === 409) {
+        setSubmitError('이미 이 여행에 리뷰를 작성했어요. 리뷰는 한 번만 남길 수 있어요.');
+        setIsSubmitting(false);
+        return;
+      }
+      if (!res.ok) {
+        const data = await res.json().catch(() => null);
+        const detail = data?.detail;
+        let message = '리뷰를 저장하지 못했어요. 잠시 후 다시 시도해주세요.';
+        if (typeof detail === 'string') message = detail;
+        else if (detail?.message) message = detail.message;
+        else if (Array.isArray(detail) && detail[0]?.msg) message = detail[0].msg;
+        setSubmitError(message);
+        setIsSubmitting(false);
+        return;
+      }
+
+      navigate('/trip/my');
+    } catch (e) {
+      setSubmitError('서버에 연결할 수 없어요. 잠시 후 다시 시도해주세요.');
+      setIsSubmitting(false);
+    }
+  };
+
+  // "이번엔 넘길게요" 버튼 - 절대 리뷰 저장 API를 호출하면 안 됨 (평가를 안 남기고 건너뜀).
+  const handleSkip = () => {
+    navigate('/trip/my');
+  };
+
+  return (
+    <div className={styles.screen}>
+      <div className={styles.card}>
+        <AppHeader />
+        <div className={styles.titleBlock}>
+          <h1 className={styles.title}>{t('feedback.title')}</h1>
+        </div>
+
+        <div className={styles.body}>
+          <div className={styles.starRow}>
+            {[1, 2, 3, 4, 5].map((star) => (
+              <button
+                key={star}
+                type="button"
+                className={styles.starButton}
+                onClick={() => setRating(star)}
+                onMouseEnter={() => setHoverRating(star)}
+                onMouseLeave={() => setHoverRating(0)}
+                aria-label={`${star}점`}
+              >
+                <span
+                  className={`${styles.star} ${
+                    star <= (hoverRating || rating) ? styles.starFilled : ''
+                  }`}
+                >
+                  ★
+                </span>
+              </button>
+            ))}
+            <span className={styles.starHint}>{t('feedback.starHint')}</span>
+          </div>
+
+          <div className={styles.section}>
+            <p className={styles.sectionLabel}>{t('feedback.tagSectionLabel')}</p>
+
+            {isLoadingOpts && <p className={styles.starHint}>불러오는 중이에요...</p>}
+            {!isLoadingOpts && optsError && <p className={styles.starHint}>{optsError}</p>}
+
+            {!isLoadingOpts && !optsError && (
+              <div className={styles.tagRow}>
+                {reviewOpts.map((opt) => (
+                  <button
+                    key={opt.opt_no}
+                    type="button"
+                    className={`${styles.tag} ${selectedOptNo === opt.opt_no ? styles.tagSelected : ''}`}
+                    onClick={() =>
+                      setSelectedOptNo((prev) => (prev === opt.opt_no ? null : opt.opt_no))
+                    }
+                  >
+                    {opt.opt_nm}
+                  </button>
+                ))}
+              </div>
+            )}
+
+            <textarea
+              className={styles.textarea}
+              placeholder={t('feedback.commentPlaceholder')}
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+            />
+          </div>
+
+          <div className={styles.section}>
+            <p className={styles.sectionLabel}>{t('feedback.placeSectionLabel')}</p>
+
+            {isLoadingPlaces && <p className={styles.starHint}>불러오는 중이에요...</p>}
+            {!isLoadingPlaces && placesError && <p className={styles.starHint}>{placesError}</p>}
+            {!isLoadingPlaces && !placesError && places.length === 0 && (
+              <p className={styles.starHint}>다녀온 장소가 없어요.</p>
+            )}
+
+            {!isLoadingPlaces && !placesError && places.length > 0 && (
+              <div className={styles.placeRow}>
+                {places.map((place) => (
+                  <button
+                    key={place.trip_route_event_no}
+                    type="button"
+                    className={`${styles.placeChip} ${place.liked ? styles.placeChipDone : ''}`}
+                    disabled={likingIds.has(place.trip_route_event_no)}
+                    onClick={() => togglePlaceLike(place)}
+                  >
+                    <span>{place.event_nm}</span>
+                    <span
+                      className={`${styles.placeThumb} ${place.liked ? styles.placeThumbActive : ''}`}
+                      aria-hidden="true"
+                    >
+                      👍
+                    </span>
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {submitError && (
+            <p className={styles.starHint} style={{ color: '#E64545' }}>
+              {submitError}
+            </p>
+          )}
+
+          <div className={styles.actionRow}>
+            <button type="button" className={styles.skipButton} onClick={handleSkip}>
+              {t('feedback.skipButton')}
+            </button>
+            <button
+              type="button"
+              className={styles.submitButton}
+              onClick={handleSubmit}
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? '저장 중...' : t('feedback.submitButton')}
+            </button>
+          </div>
+        </div>
+
+        <BottomNav />
+      </div>
+    </div>
+  );
+}

@@ -1,0 +1,163 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600&family=Urbanist:wght@600;700&display=swap');
+
+.screen {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #6D57FC;
+  padding: 24px 16px;
+}
+
+.phone {
+  width: 100%;
+  max-width: 390px;
+  height: 844px;
+  background: #6D57FC;
+  border-radius: 32px;
+  box-shadow: 0px 3px 10px rgba(181, 179, 193, 0.11);
+  outline: 1px solid rgba(255, 255, 255, 0.15);
+  outline-offset: -1px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 로고 (실제 이미지 파일 사용) - 왼쪽에서 쓱 들어와서 착지 임팩트 */
+.logo-slide {
+  animation: slideIn 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.3s both;
+  margin-left: 14px;
+}
+
+/* 로고를 세 겹으로 분리: 흰 바탕 / 글자(삼각형 노치는 잘라냄) / 배경색과 같은 보라 삼각형(노치)
+   노치의 clip-path만 애니메이션해서 "냠" 하고 한 번 베어무는 모션을 만듦 */
+.logo-visual {
+  position: relative;
+  width: 260px;
+  aspect-ratio: 1293 / 717;
+  animation: impactPunch 0.4s ease-out 1s both;
+}
+
+.logo-white {
+  position: absolute;
+  inset: 0;
+  background: #ffffff;
+}
+
+.logo-letters {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  /* 원본 이미지에 이미 그려진 삼각형(노치)은 잘라내고 글자+흰 배경만 남김 */
+  clip-path: polygon(0% 0%, 58% 0%, 58% 100%, 0% 100%);
+}
+
+.logo-notch {
+  position: absolute;
+  inset: 0;
+  background: #6D57FC; /* 스플래시 배경색과 동일 → 삼각형이 "베어문 자국"처럼 보임 */
+  clip-path: polygon(57.2% 70.7%, 100.5% 40.9%, 100.5% 100.5%);
+  animation: logoBite 1.6s ease-in-out 1.15s both;
+  /* clip-path 대각선 경계에 생기는 안티앨리어싱 실선을 덮기 위한 미세한 번짐 */
+  filter: drop-shadow(0 0 1px #6D57FC) drop-shadow(0 0 1px #6D57FC);
+}
+
+@keyframes slideIn {
+  0% { transform: translateX(-420px); opacity: 0; }
+  60% { opacity: 1; }
+  100% { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes impactPunch {
+  0% { transform: scale(1, 1); }
+  40% { transform: scale(1.08, 0.9); }
+  70% { transform: scale(0.96, 1.05); }
+  100% { transform: scale(1, 1); }
+}
+
+/* 입을 다물었다 크게 벌리고 원래 모양으로 돌아오는 한 번의 "chomp" 모션.
+   가로 깊이(꼭짓점 x, 밑변 x)는 고정하고, 세로 폭(밑변의 위/아래 y)만 움직여서
+   턱이 위아래로만 여닫히는 느낌을 냄 */
+@keyframes logoBite {
+  0% {
+    clip-path: polygon(57.2% 70.7%, 100.5% 40.9%, 100.5% 100.5%);
+  }
+  35% {
+    /* 입을 다묾: 밑변 위/아래가 꼭짓점 높이(70.7%) 쪽으로 모여서 거의 일자에 가까워짐 */
+    clip-path: polygon(57.2% 70.7%, 100.5% 66%, 100.5% 76%);
+  }
+  70% {
+    /* 입을 크게 벎: 밑변 위/아래가 훨씬 넓게 벌어짐 (가로 깊이는 그대로) */
+    clip-path: polygon(57.2% 70.7%, 100.5% 24%, 100.5% 100.5%);
+  }
+  100% {
+    clip-path: polygon(57.2% 70.7%, 100.5% 40.9%, 100.5% 100.5%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .logo-slide,
+  .logo-visual,
+  .logo-notch {
+    animation: none !important;
+  }
+}
+
+.tagline {
+  margin-top: 22px;
+  color: rgba(255, 255, 255, 0.7);
+  font-family: 'IBM Plex Sans KR', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+/* 하단 진행 바 */
+.progress-block {
+  position: absolute;
+  bottom: 48px;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 0 48px;
+}
+
+.progress-track {
+  width: 100%;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 4px;
+  width: 0%;
+  animation: fillProgress 3s linear forwards;
+}
+
+@keyframes fillProgress {
+  from { width: 0%; }
+  to { width: 100%; }
+}
+
+.progress-label {
+  color: rgba(255, 255, 255, 0.6);
+  font-family: 'IBM Plex Sans KR', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+}

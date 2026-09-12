@@ -1,0 +1,434 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600&family=Urbanist:wght@400;600;700&family=Inter:wght@400;600&display=swap');
+
+.screen {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  background: #ececec;
+  padding: 24px 16px;
+  font-family: 'IBM Plex Sans KR', sans-serif;
+}
+
+.card {
+  width: 100%;
+  max-width: 390px;
+  background: #fff;
+  border-radius: 32px;
+  box-shadow: 0px 3px 10px rgba(181, 179, 193, 0.11);
+  outline: 1px solid #EFEDFA;
+  outline-offset: -1px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  overflow: hidden;
+}
+
+.card * {
+  text-align: left;
+}
+
+.card button {
+  text-align: center;
+}
+
+/* 헤더 */
+.header {
+  padding: 14px 18px 12px;
+  border-bottom: 1px solid #EFEDFA;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.header-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.back-btn {
+  width: 30px;
+  height: 30px;
+  min-width: 30px;
+  border-radius: 15px;
+  background: #F8F7FF;
+  border: 1px solid #E8E4FF;
+  color: #6D57FC;
+  font-family: 'Urbanist', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.step-label {
+  margin-left: auto;
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  color: #201E1D;
+}
+
+.title {
+  font-size: 25px;
+  font-weight: 600;
+  line-height: 28px;
+  letter-spacing: 0.38px;
+  color: #201E1D;
+  margin: 0;
+}
+
+.progress-bar {
+  display: flex;
+  gap: 3px;
+  padding-top: 4px;
+}
+
+.progress-seg {
+  flex: 1;
+  height: 4px;
+  border-radius: 2px;
+  background: rgba(27, 22, 63, 0.18);
+}
+
+.progress-seg.active {
+  background: #6D57FC;
+}
+
+/* 공통 섹션 */
+.section {
+  padding: 14px 18px;
+  border-bottom: 1px solid #EFEDFA;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.field-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 18.6px;
+  letter-spacing: 0.18px;
+  color: rgba(27, 22, 63, 0.65);
+  margin-bottom: 5px;
+}
+
+.input {
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 36px;
+  padding: 8px 14px;
+  border: 1px solid #E8E4FF;
+  border-radius: 4px;
+  background: #F8F7FF;
+  font-family: 'Urbanist', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: #0C0A1C;
+}
+
+.input.text-kr {
+  font-family: 'IBM Plex Sans KR', sans-serif;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #6D57FC;
+}
+
+.hint {
+  font-size: 11.5px;
+  font-weight: 400;
+  line-height: 18.4px;
+  color: rgba(27, 22, 63, 0.5);
+  margin: 0;
+}
+
+/* 숙소 섹션 */
+.section-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.section-label {
+  font-family: 'Urbanist', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1.4px;
+  color: rgba(27, 22, 63, 0.55);
+}
+
+/* 숙소 / 출발지 / 도착지 - 다른 라벨보다 눈에 띄게 강조 */
+.section-label-strong {
+  font-family: 'IBM Plex Sans KR', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.2px;
+  color: #201E1D;
+}
+
+.section-count {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 400;
+  color: rgba(27, 22, 63, 0.55);
+}
+
+.stay-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.stay-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.stay-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: #201E1D;
+  margin: 0;
+}
+
+.stay-dates {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 400;
+  color: rgba(27, 22, 63, 0.6);
+  margin: 2px 0 0;
+}
+
+.stay-delete {
+  background: none;
+  border: none;
+  padding: 0;
+  color: #6D57FC;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.17px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.add-stay {
+  background: none;
+  border: none;
+  padding: 0;
+  align-self: flex-start;
+  color: #6D57FC;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.21px;
+  cursor: pointer;
+}
+
+/* 하단 */
+.footer {
+  padding: 12px 18px 22px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer-summary {
+  font-family: 'Urbanist', sans-serif;
+  font-size: 11.5px;
+  font-weight: 400;
+  color: rgba(27, 22, 63, 0.55);
+}
+
+.btn-primary {
+  padding: 13.6px 20px 15.4px;
+  border: none;
+  border-radius: 100px;
+  background: #6D57FC;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.21px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.btn-primary:hover {
+  background: #5a45e0;
+}
+
+/* 출발지/완료지 섹션의 "수정 / 지도에서 찾기" 링크 */
+.edit-link {
+  border: none;
+  background: transparent;
+  color: #6D57FC;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+}
+
+.place-summary {
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(27, 22, 63, 0.6);
+  margin: 6px 0 0;
+}
+
+/* ===== 공용 지도 검색 팝업 (숙소/출발지/완료지 공통) ===== */
+
+.search-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(27, 22, 63, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 16px;
+}
+
+.search-panel {
+  width: 100%;
+  background: #fff;
+  border-radius: 24px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.search-panel-header {
+  flex-shrink: 0;
+  padding: 16px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #EFEDFA;
+  font-size: 15px;
+  font-weight: 700;
+  color: #201E1D;
+}
+
+.close-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: none;
+  background: #F1F0F6;
+  color: #49475B;
+  font-size: 13px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-row {
+  flex-shrink: 0;
+  margin: 14px 18px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 14px;
+  height: 44px;
+  background: #F8F7FF;
+  border: 1px solid #E8E4FF;
+  border-radius: 999px;
+}
+
+.search-icon {
+  color: #A9A3C2;
+  font-size: 15px;
+}
+
+.search-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: 'IBM Plex Sans KR', sans-serif;
+  font-size: 14px;
+  color: #0C0A1C;
+}
+
+.search-input::placeholder {
+  color: rgba(12, 10, 28, 0.4);
+}
+
+.map-area {
+  flex-shrink: 0;
+  position: relative;
+  margin: 14px 18px 0;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #F0EEFF;
+}
+
+.map-canvas {
+  width: 100%;
+  height: 100%;
+}
+
+.map-loading {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.85);
+  font-size: 12.5px;
+  color: rgba(27, 22, 63, 0.6);
+  text-align: center;
+  padding: 0 24px;
+}
+
+.result-list {
+  margin: 10px 18px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-height: 260px;
+  overflow-y: auto;
+}
+
+.result-list-item {
+  padding: 10px 12px;
+  border-radius: 12px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.result-list-item:hover {
+  background: #F8F7FF;
+}
+
+.result-list-item.active {
+  background: #EFEBFF;
+  outline: 1px solid #6D57FC;
+  outline-offset: -1px;
+}
+
+.result-list-name {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #201E1D;
+}
+
+.result-list-address {
+  font-size: 11.5px;
+  color: rgba(27, 22, 63, 0.55);
+}

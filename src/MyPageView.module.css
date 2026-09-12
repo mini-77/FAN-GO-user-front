@@ -1,0 +1,420 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600&family=Urbanist:wght@400;600;700&family=Inter:wght@400;500&display=swap');
+
+.screen {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  background: #ececec;
+  padding: 24px 16px;
+  font-family: 'IBM Plex Sans KR', sans-serif;
+}
+
+.card {
+  width: 100%;
+  max-width: 390px;
+  min-height: 844px;
+  background: #F8F7FF;
+  border-radius: 32px;
+  box-shadow: 0px 3px 10px rgba(181, 179, 193, 0.11);
+  outline: 1px solid #EFEDFA;
+  outline-offset: -1px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  overflow: hidden;
+}
+
+.card * {
+  text-align: left;
+}
+
+.card button {
+  text-align: center;
+}
+
+/* 위/아래 스페이서 비율로 계정 액션 버튼 위치를 조정 - 위를 더 크게 둬서 살짝 아래쪽에 위치하게 함 */
+.spacer-top {
+  flex: 2;
+}
+
+.spacer-bottom {
+  flex: 1;
+}
+
+/* 다크 모드 (지금은 마이페이지 하나만 예시로 적용 - 나머지 화면은 전체 UI 개편 때 같이 반영 예정) */
+.card.dark {
+  background: #17151F;
+}
+
+.card.dark .top-bar-logo {
+  color: #fff;
+}
+
+.card.dark .title {
+  color: #F4F2FF;
+}
+
+.card.dark .profile-card,
+.card.dark .menu-card,
+.card.dark .toggle-card {
+  background: #221F2E;
+  box-shadow: none;
+}
+
+.card.dark .profile-name,
+.card.dark .menu-title,
+.card.dark .toggle-label {
+  color: #F4F2FF;
+}
+
+.card.dark .profile-email,
+.card.dark .menu-sub {
+  color: rgba(244, 242, 255, 0.55);
+}
+
+.card.dark .edit-btn {
+  background: #2D2A3A;
+  border-color: #3A3648;
+  color: #B7ACFF;
+}
+
+.card.dark .menu-row {
+  border-bottom-color: #2D2A3A;
+}
+
+.card.dark .menu-icon {
+  background: #2D2A3A;
+}
+
+.card.dark .toggle-row {
+  border-bottom-color: #2D2A3A;
+}
+
+.card.dark .toggle-switch {
+  background: #3A3648;
+}
+
+.card.dark .logout-btn {
+  background: #221F2E;
+  color: rgba(244, 242, 255, 0.8);
+}
+
+.card.dark .bottom-tabs {
+  background: #221F2E;
+  border-top-color: #2D2A3A;
+}
+
+/* 상단 헤더바 */
+.top-bar {
+  background: #6D57FC;
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.top-bar-btn {
+  width: 34px;
+  height: 34px;
+  min-width: 34px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.18);
+  border: none;
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.top-bar-logo {
+  font-family: 'Urbanist', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+}
+
+.top-bar-logo-img {
+  height: 20px;
+  width: auto;
+  display: block;
+}
+
+.title {
+  padding: 20px 22px 0;
+  font-family: 'Urbanist', sans-serif;
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: 0.33px;
+  color: #201E1D;
+  margin: 0;
+}
+
+.section {
+  padding: 16px 22px 0;
+}
+
+/* 프로필 카드 */
+.profile-card {
+  background: #fff;
+  border-radius: 24px;
+  box-shadow: 0px 3px 10px rgba(181, 179, 193, 0.11);
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.avatar {
+  width: 56px;
+  height: 56px;
+  min-width: 56px;
+  border-radius: 28px;
+  background: #F0EEFF;
+  color: #6D57FC;
+  font-family: 'Urbanist', sans-serif;
+  font-size: 22px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.profile-name {
+  font-family: 'Urbanist', sans-serif;
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: 0.25px;
+  color: #201E1D;
+}
+
+.profile-email {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  color: rgba(27, 22, 63, 0.6);
+  margin-top: 3px;
+}
+
+.profile-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 8px;
+}
+
+.profile-tag {
+  padding: 3px 9px;
+  background: #F0EEFF;
+  border-radius: 100px;
+  font-family: 'Urbanist', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.6px;
+  color: #6D57FC;
+}
+
+.edit-btn {
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  border-radius: 16px;
+  background: #F8F7FF;
+  border: 1px solid #E8E4FF;
+  color: #6D57FC;
+  font-size: 13px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 메뉴 리스트 카드 */
+.menu-card {
+  background: #fff;
+  border-radius: 24px;
+  box-shadow: 0px 3px 10px rgba(181, 179, 193, 0.11);
+  overflow: hidden;
+}
+
+.menu-row {
+  padding: 14px 18px;
+  border-bottom: 1px solid #EFEDFA;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  cursor: pointer;
+}
+
+.menu-row:last-child {
+  border-bottom: none;
+}
+
+.menu-icon {
+  width: 38px;
+  height: 38px;
+  min-width: 38px;
+  border-radius: 14px;
+  background: #F0EEFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 17px;
+}
+
+.menu-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.menu-title {
+  font-family: 'Urbanist', sans-serif;
+  font-size: 14.5px;
+  font-weight: 600;
+  letter-spacing: 0.22px;
+  color: #0C0A1C;
+}
+
+.menu-sub {
+  font-family: 'Inter', sans-serif;
+  font-size: 11.5px;
+  color: rgba(27, 22, 63, 0.55);
+  margin-top: 2px;
+}
+
+.menu-chevron {
+  color: rgba(27, 22, 63, 0.3);
+  font-size: 16px;
+  font-weight: 600;
+}
+
+/* 토글 카드 */
+.toggle-card {
+  background: #fff;
+  border-radius: 24px;
+  box-shadow: 0px 3px 10px rgba(181, 179, 193, 0.11);
+  overflow: hidden;
+}
+
+.toggle-row {
+  padding: 13px 18px;
+  border-bottom: 1px solid #EFEDFA;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.toggle-row:last-child {
+  border-bottom: none;
+}
+
+.toggle-label {
+  font-family: 'Urbanist', sans-serif;
+  font-size: 14.5px;
+  font-weight: 600;
+  letter-spacing: 0.22px;
+  color: #201E1D;
+}
+
+.toggle-switch {
+  width: 44px;
+  height: 26px;
+  min-width: 44px;
+  border-radius: 100px;
+  background: #E8E4FF;
+  position: relative;
+  cursor: pointer;
+  border: none;
+  padding: 0;
+}
+
+.toggle-switch.on {
+  background: #6D57FC;
+}
+
+.toggle-knob {
+  width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  background: #fff;
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  transition: transform 0.15s;
+}
+
+.toggle-switch.on .toggle-knob {
+  transform: translateX(18px);
+}
+
+/* 계정 버튼 */
+.account-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 28px;
+}
+
+.logout-btn {
+  width: 100%;
+  min-height: 48px;
+  border-radius: 100px;
+  background: #F8F7FF;
+  border: 1px solid #E8E4FF;
+  color: #1B163F;
+  font-family: 'Urbanist', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+  cursor: pointer;
+}
+
+.delete-link {
+  background: none;
+  border: none;
+  padding: 4px;
+  color: rgba(27, 22, 63, 0.4);
+  font-family: 'Urbanist', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* 하단 탭바 (아이콘 전용) */
+.bottom-tabs {
+  margin-top: 18px;
+  border-top: 1px solid #EFEDFA;
+  background: #fff;
+  display: flex;
+}
+
+.bottom-tab {
+  flex: 1;
+  padding: 12px 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bottom-tab-icon {
+  font-size: 19px;
+  opacity: 0.45;
+}
+
+.bottom-tab.active .bottom-tab-icon {
+  opacity: 1;
+}

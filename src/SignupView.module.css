@@ -1,0 +1,385 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600&family=Urbanist:wght@400;600;700&family=Inter:wght@600&display=swap');
+
+.screen {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  background: #ececec;
+  padding: 24px 16px;
+  font-family: 'IBM Plex Sans KR', sans-serif;
+}
+
+/* 전체 틀 유지 */
+.card {
+  width: 100%;
+  max-width: 390px;
+  background: #fff;
+  border-radius: 32px;
+  box-shadow: 0px 3px 10px rgba(181, 179, 193, 0.11);
+  outline: 1px solid #EFEDFA;
+  outline-offset: -1px;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  text-align: left;
+  overflow: hidden;
+}
+
+.card * {
+  text-align: left;
+  box-sizing: border-box;
+}
+
+.card button {
+  text-align: center;
+}
+
+/* AppHeader는 JSX/CSS 모두 수정하지 않음 */
+.body {
+  padding: 16px 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.title {
+  font-size: 25px;
+  font-weight: 600;
+  line-height: 28px;
+  letter-spacing: 0.38px;
+  color: #201E1D;
+  margin: 0 0 4px;
+}
+
+.form-field {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.field-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 18.6px;
+  letter-spacing: 0.18px;
+  color: rgba(27, 22, 63, 0.65);
+  margin: 0;
+}
+
+.input {
+  width: 100%;
+  height: 41px;
+  min-height: 41px;
+  padding: 8px 14px;
+  border: 1px solid #E8E4FF;
+  border-radius: 4px;
+  background: #F8F7FF;
+  font-family: 'IBM Plex Sans KR', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 21.7px;
+  color: #0C0A1C;
+}
+
+.input.input-en {
+  font-family: 'Urbanist', sans-serif;
+}
+
+.input::placeholder {
+  color: rgba(12, 10, 28, 0.45);
+}
+
+.input:focus {
+  outline: none;
+  border-color: #6D57FC;
+}
+
+.input-highlighted {
+  background: #F0EEFF;
+  border-color: #6D57FC;
+  font-family: 'Urbanist', sans-serif;
+}
+
+select.input {
+  cursor: pointer;
+  padding: 8px 30px 8px 14px;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath fill='none' stroke='%236b6b7d' stroke-width='1.5' d='M1 1l4 4 4-4'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+}
+
+.row-with-btn {
+  width: 100%;
+  display: flex;
+  align-items: stretch;
+  gap: 8px;
+}
+
+.row-with-btn .input {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.btn-mini {
+  flex: 0 0 68px;
+  height: 41px;
+  padding: 0 10px;
+  border-radius: 100px;
+  border: none;
+  background: #F8F7FF;
+  box-shadow: 0 0 0 1px #E8E4FF inset;
+  color: #1B163F;
+  font-family: 'IBM Plex Sans KR', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.18px;
+  cursor: pointer;
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* 경고 메시지: 로그인 화면(.error)과 동일하게 붉은색으로 통일 */
+.field-hint-warning {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 16.5px;
+  color: #E64545;
+  margin: 0;
+}
+
+.warning-mark {
+  font-family: 'Urbanist', sans-serif;
+}
+
+/* 중복확인 성공 메시지 (사용 가능한 이메일 주소입니다 등) - 경고와 구분되는 초록색 */
+.field-hint-success {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 16.5px;
+  color: #2E9E5B;
+  margin: 0;
+}
+
+.success-mark {
+  font-family: 'Urbanist', sans-serif;
+}
+
+/* 화면 언어 */
+.lang-block {
+  border-top: 1px solid #EFEDFA;
+  padding-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.lang-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.lang-label {
+  font-family: 'Urbanist', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1.4px;
+  color: rgba(27, 22, 63, 0.55);
+}
+
+.lang-current {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  color: #6D57FC;
+}
+
+.lang-chips {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.lang-chip {
+  width: 100%;
+  min-width: 0;
+  height: 44px;
+  padding: 0 14px;
+  border-radius: 16px;
+  border: 1px solid #E8E4FF;
+  background: #F8F7FF;
+  font-family: 'Urbanist', 'IBM Plex Sans KR', sans-serif;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #1B163F;
+  cursor: pointer;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.lang-chip.active {
+  background: #6D57FC;
+  border-color: #6D57FC;
+  color: #fff;
+}
+
+.hint {
+  font-size: 11.5px;
+  font-weight: 400;
+  line-height: 18.4px;
+  color: rgba(27, 22, 63, 0.55);
+  margin: 0;
+}
+
+.error {
+  color: #E64545;
+  font-size: 12px;
+  margin: 0;
+}
+
+.agree-block {
+  border-top: 1px solid #EFEDFA;
+  padding-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.agree-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.agree-checkbox {
+  width: 16px;
+  height: 16px;
+  min-width: 16px;
+  margin: 0;
+  border-radius: 3px;
+  accent-color: #6D57FC;
+  cursor: pointer;
+}
+
+.agree-link {
+  color: #6D57FC;
+  font-size: 12.5px;
+  font-weight: 600;
+  text-decoration: underline;
+  border: none;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.agree-text {
+  font-size: 12.5px;
+  font-weight: 400;
+  color: #0C0A1C;
+}
+
+.footer-row {
+  border-top: 1px solid #EFEDFA;
+  padding-top: 12px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn-primary {
+  min-height: 46px;
+  padding: 13px 20px;
+  border: none;
+  border-radius: 100px;
+  background: #6D57FC;
+  color: #fff;
+  font-family: 'IBM Plex Sans KR', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 16.8px;
+  letter-spacing: 0.21px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.btn-primary.disabled {
+  opacity: 0.45;
+}
+
+.btn-primary:not(.disabled):hover {
+  background: #5a45e0;
+}
+
+/* ===== 아래부터 SignupView.module.css 맨 끝에 추가 ===== */
+
+.phone-single-box {
+  width: 100%;
+  height: 41px;
+  min-height: 41px;
+  display: flex;
+  align-items: center;
+  border: 1px solid #E8E4FF;
+  border-radius: 4px;
+  background: #F8F7FF;
+  padding: 0 14px;
+  gap: 6px;
+}
+
+.phone-single-box:focus-within {
+  border-color: #6D57FC;
+}
+
+.phone-code-plus {
+  font-size: 13px;
+  color: rgba(27, 22, 63, 0.6);
+}
+
+.phone-code-input {
+  width: 26px;
+  flex-shrink: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  padding: 0;
+  height: 100%;
+  font-family: 'Urbanist', sans-serif;
+  font-size: 14px;
+  color: #0C0A1C;
+}
+
+.phone-divider {
+  width: 1px;
+  height: 18px;
+  background: #E8E4FF;
+  flex-shrink: 0;
+}
+
+.phone-local-input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  padding: 0;
+  height: 100%;
+  font-family: 'Urbanist', sans-serif;
+  font-size: 14px;
+  color: #0C0A1C;
+}
+
+.phone-local-input::placeholder,
+.phone-code-input::placeholder {
+  color: rgba(12, 10, 28, 0.45);
+}

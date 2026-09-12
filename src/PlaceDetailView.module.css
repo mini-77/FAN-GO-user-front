@@ -1,0 +1,296 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600&family=Urbanist:wght@400;600;700&family=Inter:wght@400;600&display=swap');
+
+.screen {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  background: #ececec;
+  padding: 24px 16px;
+  font-family: 'IBM Plex Sans KR', sans-serif;
+}
+
+.card {
+  width: 100%;
+  max-width: 390px;
+  background: #fff;
+  border-radius: 32px;
+  box-shadow: 0px 3px 10px rgba(181, 179, 193, 0.11);
+  outline: 1px solid #EFEDFA;
+  outline-offset: -1px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  overflow: hidden;
+}
+
+.card * {
+  text-align: left;
+}
+
+.card button {
+  text-align: center;
+}
+
+/* 대표 사진 (DB event_img_url) - 팝업(모달)에서 위로 훨씬 크게 보이도록 확대 를 위로 크게 확장 */
+.hero-wrap {
+  width: 100%;
+  height: 298px;
+  overflow: hidden;
+  background: #F0EEFF;
+}
+
+.hero-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+}
+
+.map-row {
+  padding: 12px 18px 0;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.photo-credit {
+  font-size: 8px;
+  color: rgba(27, 22, 63, 0.7);
+  white-space: nowrap;
+}
+
+.breadcrumb {
+  padding: 3px 18px 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #0C0A1C;
+  margin: 0;
+}
+
+.title-row {
+  padding: 5px 18px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.title {
+  font-size: 25px;
+  font-weight: 600;
+  line-height: 28px;
+  letter-spacing: 0.38px;
+  color: #201E1D;
+  margin: 0;
+}
+
+.like-btn {
+  flex-shrink: 0;
+  padding: 8px 14px;
+  border-radius: 100px;
+  border: 1px solid #E8E4FF;
+  background: #F8F7FF;
+  color: #1B163F;
+  font-size: 11.5px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.hours {
+  padding: 4px 18px 0;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 20px;
+  color: #757575;
+  margin: 0;
+}
+
+.subtitle {
+  padding: 0 18px 7px;
+  font-size: 13px;
+  color: rgba(27, 22, 63, 0.65);
+  margin: 0;
+}
+
+.quote-block {
+  margin: 10px 18px 0;
+  padding-left: 10px;
+  border-left: 3px solid #6D57FC;
+}
+
+.quote-text {
+  font-size: 12.5px;
+  font-weight: 600;
+  line-height: 20px;
+  color: #201E1D;
+  margin: 0;
+}
+
+/* 총점수 카드 */
+.score-card {
+  margin: 14px 18px 0;
+  padding: 10px 0;
+  border-top: 1px solid #EFEDFA;
+  border-bottom: 1px solid #EFEDFA;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.score-num-block {
+  width: 78px;
+  min-width: 78px;
+}
+
+.score-num {
+  font-family: 'Inter', sans-serif;
+  font-size: 34px;
+  font-weight: 600;
+  color: #6D57FC;
+  line-height: 34px;
+}
+
+.score-num-label {
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.76px;
+  color: rgba(27, 22, 63, 0.55);
+  margin-top: 4px;
+}
+
+.score-bar-block {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.score-bar-label {
+  font-size: 11.5px;
+  color: #201E1D;
+}
+
+.score-bar-track {
+  height: 23px;
+  background: rgba(27, 22, 63, 0.15);
+}
+
+.score-bar-fill {
+  height: 100%;
+  background: #34C759;
+}
+
+.desc {
+  padding: 10px 18px 0;
+  font-size: 11px;
+  line-height: 17.6px;
+  color: rgba(27, 22, 63, 0.45);
+  margin: 0;
+}
+
+/* 혼잡도 */
+.congestion-row {
+  margin: 12px 18px 0;
+  padding: 12px 0;
+  border-top: 1px solid #EFEDFA;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.congestion-label {
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.63px;
+  color: rgba(27, 22, 63, 0.55);
+}
+
+.congestion-bars {
+  margin-left: auto;
+  display: flex;
+  gap: 3px;
+}
+
+.congestion-bar {
+  width: 14px;
+  height: 16px;
+  background: rgba(27, 22, 63, 0.16);
+}
+
+.congestion-text {
+  font-size: 12px;
+  font-weight: 600;
+  color: #201E1D;
+}
+
+.link-row {
+  padding: 14px 18px 18px;
+  display: flex;
+  gap: 8px;
+}
+
+.link-btn {
+  flex: 1;
+  min-height: 36px;
+  padding: 0 14px;
+  background: #F8F7FF;
+  border: 1px solid #E8E4FF;
+  border-radius: 100px;
+  color: #1B163F;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  box-sizing: border-box;
+}
+
+/* 사진 없을 때 대체용 지도 미리보기 (기존 유지) */
+.map-area {
+  position: relative;
+  height: 168px;
+  background: #F0EEFF;
+  overflow: hidden;
+  padding: 14px 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.map-blob {
+  position: absolute;
+  width: 130px;
+  height: 130px;
+  right: -40px;
+  top: -50px;
+  background: #E8E4FF;
+  border-radius: 50%;
+}
+
+.map-label {
+  position: relative;
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  font-weight: 300;
+  letter-spacing: 0.15px;
+  color: rgba(27, 22, 63, 0.65);
+  margin: 0;
+}
+
+.map-name {
+  position: relative;
+  font-size: 14px;
+  font-weight: 600;
+  color: #0C0A1C;
+  margin: 3px 0 0;
+}

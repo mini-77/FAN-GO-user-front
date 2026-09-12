@@ -1,0 +1,47 @@
+.bottom-tabs {
+  margin-top: auto;
+  flex-shrink: 0;
+  border-top: 1px solid #EFEDFA;
+  background: #fff;
+  display: flex;
+}
+
+.bottom-tab {
+  flex: 1;
+  padding: 12px 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #C0BCD8; /* 기본(비활성) 아이콘 색 - 피그마 회색 톤 */
+}
+
+.bottom-tab-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bottom-tab.active {
+  color: #6D57FC;
+}
+
+/* 홈 버튼 - 항상 가운데, 활성일 땐 채워진 아이콘 + 아래 밑줄 바로 표시 */
+.bottom-tab.home-tab {
+  position: relative;
+  color: #6D57FC;
+}
+
+.bottom-tab.home-tab::after {
+  content: '';
+  position: absolute;
+  bottom: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 28px;
+  height: 2px;
+  background: #6D57FC;
+  border-radius: 100px;
+}

@@ -1,0 +1,497 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600&family=Urbanist:wght@400;600;700&display=swap');
+
+.screen {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  background: #ececec;
+  padding: 24px 16px;
+  font-family: 'IBM Plex Sans KR', sans-serif;
+}
+
+.card {
+  width: 100%;
+  max-width: 390px;
+  background: #fff;
+  border-radius: 32px;
+  box-shadow: 0px 3px 10px rgba(181, 179, 193, 0.11);
+  outline: 1px solid #EFEDFA;
+  outline-offset: -1px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* 헤더 */
+.header {
+  flex-shrink: 0;
+  padding: 14px 18px;
+  background: #6D57FC;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.headerIconBtn {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  border: none;
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.headerBotInfo {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.headerAvatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  flex-shrink: 0;
+}
+
+.headerTexts {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.headerTitle {
+  color: #F0EEE6;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 20px;
+}
+
+.headerStatus {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #F0EEE6;
+  font-size: 10px;
+  line-height: 15.6px;
+}
+
+.statusDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #2FBD7E;
+  flex-shrink: 0;
+}
+
+/* 대화 히스토리 */
+.historySection {
+  flex-shrink: 0;
+  padding: 14px 18px 12px;
+  border-bottom: 1px solid #ECE9FF;
+  max-height: 230px;
+  overflow-y: auto;
+}
+
+.historySectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.historyLabel {
+  font-family: 'Urbanist', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: #201E1D;
+}
+
+.newChatLink {
+  border: none;
+  background: transparent;
+  color: #6D57FC;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+}
+
+.historyList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.historyHint {
+  font-size: 12px;
+  color: rgba(27, 22, 63, 0.5);
+  margin: 0;
+  text-align: center;
+  padding: 8px 0;
+}
+
+.historyCard {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px;
+  background: #fff;
+  border: 1px solid #ECE9FF;
+  border-radius: 14px;
+  cursor: pointer;
+  text-align: left;
+}
+
+.historyCardActive {
+  border-color: #6D57FC;
+  background: #F8F7FF;
+}
+
+.historyIcon {
+  width: 26px;
+  height: 26px;
+  border-radius: 9px;
+  background: #F1F0F6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  flex-shrink: 0;
+}
+
+.historyTexts {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.historyTitle {
+  font-size: 13px;
+  font-weight: 600;
+  color: #201E1D;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.historyMeta {
+  font-size: 10px;
+  color: #A9A3C2;
+}
+
+/* 채팅 영역 */
+.chatArea {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  background: #FAF9FF;
+}
+
+.chatHint {
+  font-size: 12px;
+  color: rgba(27, 22, 63, 0.5);
+  text-align: center;
+  margin: auto;
+}
+
+.messageRow {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.messageRowUser {
+  justify-content: flex-end;
+}
+
+.botAvatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  flex-shrink: 0;
+}
+
+.bubble {
+  max-width: 72%;
+  padding: 11px 16px;
+  font-size: 14px;
+  line-height: 21px;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.bubbleAssistant {
+  background: #F1F0F6;
+  color: #201E1D;
+  border-radius: 18px 18px 18px 6px;
+}
+
+.bubbleUser {
+  background: #6D57FC;
+  color: #fff;
+  border-radius: 18px 18px 6px 18px;
+  box-shadow: 0 6px 14px rgba(109, 87, 252, 0.3);
+}
+
+.bubbleError {
+  background: #FCEAEA;
+  color: #E64545;
+}
+
+.fallbackTag {
+  margin-top: 5px;
+  font-size: 10.5px;
+  opacity: 0.6;
+}
+
+.typingDot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin-right: 3px;
+  border-radius: 50%;
+  background: #A9A3C2;
+  animation: blink 1.2s infinite ease-in-out;
+}
+
+.typingDot:nth-child(2) { animation-delay: 0.2s; }
+.typingDot:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes blink {
+  0%, 80%, 100% { opacity: 0.3; }
+  40% { opacity: 1; }
+}
+
+.inlineError {
+  flex-shrink: 0;
+  padding: 6px 18px 0;
+  margin: 0;
+  font-size: 11px;
+  color: #E64545;
+  background: #FAF9FF;
+}
+
+/* 빠른 질문 칩 */
+.quickReplies {
+  flex-shrink: 0;
+  display: flex;
+  gap: 8px;
+  padding: 10px 18px;
+  background: #FAF9FF;
+  overflow-x: auto;
+}
+
+.quickReplyChip {
+  flex-shrink: 0;
+  padding: 10px 16px;
+  border-radius: 999px;
+  border: 1px solid #A89BFF;
+  background: #fff;
+  color: #6D57FC;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.quickReplyChip:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+/* 입력창 */
+.inputBar {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 14px;
+  background: #fff;
+  border-top: 1px solid #EFEDFA;
+}
+
+.input {
+  flex: 1;
+  height: 42px;
+  padding: 0 16px;
+  border: 1px solid #EFEDFA;
+  border-radius: 999px;
+  background: #F7F6FC;
+  font-family: 'IBM Plex Sans KR', sans-serif;
+  font-size: 13px;
+  color: #201E1D;
+}
+
+.input::placeholder {
+  color: #757575;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #A89BFF;
+}
+
+.sendBtn {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border: none;
+  border-radius: 999px;
+  background: #6D57FC;
+  color: #fff;
+  font-size: 15px;
+  cursor: pointer;
+  box-shadow: 0 6px 14px rgba(109, 87, 252, 0.35);
+}
+
+.sendBtn:disabled {
+  opacity: 0.45;
+  cursor: default;
+  box-shadow: none;
+}
+
+/* 혼잡도 카드 (예시 데이터 - 실제 API 수치 연동 전까지 임시) */
+.congestionCard {
+  margin-top: 8px;
+  padding: 16px;
+  background: #fff;
+  border: 1px solid #ECE9FF;
+  border-radius: 16px;
+  box-shadow: 0 6px 18px rgba(181, 179, 193, 0.18);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-width: 240px;
+}
+
+.congestionEyebrow {
+  font-size: 11px;
+  font-weight: 600;
+  color: #6D57FC;
+  letter-spacing: 0.4px;
+}
+
+.congestionTitle {
+  font-size: 14px;
+  font-weight: 600;
+  color: #201E1D;
+  margin-top: 4px;
+}
+
+.congestionDesc {
+  font-size: 11.5px;
+  color: #8E88A8;
+  margin-bottom: 6px;
+}
+
+.congestionChart {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  height: 60px;
+  gap: 6px;
+  padding-top: 8px;
+}
+
+.congestionBarCol {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  height: 100%;
+}
+
+.congestionBar {
+  width: 100%;
+  border-radius: 6px;
+}
+
+.congestionBarLabel {
+  font-size: 9px;
+  color: #A9A3C2;
+}
+
+.congestionLegend {
+  display: flex;
+  gap: 14px;
+  padding-top: 10px;
+  margin-top: 6px;
+  border-top: 1px solid #F1F0F6;
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10px;
+  color: #8E88A8;
+}
+
+.legendDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 2px;
+}
+
+/* 하단 네비게이션 */
+.bottomNav {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  border-top: 1px solid #EFEDFA;
+  background: #fff;
+}
+
+.navItem {
+  flex: 1;
+  padding: 12px 0;
+  border: none;
+  background: transparent;
+  font-size: 20px;
+  color: #C0BCD8;
+  cursor: pointer;
+}
+
+.navItemActive {
+  color: #6D57FC;
+  position: relative;
+}
+
+.navItemActive::after {
+  content: '';
+  position: absolute;
+  bottom: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 22px;
+  height: 2px;
+  border-radius: 2px;
+  background: #6D57FC;
+}

@@ -1,0 +1,335 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600&family=Urbanist:wght@400;600;700&family=Inter:wght@400;600&display=swap');
+
+.screen {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  background: #ececec;
+  padding: 24px 16px;
+  font-family: 'IBM Plex Sans KR', sans-serif;
+}
+
+.card {
+  width: 100%;
+  max-width: 390px;
+  background: #fff;
+  border-radius: 32px;
+  box-shadow: 0px 3px 10px rgba(181, 179, 193, 0.11);
+  outline: 1px solid #EFEDFA;
+  outline-offset: -1px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  overflow: hidden;
+}
+
+.card * {
+  text-align: left;
+}
+
+.header {
+  padding: 14px 18px 12px;
+  border-bottom: 1px solid #EFEDFA;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.header-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.back-btn {
+  width: 30px;
+  height: 30px;
+  min-width: 30px;
+  border-radius: 15px;
+  background: #F8F7FF;
+  border: 1px solid #E8E4FF;
+  color: #6D57FC;
+  font-family: 'Urbanist', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.step-label {
+  margin-left: auto;
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  color: #201E1D;
+}
+
+.title {
+  font-size: 25px;
+  font-weight: 600;
+  line-height: 28px;
+  letter-spacing: 0.38px;
+  color: #201E1D;
+  margin: 0;
+}
+
+.progress-bar {
+  display: flex;
+  gap: 3px;
+  padding-top: 4px;
+}
+
+.progress-seg {
+  flex: 1;
+  height: 4px;
+  border-radius: 2px;
+  background: rgba(27, 22, 63, 0.18);
+}
+
+.progress-seg.active {
+  background: #6D57FC;
+}
+
+.section {
+  padding: 14px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.field-label {
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.18px;
+  color: rgba(27, 22, 63, 0.65);
+}
+
+.picker-btn {
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 13px 14px;
+  background: #F8F7FF;
+  border: 1px solid #6D57FC;
+  border-radius: 16px;
+  font-family: 'IBM Plex Sans KR', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #000;
+  cursor: pointer;
+}
+
+.picker-arrow {
+  color: rgba(27, 22, 63, 0.4);
+  font-size: 12px;
+  transition: transform 0.15s;
+}
+
+.picker-arrow.open {
+  transform: rotate(180deg);
+}
+
+.picker-panel {
+  background: #fff;
+  box-shadow: 0px 12px 40px rgba(109, 87, 252, 0.14);
+  border: 1px solid #E8E4FF;
+  border-radius: 20px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.panel-group-label {
+  font-family: 'Urbanist', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1.4px;
+  color: rgba(27, 22, 63, 0.4);
+}
+
+.chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding-top: 8px;
+}
+
+.group-chip {
+  padding: 9px 16px;
+  border-radius: 100px;
+  background: #F0EEFF;
+  border: none;
+  color: #6D57FC;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.group-chip.active {
+  background: #6D57FC;
+  color: #fff;
+}
+
+.divider {
+  height: 1px;
+  background: #EFEDFA;
+}
+
+.member-chip {
+  padding: 9px 16px;
+  border-radius: 100px;
+  background: #F0EEFF;
+  border: none;
+  color: #6D57FC;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.member-chip.active {
+  background: #6D57FC;
+  color: #fff;
+}
+
+.selection-summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.selection-summary {
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(27, 22, 63, 0.5);
+}
+
+.reset-btn {
+  background: none;
+  border: none;
+  color: rgba(27, 22, 63, 0.4);
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.confirm-btn {
+  width: 100%;
+  min-height: 42px;
+  border: none;
+  border-radius: 12px;
+  background: #6D57FC;
+  color: #fff;
+  font-family: 'Urbanist', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.hint {
+  font-size: 11.5px;
+  font-weight: 400;
+  line-height: 18.4px;
+  color: rgba(27, 22, 63, 0.55);
+  margin: 0;
+}
+
+.footer {
+  padding: 12px 18px 22px;
+  border-top: 1px solid #EFEDFA;
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* 동선 스타일(A/B/C) 선택 - ConfirmView에서 옮겨옴 */
+.pace-section {
+  padding: 4px 18px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.pace-label {
+  font-family: 'Urbanist', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1.4px;
+  color: rgba(27, 22, 63, 0.55);
+}
+
+.pace-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.pace-option {
+  padding: 14px;
+  background: #F8F7FF;
+  border-radius: 16px;
+  border: 1px solid #F4F2FF;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+}
+
+.pace-option.selected {
+  background: #E8E4FF;
+}
+
+.pace-letter {
+  width: 22px;
+  color: #49475B;
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.pace-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.pace-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: #49475B;
+}
+
+.pace-desc {
+  font-family: 'Urbanist', sans-serif;
+  font-size: 11.5px;
+  color: #0C0A1C;
+}
+
+.pace-check {
+  font-family: 'Urbanist', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  color: #201E1D;
+}
+
+.btn-primary {
+  padding: 13.6px 20px 15.4px;
+  border: none;
+  border-radius: 100px;
+  background: #6D57FC;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.21px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.btn-primary:hover {
+  background: #5a45e0;
+}
