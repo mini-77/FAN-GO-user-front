@@ -392,7 +392,7 @@ select.input {
   }
 
   .card {
-    max-width: 100%;
+    max-width: 390px;
     min-height: 100vh;
     border-radius: 0;
     box-shadow: none;

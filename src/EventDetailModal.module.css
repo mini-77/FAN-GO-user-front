@@ -21,6 +21,19 @@
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
 }
 
+/* 실제 폰 화면(앱 자체가 이미 뷰포트 전체를 채움)에서는 팝업도 좌우 여백 없이
+   화면 폭에 딱 맞춤 */
+@media (max-width: 430px) {
+  .overlay {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .sheet {
+    max-width: 390px;
+  }
+}
+
 .closeBtn {
   position: absolute;
   top: 12px;
@@ -39,9 +52,12 @@
   justify-content: center;
 }
 
+/* 콘서트 포스터는 보통 세로가 긴 비율이라, 가로로 짧고 넓은 박스에 cover로 채우면
+   포스터 중간 가로 띠만 잘려서 옆으로 눌린 것처럼 보임 - 세로 비율 박스로 바꿈 */
 .hero-wrap {
   width: 100%;
-  height: 200px;
+  aspect-ratio: 3 / 4;
+  max-height: 376px;
   overflow: hidden;
 }
 
