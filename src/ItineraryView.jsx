@@ -257,7 +257,7 @@ export default function ItineraryView() {
         </div>
 
         {isPreview && (
-          <div style={{ padding: '0 18px' }}>
+          <div style={{ padding: '0 16px' }}>
             <p className={styles['day-label']} style={{ color: 'var(--color-danger)', marginBottom: 4 }}>
               ⚠ 아직 실제로 만든 동선이 없어서 미리보기 데이터를 보여주고 있어요.
             </p>

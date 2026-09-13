@@ -331,7 +331,7 @@ export default function LocationSearchModal({ title, initialPlace, onConfirm, on
 
         <div style={{ flex: 1 }} />
 
-        <div style={{ padding: '14px 18px 18px' }}>
+        <div style={{ padding: '14px 16px 16px' }}>
           <button
             type="button"
             className={styles['btn-primary']}

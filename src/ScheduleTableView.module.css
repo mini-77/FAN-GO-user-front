@@ -34,7 +34,7 @@
 }
 
 .header {
-  padding: 14px 18px 12px;
+  padding: 14px 16px 12px;
 }
 
 .title {
@@ -53,7 +53,7 @@
 .day-tabs {
   display: flex;
   gap: 2px;
-  padding: 0 18px 12px;
+  padding: 0 16px 12px;
 }
 
 .day-tab {
@@ -85,7 +85,7 @@
 
 /* 출발/도착 지점 행 */
 .place-row {
-  padding: 16px 18px;
+  padding: 16px 16px;
   background: var(--color-primary-50);
   border-bottom: 1px solid var(--color-border);
   display: flex;
@@ -139,7 +139,7 @@
 
 /* 장소 목록 행 */
 .event-row {
-  padding: 18px;
+  padding: 16px;
   border-bottom: 1px solid var(--color-border);
   display: flex;
   align-items: center;
@@ -204,7 +204,7 @@
 }
 
 .empty-day {
-  padding: 40px 18px;
+  padding: 40px 16px;
   text-align: center;
   color: rgba(27, 22, 63, 0.4);
   font-size: 13px;
@@ -216,7 +216,7 @@
 
 /* 하단 3버튼 */
 .action-row {
-  padding: 12px 18px 20px;
+  padding: 12px 16px 20px;
   border-top: 1px solid var(--color-border);
   display: flex;
   gap: 8px;
@@ -251,7 +251,7 @@
 }
 
 .feedback-banner {
-  margin: 8px 18px 0;
+  margin: 8px 16px 0;
   padding: 12px 14px;
   background: var(--color-primary-100);
   border: 1px solid var(--color-primary-500);

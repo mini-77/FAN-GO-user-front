@@ -387,7 +387,7 @@ export default function StaySearchView() {
         </div>
 
         {locationError && (
-          <p className={styles['field-label']} style={{ padding: '10px 18px 0', color: 'var(--color-danger)' }}>
+          <p className={styles['field-label']} style={{ padding: '10px 16px 0', color: 'var(--color-danger)' }}>
             {locationError}
           </p>
         )}

@@ -115,7 +115,7 @@
 /* 상단 헤더바 */
 .top-bar {
   background: var(--color-primary-500);
-  padding: 14px 18px;
+  padding: 14px 16px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -254,7 +254,7 @@
 }
 
 .menu-row {
-  padding: 14px 18px;
+  padding: 14px 16px;
   border-bottom: 1px solid var(--color-border);
   display: flex;
   align-items: center;
@@ -313,7 +313,7 @@
 }
 
 .toggle-row {
-  padding: 13px 18px;
+  padding: 13px 16px;
   border-bottom: 1px solid var(--color-border);
   display: flex;
   align-items: center;

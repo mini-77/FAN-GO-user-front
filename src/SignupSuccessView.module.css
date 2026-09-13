@@ -33,7 +33,7 @@
 }
 
 .header {
-  padding: 16px 18px 12px;
+  padding: 16px 16px 12px;
   border-bottom: 1px solid var(--color-border);
   display: flex;
   flex-direction: column;
@@ -138,7 +138,7 @@
 }
 
 .feature-card {
-  padding: 16px 18px;
+  padding: 16px 16px;
   background: var(--color-primary-50);
   border: 1px solid var(--color-primary-200);
   border-radius: 16px;
@@ -179,7 +179,7 @@
 }
 
 .footer {
-  padding: 10px 18px;
+  padding: 10px 16px;
   border-top: 1px solid var(--color-border);
   display: flex;
   justify-content: flex-end;

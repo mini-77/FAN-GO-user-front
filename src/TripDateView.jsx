@@ -635,7 +635,7 @@ export default function TripDateView() {
         </div>
 
         {errorMessage && (
-          <p className={styles.hint} style={{ padding: '0 18px', color: 'var(--color-danger)' }}>
+          <p className={styles.hint} style={{ padding: '0 16px', color: 'var(--color-danger)' }}>
             {errorMessage}
           </p>
         )}
@@ -805,7 +805,7 @@ export default function TripDateView() {
             )}
 
             {searchTarget === 'stay' && (
-              <div style={{ padding: '14px 18px 24px' }}>
+              <div style={{ padding: '14px 16px 24px' }}>
                 <div className={styles['section-head']} style={{ marginBottom: 8 }}>
                   <span className={styles['section-label']}>체류 기간</span>
                   {stayNights > 0 && (
@@ -858,7 +858,7 @@ export default function TripDateView() {
 
             </div>
 
-            <div style={{ padding: '14px 18px 18px', flexShrink: 0, borderTop: '1px solid var(--color-border)' }}>
+            <div style={{ padding: '14px 16px 16px', flexShrink: 0, borderTop: '1px solid var(--color-border)' }}>
               {/* 06 버튼 규칙 - 정보(숙박일수·숙소명)는 버튼 밖 캡션으로, 버튼엔 행동만 담음 */}
               {searchTarget === 'stay' && pickedPlace && stayNights > 0 && (
                 <p className={styles.hint} style={{ marginBottom: 8 }}>

@@ -234,7 +234,7 @@ export default function ArtistSelectView() {
           </div>
         </div>
 
-        {submitError && <p className={styles.hint} style={{ padding: '0 18px', color: 'var(--color-danger)' }}>{submitError}</p>}
+        {submitError && <p className={styles.hint} style={{ padding: '0 16px', color: 'var(--color-danger)' }}>{submitError}</p>}
 
         <div className={styles.footer}>
           <span className={styles['footer-count']}>{selected.size}팀 선택했어요</span>

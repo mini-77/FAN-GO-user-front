@@ -48,7 +48,7 @@
 }
 
 .header {
-  padding: 14px 18px 12px;
+  padding: 14px 16px 12px;
   border-bottom: 1px solid var(--color-border);
   display: flex;
   flex-direction: column;
@@ -89,7 +89,7 @@
 
 /* 일차 리스트 */
 .day-row {
-  padding: 14px 18px;
+  padding: 14px 16px;
   border-bottom: 1px solid var(--color-border);
   display: flex;
   align-items: flex-start;
@@ -166,7 +166,7 @@
 
 /* 진행 요약 */
 .progress-section {
-  padding: 18px;
+  padding: 16px;
   border-bottom: 1px solid var(--color-border);
   display: flex;
   flex-direction: column;
@@ -203,7 +203,7 @@
 
 /* 평가 유도 */
 .evaluate-section {
-  padding: 16px 18px 20px;
+  padding: 16px 16px 20px;
   display: flex;
   flex-direction: column;
   gap: 11px;

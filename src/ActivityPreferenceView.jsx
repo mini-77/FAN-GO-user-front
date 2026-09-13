@@ -213,7 +213,7 @@ export default function ActivityPreferenceView() {
         </div>
 
         {errorMessage && (
-          <p className={styles.hint} style={{ padding: '0 18px', color: 'var(--color-danger)' }}>
+          <p className={styles.hint} style={{ padding: '0 16px', color: 'var(--color-danger)' }}>
             {errorMessage}
           </p>
         )}

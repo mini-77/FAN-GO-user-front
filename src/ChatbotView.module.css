@@ -27,7 +27,7 @@
 /* 헤더 */
 .header {
   flex-shrink: 0;
-  padding: 14px 18px;
+  padding: 14px 16px;
   background: var(--color-primary-500);
   display: flex;
   align-items: center;
@@ -102,7 +102,7 @@
 /* 대화 히스토리 */
 .historySection {
   flex-shrink: 0;
-  padding: 14px 18px 12px;
+  padding: 14px 16px 12px;
   border-bottom: 1px solid #ECE9FF;
   max-height: 230px;
   overflow-y: auto;
@@ -201,7 +201,7 @@
 .chatArea {
   flex: 1;
   overflow-y: auto;
-  padding: 16px 18px;
+  padding: 16px 16px;
   display: flex;
   flex-direction: column;
   gap: 14px;
@@ -290,7 +290,7 @@
 
 .inlineError {
   flex-shrink: 0;
-  padding: 6px 18px 0;
+  padding: 6px 16px 0;
   margin: 0;
   font-size: 11px;
   color: var(--color-danger);
@@ -302,7 +302,7 @@
   flex-shrink: 0;
   display: flex;
   gap: 8px;
-  padding: 10px 18px;
+  padding: 10px 16px;
   background: #FAF9FF;
   overflow-x: auto;
 }
