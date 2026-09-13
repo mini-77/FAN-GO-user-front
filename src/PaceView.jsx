@@ -122,11 +122,10 @@ export default function PaceView() {
   return (
     <div className={styles.screen}>
       <div className={styles.card}>
-        <AppHeader />
+        {/* 뒤로가기는 브라우저 history(-1) 대신 화면을 명시적으로 지정 - 새로고침·직접 진입으로
+            히스토리가 없어도 항상 올바른 이전 화면(선호 액티비티)으로 감 */}
+        <AppHeader onBack={() => navigate('/trip/activities')} />
         <div className={styles.header}>
-          <div className={styles['header-row']}>
-            <span className={styles['step-label']}>04 — 04</span>
-          </div>
           <h1 className={styles.title}>동선 스타일을 정해 주세요</h1>
           <div className={styles['progress-bar']}>
             <div className={styles['progress-fill']} style={{ width: '100%' }} />

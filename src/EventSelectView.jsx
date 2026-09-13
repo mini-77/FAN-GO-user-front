@@ -180,11 +180,10 @@ export default function EventSelectView() {
   return (
     <div className={styles.screen}>
       <div className={styles.card}>
-        <AppHeader />
+        {/* 뒤로가기는 브라우저 history(-1) 대신 화면을 명시적으로 지정 - 이 화면에 새로고침이나
+            직접 URL 진입으로 왔을 때도(히스토리가 없어도) 항상 올바른 이전 화면으로 감 */}
+        <AppHeader onBack={() => navigate('/home')} />
         <div className={styles.header}>
-          <div className={styles['header-row']}>
-            <span className={styles['step-label']}>01 — 04</span>
-          </div>
           <h1 className={styles.title}>어떤 이벤트에 참여하시나요?</h1>
           <div className={styles['progress-bar']}>
             <div className={styles['progress-fill']} style={{ width: '25%' }} />

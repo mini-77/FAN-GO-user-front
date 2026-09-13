@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import Icon from './Icon'
 import styles from './PickerSheet.module.css'
 
 // 04 팝업 & 모달 - "다크 시트 · 시스템 피커" 규칙 적용.
@@ -45,7 +46,12 @@ export default function PickerSheet({
         className={`${className || ''} ${styles.trigger} ${!value ? styles.placeholder : ''}`}
         onClick={open}
       >
-        {displayText}
+        <span className={styles.triggerText}>{displayText}</span>
+        <Icon
+          name={type === 'time' ? 'clock' : 'calendar'}
+          size={16}
+          color={value ? 'var(--color-primary-500)' : 'rgba(12, 10, 28, 0.4)'}
+        />
       </button>
 
       {isOpen && (

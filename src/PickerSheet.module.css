@@ -76,10 +76,21 @@
   cursor: default;
 }
 
+/* 날짜/시간 선택창임을 바로 알 수 있게 캘린더·시계 아이콘을 오른쪽에 표시 */
 .trigger {
   cursor: pointer;
   text-align: left;
   color: var(--color-ink-900);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.triggerText {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .trigger.placeholder {

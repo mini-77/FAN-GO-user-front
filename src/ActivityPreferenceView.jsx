@@ -141,11 +141,10 @@ export default function ActivityPreferenceView() {
   return (
     <div className={styles.screen}>
       <div className={styles.card}>
-        <AppHeader />
+        {/* 뒤로가기는 브라우저 history(-1) 대신 화면을 명시적으로 지정 - 새로고침·직접 진입으로
+            히스토리가 없어도 항상 올바른 이전 화면(날짜·숙소 선택)으로 감 */}
+        <AppHeader onBack={() => navigate('/trip/date')} />
         <div className={styles.header}>
-          <div className={styles['header-row']}>
-            <span className={styles['step-label']}>03 — 04</span>
-          </div>
           <h1 className={styles.title}>선호 액티비티</h1>
           <div className={styles['progress-bar']}>
             <div className={styles['progress-fill']} style={{ width: '75%' }} />
@@ -207,6 +206,17 @@ export default function ActivityPreferenceView() {
             </div>
           )}
 
+          {/* 초기화는 카테고리 그리드 바로 아래, 스코프가 분명한 텍스트 링크로 배치 -
+              하단 고정 버튼 자리에 확인 버튼과 묶어두지 않음 */}
+          <button
+            type="button"
+            className={styles['reset-link']}
+            onClick={resetRanking}
+            disabled={rankedIds.length === 0}
+          >
+            초기화
+          </button>
+
           <p className={styles.hint}>고른 순서대로 순위가 정해져요.</p>
         </div>
 
@@ -217,54 +227,14 @@ export default function ActivityPreferenceView() {
         )}
 
         <div className={styles.footer}>
-          <div
-            style={{
-              flex: 1,
-              display: 'flex',
-              borderRadius: 100,
-              overflow: 'hidden',
-              border: '1px solid var(--color-primary-200)',
-            }}
+          <button
+            type="button"
+            className={`${styles['btn-primary']} ${!isFormValid ? styles.disabled : ''}`}
+            onClick={goNext}
+            disabled={!isFormValid}
           >
-            {/* 초기화 버튼 공통 가이드 - 항상 Outline(흰 배경), Primary(filled)로 만들지 않음 */}
-            <button
-              type="button"
-              onClick={resetRanking}
-              disabled={rankedIds.length === 0}
-              style={{
-                flex: 1,
-                border: 'none',
-                borderRight: '1px solid var(--color-primary-200)',
-                background: '#fff',
-                color: 'var(--color-primary-500)',
-                fontWeight: 600,
-                fontSize: 14,
-                padding: '12px 0',
-                cursor: rankedIds.length === 0 ? 'default' : 'pointer',
-                opacity: rankedIds.length === 0 ? 0.45 : 1,
-              }}
-            >
-              초기화
-            </button>
-            {/* 06 버튼 규칙 - 비활성 상태는 옅은 톤(#D9D4F5)으로 구분 */}
-            <button
-              type="button"
-              onClick={goNext}
-              disabled={!isFormValid}
-              style={{
-                flex: 1,
-                border: 'none',
-                background: isFormValid ? 'var(--color-primary-500)' : '#D9D4F5',
-                color: '#fff',
-                fontWeight: 600,
-                fontSize: 14,
-                padding: '12px 0',
-                cursor: isFormValid ? 'pointer' : 'default',
-              }}
-            >
-              다음: 동선 스타일
-            </button>
-          </div>
+            다음: 동선 스타일
+          </button>
         </div>
       </div>
     </div>

@@ -396,7 +396,26 @@ export default function SignupView() {
           )}
         </div>
 
-        {/* 국적: 국가번호 자동채움을 위해 휴대전화번호보다 먼저 선택하도록 배치 */}
+        <div className={styles['form-field']}>
+          <label className={styles['field-label']}>닉네임</label>
+          <input
+            className={`${styles.input} ${fieldErrors.nickname ? styles.inputError : ''}`}
+            type="text"
+            placeholder="닉네임"
+            value={nickname}
+            onChange={(e) => setNickname(e.target.value)}
+            onBlur={(e) =>
+              setFieldErrors((prev) => ({ ...prev, nickname: validateNickname(e.target.value) }))
+            }
+          />
+          {fieldErrors.nickname && (
+            <p className={styles['field-hint-warning']}>
+              {fieldErrors.nickname}
+            </p>
+          )}
+        </div>
+
+        {/* 국적: 국가번호 자동채움을 위해 휴대전화번호보다는 먼저 선택하도록 배치 */}
         <div className={styles['two-col']}>
           <div>
             <label className={styles['field-label']}>국적</label>
@@ -435,25 +454,6 @@ export default function SignupView() {
         </div>
 
         {optionsError && <p className={styles.error}>{optionsError}</p>}
-
-        <div className={styles['form-field']}>
-          <label className={styles['field-label']}>닉네임</label>
-          <input
-            className={`${styles.input} ${fieldErrors.nickname ? styles.inputError : ''}`}
-            type="text"
-            placeholder="닉네임"
-            value={nickname}
-            onChange={(e) => setNickname(e.target.value)}
-            onBlur={(e) =>
-              setFieldErrors((prev) => ({ ...prev, nickname: validateNickname(e.target.value) }))
-            }
-          />
-          {fieldErrors.nickname && (
-            <p className={styles['field-hint-warning']}>
-              {fieldErrors.nickname}
-            </p>
-          )}
-        </div>
 
         <div className={styles['form-field']}>
           <label className={styles['field-label']}>휴대전화번호</label>

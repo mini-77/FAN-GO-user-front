@@ -245,9 +245,29 @@
   color: rgba(27, 22, 63, 0.55);
 }
 
+/* 초기화 버튼 공통 가이드 - 카테고리 그리드 바로 아래, 스코프가 분명한 텍스트 링크 */
+.reset-link {
+  align-self: flex-start;
+  margin-top: 4px;
+  padding: 6px 2px;
+  border: none;
+  background: none;
+  color: var(--color-primary-500);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.reset-link:disabled {
+  color: var(--color-ink-400);
+  cursor: default;
+}
+
 .btn-primary {
+  width: 100%;
   padding: 13.6px 20px 15.4px;
   min-height: 52px;
+  box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: center;

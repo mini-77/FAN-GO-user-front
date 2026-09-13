@@ -49,12 +49,18 @@ function splitArtistFromEventName(eventNm) {
   return { artist: '', displayTitle: eventNm }
 }
 
+// 08 리스트 섹션 규칙 — 길이가 정해지지 않은 리스트는 무한스크롤 대신 8~10개씩 "더보기"로 불러옴.
+// 예전엔 홈에서 최근 5개만 미리보기로 자르고 "전체 보기"로 HistoryView로 보냈는데, 그러면
+// 다른 화면으로 이동해야만 나머지를 볼 수 있어서 불편함 - 홈에서 바로 더보기로 펼치게 바꿈.
+const PAGE_SIZE = 8
+
 export default function HomeView() {
   const navigate = useNavigate()
   const { tripData, updateTrip } = useTrip()
   const [trips, setTrips] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [loadError, setLoadError] = useState('')
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE)
 
   useEffect(() => {
     let cancelled = false
@@ -66,7 +72,10 @@ export default function HomeView() {
         if (res.status === 401) throw new Error('로그인이 만료됐어요. 다시 로그인해주세요.')
         if (!res.ok) throw new Error('일정 목록을 불러오지 못했어요.')
         const data = await res.json()
-        if (!cancelled) setTrips(data)
+        if (!cancelled) {
+          setTrips(data)
+          setVisibleCount(PAGE_SIZE)
+        }
       } catch (e) {
         if (!cancelled) setLoadError(safeErrorMessage(e, '일정 목록을 불러오지 못했어요. 잠시 후 다시 시도해주세요.'))
       } finally {
@@ -90,6 +99,7 @@ export default function HomeView() {
         if (!res.ok) throw new Error('일정 목록을 불러오지 못했어요.')
         const data = await res.json()
         setTrips(data)
+        setVisibleCount(PAGE_SIZE)
       } catch (e) {
         setLoadError(safeErrorMessage(e, '일정 목록을 불러오지 못했어요. 잠시 후 다시 시도해주세요.'))
       } finally {
@@ -172,9 +182,6 @@ export default function HomeView() {
 
           <div className={styles['section-head']}>
             <span className={styles['section-title']}>내 공연 동선</span>
-            <button type="button" className={styles['section-link']} onClick={() => navigate('/trip/history')}>
-              전체 {trips.length}
-            </button>
           </div>
 
           {!isLoading && !loadError && trips.length === 0 && (
@@ -185,9 +192,7 @@ export default function HomeView() {
           )}
 
           <div className={styles['trip-list']}>
-            {/* 08 리스트 규칙 - 홈은 미리보기라 무한히 늘어나지 않게 최근 5개만,
-                전체 목록은 위 "전체 N" 링크로 HistoryView(더보기 적용됨)에서 확인 */}
-            {trips.slice(0, 5).map((trip) => {
+            {trips.slice(0, visibleCount).map((trip) => {
               const { artist, displayTitle } = splitArtistFromEventName(trip.event_nm)
               return (
                 <div key={trip.trip_no} className={styles['trip-row']} onClick={() => openTrip(trip)}>
@@ -213,6 +218,16 @@ export default function HomeView() {
               )
             })}
           </div>
+
+          {!isLoading && !loadError && trips.length > visibleCount && (
+            <button
+              type="button"
+              className={styles['load-more-btn']}
+              onClick={() => setVisibleCount((v) => v + PAGE_SIZE)}
+            >
+              더보기 <Icon name="chevronDown" size={14} />
+            </button>
+          )}
         </div>
 
         <div className={styles.spacer} />

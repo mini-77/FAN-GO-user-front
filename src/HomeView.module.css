@@ -242,6 +242,25 @@
   cursor: pointer;
 }
 
+/* 08 리스트 규칙 - "더보기" Outline, 리스트와 같은 좌우 폭 */
+.load-more-btn {
+  width: 100%;
+  margin-top: 4px;
+  padding: 12px;
+  border: 1px solid var(--color-primary-200);
+  border-radius: 12px;
+  background: #fff;
+  color: var(--color-primary-500);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
 .trip-list {
   display: flex;
   flex-direction: column;
