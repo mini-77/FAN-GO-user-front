@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { apiFetch } from './api'
+import { apiFetch, safeText } from './api'
 import BottomNav from './BottomNav'
 import FenggoIcon from './FenggoIcon'
 import Icon from './Icon'
@@ -183,10 +183,9 @@ export default function ChatbotView() {
         }
         const data = await res.json().catch(() => null)
         const detail = data?.detail
-        const message =
-          typeof detail === 'string'
-            ? detail
-            : detail?.message || '메시지를 보내는 중 문제가 생겼어요. 잠시 후 다시 시도해주세요.'
+        const rawMessage = typeof detail === 'string' ? detail : detail?.message
+        // 08 에러 화면 규칙 - 백엔드 detail이 영어 기술 메시지일 수 있어 그대로 노출하지 않음
+        const message = safeText(rawMessage, '메시지를 보내는 중 문제가 생겼어요. 잠시 후 다시 시도해주세요.')
         setMessages((prev) => [...prev, { role: 'assistant', content: message, isError: true }])
         return
       }

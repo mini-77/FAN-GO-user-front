@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { apiFetch } from './api'
+import { apiFetch, safeErrorMessage } from './api'
 import Icon from './Icon'
 import styles from './PlaceDetailView.module.css'
 import modalStyles from './PlaceDetailModal.module.css'
@@ -39,7 +39,7 @@ export default function PlaceDetailModal({ eventNo, tripRouteEventNo, liked: ini
         const data = await res.json()
         if (!cancelled) setPlace(data)
       } catch (e) {
-        if (!cancelled) setLoadError(e.message || '장소 정보를 불러오지 못했어요.')
+        if (!cancelled) setLoadError(safeErrorMessage(e, '장소 정보를 불러오지 못했어요.'))
       } finally {
         if (!cancelled) setIsLoading(false)
       }

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTrip } from './TripContext'
-import { apiFetch } from './api'
+import { apiFetch, safeErrorMessage } from './api'
 import AppHeader from './AppHeader'
 import BottomNav from './BottomNav'
 import Icon from './Icon'
@@ -54,7 +54,7 @@ export default function HistoryView() {
         if (!cancelled) setTrips(data)
       } catch (e) {
         if (!cancelled) {
-          setLoadError(e.message || '여행 목록을 불러오지 못했어요. 잠시 후 다시 시도해주세요.')
+          setLoadError(safeErrorMessage(e, '여행 목록을 불러오지 못했어요. 잠시 후 다시 시도해주세요.'))
         }
       } finally {
         if (!cancelled) setIsLoading(false)
@@ -78,7 +78,7 @@ export default function HistoryView() {
         const data = await res.json()
         setTrips(data)
       } catch (e) {
-        setLoadError(e.message || '여행 목록을 불러오지 못했어요. 잠시 후 다시 시도해주세요.')
+        setLoadError(safeErrorMessage(e, '여행 목록을 불러오지 못했어요. 잠시 후 다시 시도해주세요.'))
       } finally {
         setIsLoading(false)
       }

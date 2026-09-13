@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTrip } from './TripContext'
-import { apiFetch } from './api'
+import { apiFetch, safeErrorMessage } from './api'
 import AppHeader from './AppHeader'
 import styles from './PaceView.module.css'
 
@@ -55,7 +55,7 @@ export default function PaceView() {
         const data = await res.json()
         if (!cancelled) setMembers(data)
       } catch (e) {
-        if (!cancelled) setLoadError(e.message || '멤버 목록을 불러오지 못했어요. 잠시 후 다시 시도해주세요.')
+        if (!cancelled) setLoadError(safeErrorMessage(e, '멤버 목록을 불러오지 못했어요. 잠시 후 다시 시도해주세요.'))
       } finally {
         if (!cancelled) setIsLoading(false)
       }

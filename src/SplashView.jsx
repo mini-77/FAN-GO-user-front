@@ -5,7 +5,9 @@ import { apiFetch } from './api'
 import logoImg from './assets/fango-logo-mark.png'
 import styles from './SplashView.module.css'
 
-const LOAD_DURATION_MS = 3000
+// 08 스플래시·로딩·에러 화면 - 스플래시 지속시간은 실제 초기화 시간과 무관하게
+// 최소 800ms~최대 2초 권장. 예전엔 3.4초(3000+400ms)로 권장 범위를 크게 넘었음.
+const LOAD_DURATION_MS = 1500
 // 로그인 화면에서 "자동 로그인"을 체크하면 이 값이 localStorage에 저장됨.
 // 저장돼 있으면 스플래시가 끝난 뒤 로그인 화면을 건너뛰고 세션이 아직 살아있는지 확인해봄.
 const AUTO_LOGIN_KEY = 'fango_auto_login'
@@ -61,7 +63,7 @@ export default function SplashView() {
   return (
     <div className={styles.screen}>
       <div className={styles.phone}>
-        <div>
+        <div className={styles['center-group']}>
           <div className={styles['logo-slide']}>
             <div className={styles['logo-visual']}>
               <div className={styles['logo-white']} />

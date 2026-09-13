@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTrip } from './TripContext'
 import { useLanguage } from './LanguageContext'
-import { apiFetch } from './api'
+import { apiFetch, safeText } from './api'
 import AppHeader from './AppHeader'
 import styles from './LoginView.module.css'
 
@@ -124,11 +124,12 @@ export default function LoginView() {
       if (!res.ok) {
         const data = await res.json().catch(() => null)
         const detail = data?.detail
-        let message = t('login.genericError')
-        if (typeof detail === 'string') message = detail
-        else if (detail?.message) message = detail.message
-        else if (Array.isArray(detail) && detail[0]?.msg) message = detail[0].msg
-        setErrorMessage(message)
+        let rawMessage = null
+        if (typeof detail === 'string') rawMessage = detail
+        else if (detail?.message) rawMessage = detail.message
+        else if (Array.isArray(detail) && detail[0]?.msg) rawMessage = detail[0].msg
+        // 08 에러 화면 규칙 - 백엔드 detail이 영어 기술 메시지일 수 있어 그대로 노출하지 않음
+        setErrorMessage(safeText(rawMessage, t('login.genericError')))
         setIsSubmitting(false)
         return
       }

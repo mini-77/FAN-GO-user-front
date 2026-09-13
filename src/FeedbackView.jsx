@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTrip } from './TripContext';
-import { apiFetch } from './api';
+import { apiFetch, safeText } from './api';
 import AppHeader from './AppHeader';
 import BottomNav from './BottomNav';
 import Icon from './Icon';
@@ -59,6 +59,10 @@ export default function FeedbackView() {
     };
   }, []);
 
+  // 08 부분 영역 에러 규칙 - 이 목록만 실패해도 별점·태그 등 나머지 폼은 그대로 쓸 수 있게,
+  // 여기만 재시도할 수 있는 별도 키를 둠
+  const [placesRetryKey, setPlacesRetryKey] = useState(0);
+
   // 여행 전체 장소 목록 (날짜 구분 없이 전부) - visit_day를 안 주면 전체가 옴
   useEffect(() => {
     if (!tripNo) {
@@ -89,7 +93,7 @@ export default function FeedbackView() {
     return () => {
       cancelled = true;
     };
-  }, [tripNo]);
+  }, [tripNo, placesRetryKey]);
 
   async function togglePlaceLike(place) {
     const id = place.trip_route_event_no;
@@ -148,11 +152,12 @@ export default function FeedbackView() {
       if (!res.ok) {
         const data = await res.json().catch(() => null);
         const detail = data?.detail;
-        let message = '리뷰를 저장하지 못했어요. 잠시 후 다시 시도해주세요.';
-        if (typeof detail === 'string') message = detail;
-        else if (detail?.message) message = detail.message;
-        else if (Array.isArray(detail) && detail[0]?.msg) message = detail[0].msg;
-        setSubmitError(message);
+        let rawMessage = null;
+        if (typeof detail === 'string') rawMessage = detail;
+        else if (detail?.message) rawMessage = detail.message;
+        else if (Array.isArray(detail) && detail[0]?.msg) rawMessage = detail[0].msg;
+        // 08 에러 화면 규칙 - 백엔드 detail이 영어 기술 메시지일 수 있어 그대로 노출하지 않음
+        setSubmitError(safeText(rawMessage, '리뷰를 저장하지 못했어요. 잠시 후 다시 시도해주세요.'));
         setIsSubmitting(false);
         return;
       }
@@ -269,7 +274,19 @@ export default function FeedbackView() {
             <p className={styles.sectionLabel}>{t('feedback.placeSectionLabel')}</p>
 
             {isLoadingPlaces && <p className={styles.starHint}>불러오는 중이에요...</p>}
-            {!isLoadingPlaces && placesError && <p className={styles.starHint}>{placesError}</p>}
+            {/* 08 부분 영역 에러 - 별점·태그 등 나머지 폼은 그대로 두고 이 목록 구역만 회색 박스로 */}
+            {!isLoadingPlaces && placesError && (
+              <div className={styles['partial-error']}>
+                <p className={styles['partial-error-text']}>{placesError}</p>
+                <button
+                  type="button"
+                  className={styles['partial-error-retry']}
+                  onClick={() => setPlacesRetryKey((k) => k + 1)}
+                >
+                  다시 시도
+                </button>
+              </div>
+            )}
             {!isLoadingPlaces && !placesError && places.length === 0 && (
               <p className={styles.starHint}>다녀온 장소가 없어요.</p>
             )}

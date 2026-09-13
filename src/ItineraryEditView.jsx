@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useTrip } from './TripContext'
-import { apiFetch } from './api'
+import { apiFetch, safeErrorMessage, safeText } from './api'
 import AppHeader from './AppHeader'
 import { scoreColor } from './scoreColor'
 import styles from './ItineraryEditView.module.css'
@@ -98,6 +98,10 @@ export default function ItineraryEditView() {
     })
   }
 
+  // 08 부분 영역 에러 규칙 - 화면 진입 자체가 안 되는 경우(tripNo 없음)가 아니라
+  // 목록 조회만 실패한 경우엔 "다시 시도"로 이 목록 부분만 다시 불러올 수 있게 함
+  const [retryKey, setRetryKey] = useState(0)
+
   useEffect(() => {
     if (!tripNo) {
       setIsLoading(false)
@@ -166,7 +170,7 @@ export default function ItineraryEditView() {
         }
       } catch (e) {
         if (!cancelled) {
-          setLoadError(e.message || '동선을 불러오지 못했어요. 잠시 후 다시 시도해주세요.')
+          setLoadError(safeErrorMessage(e, '동선을 불러오지 못했어요. 잠시 후 다시 시도해주세요.'))
           setIsLoading(false)
         }
       }
@@ -176,7 +180,12 @@ export default function ItineraryEditView() {
       cancelled = true
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tripNo, visitDay])
+  }, [tripNo, visitDay, retryKey])
+
+  function retryLoadDay() {
+    setLoadError('')
+    setRetryKey((k) => k + 1)
+  }
 
   function toggleStop(stop) {
     setExpandedNum((prev) => (prev === stop.num ? null : stop.num))
@@ -259,11 +268,12 @@ export default function ItineraryEditView() {
       if (!res.ok) {
         const data = await res.json().catch(() => null)
         const detail = data?.detail
-        let message = '동선 저장에 실패했어요. 잠시 후 다시 시도해주세요.'
-        if (typeof detail === 'string') message = detail
-        else if (detail?.message) message = detail.message
-        else if (Array.isArray(detail) && detail[0]?.msg) message = detail[0].msg
-        setSaveError(message)
+        let rawMessage = null
+        if (typeof detail === 'string') rawMessage = detail
+        else if (detail?.message) rawMessage = detail.message
+        else if (Array.isArray(detail) && detail[0]?.msg) rawMessage = detail[0].msg
+        // 08 에러 화면 규칙 - 백엔드 detail이 영어 기술 메시지일 수 있어 그대로 노출하지 않음
+        setSaveError(safeText(rawMessage, '동선 저장에 실패했어요. 잠시 후 다시 시도해주세요.'))
         setIsSaving(false)
         return
       }
@@ -271,7 +281,7 @@ export default function ItineraryEditView() {
       updateTrip({ routesSaved: true })
       navigate('/trip/schedule')
     } catch (e) {
-      setSaveError(e.message || '서버에 연결할 수 없어요. 잠시 후 다시 시도해주세요.')
+      setSaveError(safeErrorMessage(e, '서버에 연결할 수 없어요. 잠시 후 다시 시도해주세요.'))
       setIsSaving(false)
     }
   }
@@ -302,10 +312,16 @@ export default function ItineraryEditView() {
         )}
 
         {isLoading && <p className={styles.note}>동선을 불러오는 중이에요...</p>}
+        {/* 08 부분 영역 에러 - 헤더·출발지점 행은 정상 표시 유지, 실패한 목록 구역만 회색 박스로 */}
         {!isLoading && loadError && (
-          <p className={styles.note} style={{ color: 'var(--color-danger)' }}>
-            {loadError}
-          </p>
+          <div className={styles['partial-error']}>
+            <p className={styles['partial-error-text']}>{loadError}</p>
+            {tripNo && (
+              <button type="button" className={styles['partial-error-retry']} onClick={retryLoadDay}>
+                다시 시도
+              </button>
+            )}
+          </div>
         )}
         {!isLoading && !loadError && stops.length === 0 && (
           <p className={styles.note}>이 날짜는 아직 동선이 만들어지지 않았어요.</p>

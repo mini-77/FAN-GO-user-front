@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTrip } from './TripContext'
-import { apiFetch } from './api'
+import { apiFetch, safeErrorMessage, safeText } from './api'
 import AppHeader from './AppHeader'
 import BottomNav from './BottomNav'
 import styles from './EditProfileView.module.css'
@@ -53,7 +53,7 @@ export default function EditProfileView() {
       setLangs(langData)
       setArtistGroups(artistData)
     } catch (e) {
-      setLoadError(e.message || '설정에 필요한 목록을 불러오지 못했어요. 잠시 후 다시 시도해주세요.')
+      setLoadError(safeErrorMessage(e, '설정에 필요한 목록을 불러오지 못했어요. 잠시 후 다시 시도해주세요.'))
     } finally {
       setIsLoading(false)
     }
@@ -196,9 +196,9 @@ export default function EditProfileView() {
       if (!res.ok) {
         const data = await res.json().catch(() => null)
         const detail = data?.detail
-        setSaveError(
-          typeof detail === 'string' ? detail : detail?.message || '사진 업로드에 실패했어요.'
-        )
+        const rawMessage = typeof detail === 'string' ? detail : detail?.message
+        // 08 에러 화면 규칙 - 백엔드 detail이 영어 기술 메시지일 수 있어 그대로 노출하지 않음
+        setSaveError(safeText(rawMessage, '사진 업로드에 실패했어요.'))
         return
       }
       const me = await res.json()

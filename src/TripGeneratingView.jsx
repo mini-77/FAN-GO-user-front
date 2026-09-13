@@ -62,7 +62,7 @@ export default function TripGeneratingView() {
     const startedAt = Date.now()
     // 문구 3개가 한 바퀴는 다 보이도록 최소 노출 시간을 보장함 - API가 빨리 끝나면
     // 두 번째 문구도 못 보고 바로 다음 화면으로 넘어가버리는 문제가 있었음
-    const MIN_DURATION_MS = LOADING_TITLES.length * 3200
+    const MIN_DURATION_MS = LOADING_TITLES.length * 3000
 
     if (!selectedEvent || rankedCategoryIds.length === 0 || !departure || !arrival) {
       setError('앞 단계 정보가 부족해요. 확인 화면부터 다시 진행해주세요.')
@@ -202,12 +202,13 @@ export default function TripGeneratingView() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  // 로딩 문구 순환 - 1.8초마다 다음 문구로 스윽 넘어감, 에러 화면이면 멈춤
+  // 08 로딩 화면 규칙 - 메시지 전환은 2~3초 간격으로 자동 전환. 3초마다 다음 문구로
+  // 스윽 넘어감, 에러 화면이면 멈춤
   useEffect(() => {
     if (error) return
     const timer = setInterval(() => {
       setTitleIndex((i) => (i + 1) % LOADING_TITLES.length)
-    }, 3200)
+    }, 3000)
     return () => clearInterval(timer)
   }, [error])
 
@@ -220,10 +221,15 @@ export default function TripGeneratingView() {
     <div className={`${styles.screen} ${error ? styles.screenError : ''}`}>
       {!error && (
         <>
+          {/* 08 로딩 화면 규칙 - 점(dot) 3개로 "현재 어떤 문구가 떠 있는지" 순번을 보여줌
+              (같이 통통 튀는 범용 스피너가 아니라, 지금 문구에 해당하는 점만 강조) */}
           <div className={styles.spinner}>
-            <div className={styles['spinner-dot']} />
-            <div className={styles['spinner-dot']} />
-            <div className={styles['spinner-dot']} />
+            {LOADING_TITLES.map((_, i) => (
+              <div
+                key={i}
+                className={`${styles['spinner-dot']} ${i === titleIndex ? styles.active : ''}`}
+              />
+            ))}
           </div>
           <h1 key={titleIndex} className={styles.title}>
             {LOADING_TITLES[titleIndex].map((line, i) => (

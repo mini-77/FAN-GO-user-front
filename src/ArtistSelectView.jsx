@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTrip } from './TripContext'
+import { safeText } from './api'
 import AppHeader from './AppHeader'
 import styles from './ArtistSelectView.module.css'
 
@@ -125,7 +126,9 @@ export default function ArtistSelectView() {
           typeof detail === 'string'
             ? detail
             : detail?.message || (Array.isArray(detail) ? detail[0]?.msg : null)
-        setSubmitError(message || '가입 중 문제가 생겼어요. 잠시 후 다시 시도해주세요.')
+        // 08 에러 화면 규칙 - Pydantic 검증 메시지(detail[0].msg)는 기본이 영어라서
+        // 사용자에게 그대로 보여주면 안 됨 (보안·신뢰 원칙)
+        setSubmitError(safeText(message, '가입 중 문제가 생겼어요. 잠시 후 다시 시도해주세요.'))
         setIsSubmitting(false)
         return
       }

@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTrip } from './TripContext'
-import { apiFetch } from './api'
+import { apiFetch, safeErrorMessage } from './api'
 import AppHeader from './AppHeader'
 import BottomNav from './BottomNav'
 import PlaceDetailModal from './PlaceDetailModal'
@@ -76,10 +76,11 @@ export default function ItineraryView() {
       try {
         const routesRes = await apiFetch(`/trips/${tripData.tripNo}/routes?visit_day=${activeDay}`)
         if (!routesRes.ok) {
+          // 08 에러 화면 규칙 - HTTP 상태 코드·백엔드 detail 원문은 콘솔에만 남기고,
+          // 화면(사용자)에는 친절한 문장만 보여줌 (보안·신뢰 원칙)
           const body = await routesRes.json().catch(() => null)
-          throw new Error(
-            `동선을 못 불러왔어요 (HTTP ${routesRes.status}${body?.detail ? ` · ${typeof body.detail === 'string' ? body.detail : JSON.stringify(body.detail)}` : ''})`
-          )
+          console.error('[ItineraryView] 동선 조회 실패:', routesRes.status, body?.detail)
+          throw new Error('동선을 불러오지 못했어요.')
         }
         const data = await routesRes.json()
         const dayRoute = Array.isArray(data) && data.length > 0 ? data[0] : null
@@ -135,7 +136,10 @@ export default function ItineraryView() {
         console.error('[ItineraryView] 동선 로딩 실패:', e)
         if (!cancelled) {
           setIsPreview(true)
-          setDayErrorByDay((prev) => ({ ...prev, [activeDay]: e.message || '알 수 없는 오류' }))
+          setDayErrorByDay((prev) => ({
+            ...prev,
+            [activeDay]: safeErrorMessage(e, '동선을 불러오지 못했어요. 잠시 후 다시 시도해주세요.'),
+          }))
           // 실패를 dayDataByDay에 null로 저장해두면 재시도가 막히니, 여기엔 저장하지 않음
           // (재시도 버튼을 누르면 dayErrorByDay만 초기화해서 이 effect가 다시 돌게 함)
         }

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { apiFetch } from './api'
+import { apiFetch, safeErrorMessage } from './api'
 import { EVENT_POSTERS } from './eventPosters'
 import Icon from './Icon'
 import modalStyles from './EventDetailModal.module.css'
@@ -41,7 +41,7 @@ export default function EventDetailModal({ card, onClose }) {
         const data = await res.json()
         if (!cancelled) setDetail(data)
       } catch (e) {
-        if (!cancelled) setLoadError(e.message || '이벤트 정보를 불러오지 못했어요. 잠시 후 다시 시도해주세요.')
+        if (!cancelled) setLoadError(safeErrorMessage(e, '이벤트 정보를 불러오지 못했어요. 잠시 후 다시 시도해주세요.'))
       } finally {
         if (!cancelled) setIsLoading(false)
       }

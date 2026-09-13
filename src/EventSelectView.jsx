@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTrip } from './TripContext'
-import { apiFetch } from './api'
+import { apiFetch, safeErrorMessage } from './api'
 import AppHeader from './AppHeader'
 import EventDetailModal from './EventDetailModal'
 import Icon from './Icon'
@@ -132,7 +132,7 @@ export default function EventSelectView() {
           setVisibleCount(PAGE_SIZE)
         }
       } catch (e) {
-        if (!cancelled) setLoadError(e.message || '이벤트 목록을 불러오지 못했어요. 잠시 후 다시 시도해주세요.')
+        if (!cancelled) setLoadError(safeErrorMessage(e, '이벤트 목록을 불러오지 못했어요. 잠시 후 다시 시도해주세요.'))
       } finally {
         if (!cancelled) setIsLoading(false)
       }

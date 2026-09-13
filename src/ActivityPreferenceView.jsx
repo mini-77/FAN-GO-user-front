@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTrip } from './TripContext'
-import { apiFetch } from './api'
+import { apiFetch, safeErrorMessage } from './api'
 import AppHeader from './AppHeader'
 import styles from './ActivityPreferenceView.module.css'
 

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTrip } from './TripContext'
-import { apiFetch } from './api'
+import { apiFetch, safeErrorMessage } from './api'
 import AppHeader from './AppHeader'
 import BottomNav from './BottomNav'
 import PlaceDetailModal from './PlaceDetailModal'
@@ -82,7 +82,7 @@ export default function ScheduleTableView() {
         const dayRoute = Array.isArray(data) && data.length > 0 ? data[0] : null
         if (!cancelled) setRoutesByDay((prev) => ({ ...prev, [activeDay]: dayRoute }))
       } catch (e) {
-        if (!cancelled) setLoadError(e.message || '일정을 불러오지 못했어요. 잠시 후 다시 시도해주세요.')
+        if (!cancelled) setLoadError(safeErrorMessage(e, '일정을 불러오지 못했어요. 잠시 후 다시 시도해주세요.'))
       } finally {
         if (!cancelled) setIsLoading(false)
       }
@@ -215,10 +215,11 @@ export default function ScheduleTableView() {
 
           {isLoading && <div className={styles['empty-day']}>일정을 불러오는 중이에요...</div>}
 
+          {/* 08 부분 영역 에러 - 출발/도착 지점 행은 정상 표시 유지, 실패한 구역만 회색 박스로 */}
           {!isLoading && loadError && (
-            <div className={styles['empty-day']}>
-              <p>{loadError}</p>
-              <button type="button" className={styles['btn-outline']} onClick={retry} style={{ marginTop: 10 }}>
+            <div className={styles['partial-error']}>
+              <p className={styles['partial-error-text']}>{loadError}</p>
+              <button type="button" className={styles['partial-error-retry']} onClick={retry}>
                 다시 시도
               </button>
             </div>

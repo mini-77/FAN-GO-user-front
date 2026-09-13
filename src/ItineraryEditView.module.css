@@ -424,6 +424,37 @@
   margin: 0;
 }
 
+/* 08 부분 영역 에러 - 옅은 회색(#F7F7FA) 박스, "다시 시도" 1개만 작게(Small, Outline) */
+.partial-error {
+  margin: 8px 16px 16px;
+  padding: 16px;
+  background: #F7F7FA;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  text-align: center;
+}
+
+.partial-error-text {
+  margin: 0;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--color-ink-600);
+}
+
+.partial-error-retry {
+  padding: 7px 16px;
+  border-radius: 12px;
+  border: 1px solid var(--color-primary-200);
+  background: #fff;
+  color: var(--color-primary-500);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
 /* 하단 요약 + 버튼 */
 .summary-bar {
   padding: 11px 16px;
