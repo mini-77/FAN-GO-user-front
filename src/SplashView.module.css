@@ -23,10 +23,11 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  /* 하단 진행 바(progress-block, bottom 48px + 자체 높이)가 차지할 자리를 미리 비워둬서,
-     가운데 정렬된 로고+태그라인이 진행 바 쪽으로 밀려 붙거나 겹쳐 보이지 않게 함 */
-  padding-bottom: 110px;
+  /* 로고 블록과 진행 바를 각각 위/아래 끝으로 밀어두고 그 사이는 남는 공간으로 채움 -
+     내용 높이가 얼마든 절대 서로 겹치거나 잘릴 일이 없음 (예전엔 딱 중앙 정렬 + 여백
+     추정치로 처리해서, 화면 높이에 따라 진행 바 쪽 문구가 잘려 보이는 경우가 있었음) */
+  justify-content: space-between;
+  padding: 72px 0 40px;
   box-sizing: border-box;
 }
 
@@ -41,7 +42,10 @@
 .logo-visual {
   position: relative;
   width: 260px;
-  aspect-ratio: 1293 / 717;
+  /* aspect-ratio 대신 원본 이미지 비율(1293:717)로 직접 계산한 고정 높이를 씀 -
+     일부 브라우저 환경에서 aspect-ratio가 절대위치 자식들과 같이 있을 때
+     의도한 비율로 안 잡히는 경우가 있어서, 계산값을 고정해 항상 같은 비율로 나오게 함 */
+  height: 144px;
   animation: impactPunch 0.4s ease-out 1s both;
 }
 
@@ -125,17 +129,15 @@
   text-align: center;
 }
 
-/* 하단 진행 바 */
+/* 하단 진행 바 - .phone의 justify-content:space-between이 이 블록을 항상 맨 아래로 밀어줌 */
 .progress-block {
-  position: absolute;
-  bottom: 48px;
-  left: 0;
-  right: 0;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 12px;
   padding: 0 48px;
+  box-sizing: border-box;
 }
 
 .progress-track {

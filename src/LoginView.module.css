@@ -93,7 +93,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 70px 0 4px;
+  padding: 32px 0 4px;
 }
 
 .brandLogoText {
@@ -103,7 +103,6 @@
   letter-spacing: -1.2px;
   color: #6D57FC;
   display: inline-block;
-  transform: scaleY(0.85);
 }
 
 .tagline {

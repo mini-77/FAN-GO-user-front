@@ -260,8 +260,6 @@ export default function LoginView() {
 
           {errorMessage && <p className={styles.error}>{errorMessage}</p>}
 
-          <div style={{ minHeight: 155 }} />
-
           <button
             className={styles.pillPrimaryBtn}
             onClick={handleLogin}

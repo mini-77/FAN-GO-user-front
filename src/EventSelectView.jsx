@@ -259,10 +259,16 @@ export default function EventSelectView() {
         </div>
 
         <div className={styles['map-summary']}>
-          <p className={styles['map-label']}>MAP</p>
-          <p className={styles['map-summary-text']}>
-            {selectedCardData ? `고른 이벤트 · ${districtLabel}` : '아직 고른 이벤트가 없어요'}
-          </p>
+          {selectedCardData ? (
+            <>
+              <p className={styles['map-summary-text']}>{selectedCardData.title}</p>
+              <p className={styles['map-summary-sub']}>
+                {selectedCardData.dateLabel} · {selectedCardData.timeLabel} · {districtLabel}
+              </p>
+            </>
+          ) : (
+            <p className={styles['map-summary-text']}>아직 고른 이벤트가 없어요</p>
+          )}
         </div>
 
         {errorMessage && (
