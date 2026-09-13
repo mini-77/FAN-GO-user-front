@@ -1,0 +1,356 @@
+<title>FAN:GO Redesign Preview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=Urbanist:wght@400;600;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F7F6FB;
+    --panel: #FFFFFF;
+    --panel-border: #E9E6F5;
+    --text: #211D34;
+    --text-soft: #6F6A85;
+    --purple: #6D57FC;
+    --code-bg: #F1EFFB;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #131120; --panel: #1B1830; --panel-border: #2E2A47;
+      --text: #EFEDFB; --text-soft: #A9A4C4; --code-bg: #241F3D;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #131120; --panel: #1B1830; --panel-border: #2E2A47;
+    --text: #EFEDFB; --text-soft: #A9A4C4; --code-bg: #241F3D;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'IBM Plex Sans KR', 'Pretendard', sans-serif;
+    padding: 0 20px 80px;
+  }
+  .wrap { max-width: 900px; margin: 0 auto; }
+
+  header.page { padding-block: 44px 24px; }
+  .eyebrow {
+    font-family: 'Urbanist', sans-serif;
+    font-size: 11px; font-weight: 700; letter-spacing: 1.6px;
+    text-transform: uppercase; color: var(--purple);
+  }
+  h1 { font-size: 28px; font-weight: 700; letter-spacing: -0.3px; margin: 10px 0 12px; text-wrap: balance; }
+  .lede { font-size: 14.5px; line-height: 1.65; color: var(--text-soft); max-width: 62ch; }
+  .notice {
+    margin-top: 18px;
+    background: var(--code-bg);
+    border-radius: 12px;
+    padding: 12px 16px;
+    font-size: 12.5px;
+    color: var(--text-soft);
+    line-height: 1.6;
+  }
+  .notice b { color: var(--text); }
+
+  section.screen-demo { margin-top: 52px; }
+  .demo-head { border-bottom: 1px solid var(--panel-border); padding-bottom: 12px; margin-bottom: 20px; }
+  .demo-head .tag { font-family:'Urbanist',sans-serif; font-size: 11px; font-weight: 700; color: var(--text-soft); letter-spacing: 0.5px; }
+  .demo-head h2 { font-size: 19px; font-weight: 700; margin: 4px 0 6px; }
+  .demo-head p { font-size: 13px; color: var(--text-soft); line-height: 1.6; max-width: 60ch; margin: 0; }
+
+  .compare-row { display: flex; gap: 24px; flex-wrap: wrap; align-items: flex-start; }
+  .compare-col { flex: 1; min-width: 260px; max-width: 300px; }
+  .compare-label {
+    display: flex; align-items: center; gap: 8px;
+    font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 700;
+    letter-spacing: 0.6px; text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .compare-label.before { color: #C2618E; }
+  .compare-label.after { color: var(--purple); }
+  .compare-label .dot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+
+  .phone {
+    width: 100%;
+    border-radius: 22px;
+    overflow: hidden;
+    background: #fff;
+    border: 1px solid var(--panel-border);
+    box-shadow: 0 12px 30px rgba(20,15,50,0.10);
+    font-family: 'IBM Plex Sans KR', sans-serif;
+  }
+  .fix-notes { flex: 1; min-width: 220px; display: flex; flex-direction: column; gap: 10px; padding-top: 30px; }
+  .fix-note {
+    background: var(--panel); border: 1px solid var(--panel-border); border-radius: 10px;
+    padding: 10px 12px; font-size: 12px; line-height: 1.6; color: var(--text-soft);
+  }
+  .fix-note b { color: var(--text); }
+
+  footer.page {
+    margin-top: 60px; padding-top: 18px; border-top: 1px solid var(--panel-border);
+    font-size: 11.5px; color: var(--text-soft);
+  }
+
+  /* =========================================================
+     BEFORE / AFTER 공용 미니 컴포넌트 (실제 소스코드는 안 건드림 -
+     여기 있는 클래스들은 이 미리보기 페이지에서만 쓰는 목업용)
+     ========================================================= */
+
+  /* ---- 4-1 이벤트 선택 ---- */
+  .b-header, .a-header { padding: 12px 16px 10px; border-bottom: 1px solid #EFEDFA; }
+  .b-step, .a-step { text-align: right; font-family:'Inter',sans-serif; font-size: 10px; font-weight: 600; color: #201E1D; }
+  .b-title { font-size: 22px; font-weight: 600; color: #201E1D; margin: 4px 0 8px; letter-spacing: 0.3px; }
+  .a-title { font-size: 20px; font-weight: 700; color: #1C1730; margin: 4px 0 8px; letter-spacing: -0.2px; }
+  .b-bar, .a-bar { display:flex; gap:3px; }
+  .b-bar span, .a-bar span { flex:1; height:4px; border-radius:2px; background:rgba(27,22,63,.15); }
+  .b-bar span.on { background:#6D57FC; } .a-bar span.on { background:#6D57FC; }
+
+  .b-row { display:flex; align-items:center; gap:12px; padding:12px 16px; border-bottom:1px solid #EFEDFA; }
+  .b-row.sel { background:#6D57FC; }
+  .b-dt { width:42px; display:flex; flex-direction:column; gap:2px; }
+  .b-dt span { font-family:'Inter',sans-serif; font-size:11px; font-weight:600; color:#0C0A1C; }
+  .b-row.sel .b-dt span { color:#fff; }
+  .b-tx { flex:1; display:flex; flex-direction:column; gap:2px; }
+  .b-tx .t1 { font-size:12.5px; font-weight:600; color:#0C0A1C; }
+  .b-tx .t2 { font-size:11px; color:#0C0A1C; opacity:.7; }
+  .b-row.sel .t1, .b-row.sel .t2 { color:#fff; }
+  .b-plus { font-size:11px; color: rgba(27,22,63,.35); }
+  .b-row.sel .b-plus { color:#fff; }
+  .b-map { padding:12px 16px; background:#F0EEFF; }
+  .b-map .l1 { font-size:9px; color:rgba(27,22,63,.6); }
+  .b-map .l2 { font-size:13px; font-weight:600; color:#0C0A1C; margin-top:2px; }
+  .b-cta { padding:12px 16px 16px; border-top:1px solid #EFEDFA; display:flex; justify-content:flex-end; }
+  .b-cta button { padding:12px 18px; border:none; border-radius:100px; background:#6D57FC; color:#fff; font-size:13px; font-weight:600; }
+
+  .a-row { display:flex; align-items:center; gap:12px; padding:13px 16px; border-bottom:1px solid #F1EFFB; }
+  .a-row.sel { background:#F3F1FF; border-left: 3px solid #6D57FC; padding-left: 13px; }
+  .a-dt { width:44px; display:flex; flex-direction:column; gap:1px; }
+  .a-dt .d { font-family:'Inter',sans-serif; font-size:12px; font-weight:700; color:#1C1730; }
+  .a-dt .t { font-family:'Inter',sans-serif; font-size:10.5px; color:#6F6A85; }
+  .a-tx { flex:1; display:flex; flex-direction:column; gap:1px; }
+  .a-tx .t1 { font-size:13px; font-weight:600; color:#1C1730; }
+  .a-tx .t2 { font-size:11px; color:#6F6A85; }
+  .a-check { width:20px; height:20px; border-radius:50%; background:#6D57FC; color:#fff; font-size:11px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .a-plus { width:20px; height:20px; border-radius:50%; border:1.5px solid #E3DCFF; color:#A8A3BD; font-size:11px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .a-map { padding:12px 16px; background:#fff; border-top:1px solid #F1EFFB; }
+  .a-map .l1 { font-family:'Inter',sans-serif; font-size:10px; font-weight:700; letter-spacing:.8px; color:#6D57FC; }
+  .a-map .l2 { font-size:12.5px; font-weight:600; color:#1C1730; margin-top:3px; }
+  .a-cta { padding:14px 16px 18px; border-top:1px solid #F1EFFB; }
+  .a-cta button { width:100%; padding:14px; border:none; border-radius:100px; background:#6D57FC; color:#fff; font-size:14px; font-weight:700; }
+
+  /* ---- 5 일정표 ---- */
+  .b-title2 { font-size:23px; font-weight:600; color:#201E1D; margin:4px 0 10px; }
+  .a-title2 { font-size:20px; font-weight:700; color:#1C1730; margin:4px 0 10px; }
+  .b-tabs, .a-tabs { display:flex; gap:2px; padding: 0 16px 10px; }
+  .b-tabs span, .a-tabs span { flex:1; text-align:center; padding:7px; font-family:'Inter',sans-serif; font-size:10px; font-weight:600; border:2px solid rgba(27,22,63,.25); color:rgba(27,22,63,.5); }
+  .b-tabs span.on { background:#6D57FC; border-color:#6D57FC; color:#fff; }
+  .a-tabs span { border:1px solid #E9E6F5; border-radius: 8px; color:#6F6A85; }
+  .a-tabs span.on { background:#6D57FC; border-color:#6D57FC; color:#fff; }
+
+  .b-place { padding:14px 16px; background:#F8F7FF; border-bottom:1px solid #EFEDFA; display:flex; align-items:center; gap:8px; }
+  .b-place .tag { width:50px; font-size:11px; font-weight:700; color:#6D57FC; }
+  .b-place .nm { font-size:14px; font-weight:600; color:#201E1D; }
+  .b-place .sb { font-family:'Urbanist',sans-serif; font-size:11px; color:rgba(27,22,63,.6); }
+  .b-place button { margin-left:auto; padding:6px 10px; border-radius:10px; background:#F8F7FF; border:1px solid #E8E4FF; color:#757575; font-size:10px; font-weight:600; }
+
+  .a-place { padding:13px 16px; border-bottom:1px solid #F1EFFB; display:flex; align-items:center; gap:8px; }
+  .a-place .tag { width:50px; font-size:10.5px; font-weight:400; color:#A8A3BD; }
+  .a-place .nm { font-size:13.5px; font-weight:600; color:#1C1730; }
+  .a-place .sb { font-family:'Urbanist',sans-serif; font-size:10.5px; color:#6F6A85; }
+  .a-place button { margin-left:auto; padding:6px 10px; border-radius:8px; background:transparent; border:1px solid #E3DCFF; color:#6D57FC; font-size:10px; font-weight:600; }
+
+  .b-place2 { padding:16px; border-bottom:1px solid #EFEDFA; display:flex; align-items:center; gap:10px; }
+  .b-place2.pin { background:#6D57FC; }
+  .b-place2 .nm { font-size:14px; font-weight:600; color:#201E1D; }
+  .b-place2.pin .nm { color:#fff; }
+  .b-place2 .sb { font-family:'Urbanist',sans-serif; font-size:11px; color:rgba(27,22,63,.6); }
+  .b-place2.pin .sb { color:rgba(255,255,255,.85); }
+  .b-place2 .hr { margin-left:auto; font-family:'Inter',sans-serif; font-size:12px; font-weight:600; color:#757575; }
+  .b-place2.pin .hr { color:#fff; }
+
+  .a-place2 { padding:14px 16px; border-bottom:1px solid #F1EFFB; display:flex; align-items:center; gap:10px; }
+  .a-place2.pin { background:#F3F1FF; border-left:3px solid #6D57FC; padding-left:13px; }
+  .a-place2 .nm { font-size:13.5px; font-weight:600; color:#1C1730; }
+  .a-place2 .sb { font-family:'Urbanist',sans-serif; font-size:10.5px; color:#6F6A85; }
+  .a-place2 .hr { margin-left:auto; font-family:'Inter',sans-serif; font-size:12px; font-weight:700; color:#6D57FC; }
+
+  /* ---- 6-1 동선 지도 ---- */
+  .b-map2 { height: 90px; background:#F0EEFF; display:flex; align-items:center; justify-content:center; font-size:11px; color:rgba(27,22,63,.5); }
+  .a-map2 { height: 90px; background:#F5F4FA; display:flex; align-items:center; justify-content:center; font-size:11px; color:#A8A3BD; }
+  .b-stop, .a-stop { display:flex; align-items:center; gap:10px; padding:11px 16px; border-bottom:1px solid #EFEDFA; }
+  .b-num { width:26px; height:26px; border-radius:9px; background:#F0EEFF; color:#6D57FC; font-family:'Urbanist',sans-serif; font-size:12px; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .a-num { width:22px; height:22px; border-radius:50%; border:1.5px solid #E3DCFF; color:#6F6A85; font-family:'Urbanist',sans-serif; font-size:11px; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .b-stxt, .a-stxt { flex:1; display:flex; flex-direction:column; gap:1px; }
+  .b-stxt .n { font-size:13.5px; font-weight:600; color:#201E1D; }
+  .b-stxt .m { font-family:'Inter',sans-serif; font-size:10.5px; color:rgba(27,22,63,.6); }
+  .a-stxt .n { font-size:13px; font-weight:600; color:#1C1730; }
+  .a-stxt .m { font-family:'Inter',sans-serif; font-size:10.5px; color:#A8A3BD; }
+  .b-sc { font-family:'Inter',sans-serif; font-size:11px; font-weight:600; color:#6D57FC; }
+  .a-sc { font-family:'Inter',sans-serif; font-size:11px; font-weight:700; color:#6D57FC; font-variant-numeric: tabular-nums; }
+  .b-pin { padding:10px 16px; background:#6D57FC; display:flex; align-items:center; gap:8px; }
+  .b-pin span { color:#fff; font-size:11px; font-weight:600; }
+  .a-pin { padding:11px 16px; background:#F3F1FF; border-left:3px solid #6D57FC; display:flex; align-items:center; gap:8px; }
+  .a-pin span { color:#1C1730; font-size:11px; font-weight:600; }
+  .a-pin .tagpill { margin-left:auto; background:#6D57FC; color:#fff; font-size:9px; font-weight:700; padding:3px 8px; border-radius:100px; }
+
+  .b-actions { display:flex; gap:6px; padding:10px 16px 16px; border-top:1px solid #EFEDFA; }
+  .b-actions button { flex:1; padding:9px 4px; border-radius:100px; font-size:11px; font-weight:600; border:1px solid #E8E4FF; background:#F8F7FF; color:#1B163F; }
+  .b-actions button.p { background:#6D57FC; color:#fff; border:none; }
+  .a-actions { display:flex; gap:8px; padding:12px 16px 16px; border-top:1px solid #F1EFFB; }
+  .a-actions button { flex:1; height:40px; border-radius:100px; font-size:12px; font-weight:600; border:1px solid #E3DCFF; background:transparent; color:#1C1730; }
+  .a-actions button.p { background:#6D57FC; color:#fff; border:none; font-weight:700; }
+</style>
+
+<div class="wrap">
+  <header class="page">
+    <span class="eyebrow">FAN:GO · Redesign Preview</span>
+    <h1>스타일 가이드 적용 미리보기</h1>
+    <p class="lede">
+      스타일 가이드에서 정한 원칙(제목 24px 상한, 라벨은 얇게·값은 진하게, 강조 배경은 화면당 1~2곳,
+      버튼 행은 밀도에 맞게)을 실제 화면 3개에 대입해봤어요. 왼쪽이 지금 코드 그대로, 오른쪽이 가이드 적용 후예요.
+    </p>
+    <p class="notice">
+      <b>실제 프로젝트 코드(src/*.jsx, *.module.css)는 전혀 건드리지 않았어요.</b>
+      이 페이지는 눈으로 먼저 확인해보기 위한 별도 목업이에요. 마음에 들면 이 안대로 실제 화면 코드에 적용할게요.
+    </p>
+  </header>
+
+  <section class="screen-demo">
+    <div class="demo-head">
+      <span class="tag">4-1 · EVENTSELECTVIEW</span>
+      <h2>어떤 이벤트에 참여하시나요?</h2>
+      <p>목록 행에서 날짜·부제가 제목과 같은 굵기라 위계가 안 보이던 것, 선택 상태가 통짜 보라색이라 눈에 부담스럽던 것, 지도 요약 박스에 불필요한 배경색이 들어가던 것을 정리했어요.</p>
+    </div>
+    <div class="compare-row">
+      <div class="compare-col">
+        <div class="compare-label before"><span class="dot"></span>Before</div>
+        <div class="phone">
+          <div class="b-header">
+            <div class="b-step">01 — 04</div>
+            <div class="b-title">어떤 이벤트에<br>참여하시나요?</div>
+            <div class="b-bar"><span class="on"></span><span></span><span></span><span></span></div>
+          </div>
+          <div class="b-row">
+            <div class="b-dt"><span>09.19</span><span>17:00</span></div>
+            <div class="b-tx"><span class="t1">NCT 127 5TH TOUR</span><span class="t2">서울 송파구 올림픽로 424</span></div>
+            <span class="b-plus">＋</span>
+          </div>
+          <div class="b-row sel">
+            <div class="b-dt"><span>10.17</span><span>19:00</span></div>
+            <div class="b-tx"><span class="t1">NCT WISH 2026 NOL</span><span class="t2">경기 고양시 일산서구</span></div>
+            <span class="b-plus">고정 ✓</span>
+          </div>
+          <div class="b-map"><div class="l1">MAP</div><div class="l2">고른 이벤트 · 일산서구</div></div>
+          <div class="b-cta"><button>다음: 기간·숙소</button></div>
+        </div>
+      </div>
+      <div class="compare-col">
+        <div class="compare-label after"><span class="dot"></span>After</div>
+        <div class="phone">
+          <div class="a-header">
+            <div class="a-step">01 — 04</div>
+            <div class="a-title">어떤 이벤트에<br>참여하시나요?</div>
+            <div class="a-bar"><span class="on"></span><span></span><span></span><span></span></div>
+          </div>
+          <div class="a-row">
+            <div class="a-dt"><span class="d">09.19</span><span class="t">17:00</span></div>
+            <div class="a-tx"><span class="t1">NCT 127 5TH TOUR</span><span class="t2">서울 송파구 올림픽로 424</span></div>
+            <span class="a-plus">＋</span>
+          </div>
+          <div class="a-row sel">
+            <div class="a-dt"><span class="d">10.17</span><span class="t">19:00</span></div>
+            <div class="a-tx"><span class="t1">NCT WISH 2026 NOL</span><span class="t2">경기 고양시 일산서구</span></div>
+            <span class="a-check">✓</span>
+          </div>
+          <div class="a-map"><div class="l1">MAP</div><div class="l2">고른 이벤트 · 일산서구</div></div>
+          <div class="a-cta"><button>다음: 기간·숙소</button></div>
+        </div>
+      </div>
+      <div class="fix-notes">
+        <div class="fix-note"><b>제목</b> 25px/600 자간0.38 → <b>20px/700</b>, 2줄이어도 답답하지 않게 line-height만 넉넉히</div>
+        <div class="fix-note"><b>날짜/시간</b> 둘 다 같은 굵기(bold) → 날짜는 <b>진하게</b>, 시간은 <b>연하게</b>로 1차 정보만 강조</div>
+        <div class="fix-note"><b>선택 상태</b> 행 전체 보라색 채움 → <b>연보라 배경 + 왼쪽 3px 강조선</b>으로 톤 낮춤</div>
+        <div class="fix-note"><b>지도 요약</b> 보라 배경 박스 → 흰 배경 + 보라 라벨만, 강조 배경은 선택된 행 하나로 집중</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="screen-demo">
+    <div class="demo-head">
+      <span class="tag">5 · SCHEDULETABLEVIEW</span>
+      <h2>여행 일정</h2>
+      <p>제목이 26px로 전 화면 중 가장 컸던 화면이에요. 출발/도착 지점 라벨이 보라색+굵게로 이중 강조되던 것과, 탭이 각지고 두꺼운 테두리라 다른 화면 탭과 스타일이 달랐던 것도 맞췄어요.</p>
+    </div>
+    <div class="compare-row">
+      <div class="compare-col">
+        <div class="compare-label before"><span class="dot"></span>Before</div>
+        <div class="phone">
+          <div class="b-header" style="border-bottom:none;">
+            <div class="b-title2">여행 일정<br>10.16 — 10.17</div>
+          </div>
+          <div class="b-tabs"><span class="on">1일</span><span>2일</span></div>
+          <div class="b-place"><span class="tag">출발지점</span><div><div class="nm">인천국제공항</div><div class="sb">인천 영종구 공항로 272</div></div><button>위치변경</button></div>
+          <div class="b-place2"><div><div class="nm">엔시티 위시 콘서트</div><div class="sb">경기 고양시 일산서구</div></div><span class="hr">19:00</span></div>
+          <div class="b-place"><span class="tag">완료지점</span><div><div class="nm">더그랜드호텔 서울</div><div class="sb">서울 중구 을지로 30</div></div><button>위치변경</button></div>
+        </div>
+      </div>
+      <div class="compare-col">
+        <div class="compare-label after"><span class="dot"></span>After</div>
+        <div class="phone">
+          <div class="a-header" style="border-bottom:none;">
+            <div class="a-title2">여행 일정<br>10.16 — 10.17</div>
+          </div>
+          <div class="a-tabs"><span class="on">1일</span><span>2일</span></div>
+          <div class="a-place"><span class="tag">출발지점</span><div><div class="nm">인천국제공항</div><div class="sb">인천 영종구 공항로 272</div></div><button>위치변경</button></div>
+          <div class="a-place2"><div><div class="nm">엔시티 위시 콘서트</div><div class="sb">경기 고양시 일산서구</div></div><span class="hr">19:00</span></div>
+          <div class="a-place"><span class="tag">완료지점</span><div><div class="nm">더그랜드호텔 서울</div><div class="sb">서울 중구 을지로 30</div></div><button>위치변경</button></div>
+        </div>
+      </div>
+      <div class="fix-notes">
+        <div class="fix-note"><b>제목</b> 전 화면 중 최대치인 26px/600 → 가이드 상한인 <b>20px/700</b>로</div>
+        <div class="fix-note"><b>"출발지점" 라벨</b> 보라색+bold(이중 강조) → <b>연회색+regular</b>로, 라벨은 조용히</div>
+        <div class="fix-note"><b>고정 이벤트 행</b> 통짜 보라 배경 → 연보라+강조선, 시간은 보라 숫자로만 눈에 띄게</div>
+        <div class="fix-note"><b>탭</b> 2px 두꺼운 테두리 → 다른 화면과 통일된 얇은 테두리 + radius 8px</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="screen-demo">
+    <div class="demo-head">
+      <span class="tag">6-1 · ITINERARYVIEW</span>
+      <h2>동선을 확인해주세요</h2>
+      <p>하단 3버튼 행이 상단 CTA와 똑같은 크기감으로 나와서 화면이 버튼으로 꽉 차 보이던 것, 순번 배지가 꽉 찬 보라 사각형이라 시선을 계속 붙잡던 것을 낮췄어요.</p>
+    </div>
+    <div class="compare-row">
+      <div class="compare-col">
+        <div class="compare-label before"><span class="dot"></span>Before</div>
+        <div class="phone">
+          <div class="b-map2">지도 영역</div>
+          <div class="b-stop"><span class="b-num">1</span><div class="b-stxt"><span class="n">하이브 인사이트</span><span class="m">용산 · HYBE Insight</span></div><span class="b-sc">94</span></div>
+          <div class="b-stop"><span class="b-num">2</span><div class="b-stxt"><span class="n">낙산공원</span><span class="m">뮤비 촬영지</span></div><span class="b-sc">88</span></div>
+          <div class="b-pin"><span>18:30 · 올림픽체조경기장 · 입장 시작</span></div>
+          <div class="b-actions"><button>목록 열기</button><button>동선 수정</button><button class="p">다음: 확정</button></div>
+        </div>
+      </div>
+      <div class="compare-col">
+        <div class="compare-label after"><span class="dot"></span>After</div>
+        <div class="phone">
+          <div class="a-map2">지도 영역</div>
+          <div class="a-stop"><span class="a-num">1</span><div class="a-stxt"><span class="n">하이브 인사이트</span><span class="m">용산 · HYBE Insight</span></div><span class="a-sc">94</span></div>
+          <div class="a-stop"><span class="a-num">2</span><div class="a-stxt"><span class="n">낙산공원</span><span class="m">뮤비 촬영지</span></div><span class="a-sc">88</span></div>
+          <div class="a-pin"><span>18:30 · 올림픽체조경기장</span><span class="tagpill">입장</span></div>
+          <div class="a-actions"><button>목록 열기</button><button>동선 수정</button><button class="p">다음: 확정</button></div>
+        </div>
+      </div>
+      <div class="fix-notes">
+        <div class="fix-note"><b>순번 배지</b> 꽉 찬 보라 사각형(9px radius) → <b>테두리만 있는 원형</b>, 점수(보라 굵게)가 시선의 종점이 되게</div>
+        <div class="fix-note"><b>고정 이벤트 바</b> 통짜 보라 배경 → 연보라 + 강조선, "입장" 태그만 알약으로 강조</div>
+        <div class="fix-note"><b>하단 3버튼</b> 상단 CTA와 같은 무게감 → 높이 40px 컴팩트로 낮춰서 화면 밀도 완화</div>
+        <div class="fix-note">보라색 배경이 지도영역·배지·고정바 3곳에서 1곳(강조선)으로 — 화면당 강조는 최소로</div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="page">
+    2026-09-12 · 스타일 가이드(원칙 01·02) 기준 3개 화면 목업 · 실제 소스코드는 미반영 상태
+  </footer>
+</div>

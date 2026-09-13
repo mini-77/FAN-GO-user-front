@@ -1,0 +1,789 @@
+<title>FAN:GO Screen Audit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=Urbanist:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F7F6FB;
+    --panel: #FFFFFF;
+    --panel-border: #E9E6F5;
+    --text: #211D34;
+    --text-soft: #6F6A85;
+    --purple: #6D57FC;
+    --code-bg: #F1EFFB;
+    --high: #E64545;
+    --high-bg: #FDECEC;
+    --mid: #B8860B;
+    --mid-bg: #FBF3DC;
+    --low: #2FBD7E;
+    --low-bg: #E9FAF2;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg:#131120; --panel:#1B1830; --panel-border:#2E2A47; --text:#EFEDFB; --text-soft:#A9A4C4; --code-bg:#241F3D;
+      --high-bg: #3A1E1E; --mid-bg: #3A311A; --low-bg: #163828;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg:#131120; --panel:#1B1830; --panel-border:#2E2A47; --text:#EFEDFB; --text-soft:#A9A4C4; --code-bg:#241F3D;
+    --high-bg: #3A1E1E; --mid-bg: #3A311A; --low-bg: #163828;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    background: var(--bg); color: var(--text);
+    font-family: 'IBM Plex Sans KR', 'Pretendard', sans-serif;
+    padding: 0 20px 80px;
+  }
+  .wrap { max-width: 900px; margin: 0 auto; }
+
+  header.page { padding-block: 44px 20px; }
+  .eyebrow { font-family:'Urbanist',sans-serif; font-size:11px; font-weight:700; letter-spacing:1.6px; text-transform:uppercase; color:var(--purple); }
+  h1 { font-size:28px; font-weight:700; letter-spacing:-0.3px; margin:10px 0 12px; text-wrap:balance; }
+  .lede { font-size:14.5px; line-height:1.65; color:var(--text-soft); max-width:64ch; }
+  .notice {
+    margin-top:16px; background:var(--code-bg); border-radius:12px; padding:12px 16px;
+    font-size:12.5px; color:var(--text-soft); line-height:1.6;
+  }
+  .notice b { color: var(--text); }
+
+  /* 요약 카드 */
+  .summary {
+    display:grid; grid-template-columns: repeat(3, 1fr); gap:10px; margin-top:22px;
+  }
+  .summary-card { border-radius:12px; padding:14px 16px; }
+  .summary-card .n { font-family:'Urbanist',sans-serif; font-size:24px; font-weight:800; }
+  .summary-card .l { font-size:11.5px; margin-top:2px; line-height:1.4; }
+  .summary-card.high { background:var(--high-bg); }
+  .summary-card.high .n, .summary-card.high .l { color: var(--high); }
+  .summary-card.mid { background:var(--mid-bg); }
+  .summary-card.mid .n, .summary-card.mid .l { color: var(--mid); }
+  .summary-card.low { background:var(--low-bg); }
+  .summary-card.low .n, .summary-card.low .l { color: var(--low); }
+
+  .order-list {
+    margin-top:16px; display:flex; flex-wrap:wrap; gap:8px;
+  }
+  .order-list a {
+    font-size:12px; font-weight:600; color:var(--purple);
+    background:var(--code-bg); border:1px solid var(--panel-border);
+    padding:6px 12px; border-radius:999px; text-decoration:none;
+  }
+  .order-list .rank { font-family:'Urbanist',sans-serif; font-weight:800; margin-right:4px; }
+
+  section.legend {
+    display:flex; gap:16px; margin-top:28px; flex-wrap:wrap;
+    font-size:12px; color:var(--text-soft);
+  }
+  .legend-item { display:flex; align-items:center; gap:6px; }
+  .legend-dot { width:9px; height:9px; border-radius:50%; }
+
+  /* 화면 카드 */
+  .screen-card {
+    background:var(--panel); border:1px solid var(--panel-border);
+    border-radius:16px; padding:20px 22px; margin-top:16px;
+    display:flex; gap:20px; flex-wrap:wrap;
+    border-left: 4px solid var(--panel-border);
+  }
+  .screen-card.high { border-left-color: var(--high); }
+  .screen-card.mid { border-left-color: var(--mid); }
+  .screen-card.low { border-left-color: var(--low); }
+
+  .sc-left { width: 200px; flex-shrink:0; }
+  .sc-num { font-family:'Urbanist',sans-serif; font-size:11px; font-weight:700; color:var(--text-soft); letter-spacing:0.5px; }
+  .sc-name { font-size:16px; font-weight:700; margin:3px 0 10px; }
+  .sc-badge {
+    display:inline-flex; align-items:center; gap:5px;
+    font-size:10.5px; font-weight:700; padding:4px 9px; border-radius:999px; margin-bottom:12px;
+  }
+  .sc-badge.high { background:var(--high-bg); color:var(--high); }
+  .sc-badge.mid { background:var(--mid-bg); color:var(--mid); }
+  .sc-badge.low { background:var(--low-bg); color:var(--low); }
+
+  .sc-stat { font-size:11.5px; color:var(--text-soft); line-height:1.7; }
+  .sc-stat b { color:var(--text); font-family:'Inter',sans-serif; }
+
+  .sc-swatches { display:flex; gap:4px; margin-top:10px; flex-wrap:wrap; }
+  .sc-swatch { width:20px; height:20px; border-radius:5px; border:1px solid rgba(0,0,0,0.08); flex-shrink:0; }
+
+  .sc-right { flex:1; min-width:260px; }
+  .sc-right .h { font-size:11px; font-weight:700; letter-spacing:0.4px; text-transform:uppercase; color:var(--text-soft); margin-bottom:8px; }
+  .sc-checklist { display:flex; flex-direction:column; gap:7px; }
+  .sc-checklist li {
+    list-style:none; display:flex; gap:8px; font-size:12.5px; line-height:1.55; color: var(--text);
+  }
+  .sc-checklist li::before { content:'—'; color: var(--text-soft); flex-shrink:0; }
+  .sc-checklist code { background:var(--code-bg); padding:1px 5px; border-radius:4px; font-size:11px; }
+
+  footer.page {
+    margin-top:56px; padding-top:18px; border-top:1px solid var(--panel-border);
+    font-size:11.5px; color:var(--text-soft);
+  }
+
+  /* ---- 적용 후 미니 미리보기 (모든 화면 공용 컴포넌트) ---- */
+  .sc-mock-col { width: 168px; flex-shrink: 0; }
+  .sc-mock-label {
+    display:flex; align-items:center; gap:5px;
+    font-family:'Inter',sans-serif; font-size:10px; font-weight:700; letter-spacing:0.5px;
+    text-transform:uppercase; color: var(--purple); margin-bottom:8px;
+  }
+  .sc-mock-label .dot { width:6px; height:6px; border-radius:50%; background: var(--purple); }
+  .mp {
+    width: 168px;
+    background: #fff;
+    border: 1px solid var(--panel-border);
+    border-radius: 14px;
+    overflow: hidden;
+    font-family: 'IBM Plex Sans KR', sans-serif;
+    box-shadow: 0 6px 16px rgba(20,15,50,0.08);
+  }
+  .mp-title { font-size:13px; font-weight:700; color:#1C1730; padding:10px 12px 6px; letter-spacing:-0.1px; }
+  .mp-sub { font-size:9.5px; color:#A8A3BD; padding:0 12px 8px; margin-top:-4px; }
+  .mp-row { display:flex; align-items:center; gap:7px; padding:8px 12px; border-top:1px solid #F1EFFB; }
+  .mp-row .mp-txt { flex:1; min-width:0; }
+  .mp-row .mp-n { font-size:11px; font-weight:600; color:#1C1730; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .mp-row .mp-l { font-size:9px; color:#A8A3BD; margin-top:1px; }
+  .mp-row .mp-v { font-size:9px; color:#6D57FC; font-weight:700; white-space:nowrap; }
+  .mp-num { width:16px; height:16px; border-radius:50%; border:1.3px solid #E3DCFF; color:#6F6A85; font-size:8px; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .mp-btn-p { margin:10px 12px 12px; height:30px; border-radius:100px; background:#6D57FC; color:#fff; font-size:10.5px; font-weight:700; display:flex; align-items:center; justify-content:center; }
+  .mp-btn-o { margin:0 12px 10px; height:26px; border-radius:100px; border:1px solid #E3DCFF; color:#1C1730; font-size:9.5px; font-weight:600; display:flex; align-items:center; justify-content:center; }
+  .mp-btns3 { display:flex; gap:5px; margin:8px 12px 12px; }
+  .mp-btns3 span { flex:1; height:24px; border-radius:100px; border:1px solid #E3DCFF; font-size:8px; font-weight:600; color:#1C1730; display:flex; align-items:center; justify-content:center; }
+  .mp-btns3 span.p { background:#6D57FC; color:#fff; border:none; font-weight:700; }
+  .mp-pill { display:inline-block; margin:8px 12px 0; padding:3px 8px; border-radius:100px; background:#F3F1FF; color:#6D57FC; font-size:8.5px; font-weight:700; }
+  .mp-flat { padding:10px 12px; border-top:1px solid #F1EFFB; }
+  .mp-flat .mp-n { font-size:11px; font-weight:600; color:#1C1730; }
+  .mp-flat .mp-l { font-size:9px; color:#A8A3BD; margin-top:2px; }
+  .mp-swrow { display:flex; gap:4px; padding: 0 12px 10px; }
+  .mp-sw { width:14px; height:14px; border-radius:4px; flex-shrink:0; }
+  .mp-card { margin:8px 12px; padding:9px 10px; border-radius:10px; background:#F3F1FF; border-left:2.5px solid #6D57FC; }
+  .mp-card .mp-n { font-size:10.5px; }
+  .mp-tab { display:flex; gap:3px; padding:0 12px 8px; }
+  .mp-tab span { flex:1; text-align:center; padding:5px; border:1px solid #E9E6F5; border-radius:6px; font-size:8.5px; font-weight:600; color:#6F6A85; }
+  .mp-tab span.on { background:#6D57FC; border-color:#6D57FC; color:#fff; }
+  .mp-map { height:44px; background:#F5F4FA; margin:0 0 2px; display:flex; align-items:center; justify-content:center; font-size:8.5px; color:#A8A3BD; }
+
+  @media (max-width: 560px) {
+    .screen-card { flex-direction:column; }
+    .sc-left { width:100%; }
+    .sc-mock-col { width:100%; }
+    .mp { width:100%; }
+    .summary { grid-template-columns: 1fr; }
+  }
+</style>
+
+<div class="wrap">
+  <header class="page">
+    <span class="eyebrow">FAN:GO · Full Screen Audit</span>
+    <h1>전체 화면 점검 리스트</h1>
+    <p class="lede">
+      21개 화면 전부의 .module.css를 실측해서, 화면마다 실제로 쓰이고 있는 색상과 제목 크기·버튼 스펙을 뽑고
+      "지금 뭐가 문제고 뭘 어떻게 맞춰야 하는지"를 체크리스트로 정리했어요. 우선순위 높은 순으로 놓았으니
+      위에서부터 하나씩 처리하면 돼요.
+    </p>
+    <p class="notice">
+      <b>실제 프로젝트 코드는 이 문서에서 전혀 건드리지 않았어요.</b> 확인용 점검 리포트예요.
+      기준값(색상 팔레트·타이포·버튼 크기)은 앞서 만든 스타일 가이드를 그대로 따랐어요.
+    </p>
+
+    <div class="summary">
+      <div class="summary-card high"><div class="n">8</div><div class="l">우선순위 높음<br>(가장 먼저 손볼 화면)</div></div>
+      <div class="summary-card mid"><div class="n">10</div><div class="l">우선순위 중간<br>(토큰 정리하면 자동 해결)</div></div>
+      <div class="summary-card low"><div class="n">3</div><div class="l">양호<br>(그대로 둬도 괜찮음)</div></div>
+    </div>
+
+    <div class="order-list">
+      <a href="#s9"><span class="rank">1</span>4-3 선호 액티비티</a>
+      <a href="#s20"><span class="rank">2</span>10 챗봇</a>
+      <a href="#s19"><span class="rank">3</span>9-1 마이페이지</a>
+      <a href="#s14"><span class="rank">4</span>5 일정표</a>
+      <a href="#s20b"><span class="rank">5</span>9-2 정보수정</a>
+      <a href="#s5"><span class="rank">6</span>2-3 가입완료</a>
+      <a href="#s11"><span class="rank">7</span>4-5 확인</a>
+      <a href="#s16"><span class="rank">8</span>6-2 동선 수정</a>
+    </div>
+
+    <section class="legend">
+      <span class="legend-item"><span class="legend-dot" style="background:var(--high)"></span>우선순위 높음</span>
+      <span class="legend-item"><span class="legend-dot" style="background:var(--mid)"></span>우선순위 중간</span>
+      <span class="legend-item"><span class="legend-dot" style="background:var(--low)"></span>양호</span>
+    </section>
+  </header>
+
+  <!-- 0 -->
+  <div class="screen-card low" id="s0">
+    <div class="sc-left">
+      <div class="sc-num">0 · SPLASHVIEW</div>
+      <div class="sc-name">스플래시</div>
+      <span class="sc-badge low">양호</span>
+      <div class="sc-stat">고유 색상 <b>2개</b></div>
+      <div class="sc-swatches"><div class="sc-swatch" style="background:#6D57FC"></div><div class="sc-swatch" style="background:#fff"></div></div>
+    </div>
+    <div class="sc-right">
+      <div class="h">체크리스트</div>
+      <ul class="sc-checklist">
+        <li>색이 2개뿐이라 오히려 가장 정돈돼 보이는 화면이에요. 다른 화면도 이 정도 절제가 기준이 돼야 해요.</li>
+        <li>손댈 것 없음 — 유지</li>
+      </ul>
+    </div>
+    <div class="sc-mock-col">
+      <div class="sc-mock-label"><span class="dot"></span>적용 후</div>
+      <div class="mp">
+        <div class="mp-title" style="text-align:center;padding-top:34px;">FAN:GO</div>
+        <div class="mp-sub" style="text-align:center;">나만의 성지순례, 지금 시작해요</div>
+        <div style="height:34px;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 1 -->
+  <div class="screen-card mid" id="s1">
+    <div class="sc-left">
+      <div class="sc-num">1 · LOGINVIEW</div>
+      <div class="sc-name">로그인</div>
+      <span class="sc-badge mid">중간</span>
+      <div class="sc-stat">고유 색상 <b>11개</b></div>
+      <div class="sc-swatches"><div class="sc-swatch" style="background:#6D57FC"></div><div class="sc-swatch" style="background:#F8F7FF"></div><div class="sc-swatch" style="background:#EFEDFA"></div><div class="sc-swatch" style="background:#E8E4FF"></div><div class="sc-swatch" style="background:#0C0A1C"></div></div>
+    </div>
+    <div class="sc-right">
+      <div class="h">체크리스트</div>
+      <ul class="sc-checklist">
+        <li>제목이 로고 텍스트(44px)라 화면 제목 규칙과는 무관 — 그대로 둬도 됨</li>
+        <li>입력창/버튼 주변 연보라 계열(<code>#F8F7FF</code>·<code>#EFEDFA</code>·<code>#E8E4FF</code>)을 <code>--purple-50</code> 하나로 통합</li>
+        <li>본문 텍스트색 <code>#0C0A1C</code> → <code>--ink-900</code>로 교체</li>
+      </ul>
+    </div>
+    <div class="sc-mock-col">
+      <div class="sc-mock-label"><span class="dot"></span>적용 후</div>
+      <div class="mp">
+        <div class="mp-title" style="text-align:center;padding-top:20px;">FAN:GO</div>
+        <div class="mp-sub" style="text-align:center;">나만의 성지순례, 지금 시작해요</div>
+        <div style="margin:10px 12px;height:24px;border-radius:100px;background:#F3F1FF;border:1px solid #E3DCFF;"></div>
+        <div style="margin:0 12px 10px;height:24px;border-radius:100px;background:#F3F1FF;border:1px solid #E3DCFF;"></div>
+        <div class="mp-btn-p">로그인</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2-1 -->
+  <div class="screen-card mid" id="s2">
+    <div class="sc-left">
+      <div class="sc-num">2-1 · SIGNUPVIEW</div>
+      <div class="sc-name">회원가입</div>
+      <span class="sc-badge mid">중간</span>
+      <div class="sc-stat">제목 <b>25px/600</b> · 색상 <b>13개</b></div>
+      <div class="sc-swatches"><div class="sc-swatch" style="background:#6D57FC"></div><div class="sc-swatch" style="background:#E8E4FF"></div><div class="sc-swatch" style="background:#E64545"></div><div class="sc-swatch" style="background:#0C0A1C"></div><div class="sc-swatch" style="background:#1B163F"></div></div>
+    </div>
+    <div class="sc-right">
+      <div class="h">체크리스트</div>
+      <ul class="sc-checklist">
+        <li>제목 <code>25px/600</code> → 가이드 기준 <code>24px/700</code></li>
+        <li>본문 텍스트가 <code>#0C0A1C</code>·<code>#1B163F</code> 두 계열로 섞여 있음 → <code>--ink-900</code> 하나로</li>
+        <li>에러색 <code>#E64545</code>는 시맨틱 컬러로 이미 맞게 쓰고 있음 — 유지</li>
+        <li>기본 버튼 <code>min-height:46px / padding:13px 20px</code> → 50px 토큰으로 통일</li>
+      </ul>
+    </div>
+    <div class="sc-mock-col">
+      <div class="sc-mock-label"><span class="dot"></span>적용 후</div>
+      <div class="mp">
+        <div class="mp-title">계정 생성</div>
+        <div class="mp-flat"><div class="mp-n">닉네임</div></div>
+        <div class="mp-flat"><div class="mp-n">이메일</div></div>
+        <div class="mp-btn-p">다음</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2-2 -->
+  <div class="screen-card mid" id="s3">
+    <div class="sc-left">
+      <div class="sc-num">2-2 · ARTISTSELECTVIEW</div>
+      <div class="sc-name">아티스트 선택</div>
+      <span class="sc-badge mid">중간</span>
+      <div class="sc-stat">제목 <b>25px/600</b> · 색상 <b>12개</b></div>
+      <div class="sc-swatches"><div class="sc-swatch" style="background:#6D57FC"></div><div class="sc-swatch" style="background:#5A45D6"></div><div class="sc-swatch" style="background:#F8F7FF"></div><div class="sc-swatch" style="background:#1B163F"></div></div>
+    </div>
+    <div class="sc-right">
+      <div class="h">체크리스트</div>
+      <ul class="sc-checklist">
+        <li>버튼 hover색 <code>#5A45D6</code>가 다른 화면 hover색(<code>#5A45E0</code>)과 미묘하게 다름 → 하나로 통일</li>
+        <li>기본 버튼 padding <code>13.6px 20px 15.4px</code>처럼 소수점 정밀 조정값 → 정수 토큰(50px 높이)으로</li>
+        <li>제목 25px → 24px</li>
+      </ul>
+    </div>
+    <div class="sc-mock-col">
+      <div class="sc-mock-label"><span class="dot"></span>적용 후</div>
+      <div class="mp">
+        <div class="mp-title">아티스트 선택</div>
+        <div class="mp-row"><div class="mp-txt"><div class="mp-n">NCT WISH</div></div></div>
+        <div class="mp-row"><div class="mp-txt"><div class="mp-n">NCT DREAM</div></div></div>
+        <div class="mp-btn-p">가입 완료</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2-3 -->
+  <div class="screen-card high" id="s5">
+    <div class="sc-left">
+      <div class="sc-num">2-3 · SIGNUPSUCCESSVIEW</div>
+      <div class="sc-name">계정생성 완료</div>
+      <span class="sc-badge high">높음</span>
+      <div class="sc-stat">버튼 높이 <b>min-height:36px</b> · 색상 8개</div>
+      <div class="sc-swatches"><div class="sc-swatch" style="background:#6D57FC"></div><div class="sc-swatch" style="background:#201E1D"></div><div class="sc-swatch" style="background:#5A45E0"></div></div>
+    </div>
+    <div class="sc-right">
+      <div class="h">체크리스트</div>
+      <ul class="sc-checklist">
+        <li><b>기본 버튼 높이가 36px</b> — 터치 영역 최소 기준(44px)에 못 미쳐요. 오탭 유발, <b>가장 먼저 고칠 것</b></li>
+        <li>색상 개수는 8개로 양호한 편 — 그대로 유지 가능</li>
+        <li>제목 25px → 24px</li>
+      </ul>
+    </div>
+    <div class="sc-mock-col">
+      <div class="sc-mock-label"><span class="dot"></span>적용 후</div>
+      <div class="mp">
+        <div style="padding:26px 12px 10px;text-align:center;"><div style="width:40px;height:40px;border-radius:50%;background:#F3F1FF;margin:0 auto 8px;display:flex;align-items:center;justify-content:center;color:#6D57FC;font-weight:700;">✓</div>
+        <div class="mp-title" style="padding:0;text-align:center;">가입 완료</div></div>
+        <div class="mp-btn-p">여행 일정 만들기</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3 -->
+  <div class="screen-card mid" id="s6">
+    <div class="sc-left">
+      <div class="sc-num">3 · HOMEVIEW</div>
+      <div class="sc-name">홈</div>
+      <span class="sc-badge mid">중간</span>
+      <div class="sc-stat">색상 <b>13개</b> · 제목 22px/600</div>
+      <div class="sc-swatches"><div class="sc-swatch" style="background:#6D57FC"></div><div class="sc-swatch" style="background:#FFF0DE"></div><div class="sc-swatch" style="background:#F1F0F6"></div><div class="sc-swatch" style="background:#F0EEFF"></div></div>
+    </div>
+    <div class="sc-right">
+      <div class="h">체크리스트</div>
+      <ul class="sc-checklist">
+        <li>"새 동선 만들기" 진입 버튼이 다른 화면 버튼 체계(pill 버튼)와 아예 다른 카드형 컴포넌트 — 통일할지, 홈 전용 패턴으로 남길지 결정 필요</li>
+        <li>히어로 카드 장식색(<code>#FFF0DE</code> 등) — 장식용 blob 색은 화면당 1개까지만</li>
+        <li>제목은 22px로 이미 가이드에 근접 — 24px로 살짝만 조정</li>
+      </ul>
+    </div>
+    <div class="sc-mock-col">
+      <div class="sc-mock-label"><span class="dot"></span>적용 후</div>
+      <div class="mp">
+        <div class="mp-title">홈</div>
+        <div class="mp-card"><div class="mp-n">+ 새 동선 만들기</div></div>
+        <div class="mp-row"><div class="mp-txt"><div class="mp-n">NCT WISH 동선</div><div class="mp-l">진행중</div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4-1 -->
+  <div class="screen-card mid" id="s7">
+    <div class="sc-left">
+      <div class="sc-num">4-1 · EVENTSELECTVIEW</div>
+      <div class="sc-name">이벤트 선택</div>
+      <span class="sc-badge mid">중간</span>
+      <div class="sc-stat">제목 <b>25px/600</b> · 색상 <b>10개</b></div>
+      <div class="sc-swatches"><div class="sc-swatch" style="background:#6D57FC"></div><div class="sc-swatch" style="background:#EFEDFA"></div><div class="sc-swatch" style="background:#0C0A1C"></div><div class="sc-swatch" style="background:#F0EEFF"></div></div>
+    </div>
+    <div class="sc-right">
+      <div class="h">체크리스트</div>
+      <ul class="sc-checklist">
+        <li>선택된 행이 통짜 보라 배경 — 연보라+강조선으로 톤 다운 (레드스인 미리보기 참고)</li>
+        <li>지도 요약 박스 배경 <code>#F0EEFF</code> 제거, 흰 배경+라벨만</li>
+        <li>제목 25 → 24px</li>
+      </ul>
+    </div>
+    <div class="sc-mock-col">
+      <div class="sc-mock-label"><span class="dot"></span>적용 후</div>
+      <div class="mp">
+        <div class="mp-title">어떤 이벤트에<br>참여하시나요?</div>
+        <div class="mp-row"><div class="mp-txt"><div class="mp-n">NCT 127 투어</div><div class="mp-l">09.19 · 17:00</div></div></div>
+        <div class="mp-card" style="margin:6px 12px;padding:8px 10px;"><div class="mp-n">NCT WISH 콘서트</div><div class="mp-l">10.17 · 19:00</div></div>
+        <div class="mp-flat"><div class="mp-l">MAP</div><div class="mp-n" style="font-size:10px;">고른 이벤트 · 일산서구</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4-2 -->
+  <div class="screen-card mid" id="s8">
+    <div class="sc-left">
+      <div class="sc-num">4-2 · TRIPDATEVIEW</div>
+      <div class="sc-name">날짜·숙소</div>
+      <span class="sc-badge mid">중간</span>
+      <div class="sc-stat">색상 <b>14개</b>(공동 최다) · 제목 25px</div>
+      <div class="sc-swatches"><div class="sc-swatch" style="background:#6D57FC"></div><div class="sc-swatch" style="background:#201E1D"></div><div class="sc-swatch" style="background:#F8F7FF"></div><div class="sc-swatch" style="background:#E8E4FF"></div><div class="sc-swatch" style="background:#0C0A1C"></div></div>
+    </div>
+    <div class="sc-right">
+      <div class="h">체크리스트</div>
+      <ul class="sc-checklist">
+        <li>화면 자체 + 지도검색 팝업까지 합쳐서 색이 제일 많은 화면 중 하나 — 팝업 색상부터 먼저 <code>--purple-50/100</code>으로 정리</li>
+        <li>본문 텍스트 <code>#201E1D</code>/<code>#0C0A1C</code> 혼용 → <code>--ink-900</code> 통일</li>
+        <li>제목 25 → 24px</li>
+      </ul>
+    </div>
+    <div class="sc-mock-col">
+      <div class="sc-mock-label"><span class="dot"></span>적용 후</div>
+      <div class="mp">
+        <div class="mp-title">숙소를 검색해<br>지도에 표시해요</div>
+        <div class="mp-map">지도</div>
+        <div class="mp-flat"><div class="mp-n">해담채스테이</div><div class="mp-l">10.16 — 10.18 · 2박</div></div>
+        <div class="mp-btn-p">추가</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4-3 -->
+  <div class="screen-card high" id="s9">
+    <div class="sc-left">
+      <div class="sc-num">4-3 · ACTIVITYPREFERENCEVIEW</div>
+      <div class="sc-name">선호 액티비티</div>
+      <span class="sc-badge high">높음 · 최우선</span>
+      <div class="sc-stat">순위 배지 3색 완전 불일치</div>
+      <div class="sc-swatches"><div class="sc-swatch" style="background:#51A8FF"></div><div class="sc-swatch" style="background:#6D57FC"></div><div class="sc-swatch" style="background:#9747FF"></div></div>
+    </div>
+    <div class="sc-right">
+      <div class="h">체크리스트</div>
+      <ul class="sc-checklist">
+        <li><b>1순위 배지는 파랑(#51A8FF), 2순위는 브랜드 보라(#6D57FC), 3순위는 또 다른 보라(#9747FF)</b> — 서로 다른 색 3개를 하나의 순위 표시에 쓰고 있어요. "화면에 색깔이 너무 많다"의 가장 명확한 사례</li>
+        <li>브랜드 보라 하나를 진하기(<code>opacity</code>나 <code>1순위=진하게 · 2=보통 · 3=연하게</code>)로만 구분하도록 교체</li>
+        <li>색상 총 11개 중 이 3개만 브랜드 팔레트 밖의 색 — 나머지는 정리하면 자동 해결</li>
+      </ul>
+    </div>
+    <div class="sc-mock-col">
+      <div class="sc-mock-label"><span class="dot"></span>적용 후</div>
+      <div class="mp">
+        <div class="mp-title">선호 액티비티</div>
+        <div style="display:flex;gap:6px;padding:0 12px 12px;flex-wrap:wrap;">
+          <div style="flex:1 1 40%;padding:8px;border-radius:8px;background:#6D57FC;color:#fff;font-size:9px;font-weight:700;">1순위<br>성지</div>
+          <div style="flex:1 1 40%;padding:8px;border-radius:8px;background:rgba(109,87,252,.55);color:#fff;font-size:9px;font-weight:700;">2순위<br>카페</div>
+          <div style="flex:1 1 40%;padding:8px;border-radius:8px;background:rgba(109,87,252,.25);color:#3B2E9E;font-size:9px;font-weight:700;">3순위<br>쇼핑</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4-4 -->
+  <div class="screen-card mid" id="s10">
+    <div class="sc-left">
+      <div class="sc-num">4-4 · PACEVIEW</div>
+      <div class="sc-name">동선 스타일</div>
+      <span class="sc-badge mid">중간</span>
+      <div class="sc-stat">색상 <b>13개</b> · 제목 25px</div>
+      <div class="sc-swatches"><div class="sc-swatch" style="background:#6D57FC"></div><div class="sc-swatch" style="background:#F0EEFF"></div><div class="sc-swatch" style="background:#49475B"></div></div>
+    </div>
+    <div class="sc-right">
+      <div class="h">체크리스트</div>
+      <ul class="sc-checklist">
+        <li>선택 옵션 텍스트색 <code>#49475B</code>가 다른 화면 ink 톤과 다름 → <code>--ink-900</code>/<code>--ink-500</code>로 대체</li>
+        <li>제목 25 → 24px</li>
+      </ul>
+    </div>
+    <div class="sc-mock-col">
+      <div class="sc-mock-label"><span class="dot"></span>적용 후</div>
+      <div class="mp">
+        <div class="mp-title">동선 스타일을<br>정해 주세요</div>
+        <div class="mp-card"><div class="mp-n">B · 적당히 (추천)</div></div>
+        <div class="mp-row"><div class="mp-txt"><div class="mp-n">A · 여유 우선</div></div></div>
+        <div class="mp-btn-p">다음: 확인</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4-5 -->
+  <div class="screen-card high" id="s11">
+    <div class="sc-left">
+      <div class="sc-num">4-5 · CONFIRMVIEW</div>
+      <div class="sc-name">이대로 진행할까요</div>
+      <span class="sc-badge high">높음</span>
+      <div class="sc-stat">색상 <b>15개</b>(전체 최다)</div>
+      <div class="sc-swatches"><div class="sc-swatch" style="background:#6D57FC"></div><div class="sc-swatch" style="background:#5A45E0"></div><div class="sc-swatch" style="background:#F4F2FF"></div><div class="sc-swatch" style="background:#201E1D"></div><div class="sc-swatch" style="background:#EFEDFA"></div></div>
+    </div>
+    <div class="sc-right">
+      <div class="h">체크리스트</div>
+      <ul class="sc-checklist">
+        <li>라벨/값 위계는 이번 세션에서 이미 정리했지만, <b>배경색 종류 자체는 전 화면 중 가장 많음(15개)</b> — 연보라 계열(<code>#F4F2FF</code> 등) 통합이 아직 안 됨</li>
+        <li>참여행사 카드만 강조 배경 유지, 나머지 행은 흰 배경 유지(이미 적용됨) — 이 원칙을 색상 변수로 고정</li>
+      </ul>
+    </div>
+    <div class="sc-mock-col">
+      <div class="sc-mock-label"><span class="dot"></span>적용 후</div>
+      <div class="mp">
+        <div class="mp-title">이대로<br>진행할까요?</div>
+        <div class="mp-card"><div class="mp-n">NCT WISH 콘서트</div></div>
+        <div class="mp-flat"><div class="mp-l">숙소·출발지</div><div class="mp-n">해담채스테이</div></div>
+        <div class="mp-btn-p">동선 만들기</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4-6 -->
+  <div class="screen-card low" id="s12">
+    <div class="sc-left">
+      <div class="sc-num">4-6 · TRIPGENERATINGVIEW</div>
+      <div class="sc-name">동선 준비중</div>
+      <span class="sc-badge low">양호</span>
+      <div class="sc-stat">고유 색상 <b>3개</b></div>
+      <div class="sc-swatches"><div class="sc-swatch" style="background:#6D57FC"></div><div class="sc-swatch" style="background:#E8E4FF"></div><div class="sc-swatch" style="background:#fff"></div></div>
+    </div>
+    <div class="sc-right">
+      <div class="h">체크리스트</div>
+      <ul class="sc-checklist">
+        <li>로딩 화면이라 색이 적은 게 맞아요. 이대로 유지 — 다른 화면의 "절제" 기준으로 참고하면 좋은 예시</li>
+      </ul>
+    </div>
+    <div class="sc-mock-col">
+      <div class="sc-mock-label"><span class="dot"></span>적용 후(변경 없음)</div>
+      <div class="mp" style="background:#6D57FC;">
+        <div style="padding:40px 12px;text-align:center;color:#fff;font-size:12px;font-weight:700;">네 설렘이<br>지도 위에 그려지고 있어</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4-7 -->
+  <div class="screen-card low" id="s13">
+    <div class="sc-left">
+      <div class="sc-num">4-7 · TRIPREADYVIEW</div>
+      <div class="sc-name">동선 준비완료</div>
+      <span class="sc-badge low">양호</span>
+      <div class="sc-stat">고유 색상 <b>4개</b> · 제목 22px</div>
+      <div class="sc-swatches"><div class="sc-swatch" style="background:#6D57FC"></div><div class="sc-swatch" style="background:#201E1D"></div><div class="sc-swatch" style="background:#fff"></div></div>
+    </div>
+    <div class="sc-right">
+      <div class="h">체크리스트</div>
+      <ul class="sc-checklist">
+        <li>제목 22 → 24px 정도만 맞추면 끝 — 나머지는 이미 정갈함</li>
+      </ul>
+    </div>
+    <div class="sc-mock-col">
+      <div class="sc-mock-label"><span class="dot"></span>적용 후</div>
+      <div class="mp">
+        <div style="padding:26px 12px 10px;text-align:center;"><div style="width:40px;height:40px;border-radius:50%;background:#F3F1FF;margin:0 auto 8px;display:flex;align-items:center;justify-content:center;color:#6D57FC;font-weight:700;">✓</div>
+        <div class="mp-title" style="padding:0;text-align:center;">준비되었습니다</div></div>
+        <div class="mp-btn-p">동선 보러가기</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5 -->
+  <div class="screen-card high" id="s14">
+    <div class="sc-left">
+      <div class="sc-num">5 · SCHEDULETABLEVIEW</div>
+      <div class="sc-name">일정표</div>
+      <span class="sc-badge high">높음</span>
+      <div class="sc-stat">제목 <b>26px</b>(전체 화면 중 최대) · 색상 13개</div>
+      <div class="sc-swatches"><div class="sc-swatch" style="background:#6D57FC"></div><div class="sc-swatch" style="background:#F8F7FF"></div><div class="sc-swatch" style="background:#201E1D"></div><div class="sc-swatch" style="background:#E8E4FF"></div></div>
+    </div>
+    <div class="sc-right">
+      <div class="h">체크리스트</div>
+      <ul class="sc-checklist">
+        <li>제목이 21개 화면 중 <b>가장 큼(26px)</b> — 24px로 낮춰서 다른 화면과 맞추기</li>
+        <li>"출발지점/완료지점" 라벨이 보라+굵게 이중 강조 — 라벨은 연회색·regular로</li>
+        <li>탭 스타일(2px 두꺼운 테두리)이 다른 화면 탭과 다름 — 통일</li>
+      </ul>
+    </div>
+    <div class="sc-mock-col">
+      <div class="sc-mock-label"><span class="dot"></span>적용 후</div>
+      <div class="mp">
+        <div class="mp-title">여행 일정<br>10.16 — 10.17</div>
+        <div class="mp-tab"><span class="on">1일</span><span>2일</span></div>
+        <div class="mp-flat"><div class="mp-l">출발지점</div><div class="mp-n">인천국제공항</div></div>
+        <div class="mp-card"><div class="mp-n">NCT WISH 콘서트 · 19:00</div></div>
+        <div class="mp-flat"><div class="mp-l">완료지점</div><div class="mp-n">더그랜드호텔 서울</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6-1 -->
+  <div class="screen-card mid" id="s15">
+    <div class="sc-left">
+      <div class="sc-num">6-1 · ITINERARYVIEW</div>
+      <div class="sc-name">동선(지도)</div>
+      <span class="sc-badge mid">중간</span>
+      <div class="sc-stat">색상 <b>11개</b> · 제목 25px</div>
+      <div class="sc-swatches"><div class="sc-swatch" style="background:#6D57FC"></div><div class="sc-swatch" style="background:#F0EEFF"></div><div class="sc-swatch" style="background:#EFEDFA"></div></div>
+    </div>
+    <div class="sc-right">
+      <div class="h">체크리스트</div>
+      <ul class="sc-checklist">
+        <li>순번 배지(꽉 찬 사각형) · 고정 이벤트 바(통짜 보라) · 하단 3버튼 — 강조 배경이 3곳에 흩어져 있음, 1곳(강조선)으로 집중</li>
+        <li>하단 3버튼 높이를 40px 컴팩트로 낮춰서 상단 CTA와 위계 구분</li>
+        <li>제목 25 → 24px</li>
+      </ul>
+    </div>
+    <div class="sc-mock-col">
+      <div class="sc-mock-label"><span class="dot"></span>적용 후</div>
+      <div class="mp">
+        <div class="mp-map">지도 · 순번 1~4</div>
+        <div class="mp-row"><span class="mp-num">1</span><div class="mp-txt"><div class="mp-n">하이브 인사이트</div></div><span class="mp-v">94</span></div>
+        <div class="mp-row"><span class="mp-num">2</span><div class="mp-txt"><div class="mp-n">낙산공원</div></div><span class="mp-v">88</span></div>
+        <div class="mp-btns3"><span>목록</span><span>수정</span><span class="p">확정</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6-2 -->
+  <div class="screen-card high" id="s16">
+    <div class="sc-left">
+      <div class="sc-num">6-2 · ITINERARYEDITVIEW</div>
+      <div class="sc-name">동선 직접 고치기</div>
+      <span class="sc-badge high">높음</span>
+      <div class="sc-stat"><code>#6D57FC</code> 파일 내 <b>20회</b> 반복(전체 최다)</div>
+      <div class="sc-swatches"><div class="sc-swatch" style="background:#6D57FC"></div><div class="sc-swatch" style="background:#F0EEFF"></div><div class="sc-swatch" style="background:#F8F7FF"></div></div>
+    </div>
+    <div class="sc-right">
+      <div class="h">체크리스트</div>
+      <ul class="sc-checklist">
+        <li>브랜드 보라를 CSS 변수 없이 <b>20번 직접 타이핑</b>해서 씀 — 색 자체보다 "재사용 안 됨"이 문제. 변수화 1순위 대상</li>
+        <li>대체 후보 카드 배경(<code>#F0EEFF</code>)과 일반 배경(<code>#F8F7FF</code>) 구분 기준을 다시 점검 — 거의 같은 색이라 구분이 잘 안 보임</li>
+      </ul>
+    </div>
+    <div class="sc-mock-col">
+      <div class="sc-mock-label"><span class="dot"></span>적용 후</div>
+      <div class="mp">
+        <div class="mp-title">동선 직접<br>고치기</div>
+        <div class="mp-row"><span class="mp-num">1</span><div class="mp-txt"><div class="mp-n">하이브 인사이트</div></div></div>
+        <div class="mp-card"><div class="mp-n">대체: 어니언 안국</div></div>
+        <div class="mp-btn-p">동선 저장</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7 -->
+  <div class="screen-card mid" id="s17">
+    <div class="sc-left">
+      <div class="sc-num">7 · FEEDBACKVIEW</div>
+      <div class="sc-name">이번 동선 어땠어요</div>
+      <span class="sc-badge mid">중간</span>
+      <div class="sc-stat">색상 <b>11개</b> · 제목 굵기 미지정</div>
+      <div class="sc-swatches"><div class="sc-swatch" style="background:#6D57FC"></div><div class="sc-swatch" style="background:#F8F7FF"></div><div class="sc-swatch" style="background:#1B163F"></div></div>
+    </div>
+    <div class="sc-right">
+      <div class="h">체크리스트</div>
+      <ul class="sc-checklist">
+        <li>제목에 <code>font-weight</code>가 따로 지정 안 돼 있어서 브라우저 기본값에 의존 중 — 명시적으로 700 지정 필요</li>
+        <li>텍스트색 <code>#1B163F</code> → <code>--ink-900</code></li>
+      </ul>
+    </div>
+    <div class="sc-mock-col">
+      <div class="sc-mock-label"><span class="dot"></span>적용 후</div>
+      <div class="mp">
+        <div class="mp-title">이번 동선<br>어땠어요?</div>
+        <div style="text-align:center;padding:4px 0 10px;font-size:18px;color:#F5C518;">★★★★☆</div>
+        <div class="mp-btn-p">보내기</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 8 -->
+  <div class="screen-card mid" id="s18">
+    <div class="sc-left">
+      <div class="sc-num">8 · HISTORYVIEW</div>
+      <div class="sc-name">나의 일정</div>
+      <span class="sc-badge mid">중간</span>
+      <div class="sc-stat">색상 <b>11개</b> · 버튼 높이 미지정</div>
+      <div class="sc-swatches"><div class="sc-swatch" style="background:#6D57FC"></div><div class="sc-swatch" style="background:#EFEDFA"></div><div class="sc-swatch" style="background:#0C0A1C"></div></div>
+    </div>
+    <div class="sc-right">
+      <div class="h">체크리스트</div>
+      <ul class="sc-checklist">
+        <li>"새로운 일정 생성" 버튼이 <code>padding</code>만 있고 <code>height</code>가 없어서, 다른 화면의 46px 버튼과 실제 높이가 미묘하게 다를 수 있음 — 명시적으로 지정</li>
+        <li>제목 25 → 24px</li>
+      </ul>
+    </div>
+    <div class="sc-mock-col">
+      <div class="sc-mock-label"><span class="dot"></span>적용 후</div>
+      <div class="mp">
+        <div class="mp-title">나의 일정</div>
+        <div class="mp-row"><div class="mp-txt"><div class="mp-n">NCT WISH 동선</div><div class="mp-l">완료</div></div></div>
+        <div class="mp-btn-p">새로운 일정 생성</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 9-1 -->
+  <div class="screen-card high" id="s19">
+    <div class="sc-left">
+      <div class="sc-num">9-1 · MYPAGEVIEW</div>
+      <div class="sc-name">마이 페이지</div>
+      <span class="sc-badge high">높음</span>
+      <div class="sc-stat">색상 <b>16개</b>(두 번째로 많음)</div>
+      <div class="sc-swatches"><div class="sc-swatch" style="background:#6D57FC"></div><div class="sc-swatch" style="background:#2D2A3A"></div><div class="sc-swatch" style="background:#221F2E"></div><div class="sc-swatch" style="background:#F0EEFF"></div></div>
+    </div>
+    <div class="sc-right">
+      <div class="h">체크리스트</div>
+      <ul class="sc-checklist">
+        <li>본문 텍스트가 <code>#2D2A3A</code>·<code>#221F2E</code>로, 다른 화면(<code>#201E1D</code> 계열)과 아예 다른 색 계열 — 눈에 잘 안 띄던 원인 중 하나. <code>--ink-900</code>로 통일</li>
+        <li>색상 16개 중 절반 가까이가 미세하게 다른 회색·보라 변형 — 팔레트 통합 시급</li>
+      </ul>
+    </div>
+    <div class="sc-mock-col">
+      <div class="sc-mock-label"><span class="dot"></span>적용 후</div>
+      <div class="mp">
+        <div class="mp-title">마이 페이지</div>
+        <div class="mp-row"><div class="mp-txt"><div class="mp-n">정보 수정</div></div></div>
+        <div class="mp-row"><div class="mp-txt"><div class="mp-n">여행 히스토리</div></div></div>
+        <div class="mp-row"><div class="mp-txt"><div class="mp-n">로그아웃</div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 9-2 -->
+  <div class="screen-card high" id="s20b">
+    <div class="sc-left">
+      <div class="sc-num">9-2 · EDITPROFILEVIEW</div>
+      <div class="sc-name">정보 수정</div>
+      <span class="sc-badge high">높음</span>
+      <div class="sc-stat">제목 <b>18px</b>(전체 최소)</div>
+      <div class="sc-swatches"><div class="sc-swatch" style="background:#6D57FC"></div><div class="sc-swatch" style="background:#F8F7FF"></div><div class="sc-swatch" style="background:#1B163F"></div></div>
+    </div>
+    <div class="sc-right">
+      <div class="h">체크리스트</div>
+      <ul class="sc-checklist">
+        <li><b>제목이 18px로 21개 화면 중 가장 작음</b> — "글씨가 너무 작아서 잘 안 보인다"고 했던 부분이 정확히 여기예요. 24px로 키우기</li>
+        <li>연보라 계열(<code>#F8F7FF</code> 등) 통합, 텍스트색 <code>#1B163F</code> → <code>--ink-900</code></li>
+      </ul>
+    </div>
+    <div class="sc-mock-col">
+      <div class="sc-mock-label"><span class="dot"></span>적용 후</div>
+      <div class="mp">
+        <div class="mp-title" style="font-size:15px;">정보 수정</div>
+        <div class="mp-flat"><div class="mp-l">닉네임</div><div class="mp-n">미리보기</div></div>
+        <div class="mp-flat"><div class="mp-l">즐겨찾기 그룹</div><div class="mp-n">NCT</div></div>
+        <div class="mp-btn-p">저장</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 10 -->
+  <div class="screen-card high" id="s20">
+    <div class="sc-left">
+      <div class="sc-num">10 · CHATBOTVIEW</div>
+      <div class="sc-name">트립 버디 챗봇</div>
+      <span class="sc-badge high">높음 · 최다</span>
+      <div class="sc-stat">색상 <b>19개</b>(전체 화면 중 최다)</div>
+      <div class="sc-swatches"><div class="sc-swatch" style="background:#6D57FC"></div><div class="sc-swatch" style="background:#FAF9FF"></div><div class="sc-swatch" style="background:#ECE9FF"></div><div class="sc-swatch" style="background:#A9A3C2"></div><div class="sc-swatch" style="background:#201E1D"></div></div>
+    </div>
+    <div class="sc-right">
+      <div class="h">체크리스트</div>
+      <ul class="sc-checklist">
+        <li>대화창이라 말풍선·상태점·혼잡도 카드 등 색이 원래도 좀 필요한 화면이지만, 그걸 감안해도 21개 화면 중 압도적 1위(19개)</li>
+        <li>연보라 배경류(<code>#FAF9FF</code>·<code>#ECE9FF</code>·<code>#F1F0F6</code> 등)부터 <code>--purple-50</code> 하나로 통합 — 여기만 정리해도 절반 이상 줄어듦</li>
+        <li>혼잡도 카드는 지금 예시(더미) 데이터 — 실 데이터 연동 시 색상 규칙도 같이 정하기</li>
+      </ul>
+    </div>
+    <div class="sc-mock-col">
+      <div class="sc-mock-label"><span class="dot"></span>적용 후</div>
+      <div class="mp">
+        <div style="background:#6D57FC;padding:10px 12px;color:#fff;font-size:11px;font-weight:700;">트립 버디</div>
+        <div style="padding:10px 12px;display:flex;flex-direction:column;gap:6px;">
+          <div style="background:#F3F1FF;border-radius:10px;padding:7px 9px;font-size:9.5px;align-self:flex-start;max-width:80%;">안녕! 뭐가 궁금해?</div>
+          <div style="background:#6D57FC;color:#fff;border-radius:10px;padding:7px 9px;font-size:9.5px;align-self:flex-end;max-width:80%;">영업시간 알려줘</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="page">
+    2026-09-12 · 21개 화면 .module.css 전수 실측 · 기준값은 스타일 가이드(색상·타이포·버튼 토큰) 그대로 사용
+  </footer>
+</div>

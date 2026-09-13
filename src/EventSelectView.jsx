@@ -81,6 +81,9 @@ export default function EventSelectView() {
   )
   const [detailCard, setDetailCard] = useState(null) // 팝업용 - 정보 확인 목적으로 띄우는 카드
   const [errorMessage, setErrorMessage] = useState('')
+  // 목록이 길어지면 한 번에 다 안 보여주고 5개씩 "더보기"로 늘려서 보여줌
+  const PAGE_SIZE = 5
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE)
 
   // 즐겨찾기 그룹 목록 (드롭다운용) - 최초 1회만
   useEffect(() => {
@@ -123,7 +126,10 @@ export default function EventSelectView() {
         }
         if (!res.ok) throw new Error('이벤트 목록을 불러오지 못했어요.')
         const data = await res.json()
-        if (!cancelled) setEvents(data)
+        if (!cancelled) {
+          setEvents(data)
+          setVisibleCount(PAGE_SIZE)
+        }
       } catch (e) {
         if (!cancelled) setLoadError(e.message || '이벤트 목록을 불러오지 못했어요. 잠시 후 다시 시도해주세요.')
       } finally {
@@ -221,7 +227,7 @@ export default function EventSelectView() {
           )}
           {!isLoading &&
             !loadError &&
-            dayCards.map((card) => {
+            dayCards.slice(0, visibleCount).map((card) => {
               const isSelected = selectedCard?.key === card.key
               return (
                 <div
@@ -241,6 +247,15 @@ export default function EventSelectView() {
                 </div>
               )
             })}
+          {!isLoading && !loadError && dayCards.length > visibleCount && (
+            <button
+              type="button"
+              className={styles['load-more-btn']}
+              onClick={() => setVisibleCount((v) => v + PAGE_SIZE)}
+            >
+              더보기 ({dayCards.length - visibleCount})
+            </button>
+          )}
         </div>
 
         <div className={styles['map-summary']}>

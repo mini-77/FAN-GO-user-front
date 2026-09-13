@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { apiFetch } from './api'
+import { EVENT_POSTERS } from './eventPosters'
 import modalStyles from './EventDetailModal.module.css'
 
 // EventSelectView에서 이벤트 카드를 눌렀을 때 뜨는 팝업.
@@ -68,27 +69,27 @@ export default function EventDetailModal({ card, onClose }) {
 
         {!isLoading && detail && (
           <>
-            {detail.event_img_url ? (
-              <div className={modalStyles['hero-wrap']}>
-                <img src={detail.event_img_url} alt={detail.event_nm} className={modalStyles['hero-img']} />
-              </div>
-            ) : (
-              <div className={modalStyles['map-area']}>
-                <p className={modalStyles['map-label']}>MAP</p>
-                {/* 나중에 실제 포스터 이미지(event_img_url)로 채워질 자리 - 지금은 자리 표시자만 둠 */}
-                <p className={modalStyles['map-name']}>IMAGE</p>
-              </div>
-            )}
+            {(() => {
+              // 백엔드 event_img_url이 우선, 없으면 프론트에서 관리하는 링크 매핑(eventPosters.js)을
+              // 이벤트 이름으로 찾아봄 - event_no 대신 화면에 보이는 이름 그대로 키로 쓰니까
+              // 개발자도구 없이도 등록 가능
+              const posterUrl = detail.event_img_url || EVENT_POSTERS[detail.event_nm || card.title]
+              // 포스터 사진이 없으면 MAP 자리표시자 대신 행사명·일시 정보를 바로 보여줌
+              return posterUrl ? (
+                <div className={modalStyles['hero-wrap']}>
+                  <img src={posterUrl} alt={detail.event_nm} className={modalStyles['hero-img']} />
+                </div>
+              ) : (
+                <div className={modalStyles['map-area']}>
+                  <p className={modalStyles['map-name']}>{detail.event_nm || card.title}</p>
+                  <p className={modalStyles['map-sub']}>
+                    {card.dateLabel} · {card.timeLabel}
+                  </p>
+                </div>
+              )
+            })()}
 
             <div className={modalStyles.body}>
-              {/* event_img_url이 없어서 위 MAP 플레이스홀더가 뜬 경우에만 이 출처 표기를 보여줌 -
-                  공식 포스터가 있을 땐 Google/Kakao Map 출처가 아니라서 붙이면 안 됨 */}
-              {!detail.event_img_url && (
-                <div className={modalStyles['map-row']}>
-                  <span className={modalStyles['map-label']}>MAP</span>
-                  <span className={modalStyles['photo-credit']}>사진 출처: Google Map, Kakao Map</span>
-                </div>
-              )}
               <p className={modalStyles.breadcrumb}>{detail.add || card.address}</p>
 
               <h1 className={modalStyles.title}>{detail.event_nm || card.title}</h1>
@@ -99,12 +100,6 @@ export default function EventDetailModal({ card, onClose }) {
               <p className={modalStyles.metaSub}>
                 {card.address} · {detail.event_type_nm || '콘서트'}
               </p>
-
-              <div className={modalStyles['btn-row']}>
-                <button type="button" className={modalStyles['btn-primary']} onClick={onClose}>
-                  확인
-                </button>
-              </div>
             </div>
           </>
         )}

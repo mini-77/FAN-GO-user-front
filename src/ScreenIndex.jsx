@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useTrip } from './TripContext'
+import { apiFetch } from './api'
 
 // 앱 진입 순서대로 0번부터 번호를 매김. 같은 흐름으로 이어지는 화면(회원가입 3단계,
 // 여행 만들기 7단계)은 "4-1, 4-2, 4-3..."처럼 하위번호로 묶어서 표시함.
@@ -27,10 +28,165 @@ const SCREENS = [
   { path: '/chat', name: '10. 트립 버디 챗봇 (ChatbotView)' },
 ]
 
+// 갤러리(한번에 보기) 모드에서 각 화면을 축소해서 보여줄 배율 - 390x844(폰 기준)를
+// 이 배율만큼 줄여서 스크린샷 한 장에 전체 화면이 다 들어오게 함
+const GALLERY_SCALE = 0.28
+const PHONE_WIDTH = 390
+const PHONE_HEIGHT = 844
+
+function addDaysToIso(iso, n) {
+  const d = new Date(iso)
+  d.setDate(d.getDate() + n)
+  return d.toISOString().slice(0, 10)
+}
+
 export default function ScreenIndex() {
   const { updateTrip } = useTrip()
   const [selected, setSelected] = useState(SCREENS[0])
   const [iframeKey, setIframeKey] = useState(0) // 같은 화면 다시 눌러도 새로고침되게
+  const [isGalleryMode, setIsGalleryMode] = useState(false)
+  const [isFillingDemo, setIsFillingDemo] = useState(false)
+  const [demoStatus, setDemoStatus] = useState('')
+  const [galleryKey, setGalleryKey] = useState(0) // 데모 생성 끝나면 올려서 iframe들을 새로 불러오게 함
+
+  // 캡쳐용 - 로그인은 사용자가 직접 해둔 상태여야 함(이 함수는 그 세션 쿠키를 그대로 씀).
+  // 실제 이벤트/카테고리를 백엔드에서 가져와서 자동으로 하나씩 고르고, 실제로
+  // POST /trips → recommend → trip-routes까지 호출해서 진짜 생성된 동선을 tripData에 채워둠.
+  // 그러면 갤러리(전체 화면 한번에 보기)에 뜨는 iframe들이 전부 이 실제 동선 기준으로 보임.
+  async function fillDemoAndGenerate() {
+    setIsFillingDemo(true)
+    setDemoStatus('이벤트 목록 불러오는 중...')
+    try {
+      const eventsRes = await apiFetch('/events/main')
+      if (eventsRes.status === 401) throw new Error('로그인이 안 돼 있어요. 먼저 로그인부터 해주세요.')
+      if (!eventsRes.ok) throw new Error('이벤트 목록을 못 불러왔어요.')
+      const events = await eventsRes.json()
+      if (!events.length) throw new Error('등록된 이벤트가 없어요.')
+      const eventCard = events[0]
+
+      const detailRes = await apiFetch(`/events/${eventCard.event_no}`)
+      const detail = detailRes.ok ? await detailRes.json() : {}
+
+      const selectedEvent = {
+        event_no: eventCard.event_no,
+        event_date: eventCard.event_date,
+        title: eventCard.event_nm,
+        address: detail.add || '',
+        artist_group_no: eventCard.artist_group_no ?? detail.artist_group_no ?? null,
+      }
+
+      const tripDates = {
+        startDate: addDaysToIso(selectedEvent.event_date, -1),
+        endDate: addDaysToIso(selectedEvent.event_date, 1),
+        startTime: '09:00',
+        endTime: '21:00',
+      }
+
+      // 출발/완료지는 데모용이라 이벤트 장소 좌표를 그대로 재사용함(실제 숙소/공항 검색 대신)
+      const place = {
+        type: 'custom',
+        name: detail.event_nm || selectedEvent.title,
+        address: detail.add || '',
+        lat: detail.event_lat ?? 37.5665,
+        lon: detail.event_lon ?? 126.978,
+      }
+
+      setDemoStatus('선호 카테고리 불러오는 중...')
+      const interestsRes = await apiFetch('/interests')
+      const interests = interestsRes.ok ? await interestsRes.json() : []
+      const rankedCategoryIds = interests
+        .slice(0, 3)
+        .map((i) => ({ id: i.ctg_no, name: i.ctg_nm }))
+
+      const artistGroupNo = selectedEvent.artist_group_no
+
+      updateTrip({
+        selectedEvent,
+        tripDates,
+        stays: [],
+        departure: place,
+        arrival: place,
+        rankedCategoryIds,
+        paceMembers: [],
+        paceMemberNames: [],
+        isWholeGroupSelected: true,
+        paceArtistGroupNo: artistGroupNo,
+        selectedPace: 'B',
+      })
+
+      setDemoStatus('여행 생성 중...')
+      const tripCreatePayload = {
+        event_no: selectedEvent.event_no,
+        event_date: selectedEvent.event_date,
+        start_dt: tripDates.startDate,
+        end_dt: tripDates.endDate,
+        start_tm: `${tripDates.startDate}T${tripDates.startTime}:00`,
+        end_tm: `${tripDates.endDate}T${tripDates.endTime}:00`,
+        start_place: place.name,
+        start_place_lat: place.lat,
+        start_place_lon: place.lon,
+        end_place: place.name,
+        end_place_lat: place.lat,
+        end_place_lon: place.lon,
+        accoms: [],
+        ctg_nos: rankedCategoryIds.map((c) => c.id),
+        trip_density_no: 2,
+      }
+      if (artistGroupNo) tripCreatePayload.artist_group_no = artistGroupNo
+      else tripCreatePayload.artist_nos = []
+
+      const createRes = await apiFetch('/trips', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(tripCreatePayload),
+      })
+      if (!createRes.ok) {
+        const data = await createRes.json().catch(() => null)
+        throw new Error(`여행 생성 실패: ${JSON.stringify(data?.detail || data)}`)
+      }
+      const created = await createRes.json()
+      const tripNo = created.trip_no
+
+      setDemoStatus('동선 계산 중...')
+      const recommendRes = await apiFetch(`/trips/${tripNo}/recommend`, { method: 'POST' })
+      if (!recommendRes.ok) {
+        const data = await recommendRes.json().catch(() => null)
+        throw new Error(`동선 계산 실패: ${JSON.stringify(data?.detail || data)}`)
+      }
+      const recommendResult = await recommendRes.json()
+      const days = recommendResult.days || []
+
+      setDemoStatus('동선 저장 중...')
+      const routes = days.flatMap((day) =>
+        (day.schedule || []).map((s) => ({ visit_day: day.visit_day, event_no: s.event_no }))
+      )
+      const saveRes = await apiFetch('/trip-routes', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ trip_no: tripNo, routes }),
+      })
+      if (!saveRes.ok) {
+        const data = await saveRes.json().catch(() => null)
+        throw new Error(`동선 저장 실패: ${JSON.stringify(data?.detail || data)}`)
+      }
+
+      updateTrip({
+        tripNo,
+        routesSaved: true,
+        generatedDays: days,
+        generatedSummary: recommendResult.summary || null,
+        generatedWarning: recommendResult.warning || null,
+      })
+
+      setDemoStatus(`완료! "${selectedEvent.title}" 기준으로 동선까지 만들었어요.`)
+      setGalleryKey((k) => k + 1)
+      setIframeKey((k) => k + 1)
+    } catch (e) {
+      setDemoStatus(`실패: ${e.message}`)
+    } finally {
+      setIsFillingDemo(false)
+    }
+  }
 
   function selectScreen(screen) {
     // 계정생성을 안 거치고 아티스트 선택을 미리보기만 할 때, 저장소에 더미 계정정보를 채워줌.
@@ -53,6 +209,9 @@ export default function ScreenIndex() {
     setIframeKey((k) => k + 1)
   }
 
+  const scaledWidth = PHONE_WIDTH * GALLERY_SCALE
+  const scaledHeight = PHONE_HEIGHT * GALLERY_SCALE
+
   return (
     <div
       style={{
@@ -60,79 +219,183 @@ export default function ScreenIndex() {
         background: '#ececec',
         fontFamily: 'sans-serif',
         display: 'flex',
-        alignItems: 'flex-start',
-        justifyContent: 'flex-start',
+        flexDirection: 'column',
       }}
     >
-      {/* 왼쪽: 화면 목록 - 스크롤 없이 전체 다 보이게, 왼쪽 끝에 붙임 */}
+      {/* 상단 바 - 목록/한번에 보기 모드 전환 */}
       <div
         style={{
-          width: 300,
-          minWidth: 300,
-          borderRight: '1px solid #E8E4FF',
-          padding: '4px 12px',
-          boxSizing: 'border-box',
+          padding: '10px 16px',
+          borderBottom: '1px solid #E8E4FF',
+          background: '#fff',
+          display: 'flex',
+          alignItems: 'center',
+          gap: 10,
         }}
       >
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-          {SCREENS.map((s) => {
-            const isActive = selected.path === s.path
-            return (
-              <button
-                key={s.path}
-                onClick={() => selectScreen(s)}
+        <strong style={{ fontSize: 13, color: '#1B163F' }}>화면 목록 ({SCREENS.length}개)</strong>
+        {demoStatus && (
+          <span style={{ fontSize: 11.5, color: demoStatus.startsWith('실패') ? '#E64545' : '#6D57FC' }}>
+            {demoStatus}
+          </span>
+        )}
+        <button
+          onClick={fillDemoAndGenerate}
+          disabled={isFillingDemo}
+          style={{
+            marginLeft: 'auto',
+            padding: '7px 14px',
+            borderRadius: 999,
+            border: '1px solid #6D57FC',
+            background: '#fff',
+            color: '#6D57FC',
+            fontSize: 12,
+            fontWeight: 700,
+            cursor: isFillingDemo ? 'default' : 'pointer',
+            opacity: isFillingDemo ? 0.6 : 1,
+          }}
+        >
+          {isFillingDemo ? '생성 중...' : '로그인 상태로 자동 선택→동선 생성'}
+        </button>
+        <button
+          onClick={() => setIsGalleryMode((v) => !v)}
+          style={{
+            padding: '7px 14px',
+            borderRadius: 999,
+            border: '1px solid #6D57FC',
+            background: isGalleryMode ? '#6D57FC' : '#fff',
+            color: isGalleryMode ? '#fff' : '#6D57FC',
+            fontSize: 12,
+            fontWeight: 700,
+            cursor: 'pointer',
+          }}
+        >
+          {isGalleryMode ? '개별 미리보기로' : '전체 화면 한번에 보기 (캡쳐용)'}
+        </button>
+      </div>
+
+      {isGalleryMode ? (
+        // 모든 화면을 축소된 iframe으로 한 페이지에 늘어놓음 - 이 영역 전체를 스크린샷하면 됨
+        <div
+          style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            gap: 14,
+            padding: 20,
+          }}
+        >
+          {SCREENS.map((s) => (
+            <div key={s.path} style={{ width: scaledWidth }}>
+              <div
                 style={{
-                  padding: '8px 12px',
-                  background: isActive ? '#6D57FC' : '#fff',
+                  width: scaledWidth,
+                  height: scaledHeight,
+                  overflow: 'hidden',
                   borderRadius: 8,
-                  border: '1px solid #E8E4FF',
-                  color: isActive ? '#fff' : '#1B163F',
-                  fontSize: 12,
+                  background: '#fff',
+                  boxShadow: '0 4px 14px rgba(0,0,0,0.15)',
+                }}
+              >
+                <iframe
+                  key={galleryKey}
+                  src={s.path}
+                  title={s.name}
+                  style={{
+                    width: PHONE_WIDTH,
+                    height: PHONE_HEIGHT,
+                    border: 'none',
+                    transform: `scale(${GALLERY_SCALE})`,
+                    transformOrigin: 'top left',
+                  }}
+                />
+              </div>
+              <p
+                style={{
+                  margin: '6px 0 0',
+                  fontSize: 10.5,
                   fontWeight: 600,
-                  textAlign: 'left',
-                  cursor: 'pointer',
+                  color: '#1B163F',
+                  lineHeight: 1.3,
                 }}
               >
                 {s.name}
-              </button>
-            )
-          })}
+              </p>
+            </div>
+          ))}
         </div>
-      </div>
+      ) : (
+        <div style={{ flex: 1, display: 'flex', alignItems: 'flex-start', justifyContent: 'flex-start' }}>
+          {/* 왼쪽: 화면 목록 - 스크롤 없이 전체 다 보이게, 왼쪽 끝에 붙임 */}
+          <div
+            style={{
+              width: 300,
+              minWidth: 300,
+              borderRight: '1px solid #E8E4FF',
+              padding: '4px 12px',
+              boxSizing: 'border-box',
+            }}
+          >
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+              {SCREENS.map((s) => {
+                const isActive = selected.path === s.path
+                return (
+                  <button
+                    key={s.path}
+                    onClick={() => selectScreen(s)}
+                    style={{
+                      padding: '8px 12px',
+                      background: isActive ? '#6D57FC' : '#fff',
+                      borderRadius: 8,
+                      border: '1px solid #E8E4FF',
+                      color: isActive ? '#fff' : '#1B163F',
+                      fontSize: 12,
+                      fontWeight: 600,
+                      textAlign: 'left',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    {s.name}
+                  </button>
+                )
+              })}
+            </div>
+          </div>
 
-      {/* 오른쪽: 실제 화면 미리보기 (iframe) - 왼쪽 목록을 스크롤해도 화면에 고정되게 sticky */}
-      <div
-        style={{
-          flex: 1,
-          position: 'sticky',
-          top: 0,
-          height: '100vh',
-          display: 'flex',
-          alignItems: 'flex-start',
-          justifyContent: 'center',
-          overflow: 'hidden',
-          paddingTop: 4,
-          boxSizing: 'border-box',
-        }}
-      >
-        <div
-          style={{
-            width: 420,
-            height: 'calc(100vh - 8px)',
-            background: '#fff',
-            borderRadius: 20,
-            overflow: 'hidden',
-            boxShadow: '0 8px 30px rgba(0,0,0,0.15)',
-          }}
-        >
-          <iframe
-            key={iframeKey}
-            src={selected.path}
-            title={selected.name}
-            style={{ width: '100%', height: '100%', border: 'none' }}
-          />
+          {/* 오른쪽: 실제 화면 미리보기 (iframe) - 왼쪽 목록을 스크롤해도 화면에 고정되게 sticky */}
+          <div
+            style={{
+              flex: 1,
+              position: 'sticky',
+              top: 0,
+              height: 'calc(100vh - 45px)',
+              display: 'flex',
+              alignItems: 'flex-start',
+              justifyContent: 'center',
+              overflow: 'hidden',
+              paddingTop: 4,
+              boxSizing: 'border-box',
+            }}
+          >
+            <div
+              style={{
+                width: 420,
+                height: 'calc(100vh - 53px)',
+                background: '#fff',
+                borderRadius: 20,
+                overflow: 'hidden',
+                boxShadow: '0 8px 30px rgba(0,0,0,0.15)',
+              }}
+            >
+              <iframe
+                key={iframeKey}
+                src={selected.path}
+                title={selected.name}
+                style={{ width: '100%', height: '100%', border: 'none' }}
+              />
+            </div>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   )
 }

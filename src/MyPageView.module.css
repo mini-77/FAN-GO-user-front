@@ -96,7 +96,6 @@
 }
 
 .card.dark .logout-btn {
-  background: #221F2E;
   color: rgba(244, 242, 255, 0.8);
 }
 
@@ -366,14 +365,12 @@
 }
 
 .logout-btn {
-  width: 100%;
-  min-height: 48px;
-  border-radius: 100px;
-  background: #F8F7FF;
-  border: 1px solid #E8E4FF;
+  background: none;
+  border: none;
+  padding: 4px;
   color: #1B163F;
   font-family: 'Urbanist', sans-serif;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
   text-align: center;
   cursor: pointer;

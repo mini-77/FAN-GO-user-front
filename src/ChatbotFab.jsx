@@ -26,7 +26,7 @@ const HAS_BOTTOM_NAV = ['/home', '/trip/my', '/trip/feedback']
 const HAS_ACTIONS_ABOVE_NAV = ['/trip/itinerary', '/trip/schedule', '/trip/history']
 
 // 탭바는 없지만 화면 맨 아래에 저장/제출 버튼 한 줄이 있는 화면
-const HAS_SINGLE_ACTION_ROW = ['/trip/itinerary/edit']
+const HAS_SINGLE_ACTION_ROW = ['/trip/itinerary/edit', '/trip/events']
 
 export default function ChatbotFab() {
   const navigate = useNavigate()
