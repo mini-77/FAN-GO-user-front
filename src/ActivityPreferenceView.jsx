@@ -226,6 +226,7 @@ export default function ActivityPreferenceView() {
               border: '1px solid var(--color-primary-200)',
             }}
           >
+            {/* 초기화 버튼 공통 가이드 - 항상 Outline(흰 배경), Primary(filled)로 만들지 않음 */}
             <button
               type="button"
               onClick={resetRanking}
@@ -234,7 +235,7 @@ export default function ActivityPreferenceView() {
                 flex: 1,
                 border: 'none',
                 borderRight: '1px solid var(--color-primary-200)',
-                background: 'var(--color-primary-50)',
+                background: '#fff',
                 color: 'var(--color-primary-500)',
                 fontWeight: 600,
                 fontSize: 14,
@@ -245,6 +246,7 @@ export default function ActivityPreferenceView() {
             >
               초기화
             </button>
+            {/* 06 버튼 규칙 - 비활성 상태는 옅은 톤(#D9D4F5)으로 구분 */}
             <button
               type="button"
               onClick={goNext}
@@ -252,8 +254,8 @@ export default function ActivityPreferenceView() {
               style={{
                 flex: 1,
                 border: 'none',
-                background: isFormValid ? 'var(--color-primary-500)' : '#C9C1FF',
-                color: '#fff',
+                background: isFormValid ? 'var(--color-primary-500)' : '#D9D4F5',
+                color: isFormValid ? '#fff' : 'var(--color-primary-600)',
                 fontWeight: 600,
                 fontSize: 14,
                 padding: '12px 0',

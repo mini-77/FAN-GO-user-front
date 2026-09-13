@@ -59,7 +59,7 @@ export const translations = {
       period: '기간',
       travelSchedule: '여행 일정',
       mySchedule: '나의 일정',
-      createNewSchedule: '새로운 일정 생성',
+      createNewSchedule: '일정 만들기', // 09 카피&용어 - 확정 표기("일정 만들기"), "새로운 일정 생성" 사용 금지
       edit: '수정',
       editInfo: '정보 수정',
       editRoute: '동선 수정',
