@@ -4,7 +4,7 @@
   min-height: 100vh;
   display: flex;
   justify-content: center;
-  background: #ececec;
+  background: var(--color-screen-bg);
   padding: 24px 16px;
   font-family: 'IBM Plex Sans KR', sans-serif;
 }
@@ -16,7 +16,7 @@
   background: #fff;
   border-radius: 20px;
   box-shadow: 0px 3px 10px rgba(181, 179, 193, 0.11);
-  outline: 1px solid #EFEDFA;
+  outline: 1px solid var(--color-border);
   outline-offset: -1px;
   box-sizing: border-box;
   display: flex;
@@ -26,7 +26,7 @@
 
 .header {
   padding: 14px 18px 12px;
-  border-bottom: 1px solid #EFEDFA;
+  border-bottom: 1px solid var(--color-border);
 }
 
 .title {
@@ -34,14 +34,14 @@
   font-weight: 600;
   line-height: 28px;
   letter-spacing: 0.38px;
-  color: #201E1D;
+  color: var(--color-ink-900);
   margin: 0;
 }
 
 .tab-row {
   display: flex;
   padding: 0 18px;
-  border-bottom: 1px solid #EFEDFA;
+  border-bottom: 1px solid var(--color-border);
 }
 
 .tab-btn {
@@ -56,8 +56,8 @@
 }
 
 .tab-btn.active {
-  color: #0C0A1C;
-  border-bottom-color: #6D57FC;
+  color: var(--color-ink-900);
+  border-bottom-color: var(--color-primary-500);
 }
 
 .list {
@@ -70,24 +70,24 @@
 
 .trip-row {
   padding: 13px 18px;
-  border-bottom: 1px solid #EFEDFA;
+  border-bottom: 1px solid var(--color-border);
   display: flex;
   gap: 11px;
   cursor: pointer;
 }
 
 .trip-row.ongoingRow {
-  background: #F0EEFF;
+  background: var(--color-primary-100);
 }
 
 .load-more-btn {
   width: calc(100% - 36px);
   margin: 10px 18px 0;
   padding: 12px;
-  border: 1px solid #E8E4FF;
+  border: 1px solid var(--color-primary-200);
   border-radius: 12px;
   background: #fff;
-  color: #6D57FC;
+  color: var(--color-primary-500);
   font-family: inherit;
   font-size: 13px;
   font-weight: 600;
@@ -116,7 +116,7 @@
   font-family: 'Inter', sans-serif;
   font-size: 12px;
   font-weight: 600;
-  color: #0C0A1C;
+  color: var(--color-ink-900);
   margin-top: 4px;
 }
 
@@ -131,7 +131,7 @@
 .trip-title {
   font-size: 13.5px;
   font-weight: 600;
-  color: #201E1D;
+  color: var(--color-ink-900);
 }
 
 .trip-meta {
@@ -161,7 +161,7 @@
   font-family: 'Inter', sans-serif;
   font-size: 12px;
   font-weight: 600;
-  color: #6D57FC;
+  color: var(--color-primary-500);
 }
 
 .trip-status {
@@ -170,7 +170,7 @@
 }
 
 .trip-status.ongoing {
-  color: #5A45D6;
+  color: var(--color-primary-600);
 }
 
 .trip-status.done {
@@ -178,7 +178,7 @@
 }
 
 .trip-status.upcoming {
-  color: #6D57FC;
+  color: var(--color-primary-500);
 }
 
 .empty-hint {
@@ -203,9 +203,9 @@
   margin-top: 10px;
   padding: 8px 16px;
   border-radius: 12px;
-  background: #F8F7FF;
-  border: 1px solid #E8E4FF;
-  color: #6D57FC;
+  background: var(--color-primary-50);
+  border: 1px solid var(--color-primary-200);
+  color: var(--color-primary-500);
   font-size: 12px;
   font-weight: 600;
   cursor: pointer;
@@ -217,7 +217,7 @@
 
 .footer {
   padding: 12px 18px 20px;
-  border-top: 1px solid #EFEDFA;
+  border-top: 1px solid var(--color-border);
   display: flex;
   justify-content: flex-end;
 }
@@ -225,7 +225,7 @@
 .new-btn {
   padding: 12px 20px;
   border-radius: 12px;
-  background: #6D57FC;
+  background: var(--color-primary-500);
   border: none;
   color: #fff;
   font-size: 14px;
@@ -234,7 +234,7 @@
 }
 
 .new-btn:hover {
-  background: #5a45e0;
+  background: var(--color-primary-600);
 }
 /* 실제 폰 화면(카드 최대폭보다 좁은 뷰포트)에서는 데스크톱 미리보기용 "폰 목업" 프레임
    (회색 배경 · 여백 · 둥근 모서리)을 없애고 화면 전체를 꽉 채움 */

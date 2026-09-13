@@ -225,7 +225,7 @@ export default function EditProfileView() {
 
         {loadError && (
           <div style={{ padding: '0 22px' }}>
-            <p className={styles.hint} style={{ color: '#E64545' }}>{loadError}</p>
+            <p className={styles.hint} style={{ color: 'var(--color-danger)' }}>{loadError}</p>
             <button type="button" className={styles['avatar-change-btn']} onClick={loadOptions}>
               다시 시도
             </button>
@@ -359,7 +359,7 @@ export default function EditProfileView() {
         </div>
 
         {saveError && (
-          <p className={styles.hint} style={{ padding: '0 22px', color: '#E64545' }}>
+          <p className={styles.hint} style={{ padding: '0 22px', color: 'var(--color-danger)' }}>
             {saveError}
           </p>
         )}

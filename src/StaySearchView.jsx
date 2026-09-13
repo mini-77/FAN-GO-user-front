@@ -387,7 +387,7 @@ export default function StaySearchView() {
         </div>
 
         {locationError && (
-          <p className={styles['field-label']} style={{ padding: '10px 18px 0', color: '#E64545' }}>
+          <p className={styles['field-label']} style={{ padding: '10px 18px 0', color: 'var(--color-danger)' }}>
             {locationError}
           </p>
         )}
@@ -399,7 +399,7 @@ export default function StaySearchView() {
             </p>
           )}
           {searchStatus === 'error' && (
-            <p className={styles['field-label']} style={{ color: '#E64545' }}>
+            <p className={styles['field-label']} style={{ color: 'var(--color-danger)' }}>
               검색 중 문제가 생겼어요. 잠시 후 다시 시도해주세요.
             </p>
           )}
@@ -426,7 +426,7 @@ export default function StaySearchView() {
 
           {selected ? (
             <div className={styles['result-card']}>
-              <div className={styles['result-icon']}><Icon name="building" size={18} color="#6D57FC" /></div>
+              <div className={styles['result-icon']}><Icon name="building" size={18} color="var(--color-primary-500)" /></div>
               <div>
                 <div className={styles['result-name-row']}>
                   <span className={styles['result-name']}>{selected.name}</span>
@@ -481,12 +481,12 @@ export default function StaySearchView() {
               </div>
 
               {stayDateError && (
-                <p className={styles['field-label']} style={{ color: '#E64545' }}>
+                <p className={styles['field-label']} style={{ color: 'var(--color-danger)' }}>
                   {stayDateError}
                 </p>
               )}
               {maxStaysError && (
-                <p className={styles['field-label']} style={{ color: '#E64545' }}>
+                <p className={styles['field-label']} style={{ color: 'var(--color-danger)' }}>
                   {maxStaysError}
                 </p>
               )}

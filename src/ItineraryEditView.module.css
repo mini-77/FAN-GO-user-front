@@ -4,7 +4,7 @@
   min-height: 100vh;
   display: flex;
   justify-content: center;
-  background: #ececec;
+  background: var(--color-screen-bg);
   padding: 24px 16px;
   font-family: 'IBM Plex Sans KR', sans-serif;
 }
@@ -16,7 +16,7 @@
   background: #fff;
   border-radius: 20px;
   box-shadow: 0px 3px 10px rgba(181, 179, 193, 0.11);
-  outline: 1px solid #EFEDFA;
+  outline: 1px solid var(--color-border);
   outline-offset: -1px;
   box-sizing: border-box;
   display: flex;
@@ -35,7 +35,7 @@
 
 .header {
   padding: 12px 18px 10px;
-  border-bottom: 1px solid #EFEDFA;
+  border-bottom: 1px solid var(--color-border);
   display: flex;
   flex-direction: column;
   gap: 6px;
@@ -58,9 +58,9 @@
   height: 30px;
   min-width: 30px;
   border-radius: 15px;
-  background: #F8F7FF;
-  border: 1px solid #E8E4FF;
-  color: #6D57FC;
+  background: var(--color-primary-50);
+  border: 1px solid var(--color-primary-200);
+  color: var(--color-primary-500);
   font-family: 'Urbanist', sans-serif;
   font-size: 13px;
   font-weight: 600;
@@ -80,7 +80,7 @@
 .title {
   font-size: 25px;
   font-weight: 600;
-  color: #201E1D;
+  color: var(--color-ink-900);
   margin: 0;
 }
 
@@ -111,7 +111,7 @@
 .place-name {
   font-size: 17px;
   font-weight: 700;
-  color: #201E1D;
+  color: var(--color-ink-900);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -133,14 +133,14 @@
   min-width: 64px;
   font-size: 12.5px;
   font-weight: 700;
-  color: #6D57FC;
+  color: var(--color-primary-500);
   white-space: nowrap;
 }
 
 .place-fixed-badge {
   display: inline-block;
   padding: 2px 7px;
-  background: #6D57FC;
+  background: var(--color-primary-500);
   border-radius: 20px;
   font-size: 9.5px;
   font-weight: 700;
@@ -150,13 +150,13 @@
 
 /* 스탑 목록 */
 .stop-block {
-  border-bottom: 1px solid #EFEDFA;
+  border-bottom: 1px solid var(--color-border);
 }
 
 .stop-row {
   padding: 13px 16px;
   margin: 8px;
-  background: #F8F7FF;
+  background: var(--color-primary-50);
   border-radius: 20px;
   display: flex;
   align-items: flex-start;
@@ -166,8 +166,8 @@
 
 /* 펼친 헤더 - 연한 배경 + 보라 테두리로 "열림" 표시, candidates-panel과 이어붙임 */
 .stop-row.expanded {
-  background: #F8F7FF;
-  border: 2px solid #6D57FC;
+  background: var(--color-primary-50);
+  border: 2px solid var(--color-primary-500);
   border-bottom: none;
   border-radius: 20px 20px 0 0;
   margin-bottom: 0;
@@ -178,8 +178,8 @@
   height: 34px;
   min-width: 34px;
   border-radius: 12px;
-  background: #F0EEFF;
-  color: #6D57FC;
+  background: var(--color-primary-100);
+  color: var(--color-primary-500);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -189,7 +189,7 @@
 }
 
 .stop-row.expanded .stop-num {
-  background: #6D57FC;
+  background: var(--color-primary-500);
   color: #fff;
 }
 
@@ -209,35 +209,35 @@
 .stop-name {
   font-size: 14px;
   font-weight: 600;
-  color: #201E1D;
+  color: var(--color-ink-900);
 }
 
 .stop-row.expanded .stop-name {
-  color: #201E1D;
+  color: var(--color-ink-900);
 }
 
 .stop-tag {
   padding: 2px 5px;
-  background: #F0EEFF;
+  background: var(--color-primary-100);
   border-radius: 20px;
   font-family: 'Urbanist', sans-serif;
   font-size: 9px;
   font-weight: 600;
   letter-spacing: 0.9px;
-  color: #6D57FC;
+  color: var(--color-primary-500);
 }
 
 /* 고정(공연) 항목 - 다른 칸과 확실히 구분되게 진한 보라 배경 + 큰 배지 */
 .stop-row-pinned {
-  background: #F8F7FF !important;
-  border: 1.5px solid #6D57FC;
+  background: var(--color-primary-50) !important;
+  border: 1.5px solid var(--color-primary-500);
 }
 
 .stop-tag-fixed {
   flex-shrink: 0;
   white-space: nowrap;
   padding: 3px 9px;
-  background: #6D57FC;
+  background: var(--color-primary-500);
   border-radius: 20px;
   font-size: 10.5px;
   font-weight: 700;
@@ -259,12 +259,12 @@
   font-family: 'Inter', sans-serif;
   font-size: 12px;
   font-weight: 600;
-  color: #6D57FC;
+  color: var(--color-primary-500);
   padding-top: 2px;
 }
 
 .stop-row.expanded .stop-score {
-  color: #6D57FC;
+  color: var(--color-primary-500);
 }
 
 /* 화살표 - 동그란 보라 버튼처럼, 펼치면 채워지고 회전 */
@@ -273,8 +273,8 @@
   height: 22px;
   min-width: 22px;
   border-radius: 50%;
-  background: #F0EEFF;
-  color: #6D57FC;
+  background: var(--color-primary-100);
+  color: var(--color-primary-500);
   font-size: 10px;
   display: flex;
   align-items: center;
@@ -285,7 +285,7 @@
 }
 
 .stop-row.expanded .stop-chevron {
-  background: #6D57FC;
+  background: var(--color-primary-500);
   color: #fff;
   transform: rotate(180deg);
 }
@@ -294,7 +294,7 @@
 .candidates-panel {
   margin: 0 8px 8px;
   background: #fff;
-  border: 2px solid #6D57FC;
+  border: 2px solid var(--color-primary-500);
   border-top: none;
   border-radius: 0 0 16px 16px;
   overflow: hidden;
@@ -306,7 +306,7 @@
   align-items: center;
   gap: 8px;
   background: #fff;
-  border-bottom: 1px solid #F0EEFF;
+  border-bottom: 1px solid var(--color-primary-100);
 }
 
 .candidates-label {
@@ -314,7 +314,7 @@
   font-size: 10px;
   font-weight: 600;
   letter-spacing: 1.2px;
-  color: #6D57FC;
+  color: var(--color-primary-500);
 }
 
 .candidates-sub {
@@ -327,7 +327,7 @@
 .candidate-row {
   padding: 10px 16px;
   background: #fff;
-  border-top: 1px solid #F0EEFF;
+  border-top: 1px solid var(--color-primary-100);
   display: flex;
   align-items: center;
   gap: 10px;
@@ -349,17 +349,17 @@
 .candidate-name {
   font-size: 13px;
   font-weight: 600;
-  color: #201E1D;
+  color: var(--color-ink-900);
 }
 
 .candidate-category-tag {
   padding: 2px 5px;
-  background: #F0EEFF;
+  background: var(--color-primary-100);
   border-radius: 20px;
   font-family: 'Urbanist', sans-serif;
   font-size: 9px;
   font-weight: 600;
-  color: #6D57FC;
+  color: var(--color-primary-500);
 }
 
 .candidate-en {
@@ -390,15 +390,15 @@
   font-family: 'Inter', sans-serif;
   font-size: 12px;
   font-weight: 700;
-  color: #6D57FC;
+  color: var(--color-primary-500);
 }
 
 .candidate-swap-btn {
   padding: 8px 14px;
   background: #fff;
-  border: 1.5px solid #6D57FC;
+  border: 1.5px solid var(--color-primary-500);
   border-radius: 12px;
-  color: #6D57FC;
+  color: var(--color-primary-500);
   font-size: 11.5px;
   font-weight: 600;
   cursor: pointer;
@@ -406,7 +406,7 @@
 }
 
 .candidate-swap-btn:hover {
-  background: #F0EEFF;
+  background: var(--color-primary-100);
 }
 
 .candidates-empty {
@@ -427,7 +427,7 @@
 /* 하단 요약 + 버튼 */
 .summary-bar {
   padding: 11px 18px;
-  border-top: 1px solid #EFEDFA;
+  border-top: 1px solid var(--color-border);
   display: flex;
   gap: 10px;
 }
@@ -451,7 +451,7 @@
   font-family: 'Inter', sans-serif;
   font-size: 13px;
   font-weight: 600;
-  color: #0C0A1C;
+  color: var(--color-ink-900);
 }
 
 .action-row {
@@ -464,9 +464,9 @@
   padding: 0 14px;
   min-height: 46px;
   border-radius: 12px;
-  background: #F8F7FF;
-  border: 1px solid #E8E4FF;
-  color: #1B163F;
+  background: var(--color-primary-50);
+  border: 1px solid var(--color-primary-200);
+  color: var(--color-ink-900);
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
@@ -478,7 +478,7 @@
   min-height: 46px;
   border: none;
   border-radius: 12px;
-  background: #6D57FC;
+  background: var(--color-primary-500);
   color: #fff;
   font-size: 14px;
   font-weight: 600;
@@ -486,7 +486,7 @@
 }
 
 .btn-primary:hover {
-  background: #5a45e0;
+  background: var(--color-primary-600);
 }
 /* 실제 폰 화면(카드 최대폭보다 좁은 뷰포트)에서는 데스크톱 미리보기용 "폰 목업" 프레임
    (회색 배경 · 여백 · 둥근 모서리)을 없애고 화면 전체를 꽉 채움 */

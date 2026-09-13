@@ -180,7 +180,7 @@ export default function FeedbackView() {
               <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
                 <path
                   d="M5 13l4 4L19 7"
-                  stroke="#6D57FC"
+                  style={{ stroke: 'var(--color-primary-500)' }}
                   strokeWidth="2.5"
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -298,7 +298,7 @@ export default function FeedbackView() {
           </div>
 
           {submitError && (
-            <p className={styles.starHint} style={{ color: '#E64545' }}>
+            <p className={styles.starHint} style={{ color: 'var(--color-danger)' }}>
               {submitError}
             </p>
           )}

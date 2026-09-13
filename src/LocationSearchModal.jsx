@@ -278,7 +278,7 @@ export default function LocationSearchModal({ title, initialPlace, onConfirm, on
         </div>
 
         {locationError && (
-          <p className={styles.hint} style={{ color: '#E64545' }}>
+          <p className={styles.hint} style={{ color: 'var(--color-danger)' }}>
             {locationError}
           </p>
         )}
@@ -287,7 +287,7 @@ export default function LocationSearchModal({ title, initialPlace, onConfirm, on
           <p className={styles.hint}>'{query}'(으)로 검색된 곳이 없어요. 다른 키워드로 검색해보세요.</p>
         )}
         {searchStatus === 'error' && (
-          <p className={styles.hint} style={{ color: '#E64545' }}>
+          <p className={styles.hint} style={{ color: 'var(--color-danger)' }}>
             검색 중 문제가 생겼어요. 잠시 후 다시 시도해주세요.
           </p>
         )}
@@ -316,14 +316,14 @@ export default function LocationSearchModal({ title, initialPlace, onConfirm, on
             style={{
               margin: '12px 18px 0',
               padding: '12px 14px',
-              border: '1px solid #EFEDFA',
+              border: '1px solid var(--color-border)',
               borderRadius: 14,
               background: '#FAF9FF',
             }}
           >
             <div style={{ fontSize: 13, fontWeight: 700 }}>{pickedPlace.name}</div>
             <div style={{ marginTop: 4, fontSize: 11.5, color: 'rgba(27,22,63,0.58)' }}>{pickedPlace.address}</div>
-            <div style={{ marginTop: 5, fontSize: 11, color: '#6D57FC' }}>
+            <div style={{ marginTop: 5, fontSize: 11, color: 'var(--color-primary-500)' }}>
               지도 위 마커를 드래그해서 위치를 조정할 수 있어요.
             </div>
           </div>

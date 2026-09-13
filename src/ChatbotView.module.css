@@ -4,7 +4,7 @@
   min-height: 100vh;
   display: flex;
   justify-content: center;
-  background: #ececec;
+  background: var(--color-screen-bg);
   padding: 24px 16px;
   font-family: 'IBM Plex Sans KR', sans-serif;
 }
@@ -16,7 +16,7 @@
   background: #fff;
   border-radius: 20px;
   box-shadow: 0px 3px 10px rgba(181, 179, 193, 0.11);
-  outline: 1px solid #EFEDFA;
+  outline: 1px solid var(--color-border);
   outline-offset: -1px;
   box-sizing: border-box;
   display: flex;
@@ -28,7 +28,7 @@
 .header {
   flex-shrink: 0;
   padding: 14px 18px;
-  background: #6D57FC;
+  background: var(--color-primary-500);
   display: flex;
   align-items: center;
   gap: 10px;
@@ -119,13 +119,13 @@
   font-family: 'Urbanist', sans-serif;
   font-size: 13px;
   font-weight: 600;
-  color: #201E1D;
+  color: var(--color-ink-900);
 }
 
 .newChatLink {
   border: none;
   background: transparent;
-  color: #6D57FC;
+  color: var(--color-primary-500);
   font-size: 12px;
   font-weight: 600;
   cursor: pointer;
@@ -160,8 +160,8 @@
 }
 
 .historyCardActive {
-  border-color: #6D57FC;
-  background: #F8F7FF;
+  border-color: var(--color-primary-500);
+  background: var(--color-primary-50);
 }
 
 .historyIcon {
@@ -186,7 +186,7 @@
 .historyTitle {
   font-size: 13px;
   font-weight: 600;
-  color: #201E1D;
+  color: var(--color-ink-900);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -248,12 +248,12 @@
 
 .bubbleAssistant {
   background: #F1F0F6;
-  color: #201E1D;
+  color: var(--color-ink-900);
   border-radius: 18px 18px 18px 6px;
 }
 
 .bubbleUser {
-  background: #6D57FC;
+  background: var(--color-primary-500);
   color: #fff;
   border-radius: 18px 18px 6px 18px;
   box-shadow: 0 6px 14px rgba(109, 87, 252, 0.3);
@@ -261,7 +261,7 @@
 
 .bubbleError {
   background: #FCEAEA;
-  color: #E64545;
+  color: var(--color-danger);
 }
 
 .fallbackTag {
@@ -293,7 +293,7 @@
   padding: 6px 18px 0;
   margin: 0;
   font-size: 11px;
-  color: #E64545;
+  color: var(--color-danger);
   background: #FAF9FF;
 }
 
@@ -311,9 +311,9 @@
   flex-shrink: 0;
   padding: 10px 16px;
   border-radius: 999px;
-  border: 1px solid #A89BFF;
+  border: 1px solid var(--color-primary-400);
   background: #fff;
-  color: #6D57FC;
+  color: var(--color-primary-500);
   font-size: 13px;
   font-weight: 600;
   white-space: nowrap;
@@ -333,19 +333,19 @@
   gap: 8px;
   padding: 12px 14px;
   background: #fff;
-  border-top: 1px solid #EFEDFA;
+  border-top: 1px solid var(--color-border);
 }
 
 .input {
   flex: 1;
   height: 42px;
   padding: 0 16px;
-  border: 1px solid #EFEDFA;
+  border: 1px solid var(--color-border);
   border-radius: 999px;
   background: #F7F6FC;
   font-family: 'IBM Plex Sans KR', sans-serif;
   font-size: 13px;
-  color: #201E1D;
+  color: var(--color-ink-900);
 }
 
 .input::placeholder {
@@ -354,7 +354,7 @@
 
 .input:focus {
   outline: none;
-  border-color: #A89BFF;
+  border-color: var(--color-primary-400);
 }
 
 .sendBtn {
@@ -363,7 +363,7 @@
   flex-shrink: 0;
   border: none;
   border-radius: 999px;
-  background: #6D57FC;
+  background: var(--color-primary-500);
   color: #fff;
   font-size: 15px;
   cursor: pointer;
@@ -396,14 +396,14 @@
 .congestionEyebrow {
   font-size: 11px;
   font-weight: 600;
-  color: #6D57FC;
+  color: var(--color-primary-500);
   letter-spacing: 0.4px;
 }
 
 .congestionTitle {
   font-size: 14px;
   font-weight: 600;
-  color: #201E1D;
+  color: var(--color-ink-900);
   margin-top: 4px;
 }
 
@@ -469,7 +469,7 @@
   flex-shrink: 0;
   display: flex;
   align-items: center;
-  border-top: 1px solid #EFEDFA;
+  border-top: 1px solid var(--color-border);
   background: #fff;
 }
 
@@ -484,7 +484,7 @@
 }
 
 .navItemActive {
-  color: #6D57FC;
+  color: var(--color-primary-500);
   position: relative;
 }
 
@@ -497,7 +497,7 @@
   width: 22px;
   height: 2px;
   border-radius: 2px;
-  background: #6D57FC;
+  background: var(--color-primary-500);
 }
 /* 실제 폰 화면(카드 최대폭보다 좁은 뷰포트)에서는 데스크톱 미리보기용 "폰 목업" 프레임
    (회색 배경 · 여백 · 둥근 모서리)을 없애고 화면 전체를 꽉 채움 */

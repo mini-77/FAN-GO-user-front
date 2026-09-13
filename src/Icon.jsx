@@ -38,12 +38,10 @@ export default function Icon({ name, size = 24, strokeWidth = 1.5, color = 'curr
       width={size}
       height={size}
       viewBox="0 0 24 24"
-      fill={filled ? color : 'none'}
-      stroke={color}
       strokeWidth={strokeWidth}
       strokeLinecap="round"
       strokeLinejoin="round"
-      style={style}
+      style={{ fill: filled ? color : 'none', stroke: color, ...style }}
       className={className}
       aria-hidden="true"
     >

@@ -4,7 +4,7 @@
   min-height: 100vh;
   display: flex;
   justify-content: center;
-  background: #ececec;
+  background: var(--color-screen-bg);
   padding: 24px 16px;
   font-family: 'IBM Plex Sans KR', sans-serif;
 }
@@ -15,7 +15,7 @@
   background: #fff;
   border-radius: 20px;
   box-shadow: 0px 3px 10px rgba(181, 179, 193, 0.11);
-  outline: 1px solid #EFEDFA;
+  outline: 1px solid var(--color-border);
   outline-offset: -1px;
   box-sizing: border-box;
   display: flex;
@@ -30,7 +30,7 @@
 
 .header {
   padding: 14px 18px 12px;
-  border-bottom: 1px solid #EFEDFA;
+  border-bottom: 1px solid var(--color-border);
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -47,9 +47,9 @@
   height: 30px;
   min-width: 30px;
   border-radius: 15px;
-  background: #F8F7FF;
-  border: 1px solid #E8E4FF;
-  color: #6D57FC;
+  background: var(--color-primary-50);
+  border: 1px solid var(--color-primary-200);
+  color: var(--color-primary-500);
   font-family: 'Urbanist', sans-serif;
   font-size: 13px;
   font-weight: 600;
@@ -64,7 +64,7 @@
   font-family: 'Inter', sans-serif;
   font-size: 11px;
   font-weight: 600;
-  color: #201E1D;
+  color: var(--color-ink-900);
 }
 
 .title {
@@ -72,7 +72,7 @@
   font-weight: 600;
   line-height: 28px;
   letter-spacing: 0.38px;
-  color: #201E1D;
+  color: var(--color-ink-900);
   margin: 0;
 }
 
@@ -90,7 +90,7 @@
 }
 
 .progress-seg.active {
-  background: #6D57FC;
+  background: var(--color-primary-500);
 }
 
 .section {
@@ -115,13 +115,13 @@
   justify-content: space-between;
   padding: 13px 14px;
   /* 공식 이벤트(선택된 일정 기준) 정보라 연한 색으로 살짝 구분되게 둠 */
-  background: #F8F7FF;
-  border: 1px solid #E8E4FF;
+  background: var(--color-primary-50);
+  border: 1px solid var(--color-primary-200);
   border-radius: 16px;
   font-family: 'IBM Plex Sans KR', sans-serif;
   font-size: 14px;
   font-weight: 600;
-  color: #201E1D;
+  color: var(--color-ink-900);
   cursor: pointer;
 }
 
@@ -138,7 +138,7 @@
 .picker-panel {
   background: #fff;
   box-shadow: 0px 8px 24px rgba(27, 22, 63, 0.08);
-  border: 1px solid #EFEDFA;
+  border: 1px solid var(--color-border);
   border-radius: 20px;
   padding: 16px;
   display: flex;
@@ -156,7 +156,7 @@
 
 .divider {
   height: 1px;
-  background: #EFEDFA;
+  background: var(--color-border);
 }
 
 /* 멤버 선택 - 칩 대신 체크리스트로. 고를 값이 많을 때 한눈에 훑기 쉬움 */
@@ -177,14 +177,14 @@
 .member-row-text {
   font-size: 13.5px;
   font-weight: 500;
-  color: #201E1D;
+  color: var(--color-ink-900);
 }
 
 .checkbox {
   width: 18px;
   height: 18px;
   min-width: 18px;
-  accent-color: #6D57FC;
+  accent-color: var(--color-primary-500);
   cursor: pointer;
 }
 
@@ -214,7 +214,7 @@
   min-height: 42px;
   border: none;
   border-radius: 12px;
-  background: #6D57FC;
+  background: var(--color-primary-500);
   color: #fff;
   font-family: 'Urbanist', sans-serif;
   font-size: 13px;
@@ -232,7 +232,7 @@
 
 .footer {
   padding: 12px 18px 22px;
-  border-top: 1px solid #EFEDFA;
+  border-top: 1px solid var(--color-border);
   display: flex;
   justify-content: flex-end;
 }
@@ -263,7 +263,7 @@
   padding: 14px;
   background: #fff;
   border-radius: 16px;
-  border: 1px solid #EFEDFA;
+  border: 1px solid var(--color-border);
   display: flex;
   align-items: center;
   gap: 12px;
@@ -272,7 +272,7 @@
 
 .pace-option.selected {
   background: #F3F1FF;
-  border-color: #6D57FC;
+  border-color: var(--color-primary-500);
 }
 
 .pace-letter {
@@ -285,7 +285,7 @@
 
 .pace-option.selected .pace-letter,
 .pace-option.selected .pace-check {
-  color: #6D57FC;
+  color: var(--color-primary-500);
 }
 
 .pace-text {
@@ -304,21 +304,21 @@
 .pace-desc {
   font-family: 'Urbanist', sans-serif;
   font-size: 11.5px;
-  color: #0C0A1C;
+  color: var(--color-ink-900);
 }
 
 .pace-check {
   font-family: 'Urbanist', sans-serif;
   font-size: 11px;
   font-weight: 600;
-  color: #201E1D;
+  color: var(--color-ink-900);
 }
 
 .btn-primary {
   padding: 13.6px 20px 15.4px;
   border: none;
   border-radius: 12px;
-  background: #6D57FC;
+  background: var(--color-primary-500);
   color: #fff;
   font-size: 14px;
   font-weight: 600;
@@ -328,7 +328,7 @@
 }
 
 .btn-primary:hover {
-  background: #5a45e0;
+  background: var(--color-primary-600);
 }
 /* 실제 폰 화면(카드 최대폭보다 좁은 뷰포트)에서는 데스크톱 미리보기용 "폰 목업" 프레임
    (회색 배경 · 여백 · 둥근 모서리)을 없애고 화면 전체를 꽉 채움 */

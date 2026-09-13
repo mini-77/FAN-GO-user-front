@@ -1,4 +1,31 @@
 :root {
+  /* ===== FAN:GO 디자인 가이드 v13 - 01 컬러 토큰 =====
+     화면 CSS에서 하드코딩된 hex 대신 이 변수들을 참조함. 나중에 브랜드 색을
+     바꿔야 할 때 여기 한 곳만 고치면 되게 하기 위함 (가이드의 "일관성" 원칙).
+     CSS 변수는 CSS Modules로 스코프되지 않고 전역으로 참조 가능함. */
+  --color-primary-50: #F8F7FF;
+  --color-primary-100: #F0EEFF;
+  --color-primary-200: #E8E4FF;
+  --color-primary-400: #A89BFF;
+  --color-primary-500: #6D57FC; /* Base */
+  --color-primary-600: #5A45E0;
+  --color-primary-700: #4A3AC9;
+  --color-primary-900: #2B2140;
+
+  --color-success: #2E9E5B;
+  --color-warning: #E5A02E;
+  --color-danger: #E5484D;
+  --color-info: #2E7CE9;
+
+  --color-ink-900: #17161F;
+  --color-ink-600: #5C5D6E;
+  --color-ink-400: #93949F;
+  --color-ink-200: #E2E2E9;
+
+  --color-surface: #FFFFFF;
+  --color-border: #EFEDFA;
+  --color-screen-bg: #ECECEC;
+
   --text: #6b6375;
   --text-h: #08060d;
   --bg: #fff;

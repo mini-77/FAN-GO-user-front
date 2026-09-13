@@ -5,7 +5,7 @@ import AppHeader from './AppHeader'
 import styles from './ArtistSelectView.module.css'
 
 // 카드 왼쪽 점 색깔 - API에 색상 정보가 없어서 순서대로 돌려가며 씀
-const DOT_COLORS = ['#6D57FC', '#FF7AC8', '#9747FF', '#A2E0C1', '#FFA502', '#4FC3F7']
+const DOT_COLORS = ['var(--color-primary-500)', '#FF7AC8', '#9747FF', '#A2E0C1', '#FFA502', '#4FC3F7']
 
 // API 응답 하나를 화면에서 쓰기 편한 모양으로 바꿔주는 함수
 function normalizeArtist(raw, index) {
@@ -234,7 +234,7 @@ export default function ArtistSelectView() {
           </div>
         </div>
 
-        {submitError && <p className={styles.hint} style={{ padding: '0 18px', color: '#E64545' }}>{submitError}</p>}
+        {submitError && <p className={styles.hint} style={{ padding: '0 18px', color: 'var(--color-danger)' }}>{submitError}</p>}
 
         <div className={styles.footer}>
           <span className={styles['footer-count']}>{selected.size}팀 선택했어요</span>

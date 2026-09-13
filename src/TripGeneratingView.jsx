@@ -246,7 +246,7 @@ export default function TripGeneratingView() {
 
       {error && (
         <div className={styles['error-box']}>
-          <Icon name="warning" size={32} color="#E5484D" style={{ marginBottom: 12 }} />
+          <Icon name="warning" size={32} color="var(--color-danger)" style={{ marginBottom: 12 }} />
           <p className={styles['error-text']}>{error}</p>
           <div className={styles['error-actions']}>
             <button type="button" className={styles['btn-white']} onClick={retry}>

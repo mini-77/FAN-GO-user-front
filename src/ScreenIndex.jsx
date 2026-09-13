@@ -216,7 +216,7 @@ export default function ScreenIndex() {
     <div
       style={{
         minHeight: '100vh',
-        background: '#ececec',
+        background: 'var(--color-screen-bg)',
         fontFamily: 'sans-serif',
         display: 'flex',
         flexDirection: 'column',
@@ -226,16 +226,16 @@ export default function ScreenIndex() {
       <div
         style={{
           padding: '10px 16px',
-          borderBottom: '1px solid #E8E4FF',
+          borderBottom: '1px solid var(--color-primary-200)',
           background: '#fff',
           display: 'flex',
           alignItems: 'center',
           gap: 10,
         }}
       >
-        <strong style={{ fontSize: 13, color: '#1B163F' }}>화면 목록 ({SCREENS.length}개)</strong>
+        <strong style={{ fontSize: 13, color: 'var(--color-ink-900)' }}>화면 목록 ({SCREENS.length}개)</strong>
         {demoStatus && (
-          <span style={{ fontSize: 11.5, color: demoStatus.startsWith('실패') ? '#E64545' : '#6D57FC' }}>
+          <span style={{ fontSize: 11.5, color: demoStatus.startsWith('실패') ? 'var(--color-danger)' : 'var(--color-primary-500)' }}>
             {demoStatus}
           </span>
         )}
@@ -246,9 +246,9 @@ export default function ScreenIndex() {
             marginLeft: 'auto',
             padding: '7px 14px',
             borderRadius: 999,
-            border: '1px solid #6D57FC',
+            border: '1px solid var(--color-primary-500)',
             background: '#fff',
-            color: '#6D57FC',
+            color: 'var(--color-primary-500)',
             fontSize: 12,
             fontWeight: 700,
             cursor: isFillingDemo ? 'default' : 'pointer',
@@ -262,9 +262,9 @@ export default function ScreenIndex() {
           style={{
             padding: '7px 14px',
             borderRadius: 999,
-            border: '1px solid #6D57FC',
-            background: isGalleryMode ? '#6D57FC' : '#fff',
-            color: isGalleryMode ? '#fff' : '#6D57FC',
+            border: '1px solid var(--color-primary-500)',
+            background: isGalleryMode ? 'var(--color-primary-500)' : '#fff',
+            color: isGalleryMode ? '#fff' : 'var(--color-primary-500)',
             fontSize: 12,
             fontWeight: 700,
             cursor: 'pointer',
@@ -314,7 +314,7 @@ export default function ScreenIndex() {
                   margin: '6px 0 0',
                   fontSize: 10.5,
                   fontWeight: 600,
-                  color: '#1B163F',
+                  color: 'var(--color-ink-900)',
                   lineHeight: 1.3,
                 }}
               >
@@ -330,7 +330,7 @@ export default function ScreenIndex() {
             style={{
               width: 300,
               minWidth: 300,
-              borderRight: '1px solid #E8E4FF',
+              borderRight: '1px solid var(--color-primary-200)',
               padding: '4px 12px',
               boxSizing: 'border-box',
             }}
@@ -344,10 +344,10 @@ export default function ScreenIndex() {
                     onClick={() => selectScreen(s)}
                     style={{
                       padding: '8px 12px',
-                      background: isActive ? '#6D57FC' : '#fff',
+                      background: isActive ? 'var(--color-primary-500)' : '#fff',
                       borderRadius: 8,
-                      border: '1px solid #E8E4FF',
-                      color: isActive ? '#fff' : '#1B163F',
+                      border: '1px solid var(--color-primary-200)',
+                      color: isActive ? '#fff' : 'var(--color-ink-900)',
                       fontSize: 12,
                       fontWeight: 600,
                       textAlign: 'left',

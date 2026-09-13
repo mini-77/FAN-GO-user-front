@@ -183,7 +183,7 @@ export default function ConfirmView() {
         </div>
 
         {submitError && (
-          <p className={styles.hint} style={{ padding: '10px 22px 0', color: '#E64545' }}>
+          <p className={styles.hint} style={{ padding: '10px 22px 0', color: 'var(--color-danger)' }}>
             {submitError}
           </p>
         )}

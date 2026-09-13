@@ -163,7 +163,7 @@ export default function ActivityPreferenceView() {
             </span>
           </div>
           {isPreview && (
-            <p className={styles.hint} style={{ color: '#E64545' }}>
+            <p className={styles.hint} style={{ color: 'var(--color-danger)' }}>
               ⚠ 실제 DB 데이터가 아직 없어서, 화면 확인용 미리보기 카테고리를 보여주고 있어요.
             </p>
           )}
@@ -213,7 +213,7 @@ export default function ActivityPreferenceView() {
         </div>
 
         {errorMessage && (
-          <p className={styles.hint} style={{ padding: '0 18px', color: '#E64545' }}>
+          <p className={styles.hint} style={{ padding: '0 18px', color: 'var(--color-danger)' }}>
             {errorMessage}
           </p>
         )}
@@ -225,7 +225,7 @@ export default function ActivityPreferenceView() {
               display: 'flex',
               borderRadius: 100,
               overflow: 'hidden',
-              border: '1px solid #E8E4FF',
+              border: '1px solid var(--color-primary-200)',
             }}
           >
             <button
@@ -235,9 +235,9 @@ export default function ActivityPreferenceView() {
               style={{
                 flex: 1,
                 border: 'none',
-                borderRight: '1px solid #E8E4FF',
-                background: '#F8F7FF',
-                color: '#6D57FC',
+                borderRight: '1px solid var(--color-primary-200)',
+                background: 'var(--color-primary-50)',
+                color: 'var(--color-primary-500)',
                 fontWeight: 600,
                 fontSize: 14,
                 padding: '12px 0',
@@ -254,7 +254,7 @@ export default function ActivityPreferenceView() {
               style={{
                 flex: 1,
                 border: 'none',
-                background: isFormValid ? '#6D57FC' : '#C9C1FF',
+                background: isFormValid ? 'var(--color-primary-500)' : '#C9C1FF',
                 color: '#fff',
                 fontWeight: 600,
                 fontSize: 14,

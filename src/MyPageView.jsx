@@ -137,7 +137,7 @@ export default function MyPageView() {
                 className={styles['menu-row']}
                 onClick={() => item.path && navigate(item.path)}
               >
-                <div className={styles['menu-icon']}><Icon name={item.icon} size={18} color="#6D57FC" /></div>
+                <div className={styles['menu-icon']}><Icon name={item.icon} size={18} color="var(--color-primary-500)" /></div>
                 <div className={styles['menu-text']}>
                   <div className={styles['menu-title']}>{item.title}</div>
                   <div className={styles['menu-sub']}>{item.sub}</div>

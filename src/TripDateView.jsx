@@ -474,7 +474,7 @@ export default function TripDateView() {
                   }))
                 }
               />
-              {fieldErrors.startDate && <p className={styles.hint} style={{ color: '#E64545' }}>{fieldErrors.startDate}</p>}
+              {fieldErrors.startDate && <p className={styles.hint} style={{ color: 'var(--color-danger)' }}>{fieldErrors.startDate}</p>}
             </div>
             <div>
               <label className={styles['field-label']}>완료일</label>
@@ -502,7 +502,7 @@ export default function TripDateView() {
                   }))
                 }
               />
-              {fieldErrors.endDate && <p className={styles.hint} style={{ color: '#E64545' }}>{fieldErrors.endDate}</p>}
+              {fieldErrors.endDate && <p className={styles.hint} style={{ color: 'var(--color-danger)' }}>{fieldErrors.endDate}</p>}
             </div>
           </div>
 
@@ -521,7 +521,7 @@ export default function TripDateView() {
                   setFieldErrors((prev) => ({ ...prev, ...validateTimes(startTime, endTime) }))
                 }
               />
-              {fieldErrors.startTime && <p className={styles.hint} style={{ color: '#E64545' }}>{fieldErrors.startTime}</p>}
+              {fieldErrors.startTime && <p className={styles.hint} style={{ color: 'var(--color-danger)' }}>{fieldErrors.startTime}</p>}
             </div>
             <div>
               <label className={styles['field-label']}>완료</label>
@@ -537,7 +537,7 @@ export default function TripDateView() {
                   setFieldErrors((prev) => ({ ...prev, ...validateTimes(startTime, endTime) }))
                 }
               />
-              {fieldErrors.endTime && <p className={styles.hint} style={{ color: '#E64545' }}>{fieldErrors.endTime}</p>}
+              {fieldErrors.endTime && <p className={styles.hint} style={{ color: 'var(--color-danger)' }}>{fieldErrors.endTime}</p>}
             </div>
           </div>
         </div>
@@ -596,7 +596,7 @@ export default function TripDateView() {
           {departure ? (
             <p className={styles['place-summary']}>{departure.name}</p>
           ) : (
-            <p className={styles.hint} style={{ color: '#E64545' }}>
+            <p className={styles.hint} style={{ color: 'var(--color-danger)' }}>
               여행이 시작되는 정확한 위치를 지도에서 검색해주세요.
             </p>
           )}
@@ -618,7 +618,7 @@ export default function TripDateView() {
         </div>
 
         {errorMessage && (
-          <p className={styles.hint} style={{ padding: '0 18px', color: '#E64545' }}>
+          <p className={styles.hint} style={{ padding: '0 18px', color: 'var(--color-danger)' }}>
             {errorMessage}
           </p>
         )}
@@ -734,7 +734,7 @@ export default function TripDateView() {
             <div className={styles['search-scroll']}>
 
             {locationError && (
-              <p className={styles.hint} style={{ color: '#E64545' }}>
+              <p className={styles.hint} style={{ color: 'var(--color-danger)' }}>
                 {locationError}
               </p>
             )}
@@ -743,7 +743,7 @@ export default function TripDateView() {
               <p className={styles.hint}>'{query}'(으)로 검색된 곳이 없어요. 다른 키워드로 검색해보세요.</p>
             )}
             {searchStatus === 'error' && (
-              <p className={styles.hint} style={{ color: '#E64545' }}>
+              <p className={styles.hint} style={{ color: 'var(--color-danger)' }}>
                 검색 중 문제가 생겼어요. 잠시 후 다시 시도해주세요.
               </p>
             )}
@@ -772,7 +772,7 @@ export default function TripDateView() {
                 style={{
                   margin: '12px 18px 0',
                   padding: '12px 14px',
-                  border: '1px solid #EFEDFA',
+                  border: '1px solid var(--color-border)',
                   borderRadius: 14,
                   background: '#FAF9FF',
                 }}
@@ -781,7 +781,7 @@ export default function TripDateView() {
                 <div style={{ marginTop: 4, fontSize: 11.5, color: 'rgba(27,22,63,0.58)' }}>
                   {pickedPlace.address}
                 </div>
-                <div style={{ marginTop: 5, fontSize: 11, color: '#6D57FC' }}>
+                <div style={{ marginTop: 5, fontSize: 11, color: 'var(--color-primary-500)' }}>
                   지도 위 마커를 드래그해서 위치를 조정할 수 있어요.
                 </div>
               </div>
@@ -828,7 +828,7 @@ export default function TripDateView() {
                 </div>
 
                 {stayDateError && (
-                  <p className={styles.hint} style={{ color: '#E64545' }}>
+                  <p className={styles.hint} style={{ color: 'var(--color-danger)' }}>
                     {stayDateError}
                   </p>
                 )}
@@ -837,7 +837,7 @@ export default function TripDateView() {
 
             </div>
 
-            <div style={{ padding: '14px 18px 18px', flexShrink: 0, borderTop: '1px solid #EFEDFA' }}>
+            <div style={{ padding: '14px 18px 18px', flexShrink: 0, borderTop: '1px solid var(--color-border)' }}>
               {/* 06 버튼 규칙 - 정보(숙박일수·숙소명)는 버튼 밖 캡션으로, 버튼엔 행동만 담음 */}
               {searchTarget === 'stay' && pickedPlace && stayNights > 0 && (
                 <p className={styles.hint} style={{ marginBottom: 8 }}>

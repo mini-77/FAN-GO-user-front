@@ -123,7 +123,7 @@ export default function AppHeader({ showBack = true, showProfile = true, onBack,
 
                   <div className={styles['menu-list']}>
                     <button type="button" className={styles['menu-item']} onClick={() => goTo('/account')}>
-                      <span className={styles['menu-icon']}><Icon name="person" size={16} color="#6D57FC" /></span>
+                      <span className={styles['menu-icon']}><Icon name="person" size={16} color="var(--color-primary-500)" /></span>
                       <span className={styles['menu-copy']}>
                         <strong>마이페이지</strong>
                         <small>프로필 및 계정 관리</small>
@@ -132,7 +132,7 @@ export default function AppHeader({ showBack = true, showProfile = true, onBack,
                     </button>
 
                     <button type="button" className={styles['menu-item']} onClick={() => goTo('/account')}>
-                      <span className={styles['menu-icon']}><Icon name="gear" size={16} color="#6D57FC" /></span>
+                      <span className={styles['menu-icon']}><Icon name="gear" size={16} color="var(--color-primary-500)" /></span>
                       <span className={styles['menu-copy']}>
                         <strong>환경설정</strong>
                         <small>알림 · 언어 · 테마</small>
@@ -141,7 +141,7 @@ export default function AppHeader({ showBack = true, showProfile = true, onBack,
                     </button>
 
                     <button type="button" className={styles['menu-item']} onClick={() => goTo('/trip/history')}>
-                      <span className={styles['menu-icon']}><Icon name="plane" size={16} color="#6D57FC" /></span>
+                      <span className={styles['menu-icon']}><Icon name="plane" size={16} color="var(--color-primary-500)" /></span>
                       <span className={styles['menu-copy']}>
                         <strong>여행 히스토리</strong>
                         <small>지난 동선 · 별점</small>
@@ -153,7 +153,7 @@ export default function AppHeader({ showBack = true, showProfile = true, onBack,
                   <div className={styles['menu-divider']} />
 
                   <button type="button" className={`${styles['menu-item']} ${styles['logout-item']}`} onClick={handleLogout}>
-                    <span className={styles['menu-icon']}><Icon name="logout" size={16} color="#6D57FC" /></span>
+                    <span className={styles['menu-icon']}><Icon name="logout" size={16} color="var(--color-primary-500)" /></span>
                     <span className={styles['menu-copy']}>
                       <strong>로그아웃</strong>
                       <small>현재 세션 종료</small>
@@ -163,7 +163,7 @@ export default function AppHeader({ showBack = true, showProfile = true, onBack,
                 </>
               ) : (
                 <button type="button" className={styles['menu-item']} onClick={() => goTo('/login')}>
-                  <span className={styles['menu-icon']}><Icon name="key" size={16} color="#6D57FC" /></span>
+                  <span className={styles['menu-icon']}><Icon name="key" size={16} color="var(--color-primary-500)" /></span>
                   <span className={styles['menu-copy']}>
                     <strong>로그인이 필요해요</strong>
                     <small>로그인하고 계속하기</small>

@@ -5,7 +5,7 @@
 export default function FenggoIcon({ size = 20 }) {
   return (
     <svg width={size} height={size} viewBox="0 0 48 48" fill="none">
-      <circle cx="24" cy="24" r="24" fill="#6D57FC" />
+      <circle cx="24" cy="24" r="24" style={{ fill: 'var(--color-primary-500)' }} />
 
       {/* 안테나 */}
       <line x1="24" y1="13" x2="24" y2="8" stroke="#EDE9FF" strokeWidth="2.4" strokeLinecap="round" />

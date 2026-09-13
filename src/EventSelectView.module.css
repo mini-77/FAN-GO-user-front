@@ -4,7 +4,7 @@
   min-height: 100vh;
   display: flex;
   justify-content: center;
-  background: #ececec;
+  background: var(--color-screen-bg);
   padding: 24px 16px;
   font-family: 'IBM Plex Sans KR', sans-serif;
 }
@@ -16,7 +16,7 @@
   background: #fff;
   border-radius: 20px;
   box-shadow: 0px 3px 10px rgba(181, 179, 193, 0.11);
-  outline: 1px solid #EFEDFA;
+  outline: 1px solid var(--color-border);
   outline-offset: -1px;
   box-sizing: border-box;
   display: flex;
@@ -36,7 +36,7 @@
 /* 헤더 */
 .header {
   padding: 14px 18px 12px;
-  border-bottom: 1px solid #EFEDFA;
+  border-bottom: 1px solid var(--color-border);
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -53,9 +53,9 @@
   height: 30px;
   min-width: 30px;
   border-radius: 15px;
-  background: #F8F7FF;
-  border: 1px solid #E8E4FF;
-  color: #6D57FC;
+  background: var(--color-primary-50);
+  border: 1px solid var(--color-primary-200);
+  color: var(--color-primary-500);
   font-family: 'Urbanist', sans-serif;
   font-size: 13px;
   font-weight: 600;
@@ -70,7 +70,7 @@
   font-family: 'Inter', sans-serif;
   font-size: 11px;
   font-weight: 600;
-  color: #201E1D;
+  color: var(--color-ink-900);
 }
 
 .title {
@@ -78,7 +78,7 @@
   font-weight: 600;
   line-height: 28px;
   letter-spacing: 0.38px;
-  color: #201E1D;
+  color: var(--color-ink-900);
   margin: 0;
 }
 
@@ -96,13 +96,13 @@
 }
 
 .progress-seg.active {
-  background: #6D57FC;
+  background: var(--color-primary-500);
 }
 
 /* 필터 섹션 */
 .filter-section {
   padding: 10px 18px;
-  border-bottom: 1px solid #EFEDFA;
+  border-bottom: 1px solid var(--color-border);
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -123,13 +123,13 @@
   box-sizing: border-box;
   min-height: 36px;
   padding: 13px 30px 13px 18px;
-  border: 1px solid #E8E4FF;
+  border: 1px solid var(--color-primary-200);
   border-radius: 16px;
-  background: #F8F7FF;
+  background: var(--color-primary-50);
   font-family: 'IBM Plex Sans KR', sans-serif;
   font-size: 14px;
   font-weight: 400;
-  color: #0C0A1C;
+  color: var(--color-ink-900);
   cursor: pointer;
   appearance: none;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath fill='none' stroke='%236b6b7d' stroke-width='1.5' d='M1 1l4 4 4-4'/%3E%3C/svg%3E");
@@ -158,9 +158,9 @@
   margin: 12px 18px;
   padding: 10px;
   border-radius: 12px;
-  border: 1px solid #E8E4FF;
-  background: #F8F7FF;
-  color: #6D57FC;
+  border: 1px solid var(--color-primary-200);
+  background: var(--color-primary-50);
+  color: var(--color-primary-500);
   font-size: 12.5px;
   font-weight: 600;
   cursor: pointer;
@@ -168,7 +168,7 @@
 
 .event-row {
   padding: 13px 18px;
-  border-bottom: 1px solid #EFEDFA;
+  border-bottom: 1px solid var(--color-border);
   display: flex;
   align-items: center;
   gap: 14px;
@@ -176,7 +176,7 @@
 }
 
 .event-row.pinned {
-  background: #6D57FC;
+  background: var(--color-primary-500);
 }
 
 .event-datetime {
@@ -191,14 +191,14 @@
   font-family: 'Inter', sans-serif;
   font-size: 12px;
   font-weight: 600;
-  color: #0C0A1C;
+  color: var(--color-ink-900);
 }
 
 .event-time {
   font-family: 'Inter', sans-serif;
   font-size: 11px;
   font-weight: 600;
-  color: #0C0A1C;
+  color: var(--color-ink-900);
   opacity: 0.75;
 }
 
@@ -218,14 +218,14 @@
 .event-title {
   font-size: 13.5px;
   font-weight: 600;
-  color: #0C0A1C;
+  color: var(--color-ink-900);
 }
 
 .event-venue {
   font-family: 'Urbanist', sans-serif;
   font-size: 11.5px;
   font-weight: 400;
-  color: #0C0A1C;
+  color: var(--color-ink-900);
   opacity: 0.72;
 }
 
@@ -249,8 +249,8 @@
 /* 지도 요약 */
 .map-summary {
   padding: 14px 18px;
-  background: #F0EEFF;
-  border-top: 1px solid #EFEDFA;
+  background: var(--color-primary-100);
+  border-top: 1px solid var(--color-border);
   position: relative;
   overflow: hidden;
 }
@@ -258,7 +258,7 @@
 .map-summary-text {
   font-size: 14px;
   font-weight: 600;
-  color: #0C0A1C;
+  color: var(--color-ink-900);
   margin: 0;
 }
 
@@ -273,7 +273,7 @@
 /* 하단 */
 .footer {
   padding: 12px 18px 22px;
-  border-top: 1px solid #EFEDFA;
+  border-top: 1px solid var(--color-border);
   display: flex;
   justify-content: flex-end;
 }
@@ -282,7 +282,7 @@
   padding: 13.6px 20px 15.4px;
   border: none;
   border-radius: 12px;
-  background: #6D57FC;
+  background: var(--color-primary-500);
   color: #fff;
   font-size: 14px;
   font-weight: 600;
@@ -292,7 +292,7 @@
 }
 
 .btn-primary:hover {
-  background: #5a45e0;
+  background: var(--color-primary-600);
 }
 /* 실제 폰 화면(카드 최대폭보다 좁은 뷰포트)에서는 데스크톱 미리보기용 "폰 목업" 프레임
    (회색 배경 · 여백 · 둥근 모서리)을 없애고 화면 전체를 꽉 채움 */

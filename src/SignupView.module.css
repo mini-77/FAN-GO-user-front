@@ -4,7 +4,7 @@
   min-height: 100vh;
   display: flex;
   justify-content: center;
-  background: #ececec;
+  background: var(--color-screen-bg);
   padding: 24px 16px;
   font-family: 'IBM Plex Sans KR', sans-serif;
 }
@@ -16,7 +16,7 @@
   background: #fff;
   border-radius: 20px;
   box-shadow: 0px 3px 10px rgba(181, 179, 193, 0.11);
-  outline: 1px solid #EFEDFA;
+  outline: 1px solid var(--color-border);
   outline-offset: -1px;
   display: flex;
   flex-direction: column;
@@ -47,7 +47,7 @@
   font-weight: 600;
   line-height: 28px;
   letter-spacing: 0.38px;
-  color: #201E1D;
+  color: var(--color-ink-900);
   margin: 0 0 4px;
 }
 
@@ -73,14 +73,14 @@
   height: 41px;
   min-height: 41px;
   padding: 8px 14px;
-  border: 1px solid #E8E4FF;
+  border: 1px solid var(--color-primary-200);
   border-radius: 12px;
-  background: #F8F7FF;
+  background: var(--color-primary-50);
   font-family: 'IBM Plex Sans KR', sans-serif;
   font-size: 14px;
   font-weight: 400;
   line-height: 21.7px;
-  color: #0C0A1C;
+  color: var(--color-ink-900);
 }
 
 .input.input-en {
@@ -93,13 +93,13 @@
 
 .input:focus {
   outline: none;
-  border: 1.5px solid #6D57FC;
+  border: 1.5px solid var(--color-primary-500);
   box-shadow: 0 0 0 3px rgba(109, 87, 252, 0.15);
 }
 
 .input-highlighted {
-  background: #F0EEFF;
-  border-color: #6D57FC;
+  background: var(--color-primary-100);
+  border-color: var(--color-primary-500);
   font-family: 'Urbanist', sans-serif;
 }
 
@@ -130,9 +130,9 @@ select.input {
   padding: 0 10px;
   border-radius: 12px;
   border: none;
-  background: #F8F7FF;
-  box-shadow: 0 0 0 1px #E8E4FF inset;
-  color: #1B163F;
+  background: var(--color-primary-50);
+  box-shadow: 0 0 0 1px var(--color-primary-200) inset;
+  color: var(--color-ink-900);
   font-family: 'IBM Plex Sans KR', sans-serif;
   font-size: 12px;
   font-weight: 600;
@@ -150,7 +150,7 @@ select.input {
   font-size: 11px;
   font-weight: 600;
   line-height: 16.5px;
-  color: #E64545;
+  color: var(--color-danger);
   margin: 0;
 }
 
@@ -166,7 +166,7 @@ select.input {
   font-size: 11px;
   font-weight: 600;
   line-height: 16.5px;
-  color: #2E9E5B;
+  color: var(--color-success);
   margin: 0;
 }
 
@@ -176,7 +176,7 @@ select.input {
 
 /* 화면 언어 */
 .lang-block {
-  border-top: 1px solid #EFEDFA;
+  border-top: 1px solid var(--color-border);
   padding-top: 12px;
   display: flex;
   flex-direction: column;
@@ -201,7 +201,7 @@ select.input {
   font-family: 'Inter', sans-serif;
   font-size: 11px;
   font-weight: 600;
-  color: #6D57FC;
+  color: var(--color-primary-500);
 }
 
 .lang-chips {
@@ -216,12 +216,12 @@ select.input {
   height: 44px;
   padding: 0 14px;
   border-radius: 16px;
-  border: 1px solid #E8E4FF;
-  background: #F8F7FF;
+  border: 1px solid var(--color-primary-200);
+  background: var(--color-primary-50);
   font-family: 'Urbanist', 'IBM Plex Sans KR', sans-serif;
   font-size: 12.5px;
   font-weight: 600;
-  color: #1B163F;
+  color: var(--color-ink-900);
   cursor: pointer;
   white-space: nowrap;
   display: flex;
@@ -230,8 +230,8 @@ select.input {
 }
 
 .lang-chip.active {
-  background: #6D57FC;
-  border-color: #6D57FC;
+  background: var(--color-primary-500);
+  border-color: var(--color-primary-500);
   color: #fff;
 }
 
@@ -244,13 +244,13 @@ select.input {
 }
 
 .error {
-  color: #E64545;
+  color: var(--color-danger);
   font-size: 12px;
   margin: 0;
 }
 
 .agree-block {
-  border-top: 1px solid #EFEDFA;
+  border-top: 1px solid var(--color-border);
   padding-top: 12px;
   display: flex;
   flex-direction: column;
@@ -270,12 +270,12 @@ select.input {
   min-width: 16px;
   margin: 0;
   border-radius: 3px;
-  accent-color: #6D57FC;
+  accent-color: var(--color-primary-500);
   cursor: pointer;
 }
 
 .agree-link {
-  color: #6D57FC;
+  color: var(--color-primary-500);
   font-size: 12.5px;
   font-weight: 600;
   text-decoration: underline;
@@ -289,11 +289,11 @@ select.input {
 .agree-text {
   font-size: 12.5px;
   font-weight: 400;
-  color: #0C0A1C;
+  color: var(--color-ink-900);
 }
 
 .footer-row {
-  border-top: 1px solid #EFEDFA;
+  border-top: 1px solid var(--color-border);
   padding-top: 12px;
   display: flex;
   justify-content: flex-end;
@@ -304,7 +304,7 @@ select.input {
   padding: 13px 20px;
   border: none;
   border-radius: 12px;
-  background: #6D57FC;
+  background: var(--color-primary-500);
   color: #fff;
   font-family: 'IBM Plex Sans KR', sans-serif;
   font-size: 14px;
@@ -320,7 +320,7 @@ select.input {
 }
 
 .btn-primary:not(.disabled):hover {
-  background: #5a45e0;
+  background: var(--color-primary-600);
 }
 
 /* ===== 아래부터 SignupView.module.css 맨 끝에 추가 ===== */
@@ -331,15 +331,15 @@ select.input {
   min-height: 41px;
   display: flex;
   align-items: center;
-  border: 1px solid #E8E4FF;
+  border: 1px solid var(--color-primary-200);
   border-radius: 4px;
-  background: #F8F7FF;
+  background: var(--color-primary-50);
   padding: 0 14px;
   gap: 6px;
 }
 
 .phone-single-box:focus-within {
-  border-color: #6D57FC;
+  border-color: var(--color-primary-500);
 }
 
 .phone-code-plus {
@@ -357,13 +357,13 @@ select.input {
   height: 100%;
   font-family: 'Urbanist', sans-serif;
   font-size: 14px;
-  color: #0C0A1C;
+  color: var(--color-ink-900);
 }
 
 .phone-divider {
   width: 1px;
   height: 18px;
-  background: #E8E4FF;
+  background: var(--color-primary-200);
   flex-shrink: 0;
 }
 
@@ -377,7 +377,7 @@ select.input {
   height: 100%;
   font-family: 'Urbanist', sans-serif;
   font-size: 14px;
-  color: #0C0A1C;
+  color: var(--color-ink-900);
 }
 
 .phone-local-input::placeholder,

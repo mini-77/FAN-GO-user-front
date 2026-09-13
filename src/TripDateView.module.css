@@ -4,7 +4,7 @@
   min-height: 100vh;
   display: flex;
   justify-content: center;
-  background: #ececec;
+  background: var(--color-screen-bg);
   padding: 24px 16px;
   font-family: 'IBM Plex Sans KR', sans-serif;
 }
@@ -15,7 +15,7 @@
   background: #fff;
   border-radius: 20px;
   box-shadow: 0px 3px 10px rgba(181, 179, 193, 0.11);
-  outline: 1px solid #EFEDFA;
+  outline: 1px solid var(--color-border);
   outline-offset: -1px;
   box-sizing: border-box;
   display: flex;
@@ -35,7 +35,7 @@
 /* 헤더 */
 .header {
   padding: 14px 18px 12px;
-  border-bottom: 1px solid #EFEDFA;
+  border-bottom: 1px solid var(--color-border);
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -52,9 +52,9 @@
   height: 30px;
   min-width: 30px;
   border-radius: 15px;
-  background: #F8F7FF;
-  border: 1px solid #E8E4FF;
-  color: #6D57FC;
+  background: var(--color-primary-50);
+  border: 1px solid var(--color-primary-200);
+  color: var(--color-primary-500);
   font-family: 'Urbanist', sans-serif;
   font-size: 13px;
   font-weight: 600;
@@ -69,7 +69,7 @@
   font-family: 'Inter', sans-serif;
   font-size: 11px;
   font-weight: 600;
-  color: #201E1D;
+  color: var(--color-ink-900);
 }
 
 .title {
@@ -77,7 +77,7 @@
   font-weight: 600;
   line-height: 28px;
   letter-spacing: 0.38px;
-  color: #201E1D;
+  color: var(--color-ink-900);
   margin: 0;
 }
 
@@ -95,13 +95,13 @@
 }
 
 .progress-seg.active {
-  background: #6D57FC;
+  background: var(--color-primary-500);
 }
 
 /* 공통 섹션 */
 .section {
   padding: 14px 18px;
-  border-bottom: 1px solid #EFEDFA;
+  border-bottom: 1px solid var(--color-border);
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -128,13 +128,13 @@
   box-sizing: border-box;
   min-height: 36px;
   padding: 8px 14px;
-  border: 1px solid #E8E4FF;
+  border: 1px solid var(--color-primary-200);
   border-radius: 12px;
-  background: #F8F7FF;
+  background: var(--color-primary-50);
   font-family: 'Urbanist', sans-serif;
   font-size: 14px;
   font-weight: 400;
-  color: #0C0A1C;
+  color: var(--color-ink-900);
 }
 
 .input.text-kr {
@@ -143,7 +143,7 @@
 
 .input:focus {
   outline: none;
-  border: 1.5px solid #6D57FC;
+  border: 1.5px solid var(--color-primary-500);
   box-shadow: 0 0 0 3px rgba(109, 87, 252, 0.15);
 }
 
@@ -161,7 +161,7 @@
   padding: 10px 12px;
   border-radius: 12px;
   background: #EAF2FE;
-  color: #2E7CE9;
+  color: var(--color-info);
   font-size: 11.5px;
   font-weight: 500;
   line-height: 1.5;
@@ -188,7 +188,7 @@
   font-size: 16px;
   font-weight: 700;
   letter-spacing: -0.2px;
-  color: #201E1D;
+  color: var(--color-ink-900);
 }
 
 .section-count {
@@ -213,7 +213,7 @@
 .stay-name {
   font-size: 13px;
   font-weight: 600;
-  color: #201E1D;
+  color: var(--color-ink-900);
   margin: 0;
 }
 
@@ -229,7 +229,7 @@
   background: none;
   border: none;
   padding: 0;
-  color: #6D57FC;
+  color: var(--color-primary-500);
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.17px;
@@ -242,7 +242,7 @@
   border: none;
   padding: 0;
   align-self: flex-start;
-  color: #6D57FC;
+  color: var(--color-primary-500);
   font-size: 14px;
   font-weight: 600;
   letter-spacing: 0.21px;
@@ -268,7 +268,7 @@
   padding: 13.6px 20px 15.4px;
   border: none;
   border-radius: 12px;
-  background: #6D57FC;
+  background: var(--color-primary-500);
   color: #fff;
   font-size: 14px;
   font-weight: 600;
@@ -278,14 +278,14 @@
 }
 
 .btn-primary:hover {
-  background: #5a45e0;
+  background: var(--color-primary-600);
 }
 
 /* 출발지/완료지 섹션의 "수정 / 지도에서 찾기" 링크 */
 .edit-link {
   border: none;
   background: transparent;
-  color: #6D57FC;
+  color: var(--color-primary-500);
   font-size: 12.5px;
   font-weight: 600;
   cursor: pointer;
@@ -337,10 +337,10 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid #EFEDFA;
+  border-bottom: 1px solid var(--color-border);
   font-size: 15px;
   font-weight: 700;
-  color: #201E1D;
+  color: var(--color-ink-900);
 }
 
 .close-btn {
@@ -365,8 +365,8 @@
   gap: 8px;
   padding: 0 14px;
   height: 44px;
-  background: #F8F7FF;
-  border: 1px solid #E8E4FF;
+  background: var(--color-primary-50);
+  border: 1px solid var(--color-primary-200);
   border-radius: 999px;
 }
 
@@ -382,7 +382,7 @@
   background: transparent;
   font-family: 'IBM Plex Sans KR', sans-serif;
   font-size: 14px;
-  color: #0C0A1C;
+  color: var(--color-ink-900);
 }
 
 .search-input::placeholder {
@@ -395,7 +395,7 @@
   margin: 14px 18px 0;
   border-radius: 16px;
   overflow: hidden;
-  background: #F0EEFF;
+  background: var(--color-primary-100);
 }
 
 .map-canvas {
@@ -433,19 +433,19 @@
 }
 
 .result-list-item:hover {
-  background: #F8F7FF;
+  background: var(--color-primary-50);
 }
 
 .result-list-item.active {
   background: #EFEBFF;
-  outline: 1px solid #6D57FC;
+  outline: 1px solid var(--color-primary-500);
   outline-offset: -1px;
 }
 
 .result-list-name {
   font-size: 13.5px;
   font-weight: 600;
-  color: #201E1D;
+  color: var(--color-ink-900);
 }
 
 .result-list-address {

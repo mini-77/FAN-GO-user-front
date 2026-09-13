@@ -192,7 +192,7 @@ export default function ItineraryView() {
         map,
         path: linePath,
         strokeWeight: 4,
-        strokeColor: '#6D57FC',
+        strokeColor: '#6D57FC', // 카카오맵 SDK 옵션값이라 CSS 변수(var())를 못 씀 - 리터럴 hex 유지
         strokeOpacity: 0.85,
         strokeStyle: 'shortdash',
         zIndex: 4,
@@ -258,12 +258,12 @@ export default function ItineraryView() {
 
         {isPreview && (
           <div style={{ padding: '0 18px' }}>
-            <p className={styles['day-label']} style={{ color: '#E64545', marginBottom: 4 }}>
+            <p className={styles['day-label']} style={{ color: 'var(--color-danger)', marginBottom: 4 }}>
               ⚠ 아직 실제로 만든 동선이 없어서 미리보기 데이터를 보여주고 있어요.
             </p>
             {dayErrorByDay[activeDay] && (
               <>
-                <p className={styles['day-label']} style={{ color: '#E64545', fontSize: 11, opacity: 0.8 }}>
+                <p className={styles['day-label']} style={{ color: 'var(--color-danger)', fontSize: 11, opacity: 0.8 }}>
                   {dayErrorByDay[activeDay]}
                 </p>
                 <button
@@ -274,9 +274,9 @@ export default function ItineraryView() {
                     marginBottom: 8,
                     padding: '6px 14px',
                     borderRadius: 100,
-                    border: '1px solid #E64545',
+                    border: '1px solid var(--color-danger)',
                     background: '#fff',
-                    color: '#E64545',
+                    color: 'var(--color-danger)',
                     fontSize: 12,
                     fontWeight: 600,
                     cursor: 'pointer',
@@ -320,7 +320,7 @@ export default function ItineraryView() {
               )}
               {stop.liked && (
                 <span className={styles['stop-score']}>
-                  <Icon name="heart" size={13} filled color="#E5484D" />
+                  <Icon name="heart" size={13} filled color="var(--color-danger)" />
                 </span>
               )}
             </div>

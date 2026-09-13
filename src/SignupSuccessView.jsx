@@ -31,14 +31,14 @@ export default function SignupSuccessView() {
 
           <div className={styles['feature-list']}>
             <div className={styles['feature-card']}>
-              <div className={styles['feature-icon']}><Icon name="star" size={18} color="#6D57FC" /></div>
+              <div className={styles['feature-icon']}><Icon name="star" size={18} color="var(--color-primary-500)" /></div>
               <div className={styles['feature-text']}>
                 <span className={styles['feature-title']}>팬덤 일정 생성</span>
                 <span className={styles['feature-desc']}>아티스트 일정을 한눈에 확인할 수 있어요</span>
               </div>
             </div>
             <div className={styles['feature-card']}>
-              <div className={styles['feature-icon']}><Icon name="calendar" size={18} color="#6D57FC" /></div>
+              <div className={styles['feature-icon']}><Icon name="calendar" size={18} color="var(--color-primary-500)" /></div>
               <div className={styles['feature-text']}>
                 <span className={styles['feature-title']}>여행 일정 계획</span>
                 <span className={styles['feature-desc']}>

@@ -272,7 +272,7 @@ export default function EventSelectView() {
         </div>
 
         {errorMessage && (
-          <p className={styles.hint} style={{ padding: '0 18px', color: '#E64545' }}>
+          <p className={styles.hint} style={{ padding: '0 18px', color: 'var(--color-danger)' }}>
             {errorMessage}
           </p>
         )}

@@ -303,7 +303,7 @@ export default function ItineraryEditView() {
 
         {isLoading && <p className={styles.note}>동선을 불러오는 중이에요...</p>}
         {!isLoading && loadError && (
-          <p className={styles.note} style={{ color: '#E64545' }}>
+          <p className={styles.note} style={{ color: 'var(--color-danger)' }}>
             {loadError}
           </p>
         )}
@@ -424,7 +424,7 @@ export default function ItineraryEditView() {
         )}
 
         {saveError && (
-          <p className={styles.note} style={{ color: '#E64545' }}>
+          <p className={styles.note} style={{ color: 'var(--color-danger)' }}>
             {saveError}
           </p>
         )}

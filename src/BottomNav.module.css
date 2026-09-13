@@ -1,7 +1,7 @@
 .bottom-tabs {
   margin-top: auto;
   flex-shrink: 0;
-  border-top: 1px solid #EFEDFA;
+  border-top: 1px solid var(--color-border);
   background: #fff;
   display: flex;
 }
@@ -28,7 +28,7 @@
    항상 강조색으로 고정돼 있어서, 다른 탭에 있을 때도 홈이 활성처럼 보이는 문제가 있었음 */
 .bottom-tab.active {
   position: relative;
-  color: #6D57FC;
+  color: var(--color-primary-500);
 }
 
 .bottom-tab.active::after {
@@ -39,6 +39,6 @@
   transform: translateX(-50%);
   width: 28px;
   height: 2px;
-  background: #6D57FC;
+  background: var(--color-primary-500);
   border-radius: 100px;
 }

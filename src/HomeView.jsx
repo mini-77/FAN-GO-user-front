@@ -130,7 +130,7 @@ export default function HomeView() {
 
           {!isLoading && loadError && (
             <div>
-              <p className={styles['load-text']} style={{ color: '#E64545' }}>{loadError}</p>
+              <p className={styles['load-text']} style={{ color: 'var(--color-danger)' }}>{loadError}</p>
               <button type="button" className={styles['retry-btn']} onClick={retry}>
                 다시 시도
               </button>

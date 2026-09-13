@@ -4,7 +4,7 @@
   min-height: 100vh;
   display: flex;
   justify-content: center;
-  background: #ececec;
+  background: var(--color-screen-bg);
   padding: 24px 16px;
   font-family: 'IBM Plex Sans KR', sans-serif;
 }
@@ -15,7 +15,7 @@
   background: #fff;
   border-radius: 20px;
   box-shadow: 0px 3px 10px rgba(181, 179, 193, 0.11);
-  outline: 1px solid #EFEDFA;
+  outline: 1px solid var(--color-border);
   outline-offset: -1px;
   box-sizing: border-box;
   display: flex;
@@ -35,7 +35,7 @@
 /* 헤더 */
 .header {
   padding: 14px 18px;
-  border-bottom: 1px solid #EFEDFA;
+  border-bottom: 1px solid var(--color-border);
   display: flex;
   flex-direction: column;
   gap: 9px;
@@ -52,9 +52,9 @@
   height: 30px;
   min-width: 30px;
   border-radius: 15px;
-  background: #F8F7FF;
-  border: 1px solid #E8E4FF;
-  color: #6D57FC;
+  background: var(--color-primary-50);
+  border: 1px solid var(--color-primary-200);
+  color: var(--color-primary-500);
   font-family: 'Urbanist', sans-serif;
   font-size: 13px;
   font-weight: 600;
@@ -69,10 +69,10 @@
   min-width: 58px;
   height: 34px;
   padding: 0 12px;
-  border: 1px solid #E8E4FF;
+  border: 1px solid var(--color-primary-200);
   border-radius: 20px;
-  background: #F8F7FF;
-  color: #1B163F;
+  background: var(--color-primary-50);
+  color: var(--color-ink-900);
   font-family: 'Urbanist', sans-serif;
   font-size: 12px;
   font-weight: 600;
@@ -89,7 +89,7 @@
   font-weight: 600;
   line-height: 28px;
   letter-spacing: 0.38px;
-  color: #201E1D;
+  color: var(--color-ink-900);
   margin: 0;
 }
 
@@ -126,7 +126,7 @@
   font-family: 'Inter', sans-serif;
   font-size: 11px;
   font-weight: 600;
-  color: #6D57FC;
+  color: var(--color-primary-500);
 }
 
 .artist-list {
@@ -139,15 +139,15 @@
 /* 아티스트 카드 */
 .artist-card {
   border-radius: 16px;
-  background: #F8F7FF;
-  box-shadow: 0 0 0 1px #E8E4FF;
+  background: var(--color-primary-50);
+  box-shadow: 0 0 0 1px var(--color-primary-200);
   cursor: pointer;
   overflow: hidden;
 }
 
 .artist-card.selected {
-  background: #F0EEFF;
-  box-shadow: 0 0 0 1px #6D57FC;
+  background: var(--color-primary-100);
+  box-shadow: 0 0 0 1px var(--color-primary-500);
 }
 
 .artist-card.locked {
@@ -178,24 +178,24 @@
 .artist-name {
   font-size: 14px;
   font-weight: 600;
-  color: #1B163F;
+  color: var(--color-ink-900);
 }
 
 .artist-card.selected .artist-name {
-  color: #5A45D6;
+  color: var(--color-primary-600);
 }
 
 .artist-subtitle {
   font-family: 'Urbanist', sans-serif;
   font-size: 10px;
   font-weight: 400;
-  color: #1B163F;
+  color: var(--color-ink-900);
   opacity: 0.7;
   margin-top: 2px;
 }
 
 .artist-card.selected .artist-subtitle {
-  color: #5A45D6;
+  color: var(--color-primary-600);
 }
 
 .artist-check {
@@ -206,7 +206,7 @@
 }
 
 .artist-card.selected .artist-check {
-  color: #6D57FC;
+  color: var(--color-primary-500);
 }
 
 /* 펼쳐진 상세 정보 */
@@ -236,7 +236,7 @@
   font-family: 'Inter', sans-serif;
   font-size: 11.5px;
   font-weight: 600;
-  color: #0C0A1C;
+  color: var(--color-ink-900);
 }
 
 .detail-agency {
@@ -257,7 +257,7 @@
 /* 하단 */
 .footer {
   padding: 12px 18px 24px;
-  border-top: 1px solid #EFEDFA;
+  border-top: 1px solid var(--color-border);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -274,7 +274,7 @@
   padding: 13.6px 20px 15.4px;
   border: none;
   border-radius: 12px;
-  background: #6D57FC;
+  background: var(--color-primary-500);
   color: #fff;
   font-size: 14px;
   font-weight: 600;
@@ -289,7 +289,7 @@
 }
 
 .btn-primary:not(.disabled):hover {
-  background: #5a45e0;
+  background: var(--color-primary-600);
 }
 /* 실제 폰 화면(카드 최대폭보다 좁은 뷰포트)에서는 데스크톱 미리보기용 "폰 목업" 프레임
    (회색 배경 · 여백 · 둥근 모서리)을 없애고 화면 전체를 꽉 채움 */

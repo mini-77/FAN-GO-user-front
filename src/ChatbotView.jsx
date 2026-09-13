@@ -49,7 +49,7 @@ const DEMO_CONGESTION = {
 }
 
 // 01 컬러 규칙 — 여유/혼잡 같은 점수·상태 색은 브랜드색이 아니라 Success/Warning/Danger로 고정
-const LEVEL_COLOR = { 1: '#2E9E5B', 2: '#E5A02E', 3: '#E5484D' }
+const LEVEL_COLOR = { 1: 'var(--color-success)', 2: 'var(--color-warning)', 3: 'var(--color-danger)' }
 const LEVEL_HEIGHT = { 1: 18, 2: 34, 3: 52 }
 
 function CongestionCard({ data }) {
@@ -297,7 +297,7 @@ export default function ChatbotView() {
                   }`}
                   onClick={() => openSession(s.chat_session_no)}
                 >
-                  <span className={styles.historyIcon}><Icon name="chat" size={16} color="#6D57FC" /></span>
+                  <span className={styles.historyIcon}><Icon name="chat" size={16} color="var(--color-primary-500)" /></span>
                   <span className={styles.historyTexts}>
                     <span className={styles.historyTitle}>{s.preview || '대화'}</span>
                     <span className={styles.historyMeta}>{formatRelativeTime(s.last_message_at)}</span>
