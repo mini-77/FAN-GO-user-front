@@ -160,10 +160,14 @@
 }
 
 /* 멤버 선택 - 칩 대신 체크리스트로. 고를 값이 많을 때 한눈에 훑기 쉬움 */
+/* 배지&칩 확정사항 - 멤버가 많아 목록이 길어지면 패널 안에서만 스크롤,
+   초기화/확인 버튼은 항상 그 아래 고정된 자리에 보이게 */
 .member-list {
   display: flex;
   flex-direction: column;
   margin-top: 8px;
+  max-height: 260px;
+  overflow-y: auto;
 }
 
 .member-row {

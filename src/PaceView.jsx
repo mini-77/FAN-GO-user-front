@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTrip } from './TripContext'
 import { apiFetch } from './api'
@@ -18,6 +18,7 @@ export default function PaceView() {
   const navigate = useNavigate()
   const { tripData, updateTrip } = useTrip()
   const [isOpen, setIsOpen] = useState(true)
+  const memberListRef = useRef(null)
   const [members, setMembers] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [loadError, setLoadError] = useState('')
@@ -85,9 +86,12 @@ export default function PaceView() {
     })
   }
 
+  // 초기화 버튼 공통 가이드 - 그리드 밖에서 전체 선택을 지우는 별도 동작.
+  // 선택만 지우는 게 아니라 스크롤도 목록 맨 위로 되돌려서, 뭐가 다 풀렸는지 바로 보이게 함.
   function resetSelection() {
     setSelectedMembers(new Set())
     setIsWholeGroupSelected(false)
+    memberListRef.current?.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
   const selectedNames = members
@@ -153,7 +157,7 @@ export default function PaceView() {
                 <>
                   <div>
                     <span className={styles['panel-group-label']}>멤버 선택</span>
-                    <div className={styles['member-list']}>
+                    <div className={styles['member-list']} ref={memberListRef}>
                       {/* 그룹 전체 선택 - 개별 멤버 체크와 배타적 관계 */}
                       <label className={styles['member-row']}>
                         <input
@@ -192,12 +196,12 @@ export default function PaceView() {
                     </span>
                   </div>
 
-                  {/* 초기화/확인을 50:50 한 줄로 - 인라인 flex로 확실하게 고정 */}
+                  {/* 초기화 버튼 공통 가이드 - 확인 버튼과 짝을 이뤄 왼쪽에, 비율 40:60 */}
                   <div style={{ display: 'flex', gap: 8, width: '100%' }}>
                     <button
                       type="button"
                       className={styles['reset-btn']}
-                      style={{ flex: 1, textAlign: 'center' }}
+                      style={{ flex: '0 1 40%', textAlign: 'center' }}
                       onClick={resetSelection}
                     >
                       초기화
@@ -205,7 +209,7 @@ export default function PaceView() {
                     <button
                       type="button"
                       className={styles['confirm-btn']}
-                      style={{ flex: 1 }}
+                      style={{ flex: '0 1 60%' }}
                       onClick={() => setIsOpen(false)}
                     >
                       확인
