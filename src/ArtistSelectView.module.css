@@ -84,8 +84,9 @@
   background-position: right 12px center;
 }
 
+/* 다중 선택 화면 텍스트 위계 - 화면 타이틀은 20px Bold (일반 H1 22px과 별도 기준) */
 .title {
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 700;
   line-height: 28px;
   letter-spacing: -0.3px;
@@ -97,7 +98,7 @@
   font-size: 12.5px;
   font-weight: 400;
   line-height: 21.25px;
-  color: rgba(27, 22, 63, 0.62);
+  color: var(--color-ink-600);
   margin: 0;
 }
 
@@ -116,16 +117,15 @@
 
 .section-label {
   font-family: 'Urbanist', sans-serif;
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 1.4px;
-  color: rgba(27, 22, 63, 0.55);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color-ink-700);
 }
 
 .section-count {
   font-family: 'Inter', sans-serif;
-  font-size: 11px;
-  font-weight: 600;
+  font-size: 12px;
+  font-weight: 700;
   color: var(--color-primary-500);
 }
 
