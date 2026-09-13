@@ -34,10 +34,19 @@ const GALLERY_SCALE = 0.28
 const PHONE_WIDTH = 390
 const PHONE_HEIGHT = 844
 
+// toISOString()은 UTC로 변환하면서 한국 시간 기준 날짜가 하루 당겨지는 버그가 있어서
+// (EventSelectView.jsx의 toLocalIsoDate와 동일한 이유) 로컬 값 그대로 조립해야 함.
+function toLocalIsoDate(d) {
+  const y = d.getFullYear()
+  const m = String(d.getMonth() + 1).padStart(2, '0')
+  const day = String(d.getDate()).padStart(2, '0')
+  return `${y}-${m}-${day}`
+}
+
 function addDaysToIso(iso, n) {
   const d = new Date(iso)
   d.setDate(d.getDate() + n)
-  return d.toISOString().slice(0, 10)
+  return toLocalIsoDate(d)
 }
 
 export default function ScreenIndex() {
@@ -67,9 +76,14 @@ export default function ScreenIndex() {
       const detailRes = await apiFetch(`/events/${eventCard.event_no}`)
       const detail = detailRes.ok ? await detailRes.json() : {}
 
+      // /events/main은 event_date가 아니라 start_dt/end_dt를 내려줌 (EventSelectView와 동일하게 처리)
+      const eventStart = new Date(eventCard.start_dt)
+      if (Number.isNaN(eventStart.getTime())) throw new Error('이벤트 시작일 형식을 못 읽었어요.')
+      const eventDateStr = toLocalIsoDate(eventStart)
+
       const selectedEvent = {
         event_no: eventCard.event_no,
-        event_date: eventCard.event_date,
+        event_date: eventDateStr,
         title: eventCard.event_nm,
         address: detail.add || '',
         artist_group_no: eventCard.artist_group_no ?? detail.artist_group_no ?? null,

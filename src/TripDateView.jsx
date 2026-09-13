@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTrip } from './TripContext'
 import AppHeader from './AppHeader'
+import PickerSheet from './PickerSheet'
 import styles from './TripDateView.module.css'
 
 function formatDot(isoDate) {
@@ -450,14 +451,15 @@ export default function TripDateView() {
           <div className={styles['two-col']}>
             <div>
               <label className={styles['field-label']}>시작일</label>
-              <input
+              <PickerSheet
                 type="date"
                 className={styles.input}
                 value={startDate}
                 min={allowedMinDate || undefined}
                 max={eventDate || allowedMaxDate || undefined}
-                onChange={(e) => {
-                  const nextStart = e.target.value
+                formatValue={formatDot}
+                placeholder="시작일을 골라주세요"
+                onChange={(nextStart) => {
                   // 시작일이 이벤트 날짜보다 늦어지면, 완료일이 이벤트 날짜보다 빨라지는 모순이
                   // 생기지 않도록 완료일도 같이 이벤트 날짜 이상으로 끌어올림
                   const patch = { startDate: nextStart }
@@ -467,7 +469,7 @@ export default function TripDateView() {
                   updateDates(patch)
                   setFieldErrors((prev) => ({ ...prev, startDate: '', endDate: '' }))
                 }}
-                onBlur={() =>
+                onConfirm={() =>
                   setFieldErrors((prev) => ({
                     ...prev,
                     ...validateDates(startDate, endDate, allowedMinDate, allowedMaxDate, eventDate),
@@ -478,14 +480,15 @@ export default function TripDateView() {
             </div>
             <div>
               <label className={styles['field-label']}>완료일</label>
-              <input
+              <PickerSheet
                 type="date"
                 className={styles.input}
                 value={endDate}
                 min={eventDate || allowedMinDate || undefined}
                 max={allowedMaxDate || undefined}
-                onChange={(e) => {
-                  const nextEnd = e.target.value
+                formatValue={formatDot}
+                placeholder="완료일을 골라주세요"
+                onChange={(nextEnd) => {
                   // 완료일이 이벤트 날짜보다 빨라지면, 시작일도 같이 이벤트 날짜 이하로 내려서
                   // "이벤트 날짜가 기간에서 아예 빠지는" 조합 자체가 안 만들어지게 함
                   const patch = { endDate: nextEnd }
@@ -495,7 +498,7 @@ export default function TripDateView() {
                   updateDates(patch)
                   setFieldErrors((prev) => ({ ...prev, startDate: '', endDate: '' }))
                 }}
-                onBlur={() =>
+                onConfirm={() =>
                   setFieldErrors((prev) => ({
                     ...prev,
                     ...validateDates(startDate, endDate, allowedMinDate, allowedMaxDate, eventDate),
@@ -509,15 +512,16 @@ export default function TripDateView() {
           <div className={styles['two-col']} style={{ marginTop: 14 }}>
             <div>
               <label className={styles['field-label']}>시작</label>
-              <input
+              <PickerSheet
                 type="time"
                 className={styles.input}
                 value={startTime}
-                onChange={(e) => {
-                  updateDates({ startTime: e.target.value })
+                placeholder="시작 시간을 골라주세요"
+                onChange={(next) => {
+                  updateDates({ startTime: next })
                   setFieldErrors((prev) => ({ ...prev, startTime: '', endTime: '' }))
                 }}
-                onBlur={() =>
+                onConfirm={() =>
                   setFieldErrors((prev) => ({ ...prev, ...validateTimes(startTime, endTime) }))
                 }
               />
@@ -525,15 +529,16 @@ export default function TripDateView() {
             </div>
             <div>
               <label className={styles['field-label']}>완료</label>
-              <input
+              <PickerSheet
                 type="time"
                 className={styles.input}
                 value={endTime}
-                onChange={(e) => {
-                  updateDates({ endTime: e.target.value })
+                placeholder="완료 시간을 골라주세요"
+                onChange={(next) => {
+                  updateDates({ endTime: next })
                   setFieldErrors((prev) => ({ ...prev, startTime: '', endTime: '' }))
                 }}
-                onBlur={() =>
+                onConfirm={() =>
                   setFieldErrors((prev) => ({ ...prev, ...validateTimes(startTime, endTime) }))
                 }
               />
@@ -805,24 +810,28 @@ export default function TripDateView() {
                 <div className={styles['two-col']}>
                   <div>
                     <label className={styles['field-label']}>체크인</label>
-                    <input
+                    <PickerSheet
                       type="date"
                       className={styles.input}
                       value={stayCheckIn}
                       min={stayAllowedMinDate || undefined}
                       max={stayAllowedMaxDate || undefined}
-                      onChange={(e) => setStayCheckIn(e.target.value)}
+                      formatValue={formatDot}
+                      placeholder="체크인 날짜를 골라주세요"
+                      onChange={setStayCheckIn}
                     />
                   </div>
                   <div>
                     <label className={styles['field-label']}>체크아웃</label>
-                    <input
+                    <PickerSheet
                       type="date"
                       className={styles.input}
                       value={stayCheckOut}
                       min={stayAllowedMinDate || undefined}
                       max={stayAllowedMaxDate || undefined}
-                      onChange={(e) => setStayCheckOut(e.target.value)}
+                      formatValue={formatDot}
+                      placeholder="체크아웃 날짜를 골라주세요"
+                      onChange={setStayCheckOut}
                     />
                   </div>
                 </div>
