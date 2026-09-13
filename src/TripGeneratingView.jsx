@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTrip } from './TripContext'
 import { apiFetch } from './api'
+import Icon from './Icon'
 import styles from './TripGeneratingView.module.css'
 
 // trip_density_no: 백엔드 확인 완료 - 1=A(여유 우선) / 2=B(적당히) / 3=C(많이 보기)
@@ -19,21 +20,11 @@ const LOADING_TITLES = [
   ['너와 최애 사이,', '가장 예쁜 길을 찾는 중이야'],
 ]
 
-// 백엔드 에러 detail을 사람이 읽을 메시지로 변환.
-// pydantic 기본 422 형식은 [{ loc: ["body","ctg_nos"], msg: "..." }] 인데,
-// 예전엔 msg만 꺼내 쓰고 loc(어떤 필드가 문제인지)를 버려서 원인 파악이 안 됐음 - 같이 붙여줌.
+// 백엔드 에러 detail은 API 키·환경변수명·필드 경로 같은 개발자용 정보를 담고 있을 수 있어서
+// 화면에 그대로 보여주지 않음 (디자인 가이드 - 보안·신뢰 원칙). 원본은 콘솔 로그로만 남기고,
+// 사용자에게는 항상 미리 정해둔 사람이 이해할 문장(fallback)만 보여줌.
 function parseErrorDetail(detail, fallback) {
-  if (!detail) return fallback
-  if (typeof detail === 'string') return detail
-  if (detail.message) {
-    const fields = Array.isArray(detail.fields) ? ` (필드: ${detail.fields.join(', ')})` : ''
-    return `${detail.message}${fields}`
-  }
-  if (Array.isArray(detail) && detail.length > 0) {
-    const first = detail[0]
-    const loc = Array.isArray(first?.loc) ? first.loc.filter((l) => l !== 'body').join('.') : ''
-    return loc ? `${first.msg} (필드: ${loc})` : first.msg || fallback
-  }
+  if (detail) console.error('[동선 생성 실패]', detail)
   return fallback
 }
 
@@ -226,7 +217,7 @@ export default function TripGeneratingView() {
   }
 
   return (
-    <div className={styles.screen}>
+    <div className={`${styles.screen} ${error ? styles.screenError : ''}`}>
       {!error && (
         <>
           <div className={styles.spinner}>
@@ -255,13 +246,14 @@ export default function TripGeneratingView() {
 
       {error && (
         <div className={styles['error-box']}>
+          <Icon name="warning" size={32} color="#E5484D" style={{ marginBottom: 12 }} />
           <p className={styles['error-text']}>{error}</p>
           <div className={styles['error-actions']}>
-            <button type="button" className={styles['btn-outline']} onClick={() => navigate('/trip/confirm')}>
-              확인 화면으로
-            </button>
             <button type="button" className={styles['btn-white']} onClick={retry}>
               다시 시도
+            </button>
+            <button type="button" className={styles['btn-outline']} onClick={() => navigate('/trip/confirm')}>
+              이전 화면으로
             </button>
           </div>
         </div>

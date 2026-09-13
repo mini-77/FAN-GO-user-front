@@ -12,7 +12,7 @@
 .card {
   width: 100%;
   max-width: 100%;
-  min-height: 844px;
+  height: 844px;
   background: #fff;
   border-radius: 32px;
   box-shadow: 0px 3px 10px rgba(181, 179, 193, 0.11);
@@ -34,8 +34,14 @@
 }
 
 /* 내용이 짧아도 이 영역이 남는 세로 공간을 흡수해서, BottomNav가 항상 카드 맨 아래에 붙게 함 */
-.spacer {
+.list {
   flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.spacer {
+  flex-shrink: 0;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -95,6 +101,39 @@
   font-size: 14px;
   font-weight: 600;
   color: #201E1D;
+}
+
+.empty-state {
+  padding: 48px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.empty-hint {
+  margin: 0;
+  text-align: center;
+  font-size: 13px;
+  color: rgba(27, 22, 63, 0.45);
+}
+
+.load-more-btn {
+  width: 100%;
+  margin-top: 4px;
+  padding: 12px;
+  border: 1px solid #E8E4FF;
+  border-radius: 12px;
+  background: #fff;
+  color: #6D57FC;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
 }
 
 .day-meta {
@@ -202,7 +241,8 @@
 
   .card {
     max-width: 100%;
-    min-height: 100vh;
+    height: 100vh;
+    height: 100dvh;
     border-radius: 0;
     box-shadow: none;
     outline: none;

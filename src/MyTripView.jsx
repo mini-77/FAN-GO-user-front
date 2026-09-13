@@ -4,7 +4,11 @@ import { useTrip } from './TripContext'
 import { apiFetch } from './api'
 import AppHeader from './AppHeader'
 import BottomNav from './BottomNav'
+import Icon from './Icon'
 import styles from './MyTripView.module.css'
+
+// 08 리스트 섹션 규칙 — 길이가 정해지지 않은 리스트는 무한스크롤 대신 8~10개씩 "더보기"로 불러옴
+const PAGE_SIZE = 8
 
 function formatDot(isoDate) {
   return isoDate ? isoDate.replaceAll('-', '.').slice(2) : ''
@@ -22,6 +26,7 @@ export default function MyTripView() {
   const [trips, setTrips] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [loadError, setLoadError] = useState('')
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE)
 
   useEffect(() => {
     let cancelled = false
@@ -102,7 +107,7 @@ export default function MyTripView() {
           <h1 className={styles.title}>저장한 동선</h1>
         </div>
 
-        <div>
+        <div className={styles.list}>
           {isLoading && <p className={styles['empty-hint']}>불러오는 중이에요...</p>}
           {!isLoading && loadError && (
             <div className={styles['empty-hint']}>
@@ -113,11 +118,14 @@ export default function MyTripView() {
             </div>
           )}
           {!isLoading && !loadError && trips.length === 0 && (
-            <p className={styles['empty-hint']}>아직 저장한 여행이 없어요.</p>
+            <div className={styles['empty-state']}>
+              <Icon name="folder" size={32} color="#C0BCD8" />
+              <p className={styles['empty-hint']}>아직 저장한 여행이 없어요.</p>
+            </div>
           )}
           {!isLoading &&
             !loadError &&
-            trips.map((t) => (
+            trips.slice(0, visibleCount).map((t) => (
               <div
                 key={t.trip_no}
                 className={styles['day-row']}
@@ -135,6 +143,16 @@ export default function MyTripView() {
                 </span>
               </div>
             ))}
+
+          {!isLoading && !loadError && trips.length > visibleCount && (
+            <button
+              type="button"
+              className={styles['load-more-btn']}
+              onClick={() => setVisibleCount((v) => v + PAGE_SIZE)}
+            >
+              더보기 <Icon name="chevronDown" size={14} />
+            </button>
+          )}
         </div>
 
         <div className={styles.spacer}>

@@ -114,13 +114,14 @@
   align-items: center;
   justify-content: space-between;
   padding: 13px 14px;
+  /* 공식 이벤트(선택된 일정 기준) 정보라 연한 색으로 살짝 구분되게 둠 */
   background: #F8F7FF;
-  border: 1px solid #6D57FC;
+  border: 1px solid #E8E4FF;
   border-radius: 16px;
   font-family: 'IBM Plex Sans KR', sans-serif;
   font-size: 14px;
   font-weight: 600;
-  color: #000;
+  color: #201E1D;
   cursor: pointer;
 }
 
@@ -136,8 +137,8 @@
 
 .picker-panel {
   background: #fff;
-  box-shadow: 0px 12px 40px rgba(109, 87, 252, 0.14);
-  border: 1px solid #E8E4FF;
+  box-shadow: 0px 8px 24px rgba(27, 22, 63, 0.08);
+  border: 1px solid #EFEDFA;
   border-radius: 20px;
   padding: 16px;
   display: flex;
@@ -153,48 +154,38 @@
   color: rgba(27, 22, 63, 0.4);
 }
 
-.chip-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  padding-top: 8px;
-}
-
-.group-chip {
-  padding: 9px 16px;
-  border-radius: 100px;
-  background: #F0EEFF;
-  border: none;
-  color: #6D57FC;
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.group-chip.active {
-  background: #6D57FC;
-  color: #fff;
-}
-
 .divider {
   height: 1px;
   background: #EFEDFA;
 }
 
-.member-chip {
-  padding: 9px 16px;
-  border-radius: 100px;
-  background: #F0EEFF;
-  border: none;
-  color: #6D57FC;
-  font-size: 13px;
-  font-weight: 600;
+/* 멤버 선택 - 칩 대신 체크리스트로. 고를 값이 많을 때 한눈에 훑기 쉬움 */
+.member-list {
+  display: flex;
+  flex-direction: column;
+  margin-top: 8px;
+}
+
+.member-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 2px;
   cursor: pointer;
 }
 
-.member-chip.active {
-  background: #6D57FC;
-  color: #fff;
+.member-row-text {
+  font-size: 13.5px;
+  font-weight: 500;
+  color: #201E1D;
+}
+
+.checkbox {
+  width: 18px;
+  height: 18px;
+  min-width: 18px;
+  accent-color: #6D57FC;
+  cursor: pointer;
 }
 
 .selection-summary-row {
@@ -270,9 +261,9 @@
 
 .pace-option {
   padding: 14px;
-  background: #F8F7FF;
+  background: #fff;
   border-radius: 16px;
-  border: 1px solid #F4F2FF;
+  border: 1px solid #EFEDFA;
   display: flex;
   align-items: center;
   gap: 12px;
@@ -280,7 +271,8 @@
 }
 
 .pace-option.selected {
-  background: #E8E4FF;
+  background: #F3F1FF;
+  border-color: #6D57FC;
 }
 
 .pace-letter {
@@ -289,6 +281,11 @@
   font-family: 'Inter', sans-serif;
   font-size: 15px;
   font-weight: 600;
+}
+
+.pace-option.selected .pace-letter,
+.pace-option.selected .pace-check {
+  color: #6D57FC;
 }
 
 .pace-text {

@@ -312,7 +312,7 @@ export default function EditProfileView() {
 
           <div className={styles['pw-block']}>
             <span className={styles['section-label']}>비밀번호 변경</span>
-            <p className={styles.hint}>비밀번호 변경 기능은 아직 준비 중이에요 (관련 API 대기 중).</p>
+            <p className={styles.infoBannerMuted}>비밀번호 변경 기능은 아직 준비 중이에요 (관련 API 대기 중).</p>
             <div className={styles.field}>
               <label className={styles['field-label']}>현재 비밀번호</label>
               <input

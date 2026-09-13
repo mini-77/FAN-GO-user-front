@@ -277,7 +277,7 @@ export default function EventSelectView() {
           </p>
         )}
 
-        <div className={styles.footer}>
+        <div className={styles.footer} data-bottom-bar="true">
           <button
             type="button"
             className={styles['btn-primary']}

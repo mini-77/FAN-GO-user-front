@@ -4,6 +4,7 @@ import { useTrip } from './TripContext'
 import { apiFetch } from './api'
 import AppHeader from './AppHeader'
 import BottomNav from './BottomNav'
+import Icon from './Icon'
 import styles from './HistoryView.module.css'
 
 const TABS = [
@@ -11,6 +12,9 @@ const TABS = [
   { label: '지난 여행', tab: 'past' },
   { label: '예정', tab: 'upcoming' },
 ]
+
+// 08 리스트 섹션 규칙 — 길이가 정해지지 않은 리스트는 무한스크롤 대신 8~10개씩 "더보기"로 불러옴
+const PAGE_SIZE = 8
 
 // status → 표시 라벨/색 종류
 function statusToLabel(status) {
@@ -31,9 +35,11 @@ export default function HistoryView() {
   const [trips, setTrips] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [loadError, setLoadError] = useState('')
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE)
 
   useEffect(() => {
     let cancelled = false
+    setVisibleCount(PAGE_SIZE)
 
     async function loadTrips() {
       setIsLoading(true)
@@ -121,12 +127,15 @@ export default function HistoryView() {
           )}
 
           {!isLoading && !loadError && filteredTrips.length === 0 && (
-            <p className={styles['empty-hint']}>아직 만든 일정이 없어요.</p>
+            <div className={styles['empty-state']}>
+              <Icon name="folder" size={32} color="#C0BCD8" />
+              <p className={styles['empty-hint']}>아직 만든 일정이 없어요.</p>
+            </div>
           )}
 
           {!isLoading &&
             !loadError &&
-            filteredTrips.map((trip) => (
+            filteredTrips.slice(0, visibleCount).map((trip) => (
               <div
                 key={trip.trip_no}
                 className={`${styles['trip-row']} ${trip.status === '진행중' ? styles.ongoingRow : ''}`}
@@ -157,11 +166,21 @@ export default function HistoryView() {
                 </div>
               </div>
             ))}
+
+          {!isLoading && !loadError && filteredTrips.length > visibleCount && (
+            <button
+              type="button"
+              className={styles['load-more-btn']}
+              onClick={() => setVisibleCount((v) => v + PAGE_SIZE)}
+            >
+              더보기 <Icon name="chevronDown" size={14} />
+            </button>
+          )}
         </div>
 
         <div className={styles.spacer} />
 
-        <div className={styles.footer}>
+        <div className={styles.footer} data-bottom-bar="true">
           <button type="button" className={styles['new-btn']} onClick={() => navigate('/trip/events')}>
             새로운 일정 생성
           </button>

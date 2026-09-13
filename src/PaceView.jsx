@@ -152,27 +152,31 @@ export default function PaceView() {
               {!isLoading && !loadError && (
                 <>
                   <div>
-                    <span className={styles['panel-group-label']}>멤버</span>
-                    <div className={styles['chip-row']}>
-                      {/* 그룹 전체 선택 칩 — 개별 멤버 칩보다 앞에 표시 */}
-                      <button
-                        type="button"
-                        className={`${styles['member-chip']} ${isWholeGroupSelected ? styles.active : ''}`}
-                        onClick={toggleWholeGroup}
-                      >
-                        그룹 전체
-                      </button>
+                    <span className={styles['panel-group-label']}>멤버 선택</span>
+                    <div className={styles['member-list']}>
+                      {/* 그룹 전체 선택 - 개별 멤버 체크와 배타적 관계 */}
+                      <label className={styles['member-row']}>
+                        <input
+                          type="checkbox"
+                          className={styles.checkbox}
+                          checked={isWholeGroupSelected}
+                          onChange={toggleWholeGroup}
+                        />
+                        <span className={styles['member-row-text']}>그룹 전체</span>
+                      </label>
+                      <div className={styles.divider} />
                       {members.map((m) => {
                         const isSelected = selectedMembers.has(m.artist_no)
                         return (
-                          <button
-                            key={m.artist_no}
-                            type="button"
-                            className={`${styles['member-chip']} ${isSelected ? styles.active : ''}`}
-                            onClick={() => toggleMember(m.artist_no)}
-                          >
-                            {m.artist_nm}
-                          </button>
+                          <label key={m.artist_no} className={styles['member-row']}>
+                            <input
+                              type="checkbox"
+                              className={styles.checkbox}
+                              checked={isSelected}
+                              onChange={() => toggleMember(m.artist_no)}
+                            />
+                            <span className={styles['member-row-text']}>{m.artist_nm}</span>
+                          </label>
                         )
                       })}
                     </div>
@@ -219,32 +223,36 @@ export default function PaceView() {
           </p>
         </div>
 
-        <div className={styles['pace-section']}>
-          <span className={styles['pace-label']}>받아볼 동선 안</span>
-          <div className={styles['pace-list']}>
-            {PACE_OPTIONS.map((opt) => (
-              <div
-                key={opt.id}
-                className={`${styles['pace-option']} ${selectedPace === opt.id ? styles.selected : ''}`}
-                onClick={() => setSelectedPace(opt.id)}
-              >
-                <span className={styles['pace-letter']}>{opt.id}</span>
-                <div className={styles['pace-text']}>
-                  <span className={styles['pace-name']}>{opt.name}</span>
-                  <span className={styles['pace-desc']}>{opt.desc}</span>
-                </div>
-                {selectedPace === opt.id && <span className={styles['pace-check']}>✓</span>}
-              </div>
-            ))}
-          </div>
-        </div>
-
+        {/* 멤버 선택을 먼저 끝내야("확인") 받아볼 동선 안 선택이 보이게 함 - 한 번에
+            고를 게 너무 많아 보이지 않도록 단계를 나눔 */}
         {!isOpen && (
-          <div className={styles.footer}>
-            <button type="button" className={styles['btn-primary']} onClick={goNext}>
-              다음: 확인
-            </button>
-          </div>
+          <>
+            <div className={styles['pace-section']}>
+              <span className={styles['pace-label']}>받아볼 동선 안</span>
+              <div className={styles['pace-list']}>
+                {PACE_OPTIONS.map((opt) => (
+                  <div
+                    key={opt.id}
+                    className={`${styles['pace-option']} ${selectedPace === opt.id ? styles.selected : ''}`}
+                    onClick={() => setSelectedPace(opt.id)}
+                  >
+                    <span className={styles['pace-letter']}>{opt.id}</span>
+                    <div className={styles['pace-text']}>
+                      <span className={styles['pace-name']}>{opt.name}</span>
+                      <span className={styles['pace-desc']}>{opt.desc}</span>
+                    </div>
+                    {selectedPace === opt.id && <span className={styles['pace-check']}>✓</span>}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className={styles.footer}>
+              <button type="button" className={styles['btn-primary']} onClick={goNext}>
+                다음: 확인
+              </button>
+            </div>
+          </>
         )}
       </div>
     </div>

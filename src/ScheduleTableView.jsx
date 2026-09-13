@@ -284,10 +284,7 @@ export default function ScheduleTableView() {
 
         <div className={styles.spacer} />
 
-        <div className={styles['action-row']}>
-          <button type="button" className={styles['btn-outline']} onClick={() => navigate('/trip/itinerary')}>
-            지도 열기
-          </button>
+        <div className={styles['action-row']} data-bottom-bar="true">
           <button
             type="button"
             className={styles['btn-outline']}
@@ -296,7 +293,7 @@ export default function ScheduleTableView() {
             동선 수정
           </button>
           <button type="button" className={styles['btn-primary']} onClick={() => navigate('/trip/my')}>
-            다음: 확정
+            확인
           </button>
         </div>
 

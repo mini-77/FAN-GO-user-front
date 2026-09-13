@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { apiFetch } from './api'
+import Icon from './Icon'
 import styles from './PlaceDetailView.module.css'
 import modalStyles from './PlaceDetailModal.module.css'
 
@@ -131,7 +132,7 @@ export default function PlaceDetailModal({ eventNo, tripRouteEventNo, liked: ini
                     onClick={toggleLike}
                     disabled={isLiking}
                   >
-                    {liked ? '♥ 좋아요' : '♡ 좋아요'}
+                    <Icon name="heart" size={14} filled={liked} /> 좋아요
                   </button>
                 )}
               </div>

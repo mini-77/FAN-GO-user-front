@@ -4,6 +4,7 @@ import { useTrip } from './TripContext';
 import { apiFetch } from './api';
 import AppHeader from './AppHeader';
 import BottomNav from './BottomNav';
+import Icon from './Icon';
 import { useLanguage } from './LanguageContext';
 import styles from './FeedbackView.module.css';
 
@@ -33,6 +34,7 @@ export default function FeedbackView() {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState('');
+  const [isSubmitted, setIsSubmitted] = useState(false); // 제출 성공 후 "완료" 안내 오버레이 표시용
 
   // '한마디 더' 칩 목록
   useEffect(() => {
@@ -155,7 +157,8 @@ export default function FeedbackView() {
         return;
       }
 
-      navigate('/trip/my');
+      setIsSubmitting(false);
+      setIsSubmitted(true);
     } catch (e) {
       setSubmitError('서버에 연결할 수 없어요. 잠시 후 다시 시도해주세요.');
       setIsSubmitting(false);
@@ -166,6 +169,38 @@ export default function FeedbackView() {
   const handleSkip = () => {
     navigate('/trip/my');
   };
+
+  if (isSubmitted) {
+    return (
+      <div className={styles.screen}>
+        <div className={styles.card}>
+          <AppHeader />
+          <div className={styles.doneWrap}>
+            <div className={styles.doneCircle} aria-hidden="true">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+                <path
+                  d="M5 13l4 4L19 7"
+                  stroke="#6D57FC"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </div>
+            <p className={styles.doneTitle}>리뷰 작성이 완료되었습니다</p>
+            <p className={styles.doneSub}>소중한 후기 남겨주셔서 감사합니다.</p>
+            <button
+              type="button"
+              className={styles.submitButton}
+              onClick={() => navigate('/trip/my')}
+            >
+              확인
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.screen}>
@@ -254,7 +289,7 @@ export default function FeedbackView() {
                       className={`${styles.placeThumb} ${place.liked ? styles.placeThumbActive : ''}`}
                       aria-hidden="true"
                     >
-                      👍
+                      <Icon name="thumbsUp" size={14} />
                     </span>
                   </button>
                 ))}
@@ -268,7 +303,7 @@ export default function FeedbackView() {
             </p>
           )}
 
-          <div className={styles.actionRow}>
+          <div className={styles.actionRow} data-bottom-bar="true">
             <button type="button" className={styles.skipButton} onClick={handleSkip}>
               {t('feedback.skipButton')}
             </button>

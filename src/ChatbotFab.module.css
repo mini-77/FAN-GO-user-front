@@ -1,6 +1,8 @@
 .fab {
   position: fixed;
   right: max(20px, calc(50vw - 195px + 16px));
+  /* bottom은 ChatbotFab.jsx가 그 화면에 실제로 떠 있는 하단 버튼 줄 높이를 재서
+     인라인 style로 넣어줌 - 여기 값은 JS가 계산하기 전 아주 짧은 순간의 기본값일 뿐 */
   bottom: 24px;
   z-index: 999;
   width: 56px;
@@ -14,23 +16,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: bottom 0.15s ease;
 }
 
 .fab:active {
   transform: scale(0.94);
-}
-
-/* 하단 탭바(BottomNav, 대략 높이 50~56px)만 있는 화면 - 그 위로 올라오게 여백을 줌 */
-.fab-above-nav {
-  bottom: 76px;
-}
-
-/* 탭바 위에 저장/제출 버튼 한 줄만 있고 탭바는 없는 화면(예: 동선 수정) */
-.fab-above-single-row {
-  bottom: 92px;
-}
-
-/* 탭바 + "지도 열기/동선 수정/다음" 같은 버튼 줄까지 같이 있는 화면 - 둘 다 피해서 훨씬 더 띄움 */
-.fab-above-actions {
-  bottom: 148px;
 }

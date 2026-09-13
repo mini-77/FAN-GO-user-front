@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import AppHeader from './AppHeader'
+import Icon from './Icon'
 import styles from './SignupSuccessView.module.css'
 
 export default function SignupSuccessView() {
@@ -17,7 +18,7 @@ export default function SignupSuccessView() {
         </div>
 
         <div className={styles.body}>
-          <div className={styles['check-badge']}>✓</div>
+          <div className={styles['check-badge']}><Icon name="check" size={36} strokeWidth={2.5} color="#fff" /></div>
 
           <div className={styles['text-block']}>
             <h2 className={styles['success-title']}>가입이 완료되었습니다</h2>
@@ -30,14 +31,14 @@ export default function SignupSuccessView() {
 
           <div className={styles['feature-list']}>
             <div className={styles['feature-card']}>
-              <div className={styles['feature-icon']}>★</div>
+              <div className={styles['feature-icon']}><Icon name="star" size={18} color="#6D57FC" /></div>
               <div className={styles['feature-text']}>
                 <span className={styles['feature-title']}>팬덤 일정 생성</span>
                 <span className={styles['feature-desc']}>아티스트 일정을 한눈에 확인할 수 있어요</span>
               </div>
             </div>
             <div className={styles['feature-card']}>
-              <div className={styles['feature-icon']}>🗓</div>
+              <div className={styles['feature-icon']}><Icon name="calendar" size={18} color="#6D57FC" /></div>
               <div className={styles['feature-text']}>
                 <span className={styles['feature-title']}>여행 일정 계획</span>
                 <span className={styles['feature-desc']}>

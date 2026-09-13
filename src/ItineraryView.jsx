@@ -5,6 +5,8 @@ import { apiFetch } from './api'
 import AppHeader from './AppHeader'
 import BottomNav from './BottomNav'
 import PlaceDetailModal from './PlaceDetailModal'
+import Icon from './Icon'
+import { scoreColor } from './scoreColor'
 import styles from './ItineraryView.module.css'
 
 // 실제 trip_no가 없을 때(아직 동선을 안 만들었거나 화면 확인용으로 바로 들어온 경우)
@@ -311,8 +313,16 @@ export default function ItineraryView() {
                 <span className={styles['stop-name']}>{stop.name}</span>
                 <span className={styles['stop-meta']}>{stop.meta}</span>
               </div>
-              {stop.score != null && <span className={styles['stop-score']}>{stop.score}</span>}
-              {stop.liked && <span className={styles['stop-score']}>♥</span>}
+              {stop.score != null && (
+                <span className={styles['stop-score']} style={{ color: scoreColor(stop.score) }}>
+                  {stop.score}
+                </span>
+              )}
+              {stop.liked && (
+                <span className={styles['stop-score']}>
+                  <Icon name="heart" size={13} filled color="#E5484D" />
+                </span>
+              )}
             </div>
           ))}
 
@@ -323,17 +333,14 @@ export default function ItineraryView() {
               <span className={styles['pinned-title']}>
                 {displayPinned.name || displayPinned.title} · 입장 시작
               </span>
-              <span className={styles['pinned-tag']}>고정</span>
+              <span className={styles['pinned-tag']}>고정 ✓</span>
             </div>
           )}
         </div>
 
         <div className={styles.spacer} />
 
-        <div className={styles['action-row']}>
-          <button type="button" className={styles['btn-outline']} onClick={() => navigate('/trip/schedule')}>
-            목록 열기
-          </button>
+        <div className={styles['action-row']} data-bottom-bar="true">
           <button
             type="button"
             className={styles['btn-outline']}
@@ -342,7 +349,7 @@ export default function ItineraryView() {
             동선 수정
           </button>
           <button type="button" className={styles['btn-primary']} onClick={() => navigate('/trip/my')}>
-            다음: 확정
+            확인
           </button>
         </div>
 

@@ -12,7 +12,7 @@
 .card {
   width: 100%;
   max-width: 100%;
-  min-height: 844px;
+  height: 844px;
   background: #fff;
   border-radius: 32px;
   box-shadow: 0px 3px 10px rgba(181, 179, 193, 0.11);
@@ -75,6 +75,9 @@
 }
 
 .list {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
   border-top: 1px solid #EFEDFA;
   display: flex;
   flex-direction: column;
@@ -172,15 +175,12 @@
 }
 
 .event-row.pinned {
-  background: #6D57FC;
+  border-left: 4px solid #6D57FC;
+  padding-left: 14px;
 }
 
-.event-row.pinned .event-name {
-  color: #fff;
-}
-
-.event-row.pinned .event-sub {
-  color: rgba(255, 255, 255, 0.85);
+.event-row.pinned .event-time-big {
+  color: #6D57FC;
 }
 
 .event-time-block {
@@ -193,14 +193,14 @@
   font-family: 'Inter', sans-serif;
   font-size: 13px;
   font-weight: 600;
-  color: #fff;
+  color: #5C5D6E;
 }
 
 .event-time-big {
   font-family: 'Inter', sans-serif;
   font-size: 22px;
   font-weight: 600;
-  color: #fff;
+  color: #17161F;
 }
 
 .empty-day {
@@ -211,7 +211,7 @@
 }
 
 .spacer {
-  flex: 1;
+  flex-shrink: 0;
 }
 
 /* 하단 3버튼 */
@@ -224,24 +224,24 @@
 
 .btn-outline {
   flex: 1;
-  padding: 9px 8px;
+  padding: 13px 8px;
   border-radius: 100px;
   background: #F8F7FF;
   border: 1px solid #E8E4FF;
   color: #1B163F;
-  font-size: 13px;
+  font-size: 13.5px;
   font-weight: 600;
   cursor: pointer;
 }
 
 .btn-primary {
   flex: 1;
-  padding: 9px 8px;
+  padding: 13px 8px;
   border-radius: 100px;
   background: #6D57FC;
   border: none;
   color: #fff;
-  font-size: 13px;
+  font-size: 13.5px;
   font-weight: 600;
   cursor: pointer;
 }
@@ -412,7 +412,8 @@
 
   .card {
     max-width: 100%;
-    min-height: 100vh;
+    height: 100vh;
+    height: 100dvh;
     border-radius: 0;
     box-shadow: none;
     outline: none;

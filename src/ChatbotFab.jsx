@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useTrip } from './TripContext'
 import FenggoIcon from './FenggoIcon'
@@ -18,38 +19,62 @@ const SHOWN_ON = [
   '/trip/feedback',
 ]
 
-// 하단 탭바(BottomNav)만 있는 화면 - 챗봇 버튼이 탭바 위로 올라오게 띄움
-const HAS_BOTTOM_NAV = ['/home', '/trip/my', '/trip/feedback']
+const BASE_GAP = 16 // 가장 위에 있는 버튼 줄과 챗봇 버튼 사이 최소 여백
 
-// 탭바 위에 "지도 열기/동선 수정/다음" 같은 버튼 줄까지 하나 더 있는 화면 -
-// 버튼 두 줄(액션 로우+탭바)을 다 피해야 해서 훨씬 더 많이 띄움
-const HAS_ACTIONS_ABOVE_NAV = ['/trip/itinerary', '/trip/schedule', '/trip/history']
-
-// 탭바는 없지만 화면 맨 아래에 저장/제출 버튼 한 줄이 있는 화면
-const HAS_SINGLE_ACTION_ROW = ['/trip/itinerary/edit', '/trip/events']
+// 화면 맨 아래 고정되는 버튼 줄(하단 탭바, 액션 로우 등)에는 전부 data-bottom-bar="true"를
+// 붙여뒀음(BottomNav, 각 화면의 footer/action-row). 매번 화면마다 "탭바만 있음/액션+탭바 있음"
+// 같은 경우의 수를 하드코딩하는 대신, 실제로 지금 렌더된 그 요소들의 높이를 재서 그 위로
+// 띄우면 화면이 바뀌거나 버튼 줄 높이가 바뀌어도 자동으로 안 겹침.
+function measureBottomBarsHeight() {
+  const bars = document.querySelectorAll('[data-bottom-bar="true"]')
+  let total = 0
+  bars.forEach((el) => {
+    const rect = el.getBoundingClientRect()
+    if (rect.height > 0) total += rect.height
+  })
+  return total
+}
 
 export default function ChatbotFab() {
   const navigate = useNavigate()
   const location = useLocation()
   const { tripData } = useTrip()
   const isLoggedIn = Boolean(tripData.account?.email)
+  const isShown = SHOWN_ON.includes(location.pathname)
+  const [clearance, setClearance] = useState(BASE_GAP)
+
+  useEffect(() => {
+    if (!isShown) return
+
+    function recalc() {
+      setClearance(measureBottomBarsHeight() + BASE_GAP)
+    }
+
+    // 화면 전환 직후엔 아직 하단 바가 다 그려지기 전일 수 있어서 한 프레임 뒤에 다시 잼
+    recalc()
+    const raf = requestAnimationFrame(recalc)
+
+    // 하단 바 자체의 크기가 나중에 바뀌는 경우(폰트 로딩, 반응형 등)도 따라가게 관찰
+    const bars = document.querySelectorAll('[data-bottom-bar="true"]')
+    const observer = new ResizeObserver(recalc)
+    bars.forEach((el) => observer.observe(el))
+    window.addEventListener('resize', recalc)
+
+    return () => {
+      cancelAnimationFrame(raf)
+      observer.disconnect()
+      window.removeEventListener('resize', recalc)
+    }
+  }, [isShown, location.pathname])
 
   if (!isLoggedIn) return null
-  if (!SHOWN_ON.includes(location.pathname)) return null
-
-  let clearanceClass = ''
-  if (HAS_ACTIONS_ABOVE_NAV.includes(location.pathname)) {
-    clearanceClass = styles['fab-above-actions']
-  } else if (HAS_SINGLE_ACTION_ROW.includes(location.pathname)) {
-    clearanceClass = styles['fab-above-single-row']
-  } else if (HAS_BOTTOM_NAV.includes(location.pathname)) {
-    clearanceClass = styles['fab-above-nav']
-  }
+  if (!isShown) return null
 
   return (
     <button
       type="button"
-      className={`${styles.fab} ${clearanceClass}`}
+      className={styles.fab}
+      style={{ bottom: clearance }}
       onClick={() => navigate('/chat')}
       aria-label="트립 버디 챗봇 열기"
     >

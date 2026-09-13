@@ -9,11 +9,11 @@
 }
 
 .top-bar-btn {
-  width: 34px;
-  height: 34px;
-  min-width: 34px;
-  border-radius: 10px;
-  background: rgba(255, 255, 255, 0.18);
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.22);
   border: none;
   color: #fff;
   font-size: 14px;
@@ -28,8 +28,8 @@
 }
 
 .top-bar-spacer {
-  width: 34px;
-  min-width: 34px;
+  width: 28px;
+  min-width: 28px;
 }
 
 .top-bar-logo-img {

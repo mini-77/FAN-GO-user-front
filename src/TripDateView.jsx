@@ -444,7 +444,7 @@ export default function TripDateView() {
         </div>
 
         <div className={styles.section}>
-          <p className={styles.hint} style={{ color: '#6D57FC' }}>
+          <p className={styles.infoBanner}>
             ⓘ 이벤트 날짜 기준 앞뒤 하루씩({eventDate ? `${formatDot(allowedMinDate)} — ${formatDot(allowedMaxDate)}` : '이벤트를 먼저 골라주세요'}) 안에서 원하는 기간만 골라도 돼요. 단, 이벤트 날짜({eventDate ? formatDot(eventDate) : '-'})는 선택한 기간에 꼭 포함돼야 해요.
           </p>
           <div className={styles['two-col']}>
@@ -641,7 +641,6 @@ export default function TripDateView() {
               maxWidth: '760px',
               height: 'min(90vh, 760px)',
               maxHeight: '95vh',
-              overflowY: 'auto',
               borderRadius: 24,
             }}
           >
@@ -732,6 +731,8 @@ export default function TripDateView() {
               </button>
             </div>
 
+            <div className={styles['search-scroll']}>
+
             {locationError && (
               <p className={styles.hint} style={{ color: '#E64545' }}>
                 {locationError}
@@ -796,8 +797,8 @@ export default function TripDateView() {
                 </div>
 
                 {stayAllowedMinDate && stayAllowedMaxDate && (
-                  <p className={styles.hint} style={{ marginTop: 0 }}>
-                    이벤트 기준 {formatDot(stayAllowedMinDate)} ~ {formatDot(stayAllowedMaxDate)} 사이만 가능해요.
+                  <p className={styles.infoBanner}>
+                    ⓘ 이벤트 기준 {formatDot(stayAllowedMinDate)} ~ {formatDot(stayAllowedMaxDate)} 사이만 가능해요.
                   </p>
                 )}
 
@@ -834,9 +835,9 @@ export default function TripDateView() {
               </div>
             )}
 
-            {searchTarget !== 'stay' && <div style={{ flex: 1 }} />}
+            </div>
 
-            <div style={{ padding: '14px 18px 18px' }}>
+            <div style={{ padding: '14px 18px 18px', flexShrink: 0, borderTop: '1px solid #EFEDFA' }}>
               <button
                 type="button"
                 className={styles['btn-primary']}

@@ -2,8 +2,9 @@ import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTrip } from './TripContext'
 import { apiFetch } from './api'
-import logoImg from './assets/fango-logo-mark.png'
+import AppHeader from './AppHeader'
 import BottomNav from './BottomNav'
+import Icon from './Icon'
 import styles from './HomeView.module.css'
 
 // 실제 status 값(진행중/완료/예정) → 화면에 보여줄 라벨/스타일 매핑.
@@ -110,15 +111,7 @@ export default function HomeView() {
   return (
     <div className={styles.screen}>
       <div className={styles.card}>
-        <div className={styles['top-bar']}>
-          <button type="button" className={styles['top-bar-btn']} onClick={() => navigate(-1)}>
-            ←
-          </button>
-          <img src={logoImg} alt="FAN:GO" className={styles['top-bar-logo-img']} />
-          <button type="button" className={styles['top-bar-btn']} onClick={() => navigate('/account')}>
-            👤
-          </button>
-        </div>
+        <AppHeader showBack={false} />
 
         <div className={styles.body}>
           <h1 className={styles.title}>다가오는 이벤트</h1>
@@ -162,7 +155,7 @@ export default function HomeView() {
                   )
                 })()}
                 <div className={styles['hero-meta-row']}>
-                  <span>📅</span>
+                  <Icon name="calendar" size={13} />
                   <span>{formatKoreanDate(upcoming.start_dt)}</span>
                 </div>
                 <div className={styles['hero-meta-sub']}>
@@ -205,7 +198,7 @@ export default function HomeView() {
                     {artist && <div className={styles['trip-artist']}>{artist}</div>}
                     <div className={styles['trip-meta']}>{trip.event_add} · 동선 {trip.place_count}곳</div>
                     <div className={styles['trip-date-row']}>
-                      <span>📅</span>
+                      <Icon name="calendar" size={13} />
                       <span>{formatKoreanDate(trip.start_dt)}</span>
                     </div>
                   </div>

@@ -12,7 +12,7 @@
 .card {
   width: 100%;
   max-width: 100%;
-  min-height: 844px;
+  height: 844px;
   background: #F8F7FF;
   border-radius: 32px;
   box-shadow: 0px 3px 10px rgba(181, 179, 193, 0.11);
@@ -34,6 +34,14 @@
 }
 
 /* 위/아래 스페이서 비율로 계정 액션 버튼 위치를 조정 - 위를 더 크게 둬서 살짝 아래쪽에 위치하게 함 */
+.scrollArea {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
 .spacer-top {
   flex: 2;
 }
@@ -425,7 +433,8 @@
 
   .card {
     max-width: 100%;
-    min-height: 100vh;
+    height: 100vh;
+    height: 100dvh;
     border-radius: 0;
     box-shadow: none;
     outline: none;

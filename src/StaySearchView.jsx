@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useTrip } from './TripContext'
 import AppHeader from './AppHeader'
+import Icon from './Icon'
 import styles from './StaySearchView.module.css'
 
 function nightsBetween(checkIn, checkOut) {
@@ -425,7 +426,7 @@ export default function StaySearchView() {
 
           {selected ? (
             <div className={styles['result-card']}>
-              <div className={styles['result-icon']}>🏠</div>
+              <div className={styles['result-icon']}><Icon name="building" size={18} color="#6D57FC" /></div>
               <div>
                 <div className={styles['result-name-row']}>
                   <span className={styles['result-name']}>{selected.name}</span>

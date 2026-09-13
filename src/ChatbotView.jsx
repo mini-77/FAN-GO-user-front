@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { apiFetch } from './api'
 import BottomNav from './BottomNav'
 import FenggoIcon from './FenggoIcon'
+import Icon from './Icon'
 import styles from './ChatbotView.module.css'
 
 const WELCOME_MESSAGE = {
@@ -11,7 +12,7 @@ const WELCOME_MESSAGE = {
 }
 
 // 빠른 질문 칩 - 누르면 그 문장 그대로 전송됨 (목업 기준 고정 문구)
-const QUICK_REPLIES = ['🕒 영업시간 알려줘', '📖 여기에 어떤 에피소드가 있어?']
+const QUICK_REPLIES = ['영업시간 알려줘', '여기에 어떤 에피소드가 있어?']
 
 // 세션 목록의 last_message_at을 "방금 / N분 전 / 어제 / N일 전 / 지난주" 식으로 표시
 function formatRelativeTime(isoString) {
@@ -47,7 +48,8 @@ const DEMO_CONGESTION = {
   ],
 }
 
-const LEVEL_COLOR = { 1: '#DED9FF', 2: '#A89BFF', 3: '#6D57FC' }
+// 01 컬러 규칙 — 여유/혼잡 같은 점수·상태 색은 브랜드색이 아니라 Success/Warning/Danger로 고정
+const LEVEL_COLOR = { 1: '#2E9E5B', 2: '#E5A02E', 3: '#E5484D' }
 const LEVEL_HEIGHT = { 1: 18, 2: 34, 3: 52 }
 
 function CongestionCard({ data }) {
@@ -295,7 +297,7 @@ export default function ChatbotView() {
                   }`}
                   onClick={() => openSession(s.chat_session_no)}
                 >
-                  <span className={styles.historyIcon}>💬</span>
+                  <span className={styles.historyIcon}><Icon name="chat" size={16} color="#6D57FC" /></span>
                   <span className={styles.historyTexts}>
                     <span className={styles.historyTitle}>{s.preview || '대화'}</span>
                     <span className={styles.historyMeta}>{formatRelativeTime(s.last_message_at)}</span>
@@ -379,7 +381,7 @@ export default function ChatbotView() {
             disabled={isSending || !input.trim()}
             aria-label="전송"
           >
-            ➤
+            <Icon name="send" size={16} color="#fff" />
           </button>
         </div>
         <BottomNav />
