@@ -34,6 +34,16 @@ function addDaysToIso(iso, n) {
   return toLocalIsoDate(d)
 }
 
+// 네이티브 <input type="date">의 min/max는 일부 모바일 브라우저 달력 UI(특히 휠 방식)에서
+// 범위 밖 날짜로 스크롤/선택하는 것 자체를 못 막는 경우가 있어서, 값이 들어온 뒤에도
+// JS에서 한 번 더 허용 범위 안으로 눌러줌 (허용 범위 밖 값이 실제로 저장되지 않게).
+function clampDate(iso, min, max) {
+  if (!iso) return iso
+  if (min && iso < min) return min
+  if (max && iso > max) return max
+  return iso
+}
+
 const SEOUL_CENTER = { lat: 37.5665, lng: 126.978 }
 const SDK_LOAD_TIMEOUT_MS = 6000
 
@@ -795,7 +805,7 @@ export default function TripDateView() {
             )}
 
             {searchTarget === 'stay' && (
-              <div style={{ padding: '14px 18px 0' }}>
+              <div style={{ padding: '14px 18px 24px' }}>
                 <div className={styles['section-head']} style={{ marginBottom: 8 }}>
                   <span className={styles['section-label']}>체류 기간</span>
                   {stayNights > 0 && (
@@ -820,7 +830,7 @@ export default function TripDateView() {
                       max={stayAllowedMaxDate || undefined}
                       formatValue={formatDot}
                       placeholder="체크인 날짜를 골라주세요"
-                      onChange={setStayCheckIn}
+                      onChange={(next) => setStayCheckIn(clampDate(next, stayAllowedMinDate, stayAllowedMaxDate))}
                     />
                   </div>
                   <div>
@@ -833,7 +843,7 @@ export default function TripDateView() {
                       max={stayAllowedMaxDate || undefined}
                       formatValue={formatDot}
                       placeholder="체크아웃 날짜를 골라주세요"
-                      onChange={setStayCheckOut}
+                      onChange={(next) => setStayCheckOut(clampDate(next, stayAllowedMinDate, stayAllowedMaxDate))}
                     />
                   </div>
                 </div>
