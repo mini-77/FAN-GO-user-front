@@ -255,7 +255,7 @@ export default function ActivityPreferenceView() {
                 flex: 1,
                 border: 'none',
                 background: isFormValid ? 'var(--color-primary-500)' : '#D9D4F5',
-                color: isFormValid ? '#fff' : 'var(--color-primary-600)',
+                color: '#fff',
                 fontWeight: 600,
                 fontSize: 14,
                 padding: '12px 0',

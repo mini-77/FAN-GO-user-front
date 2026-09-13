@@ -268,7 +268,7 @@ export default function LoginView() {
             disabled={isSubmitting || !isFormValid}
             style={
               isSubmitting || !isFormValid
-                ? { background: '#D9D4F5', color: 'var(--color-primary-600)', cursor: 'default' }
+                ? { background: '#D9D4F5', color: '#fff', cursor: 'default' }
                 : undefined
             }
           >

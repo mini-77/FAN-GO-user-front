@@ -299,7 +299,7 @@
 
 .submitButton:disabled {
   background: #D9D4F5;
-  color: var(--color-primary-600);
+  color: #fff;
   cursor: not-allowed;
 }
 /* 실제 폰 화면(카드 최대폭보다 좁은 뷰포트)에서는 데스크톱 미리보기용 "폰 목업" 프레임

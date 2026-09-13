@@ -264,7 +264,7 @@
 
 .btn-primary.disabled {
   background: #D9D4F5;
-  color: var(--color-primary-600);
+  color: #fff;
   cursor: default;
 }
 
