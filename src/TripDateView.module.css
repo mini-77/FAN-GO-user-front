@@ -250,8 +250,16 @@
 }
 
 /* 하단 */
+.scrollArea {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+}
+
 .footer {
+  flex-shrink: 0;
   padding: 12px 18px 22px;
+  border-top: 1px solid var(--color-border);
   display: flex;
   justify-content: space-between;
   align-items: center;

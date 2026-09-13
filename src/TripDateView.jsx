@@ -444,6 +444,7 @@ export default function TripDateView() {
           </div>
         </div>
 
+        <div className={styles.scrollArea}>
         <div className={styles.section}>
           <p className={styles.infoBanner}>
             ⓘ 이벤트 날짜 기준 앞뒤 하루씩({eventDate ? `${formatDot(allowedMinDate)} — ${formatDot(allowedMaxDate)}` : '이벤트를 먼저 골라주세요'}) 안에서 원하는 기간만 골라도 돼요. 단, 이벤트 날짜({eventDate ? formatDot(eventDate) : '-'})는 선택한 기간에 꼭 포함돼야 해요.
@@ -620,6 +621,7 @@ export default function TripDateView() {
           ) : (
             <p className={styles.hint}>등록된 숙소가 있으면 자동으로 채워져요.</p>
           )}
+        </div>
         </div>
 
         {errorMessage && (
