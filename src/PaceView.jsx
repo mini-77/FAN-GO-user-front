@@ -162,32 +162,30 @@ export default function PaceView() {
 
               {!isLoading && !loadError && (
                 <>
+                  {/* 배지&칩 확정사항 - 다중 인원(멤버) 선택은 2열 칩 그리드로 고정.
+                      "전체(선택 안 함)"은 목록 맨 앞 칩 하나로 두고, 별도 텍스트 링크로
+                      만들지 않음. 다중 선택 가능하되 "전체" 칩을 고르면 나머지는 자동 해제 */}
                   <div>
                     <span className={styles['panel-group-label']}>멤버 선택</span>
                     <div className={styles['member-list']} ref={memberListRef}>
-                      {/* 그룹 전체 선택 - 개별 멤버 체크와 배타적 관계 */}
-                      <label className={styles['member-row']}>
-                        <input
-                          type="checkbox"
-                          className={styles.checkbox}
-                          checked={isWholeGroupSelected}
-                          onChange={toggleWholeGroup}
-                        />
-                        <span className={styles['member-row-text']}>그룹 전체</span>
-                      </label>
-                      <div className={styles.divider} />
+                      <button
+                        type="button"
+                        className={`${styles['member-chip']} ${isWholeGroupSelected ? styles.selected : ''}`}
+                        onClick={toggleWholeGroup}
+                      >
+                        전체 (선택 안 함)
+                      </button>
                       {members.map((m) => {
                         const isSelected = selectedMembers.has(m.artist_no)
                         return (
-                          <label key={m.artist_no} className={styles['member-row']}>
-                            <input
-                              type="checkbox"
-                              className={styles.checkbox}
-                              checked={isSelected}
-                              onChange={() => toggleMember(m.artist_no)}
-                            />
-                            <span className={styles['member-row-text']}>{m.artist_nm}</span>
-                          </label>
+                          <button
+                            key={m.artist_no}
+                            type="button"
+                            className={`${styles['member-chip']} ${isSelected ? styles.selected : ''}`}
+                            onClick={() => toggleMember(m.artist_no)}
+                          >
+                            {m.artist_nm}
+                          </button>
                         )
                       })}
                     </div>
@@ -196,12 +194,20 @@ export default function PaceView() {
                   <div className={styles['selection-summary-row']}>
                     <span className={styles['selection-summary']}>
                       {isWholeGroupSelected
-                        ? '그룹 전체 선택됨'
+                        ? '전체(선택 안 함) 선택됨'
                         : selectedNames.length > 0
                           ? `${selectedNames.join(', ')} 선택됨`
                           : '선택 안 함'}
                     </span>
                   </div>
+
+                  {/* 안내 문구 - 선택이 결과에 미치는 영향을 1줄로, 그리드와 버튼 사이 */}
+                  <p className={styles['info-banner']}>
+                    ⓘ{' '}
+                    {isWholeGroupSelected
+                      ? '그룹 전체를 선택하면 그룹 활동 일정 위주로 추천받아요.'
+                      : '멤버를 선택하면 그 멤버 일정을 우선 추천받아요.'}
+                  </p>
 
                   {/* 초기화 버튼 공통 가이드 - 확인 버튼과 짝을 이뤄 왼쪽에, 비율 40:60 */}
                   <div style={{ display: 'flex', gap: 8, width: '100%' }}>

@@ -176,42 +176,39 @@
   color: rgba(27, 22, 63, 0.4);
 }
 
-.divider {
-  height: 1px;
-  background: var(--color-border);
-}
-
-/* 멤버 선택 - 칩 대신 체크리스트로. 고를 값이 많을 때 한눈에 훑기 쉬움 */
-/* 배지&칩 확정사항 - 멤버가 많아 목록이 길어지면 패널 안에서만 스크롤,
-   초기화/확인 버튼은 항상 그 아래 고정된 자리에 보이게 */
+/* 배지&칩 - "다중 인원(멤버) 선택" 확정 스펙: 2열 칩 그리드, 리스트가 길면
+   패널 안에서만 스크롤(헤더·버튼은 고정된 자리에 그대로 보임) */
 .member-list {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
   margin-top: 8px;
   max-height: 260px;
   overflow-y: auto;
+  padding: 2px;
 }
 
-.member-row {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 11px 2px;
-  cursor: pointer;
-}
-
-.member-row-text {
-  font-size: 13.5px;
-  font-weight: 500;
+/* Small(칩·배지) radius 20px */
+.member-chip {
+  min-height: 40px;
+  padding: 8px 14px;
+  border: 1px solid var(--color-primary-200);
+  border-radius: 20px;
+  background: #fff;
   color: var(--color-ink-900);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.checkbox {
-  width: 18px;
-  height: 18px;
-  min-width: 18px;
-  accent-color: var(--color-primary-500);
-  cursor: pointer;
+.member-chip.selected {
+  background: var(--color-primary-500);
+  border-color: var(--color-primary-500);
+  color: #fff;
 }
 
 .selection-summary-row {
@@ -224,6 +221,20 @@
   font-size: 11px;
   font-weight: 600;
   color: rgba(27, 22, 63, 0.5);
+}
+
+/* 리스트&카드 - 안내 배너(Info): ⓘ 아이콘 + Info-50 배경 */
+.info-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  padding: 10px 12px;
+  background: #EAF2FE;
+  border-radius: 12px;
+  color: var(--color-info);
+  font-size: 11.5px;
+  font-weight: 500;
+  line-height: 1.5;
 }
 
 /* 초기화 버튼 공통 가이드 - 항상 Outline (Primary filled 금지) */
