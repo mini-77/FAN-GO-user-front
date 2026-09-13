@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTrip } from './TripContext'
 import AppHeader from './AppHeader'
+import Icon from './Icon'
 import PickerSheet from './PickerSheet'
 import styles from './TripDateView.module.css'
 
@@ -583,7 +584,7 @@ export default function TripDateView() {
                   </button>
                   <button
                     type="button"
-                    className={styles['stay-delete']}
+                    className={`${styles['stay-delete']} ${styles['stay-delete-danger']}`}
                     onClick={() => removeStay(stay.id)}
                   >
                     삭제
@@ -668,7 +669,7 @@ export default function TripDateView() {
                 {searchTarget === 'stay' && (editingStayId != null ? '숙소 수정' : '숙소 추가')}
               </span>
               <button type="button" className={styles['close-btn']} onClick={closeSearch}>
-                ✕
+                <Icon name="close" size={14} />
               </button>
             </div>
 
@@ -688,9 +689,9 @@ export default function TripDateView() {
                   type="button"
                   onClick={() => setQuery('')}
                   aria-label="검색어 지우기"
-                  style={{ border: 0, background: 'transparent', fontSize: 16, cursor: 'pointer', padding: 6 }}
+                  style={{ border: 0, background: 'transparent', cursor: 'pointer', padding: 6, display: 'flex' }}
                 >
-                  ✕
+                  <Icon name="close" size={14} />
                 </button>
               )}
             </div>

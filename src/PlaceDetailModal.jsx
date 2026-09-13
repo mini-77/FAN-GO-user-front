@@ -87,7 +87,7 @@ export default function PlaceDetailModal({ eventNo, tripRouteEventNo, liked: ini
     <div className={modalStyles.overlay} onClick={handleOverlayClick}>
       <div className={modalStyles.sheet}>
         <button type="button" className={modalStyles.closeBtn} onClick={onClose} aria-label="닫기">
-          ✕
+          <Icon name="close" size={16} />
         </button>
 
         {isLoading && <p className={styles.desc} style={{ padding: 24 }}>불러오는 중이에요...</p>}

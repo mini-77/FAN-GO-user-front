@@ -244,6 +244,11 @@
   white-space: nowrap;
 }
 
+/* 버튼명 가이드 - "삭제"는 항상 Danger 텍스트 컬러 */
+.stay-delete-danger {
+  color: var(--color-danger);
+}
+
 .add-stay {
   background: none;
   border: none;

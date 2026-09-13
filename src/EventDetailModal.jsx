@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { apiFetch } from './api'
 import { EVENT_POSTERS } from './eventPosters'
+import Icon from './Icon'
 import modalStyles from './EventDetailModal.module.css'
 
 // EventSelectView에서 이벤트 카드를 눌렀을 때 뜨는 팝업.
@@ -59,7 +60,7 @@ export default function EventDetailModal({ card, onClose }) {
     <div className={modalStyles.overlay} onClick={handleOverlayClick}>
       <div className={modalStyles.sheet}>
         <button type="button" className={modalStyles.closeBtn} onClick={onClose} aria-label="닫기">
-          ✕
+          <Icon name="close" size={16} />
         </button>
 
         {isLoading && <p className={modalStyles.desc} style={{ padding: 24 }}>불러오는 중이에요...</p>}

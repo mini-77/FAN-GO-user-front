@@ -355,7 +355,7 @@ export default function StaySearchView() {
             />
             {query && (
               <button type="button" className={styles['clear-btn']} onClick={() => setQuery('')}>
-                ✕
+                <Icon name="close" size={14} />
               </button>
             )}
           </div>

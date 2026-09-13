@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import Icon from './Icon'
 import styles from './LocationSearchModal.module.css'
 
 const SEOUL_CENTER = { lat: 37.5665, lng: 126.978 }
@@ -202,7 +203,7 @@ export default function LocationSearchModal({ title, initialPlace, onConfirm, on
         <div className={styles['search-panel-header']}>
           <span>{title}</span>
           <button type="button" className={styles['close-btn']} onClick={onClose}>
-            ✕
+            <Icon name="close" size={14} />
           </button>
         </div>
 
@@ -222,9 +223,9 @@ export default function LocationSearchModal({ title, initialPlace, onConfirm, on
               type="button"
               onClick={() => setQuery('')}
               aria-label="검색어 지우기"
-              style={{ border: 0, background: 'transparent', fontSize: 16, cursor: 'pointer', padding: 6 }}
+              style={{ border: 0, background: 'transparent', cursor: 'pointer', padding: 6, display: 'flex' }}
             >
-              ✕
+              <Icon name="close" size={14} />
             </button>
           )}
         </div>
