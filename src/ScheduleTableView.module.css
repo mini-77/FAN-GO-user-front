@@ -50,18 +50,24 @@
   font-family: 'Inter', sans-serif;
 }
 
+/* 07 탭&진행표시 - 세그먼트 탭: 개별 보더 박스가 아니라 트랙(연보라 배경) 안에
+   알약형 활성 탭 하나로 표현 */
 .day-tabs {
   display: flex;
   gap: 2px;
-  padding: 0 16px 12px;
+  margin: 0 16px 12px;
+  padding: 4px;
+  background: var(--color-primary-50);
+  border-radius: 12px;
 }
 
 .day-tab {
   flex: 1;
   padding: 8px 6px;
-  border: 2px solid rgba(27, 22, 63, 0.3);
+  border: none;
+  border-radius: 8px;
   background: transparent;
-  color: rgba(27, 22, 63, 0.5);
+  color: var(--color-ink-600);
   font-family: 'Inter', sans-serif;
   font-size: 11px;
   font-weight: 600;
@@ -70,7 +76,6 @@
 
 .day-tab.active {
   background: var(--color-primary-500);
-  border-color: var(--color-primary-500);
   color: #fff;
 }
 

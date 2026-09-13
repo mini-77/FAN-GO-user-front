@@ -4,6 +4,7 @@ import { useTrip } from './TripContext'
 import { apiFetch } from './api'
 import AppHeader from './AppHeader'
 import EventDetailModal from './EventDetailModal'
+import Icon from './Icon'
 import styles from './EventSelectView.module.css'
 
 // 오늘 날짜의 00:00 기준 - 이미 지난 날짜는 화면에 안 보여줌
@@ -81,8 +82,8 @@ export default function EventSelectView() {
   )
   const [detailCard, setDetailCard] = useState(null) // 팝업용 - 정보 확인 목적으로 띄우는 카드
   const [errorMessage, setErrorMessage] = useState('')
-  // 목록이 길어지면 한 번에 다 안 보여주고 5개씩 "더보기"로 늘려서 보여줌
-  const PAGE_SIZE = 5
+  // 08 리스트 섹션 규칙 — 길이가 정해지지 않은 리스트는 무한스크롤 대신 8~10개씩 "더보기"로 불러옴
+  const PAGE_SIZE = 8
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE)
 
   // 즐겨찾기 그룹 목록 (드롭다운용) - 최초 1회만
@@ -253,7 +254,7 @@ export default function EventSelectView() {
               className={styles['load-more-btn']}
               onClick={() => setVisibleCount((v) => v + PAGE_SIZE)}
             >
-              더보기 ({dayCards.length - visibleCount})
+              더보기 <Icon name="chevronDown" size={14} />
             </button>
           )}
         </div>

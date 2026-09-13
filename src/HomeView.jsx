@@ -182,7 +182,9 @@ export default function HomeView() {
           )}
 
           <div className={styles['trip-list']}>
-            {trips.map((trip) => {
+            {/* 08 리스트 규칙 - 홈은 미리보기라 무한히 늘어나지 않게 최근 5개만,
+                전체 목록은 위 "전체 N" 링크로 HistoryView(더보기 적용됨)에서 확인 */}
+            {trips.slice(0, 5).map((trip) => {
               const { artist, displayTitle } = splitArtistFromEventName(trip.event_nm)
               return (
                 <div key={trip.trip_no} className={styles['trip-row']} onClick={() => openTrip(trip)}>
