@@ -57,8 +57,15 @@
   justify-content: flex-end;
 }
 
+/* 06 버튼 규칙 - 하단 고정 영역에 혼자 있는 CTA는 폭 전체를 채움(Large 52px) */
 .btn-primary {
+  width: 100%;
+  min-height: 52px;
+  box-sizing: border-box;
   padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 12px;
   border: none;
   background: var(--color-primary-500);
