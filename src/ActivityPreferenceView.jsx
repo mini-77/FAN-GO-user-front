@@ -262,7 +262,7 @@ export default function ActivityPreferenceView() {
                 cursor: isFormValid ? 'pointer' : 'default',
               }}
             >
-              확인
+              다음: 동선 스타일
             </button>
           </div>
         </div>

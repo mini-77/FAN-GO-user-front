@@ -163,7 +163,7 @@ export default function PlaceDetailModal({ eventNo, tripRouteEventNo, liked: ini
                 </div>
               )}
               {overallScore != null && (
-                <p className={styles.desc}>카카오맵 리뷰와 구글 리뷰를 기반으로 계산한 추천 점수입니다.</p>
+                <p className={styles.desc}>카카오맵 리뷰와 구글 리뷰를 기반으로 계산한 추천 점수예요.</p>
               )}
 
               {/* 혼잡도 - 알고리즘팀이 실측 데이터 붙이기 전까지는 준비중으로 표시 */}

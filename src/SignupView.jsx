@@ -234,7 +234,7 @@ export default function SignupView() {
       if (data.available) {
         setEmailChecked(true)
         setEmailCheckError('')
-        setEmailCheckSuccess('사용 가능한 이메일 주소입니다.')
+        setEmailCheckSuccess('사용 가능한 이메일 주소예요.')
       } else {
         // ⚠️ 이 상태(emailChecked=false + emailCheckError 있음)일 땐 가입 버튼이
         // 실제로 눌리지 않게(disabled 속성) 처리함 - isFormValid가 false가 되고,
@@ -600,13 +600,14 @@ export default function SignupView() {
         {errorMessage && <p className={styles.error}>{errorMessage}</p>}
 
         <div className={styles['footer-row']}>
+          {/* 09 카피&용어 - "다음 단계로 이동"은 콜론(:)+다음 화면명으로 표기.
+              06 버튼 규칙 - 비활성 상태는 .disabled(#D9D4F5)만으로 구분, opacity 이중 적용 금지 */}
           <button
             className={`${styles['btn-primary']} ${!isFormValid ? styles.disabled : ''}`}
             onClick={goNext}
             disabled={!isFormValid}
-            style={!isFormValid ? { opacity: 0.5, cursor: 'default' } : undefined}
           >
-            다음
+            다음: 아티스트 선택
           </button>
         </div>
         </div>

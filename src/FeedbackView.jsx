@@ -192,8 +192,9 @@ export default function FeedbackView() {
                 />
               </svg>
             </div>
-            <p className={styles.doneTitle}>리뷰 작성이 완료되었습니다</p>
-            <p className={styles.doneSub}>소중한 후기 남겨주셔서 감사합니다.</p>
+            {/* 09 카피&용어 - 부드러운 해요체로 (합쇼체 사용 금지) */}
+            <p className={styles.doneTitle}>리뷰 작성이 완료됐어요</p>
+            <p className={styles.doneSub}>소중한 후기 남겨주셔서 감사해요.</p>
             <button
               type="button"
               className={styles.submitButton}

@@ -20,12 +20,13 @@ export default function TripReadyView() {
             />
           </svg>
         </div>
+        {/* 09 카피&용어 - 화면 제목은 부드러운 해요체로 (합쇼체 "준비되었습니다" 사용 금지) */}
         <h1 className={styles.title}>
           새로운 동선이
           <br />
-          준비되었습니다
+          준비됐어요
         </h1>
-        <p className={styles.subtitle}>다음 페이지에서 동선 정보를 확인하세요.</p>
+        <p className={styles.subtitle}>다음 화면에서 동선 정보를 확인해요.</p>
       </div>
 
       <div className={styles.footer}>

@@ -14,14 +14,16 @@ export default function SignupSuccessView() {
           <div className={styles['header-row']}>
             <span className={styles['step-label']}>01 — 01</span>
           </div>
-          <h1 className={styles.title}>계정 생성</h1>
+          {/* 09 카피&용어 - "계정" 단독 명사형 대신 확정 표기 "가입하기"로 통일 (SignupView와 동일) */}
+          <h1 className={styles.title}>가입하기</h1>
         </div>
 
         <div className={styles.body}>
           <div className={styles['check-badge']}><Icon name="check" size={36} strokeWidth={2.5} color="#fff" /></div>
 
           <div className={styles['text-block']}>
-            <h2 className={styles['success-title']}>가입이 완료되었습니다</h2>
+            {/* 09 카피&용어 - 화면 제목/안내는 부드러운 해요체로 (합쇼체 "완료되었습니다" 사용 금지) */}
+            <h2 className={styles['success-title']}>가입이 완료됐어요</h2>
             <p className={styles['success-subtitle']}>
               FAN:GO와 함께
               <br />

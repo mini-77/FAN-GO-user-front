@@ -493,6 +493,12 @@ export default function StaySearchView() {
             </>
           )}
 
+          {/* 06 버튼 규칙 - 정보(숙박일수)는 버튼 밖 캡션으로, 버튼엔 행동만 담음 */}
+          {!isLocationOnlyMode && nights && selected && (
+            <p style={{ margin: '0 0 8px', fontSize: 12.5, color: 'var(--color-ink-600)' }}>
+              {nights}박 · {selected.name}
+            </p>
+          )}
           <div className={styles['bottom-row']}>
             <button
               type="button"
@@ -505,9 +511,9 @@ export default function StaySearchView() {
                 ? selected
                   ? `${selected.name}(으)로 정하기`
                   : '지도에서 장소를 골라주세요'
-                : nights
-                  ? `${nights}박 · 이 숙소로 ${editStay ? '수정' : '추가'}`
-                  : `이 숙소로 ${editStay ? '수정' : '추가'}`}
+                : !selected
+                  ? '지도에서 장소를 골라주세요'
+                  : `숙소로 ${editStay ? '수정' : '추가'}`}
             </button>
           </div>
         </div>
