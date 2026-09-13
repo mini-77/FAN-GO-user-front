@@ -129,11 +129,9 @@ export default function PaceView() {
           </div>
           <h1 className={styles.title}>동선 스타일을 정해 주세요</h1>
           <div className={styles['progress-bar']}>
-            <div className={`${styles['progress-seg']} ${styles.active}`} />
-            <div className={`${styles['progress-seg']} ${styles.active}`} />
-            <div className={`${styles['progress-seg']} ${styles.active}`} />
-            <div className={`${styles['progress-seg']} ${styles.active}`} />
+            <div className={styles['progress-fill']} style={{ width: '100%' }} />
           </div>
+          <span className={styles['progress-caption']}>4 / 4 단계 · 100%</span>
         </div>
 
         <div className={styles.section}>

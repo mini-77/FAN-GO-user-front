@@ -148,11 +148,9 @@ export default function ActivityPreferenceView() {
           </div>
           <h1 className={styles.title}>선호 액티비티</h1>
           <div className={styles['progress-bar']}>
-            <div className={`${styles['progress-seg']} ${styles.active}`} />
-            <div className={`${styles['progress-seg']} ${styles.active}`} />
-            <div className={`${styles['progress-seg']} ${styles.active}`} />
-            <div className={styles['progress-seg']} />
+            <div className={styles['progress-fill']} style={{ width: '75%' }} />
           </div>
+          <span className={styles['progress-caption']}>3 / 4 단계 · 75%</span>
         </div>
 
         <div className={styles.section}>

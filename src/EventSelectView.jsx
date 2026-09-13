@@ -187,11 +187,9 @@ export default function EventSelectView() {
           </div>
           <h1 className={styles.title}>어떤 이벤트에 참여하시나요?</h1>
           <div className={styles['progress-bar']}>
-            <div className={`${styles['progress-seg']} ${styles.active}`} />
-            <div className={styles['progress-seg']} />
-            <div className={styles['progress-seg']} />
-            <div className={styles['progress-seg']} />
+            <div className={styles['progress-fill']} style={{ width: '25%' }} />
           </div>
+          <span className={styles['progress-caption']}>1 / 4 단계 · 25%</span>
         </div>
 
         <div className={styles['filter-section']}>

@@ -151,11 +151,9 @@ export default function ConfirmView() {
           </div>
           <h1 className={styles.title}>이대로 진행할까요?</h1>
           <div className={styles['progress-bar']}>
-            <div className={`${styles['progress-seg']} ${styles.active}`} />
-            <div className={`${styles['progress-seg']} ${styles.active}`} />
-            <div className={`${styles['progress-seg']} ${styles.active}`} />
-            <div className={`${styles['progress-seg']} ${styles.active}`} />
+            <div className={styles['progress-fill']} style={{ width: '100%' }} />
           </div>
+          <span className={styles['progress-caption']}>4 / 4 단계 · 100%</span>
         </div>
 
         <div className={styles['summary-list']}>

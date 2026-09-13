@@ -448,11 +448,9 @@ export default function TripDateView() {
             알려주세요
           </h1>
           <div className={styles['progress-bar']}>
-            <div className={`${styles['progress-seg']} ${styles.active}`} />
-            <div className={`${styles['progress-seg']} ${styles.active}`} />
-            <div className={styles['progress-seg']} />
-            <div className={styles['progress-seg']} />
+            <div className={styles['progress-fill']} style={{ width: '50%' }} />
           </div>
+          <span className={styles['progress-caption']}>2 / 4 단계 · 50%</span>
         </div>
 
         <div className={styles.scrollArea}>
