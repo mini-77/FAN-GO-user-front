@@ -477,10 +477,10 @@
     outline: none;
   }
 
-  /* 지도검색 팝업도 폰에서는 데스크톱처럼 여백 있는 카드로 안 띄우고 화면 전체를 씀 -
-     안 그러면 지도 + 헤더만으로도 화면이 꽉 차서 스크롤할 공간이 거의 안 남음 */
+  /* 지도검색 팝업 - 위아래는 화면 꽉 채워서 스크롤 공간을 넉넉히 확보하되,
+     양옆은 여백을 둬서 지도가 화면 전체 폭까지 늘어나 보이지 않게 함 */
   .search-overlay {
-    padding: 0;
+    padding: 0 10px;
   }
 
   .search-panel {
@@ -489,23 +489,11 @@
     height: 100vh !important;
     height: 100dvh !important;
     max-height: none !important;
-    border-radius: 0 !important;
-  }
-
-  /* 지도는 "위치를 대충 짚는" 용도라 크게 안 보여줘도 됨 - 검색결과 목록/체크인·체크아웃
-     입력이 화면에 최대한 많이 보이게 지도를 확 줄임 */
-  .search-panel-header {
-    padding: 10px 16px;
-  }
-
-  .search-row {
-    margin: 8px 16px 0;
-    height: 40px;
+    border-radius: 20px !important;
   }
 
   .map-area {
-    margin: 8px 16px 0;
-    height: 110px !important;
-    min-height: 110px !important;
+    height: 200px !important;
+    min-height: 200px !important;
   }
 }
