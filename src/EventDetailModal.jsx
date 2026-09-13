@@ -57,7 +57,7 @@ export default function EventDetailModal({ card, onClose }) {
   }
 
   return (
-    <div className={modalStyles.overlay} onClick={handleOverlayClick}>
+    <div className={modalStyles.overlay} onClick={handleOverlayClick} data-fab-hide="true">
       <div className={modalStyles.sheet}>
         <button type="button" className={modalStyles.closeBtn} onClick={onClose} aria-label="닫기">
           <Icon name="close" size={16} />

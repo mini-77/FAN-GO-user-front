@@ -167,7 +167,7 @@ export default function HomeView() {
           )}
 
           {!isLoading && !loadError && !upcoming && (
-            <p className={styles['load-text']}>등록된 일정이 없습니다.</p>
+            <p className={styles['load-text']}>아직 등록된 일정이 없어요.</p>
           )}
 
           <div className={styles['section-head']}>
@@ -178,7 +178,10 @@ export default function HomeView() {
           </div>
 
           {!isLoading && !loadError && trips.length === 0 && (
-            <p className={styles['load-text']}>등록된 일정이 없습니다.</p>
+            <div className={styles['empty-state']}>
+              <Icon name="folder" size={32} color="#C0BCD8" />
+              <p className={styles['load-text']}>아직 등록된 일정이 없어요.</p>
+            </div>
           )}
 
           <div className={styles['trip-list']}>

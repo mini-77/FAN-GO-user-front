@@ -154,6 +154,7 @@ export default function PaceView() {
               onClick={(e) => {
                 if (e.target === e.currentTarget) setIsOpen(false)
               }}
+              data-fab-hide="true"
             >
             <div className={styles['picker-panel']}>
               {isLoading && <p className={styles.hint}>멤버 목록을 불러오는 중이에요...</p>}

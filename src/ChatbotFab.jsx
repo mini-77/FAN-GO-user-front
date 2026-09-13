@@ -4,21 +4,11 @@ import { useTrip } from './TripContext'
 import FenggoIcon from './FenggoIcon'
 import styles from './ChatbotFab.module.css'
 
-// 챗봇 명세서(§01) 기준 - "이벤트(성지·관광지·행사) 개별 페이지에 붙어 그 장소에 대한
-// 질문에 답하는 보조 가이드"라서, 장소/이벤트 맥락이 있는 화면에만 허용목록으로 띄움.
-// 계정 설정(마이페이지/정보수정)이나 여행 만들기 입력 단계(날짜·액티비티·스타일·확인)처럼
-// 물어볼 특정 장소가 아직 없는 화면에는 안 띄움.
-const SHOWN_ON = [
-  '/home',
-  '/trip/events',
-  '/trip/schedule',
-  '/trip/itinerary',
-  '/trip/itinerary/edit',
-  '/trip/history',
-  '/trip/my',
-  '/trip/feedback',
-]
-
+// 09 기타 컴포넌트 - 플로팅 버튼(FAB) 규칙: "전체 화면(목록·상세 등)에는 항상 표시,
+// 팝업·모달·피커가 열려 있을 때는 숨김"이 확정 문구라서, 특정 경로만 골라 보여주던
+// 이전 허용목록(SHOWN_ON) 방식은 제거함. 로그인 여부와 화면에 열린 팝업/모달/피커
+// 유무로만 표시 여부를 정한다. 팝업류는 각 컴포넌트의 오버레이 루트에 붙인
+// data-fab-hide="true" 로 표시해두고, 여기서 그 존재 유무를 관찰한다.
 const BASE_GAP = 16 // 가장 위에 있는 버튼 줄과 챗봇 버튼 사이 최소 여백
 
 // 화면 맨 아래 고정되는 버튼 줄(하단 탭바, 액션 로우 등)에는 전부 data-bottom-bar="true"를
@@ -35,13 +25,33 @@ function measureBottomBarsHeight() {
   return total
 }
 
+function hasOpenPopup() {
+  return document.querySelectorAll('[data-fab-hide="true"]').length > 0
+}
+
 export default function ChatbotFab() {
   const navigate = useNavigate()
   const location = useLocation()
   const { tripData } = useTrip()
   const isLoggedIn = Boolean(tripData.account?.email)
-  const isShown = SHOWN_ON.includes(location.pathname)
+  // 챗봇 화면(/chat) 자체에서는 "챗봇 열기" 버튼이 의미가 없어 그 화면만 예외로 숨김.
+  // 그 외 모든 화면에는 항상 표시하고, 팝업/모달/피커가 열려 있을 때만 숨긴다.
+  const isChatScreen = location.pathname.startsWith('/chat')
   const [clearance, setClearance] = useState(BASE_GAP)
+  const [isPopupOpen, setIsPopupOpen] = useState(false)
+  const isShown = !isChatScreen && !isPopupOpen
+
+  useEffect(() => {
+    function recalcPopup() {
+      setIsPopupOpen(hasOpenPopup())
+    }
+
+    recalcPopup()
+    const popupObserver = new MutationObserver(recalcPopup)
+    popupObserver.observe(document.body, { childList: true, subtree: true })
+
+    return () => popupObserver.disconnect()
+  }, [location.pathname])
 
   useEffect(() => {
     if (!isShown) return

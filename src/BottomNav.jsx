@@ -1,66 +1,19 @@
 import { useLocation, useNavigate } from 'react-router-dom'
+import Icon from './Icon'
 import styles from './BottomNav.module.css'
 
-// 간단한 선(아웃라인) SVG 아이콘들. currentColor를 써서 CSS의 color 값을 그대로 따라감
-// (컬러 이모지는 CSS로 색을 못 바꾸는데, 이 아이콘들은 자유롭게 바꿀 수 있음).
-function ChatbotIcon() {
-  // 챗봇(트립 버디) - 말풍선 + 점 3개 (원래 피드백 아이콘과 같은 모양을 그대로 씀)
-  return (
-    <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-      <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3h9A2.5 2.5 0 0 1 18 5.5v6A2.5 2.5 0 0 1 15.5 14H10l-4 3.5V14H6.5A2.5 2.5 0 0 1 4 11.5v-6Z" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" />
-      <circle cx="8" cy="8.5" r="1" fill="currentColor" />
-      <circle cx="11" cy="8.5" r="1" fill="currentColor" />
-      <circle cx="14" cy="8.5" r="1" fill="currentColor" />
-    </svg>
-  )
-}
-
-function HomeIcon({ filled }) {
-  // 홈 - 활성일 땐 채워진 형태로
-  return (
-    <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-      <path
-        d="M4 10.5 11 4l7 6.5V18a1 1 0 0 1-1 1h-3.5v-5.5h-5V19H5a1 1 0 0 1-1-1v-7.5Z"
-        stroke="currentColor"
-        strokeWidth="1.6"
-        strokeLinejoin="round"
-        fill={filled ? 'currentColor' : 'none'}
-      />
-    </svg>
-  )
-}
-
-function ScheduleIcon() {
-  // 일정표 - 달력 + 점 3개
-  return (
-    <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-      <rect x="4" y="5" width="14" height="13" rx="2" stroke="currentColor" strokeWidth="1.6" />
-      <path d="M7.5 3v3.5M14.5 3v3.5M4 9h14" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
-      <circle cx="8" cy="13" r="1" fill="currentColor" />
-      <circle cx="11" cy="13" r="1" fill="currentColor" />
-      <circle cx="14" cy="13" r="1" fill="currentColor" />
-    </svg>
-  )
-}
-
-function ProfileIcon() {
-  // 마이페이지 - 사람 모양
-  return (
-    <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-      <circle cx="11" cy="7.5" r="3.2" stroke="currentColor" strokeWidth="1.6" />
-      <path d="M4.5 18c1.2-3.5 4-5 6.5-5s5.3 1.5 6.5 5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
-    </svg>
-  )
-}
-
+// 05 아이콘 규칙 — 선형 단색 1종, 24x24/1.5px 굵기의 공용 Icon.jsx를 그대로 사용.
+// 예전엔 이 파일에서 별도로 그린 22px/1.6px 커스텀 SVG를 썼는데, 헤더·드롭다운 등
+// 다른 화면의 같은 의미 아이콘(홈·일정·채팅·마이)과 굵기·비율이 미묘하게 달라
+// "같은 역할은 항상 같은 모양" 일관성 원칙에 어긋났음 - 공용 Icon으로 통일.
 // 08 하단 내비 규칙 — 홈·일정·채팅·마이 4탭 고정 (예전엔 "나의 일정"·"일정표" 두 개가
 // 따로 있어서 5탭이었는데, "일정표"는 특정 여행 하나를 보는 상세 화면이라 탭이 아니라
 // "일정"(저장한 동선 목록) 안에서 들어가는 하위 화면으로 정리함)
 const TABS = [
-  { Icon: HomeIcon, path: '/home', match: ['/home'], isHome: true, label: '홈' },
-  { Icon: ScheduleIcon, path: '/trip/my', match: ['/trip/my', '/trip/schedule', '/trip/history'], label: '일정' },
-  { Icon: ChatbotIcon, path: '/chat', match: ['/chat'], label: '채팅' },
-  { Icon: ProfileIcon, path: '/account', match: ['/account'], label: '마이' },
+  { iconName: 'home', path: '/home', match: ['/home'], isHome: true, label: '홈' },
+  { iconName: 'calendar', path: '/trip/my', match: ['/trip/my', '/trip/schedule', '/trip/history'], label: '일정' },
+  { iconName: 'chat', path: '/chat', match: ['/chat'], label: '채팅' },
+  { iconName: 'person', path: '/account', match: ['/account'], label: '마이' },
 ]
 
 /**
@@ -77,7 +30,6 @@ export default function BottomNav() {
     <div className={styles['bottom-tabs']} data-bottom-bar="true">
       {TABS.map((tab, i) => {
         const isActive = tab.match.some((p) => location.pathname.startsWith(p))
-        const Icon = tab.Icon
         return (
           <button
             key={i}
@@ -87,7 +39,7 @@ export default function BottomNav() {
             aria-label={tab.label}
           >
             <span className={styles['bottom-tab-icon']}>
-              <Icon filled={tab.isHome && isActive} />
+              <Icon name={tab.iconName} size={22} filled={tab.isHome && isActive} />
             </span>
           </button>
         )

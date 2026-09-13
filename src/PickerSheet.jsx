@@ -54,6 +54,7 @@ export default function PickerSheet({
           onClick={(e) => {
             if (e.target === e.currentTarget) close()
           }}
+          data-fab-hide="true"
         >
           <div className={styles.sheet}>
             <p className={styles.label}>{type === 'date' ? '날짜 선택' : '시간 선택'}</p>

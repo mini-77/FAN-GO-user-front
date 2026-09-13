@@ -649,7 +649,7 @@ export default function TripDateView() {
 
       {/* 공용 지도 검색 오버레이 - StaySearchView 기능을 이 화면 안의 모달로 통합 */}
       {searchTarget && (
-        <div className={styles['search-overlay']}>
+        <div className={styles['search-overlay']} data-fab-hide="true">
           <div
             className={styles['search-panel']}
             style={{

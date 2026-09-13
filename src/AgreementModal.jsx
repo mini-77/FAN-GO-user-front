@@ -15,7 +15,7 @@ export default function AgreementModal({ title, content, onClose, onAgree }) {
   }, [])
 
   return (
-    <div className={styles.overlay}>
+    <div className={styles.overlay} data-fab-hide="true">
       <div className={styles.sheet}>
         <div className={styles.header}>
           <span className={styles.title}>{title}</span>

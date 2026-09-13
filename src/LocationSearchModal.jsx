@@ -195,7 +195,7 @@ export default function LocationSearchModal({ title, initialPlace, onConfirm, on
   }
 
   return (
-    <div className={styles['search-overlay']} onClick={handleOverlayClick}>
+    <div className={styles['search-overlay']} onClick={handleOverlayClick} data-fab-hide="true">
       <div
         className={styles['search-panel']}
         style={{ maxHeight: '95vh', overflowY: 'auto', borderRadius: 24 }}
