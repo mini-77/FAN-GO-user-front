@@ -287,9 +287,11 @@
   text-align: center;
 }
 
+/* 비활성 상태 - 헤더·활성 버튼과 같은 Primary 색을 그대로 쓰되 살짝 흐리게(opacity) */
 .btn-primary.disabled {
-  background: #D9D4F5;
+  background: var(--color-primary-500);
   color: #fff;
+  opacity: 0.45;
   cursor: default;
 }
 

@@ -261,14 +261,14 @@ export default function LoginView() {
 
           {errorMessage && <p className={styles.error}>{errorMessage}</p>}
 
-          {/* 06 버튼 규칙 - 비활성 상태는 옅은 톤(#D9D4F5)으로 확실히 구분, opacity 사용 금지 */}
+          {/* 비활성 상태 - 헤더·활성 버튼과 같은 Primary 색을 그대로 쓰되 살짝 흐리게(opacity) */}
           <button
             className={styles.pillPrimaryBtn}
             onClick={handleLogin}
             disabled={isSubmitting || !isFormValid}
             style={
               isSubmitting || !isFormValid
-                ? { background: '#D9D4F5', color: '#fff', cursor: 'default' }
+                ? { background: 'var(--color-primary-500)', color: '#fff', opacity: 0.45, cursor: 'default' }
                 : undefined
             }
           >

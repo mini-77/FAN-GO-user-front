@@ -337,7 +337,7 @@ export default function LocationSearchModal({ title, initialPlace, onConfirm, on
             type="button"
             className={styles['btn-primary']}
             disabled={!pickedPlace}
-            style={!pickedPlace ? { background: '#D9D4F5', color: '#fff', cursor: 'default', width: '100%' } : { width: '100%' }}
+            style={!pickedPlace ? { background: 'var(--color-primary-500)', color: '#fff', opacity: 0.45, cursor: 'default', width: '100%' } : { width: '100%' }}
             onClick={() => pickedPlace && onConfirm(pickedPlace)}
           >
             {!pickedPlace ? '지도에서 장소를 골라주세요' : `${pickedPlace.name}(으)로 정하기`}
