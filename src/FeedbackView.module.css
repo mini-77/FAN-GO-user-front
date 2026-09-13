@@ -243,7 +243,7 @@
 }
 
 .submitButton {
-  min-height: 46px;
+  min-height: 52px;
   padding: 13.6px 20px 15.4px;
   background: var(--color-primary-500);
   border: none;
