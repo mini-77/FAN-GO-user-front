@@ -225,6 +225,8 @@
 .pillPrimaryBtn {
   width: 100%;
   height: 50px;
+  /* 바로 위 "로그인 유지" 체크박스 줄이랑 너무 붙어 보여서 여유 좀 더 줌 */
+  margin-top: 20px;
   border: none;
   outline: none;
   border-radius: 999px;

@@ -2,6 +2,10 @@
 
 .screen {
   min-height: 100vh;
+  /* 모바일 브라우저는 100vh를 "주소창까지 포함한 전체 높이"로 계산해서, 실제 보이는
+     화면보다 살짝 크게 잡힐 때가 있음(주소창이 떠 있는 동안). 100dvh(동적 뷰포트 높이)를
+     지원하는 브라우저에서는 이 값이 우선 적용돼서 실제로 보이는 높이에 맞춰짐 */
+  min-height: 100dvh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -23,11 +27,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* 로고 블록과 진행 바를 각각 위/아래 끝으로 밀어두고 그 사이는 남는 공간으로 채움 -
-     내용 높이가 얼마든 절대 서로 겹치거나 잘릴 일이 없음 (예전엔 딱 중앙 정렬 + 여백
-     추정치로 처리해서, 화면 높이에 따라 진행 바 쪽 문구가 잘려 보이는 경우가 있었음) */
-  justify-content: space-between;
-  padding: 72px 0 40px;
+  /* 로고+태그라인을 화면 가운데로, 진행 바는 하단에 고정 */
+  justify-content: center;
   box-sizing: border-box;
 }
 
@@ -129,9 +130,12 @@
   text-align: center;
 }
 
-/* 하단 진행 바 - .phone의 justify-content:space-between이 이 블록을 항상 맨 아래로 밀어줌 */
+/* 하단 진행 바 - 화면 맨 아래 고정 */
 .progress-block {
-  width: 100%;
+  position: absolute;
+  bottom: 64px;
+  left: 0;
+  right: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -180,6 +184,7 @@
   .phone {
     max-width: 100%;
     height: 100vh;
+    height: 100dvh;
     border-radius: 0;
     box-shadow: none;
     outline: none;
