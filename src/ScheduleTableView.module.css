@@ -38,10 +38,10 @@
 }
 
 .title {
-  font-size: 26px;
-  font-weight: 600;
-  line-height: 30px;
-  letter-spacing: 0.4px;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 28px;
+  letter-spacing: -0.3px;
   color: var(--color-ink-900);
   margin: 0;
 }

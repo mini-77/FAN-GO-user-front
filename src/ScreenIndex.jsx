@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTrip } from './TripContext'
 import { apiFetch } from './api'
 
@@ -8,7 +8,7 @@ const SCREENS = [
   { path: '/', name: '0. 스플래시 (SplashView)' },
   { path: '/login', name: '1. 로그인 (LoginView)' },
   { path: '/signup', name: '2-1. 회원가입 (SignupView)' },
-  { path: '/signup/artists', name: '2-2. 아티스트 선택 (ArtistSelectView)', needsAccountPreview: true },
+  { path: '/signup/artists', name: '2-2. 아티스트 선택 (ArtistSelectView)' },
   { path: '/signup/success', name: '2-3. 계정생성 완료 (SignupSuccessView)' },
   { path: '/home', name: '3. 홈 (HomeView)' },
   { path: '/trip/events', name: '4-1. 이벤트 선택 (EventSelectView)' },
@@ -26,6 +26,36 @@ const SCREENS = [
   { path: '/account', name: '9-1. 마이 페이지 (MyPageView)' },
   { path: '/account/edit', name: '9-2. 정보수정 (EditProfileView)' },
   { path: '/chat', name: '10. 트립 버디 챗봇 (ChatbotView)' },
+]
+
+// 목록에서 화면을 하나 골라 iframe으로 볼 때, 실제로 회원가입/이벤트선택/동선생성을
+// 순서대로 다 거치지 않으면 뒷단계 화면들은 RequireEvent에 막혀 통째로 안 보이거나
+// (예: 4-2, 4-6, 4-7) 빈 상태 문구만 뜸(예: 4-3~6-2). 그래서 여기서 미리보기 전용
+// 더미 데이터를 채워서, 어떤 화면을 골라도 "실제 사용자가 데이터를 다 채운 뒤"의
+// 모습 그대로 볼 수 있게 함. 이미 실제 값(로그인 데모로 채워졌거나 사용자가 직접
+// 고른 값)이 있으면 그건 덮어쓰지 않음.
+const PREVIEW_ACCOUNT = {
+  email: 'preview@test.com',
+  nickname: '미리보기',
+  phone: '010-0000-0000',
+  password: 'Preview1234!',
+  passwordConfirm: 'Preview1234!',
+  nationality: 1,
+  selectedLanguage: 1,
+}
+
+const PREVIEW_EVENT = {
+  event_no: 1,
+  event_date: '2026-09-18',
+  title: "[엔시티 127(NCT 127)] NCT 127 5TH TOUR 'NEO CITY : SEOUL - THE REDLINE'",
+  address: '서울 송파구 올림픽로 424',
+  artist_group_no: 1,
+}
+
+const PREVIEW_CATEGORIES = [
+  { id: 1, name: '카페' },
+  { id: 2, name: '굿즈샵' },
+  { id: 3, name: '포토스팟' },
 ]
 
 // 갤러리(한번에 보기) 모드에서 각 화면을 축소해서 보여줄 배율 - 390x844(폰 기준)를
@@ -50,13 +80,30 @@ function addDaysToIso(iso, n) {
 }
 
 export default function ScreenIndex() {
-  const { updateTrip } = useTrip()
+  const { tripData, updateTrip } = useTrip()
   const [selected, setSelected] = useState(SCREENS[0])
   const [iframeKey, setIframeKey] = useState(0) // 같은 화면 다시 눌러도 새로고침되게
   const [isGalleryMode, setIsGalleryMode] = useState(false)
   const [isFillingDemo, setIsFillingDemo] = useState(false)
   const [demoStatus, setDemoStatus] = useState('')
   const [galleryKey, setGalleryKey] = useState(0) // 데모 생성 끝나면 올려서 iframe들을 새로 불러오게 함
+
+  // 비어있는 필드만 미리보기용 더미 값으로 채움 - 로그인 데모로 이미 실제 값이 들어있으면
+  // (예: fillDemoAndGenerate 성공 후) 그건 그대로 두고 건드리지 않음.
+  useEffect(() => {
+    const patch = {}
+    if (!tripData.account) patch.account = PREVIEW_ACCOUNT
+    if (!tripData.selectedArtists?.length) patch.selectedArtists = [PREVIEW_EVENT.artist_group_no]
+    if (!tripData.selectedEvent) patch.selectedEvent = PREVIEW_EVENT
+    if (!tripData.rankedCategoryIds?.length) patch.rankedCategoryIds = PREVIEW_CATEGORIES
+    if (!tripData.paceMembers?.length && !tripData.isWholeGroupSelected) {
+      patch.isWholeGroupSelected = true
+      patch.paceArtistGroupNo = (tripData.selectedEvent || PREVIEW_EVENT).artist_group_no
+    }
+    if (!tripData.selectedPace) patch.selectedPace = 'B'
+    if (Object.keys(patch).length) updateTrip(patch)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   // 캡쳐용 - 로그인은 사용자가 직접 해둔 상태여야 함(이 함수는 그 세션 쿠키를 그대로 씀).
   // 실제 이벤트/카테고리를 백엔드에서 가져와서 자동으로 하나씩 고르고, 실제로
@@ -203,22 +250,6 @@ export default function ScreenIndex() {
   }
 
   function selectScreen(screen) {
-    // 계정생성을 안 거치고 아티스트 선택을 미리보기만 할 때, 저장소에 더미 계정정보를 채워줌.
-    // iframe도 같은 브라우저의 localStorage(TripContext가 저장하는 곳)를 그대로 읽으니까,
-    // 여기서 미리 채워두면 iframe 쪽 화면도 그 값을 그대로 보게 됨.
-    if (screen.needsAccountPreview) {
-      updateTrip({
-        account: {
-          email: 'preview@test.com',
-          nickname: '미리보기',
-          phone: '010-0000-0000',
-          password: 'Preview1234!',
-          passwordConfirm: 'Preview1234!',
-          nationality: 1,
-          selectedLanguage: 1,
-        },
-      })
-    }
     setSelected(screen)
     setIframeKey((k) => k + 1)
   }
