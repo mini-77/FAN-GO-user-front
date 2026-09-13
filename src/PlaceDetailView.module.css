@@ -13,7 +13,7 @@
   width: 100%;
   max-width: 390px;
   background: #fff;
-  border-radius: 32px;
+  border-radius: 20px;
   box-shadow: 0px 3px 10px rgba(181, 179, 193, 0.11);
   outline: 1px solid #EFEDFA;
   outline-offset: -1px;
@@ -94,7 +94,7 @@
 .like-btn {
   flex-shrink: 0;
   padding: 8px 14px;
-  border-radius: 100px;
+  border-radius: 12px;
   border: 1px solid #E8E4FF;
   background: #F8F7FF;
   color: #1B163F;
@@ -246,7 +246,7 @@
   padding: 0 14px;
   background: #F8F7FF;
   border: 1px solid #E8E4FF;
-  border-radius: 100px;
+  border-radius: 12px;
   color: #1B163F;
   font-size: 12px;
   font-weight: 600;

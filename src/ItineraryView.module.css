@@ -14,7 +14,7 @@
   max-width: 100%;
   height: 844px;
   background: #fff;
-  border-radius: 32px;
+  border-radius: 20px;
   box-shadow: 0px 3px 10px rgba(181, 179, 193, 0.11);
   outline: 1px solid #EFEDFA;
   outline-offset: -1px;
@@ -153,7 +153,7 @@
 
 .map-pinned-badge {
   padding: 5px 10px;
-  border-radius: 100px;
+  border-radius: 20px;
   background: #201E1D;
   color: #fff;
   font-family: 'Urbanist', sans-serif;
@@ -279,7 +279,7 @@
 .btn-outline {
   flex: 1;
   padding: 13px 8px;
-  border-radius: 100px;
+  border-radius: 12px;
   background: #F8F7FF;
   border: 1px solid #E8E4FF;
   color: #1B163F;
@@ -292,7 +292,7 @@
 .btn-primary {
   flex: 1;
   padding: 13px 8px;
-  border-radius: 100px;
+  border-radius: 12px;
   background: #6D57FC;
   border: none;
   color: #fff;

@@ -55,7 +55,7 @@ export default function SignupSuccessView() {
             className={styles['btn-primary']}
             onClick={() => navigate('/trip/events')}
           >
-            여행 일정 만들기
+            일정 만들기
           </button>
         </div>
       </div>

@@ -838,6 +838,12 @@ export default function TripDateView() {
             </div>
 
             <div style={{ padding: '14px 18px 18px', flexShrink: 0, borderTop: '1px solid #EFEDFA' }}>
+              {/* 06 버튼 규칙 - 정보(숙박일수·숙소명)는 버튼 밖 캡션으로, 버튼엔 행동만 담음 */}
+              {searchTarget === 'stay' && pickedPlace && stayNights > 0 && (
+                <p className={styles.hint} style={{ marginBottom: 8 }}>
+                  {stayNights}박 · {pickedPlace.name}
+                </p>
+              )}
               <button
                 type="button"
                 className={styles['btn-primary']}
@@ -852,8 +858,8 @@ export default function TripDateView() {
                     : searchTarget === 'stay' && stayDateError
                       ? '체류 기간을 확인해주세요'
                       : searchTarget === 'stay'
-                        ? `${stayNights}박 · 이 숙소로 ${editingStayId != null ? '수정' : '추가'}`
-                        : `${pickedPlace.name}(으)로 정하기`}
+                        ? `숙소로 ${editingStayId != null ? '수정' : '추가'}`
+                        : '이 장소로 정하기'}
               </button>
             </div>
           </div>

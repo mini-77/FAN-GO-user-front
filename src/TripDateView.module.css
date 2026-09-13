@@ -13,7 +13,7 @@
   width: 100%;
   max-width: 100%;
   background: #fff;
-  border-radius: 32px;
+  border-radius: 20px;
   box-shadow: 0px 3px 10px rgba(181, 179, 193, 0.11);
   outline: 1px solid #EFEDFA;
   outline-offset: -1px;
@@ -129,7 +129,7 @@
   min-height: 36px;
   padding: 8px 14px;
   border: 1px solid #E8E4FF;
-  border-radius: 4px;
+  border-radius: 12px;
   background: #F8F7FF;
   font-family: 'Urbanist', sans-serif;
   font-size: 14px;
@@ -143,7 +143,8 @@
 
 .input:focus {
   outline: none;
-  border-color: #6D57FC;
+  border: 1.5px solid #6D57FC;
+  box-shadow: 0 0 0 3px rgba(109, 87, 252, 0.15);
 }
 
 .hint {
@@ -266,7 +267,7 @@
 .btn-primary {
   padding: 13.6px 20px 15.4px;
   border: none;
-  border-radius: 100px;
+  border-radius: 12px;
   background: #6D57FC;
   color: #fff;
   font-size: 14px;
@@ -314,7 +315,7 @@
 .search-panel {
   width: 100%;
   background: #fff;
-  border-radius: 24px;
+  border-radius: 20px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
   display: flex;
   flex-direction: column;

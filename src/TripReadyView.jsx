@@ -30,7 +30,7 @@ export default function TripReadyView() {
 
       <div className={styles.footer}>
         <button type="button" className={styles['btn-primary']} onClick={() => navigate('/trip/schedule')}>
-          동선 보러가기
+          동선 보기
         </button>
       </div>
     </div>

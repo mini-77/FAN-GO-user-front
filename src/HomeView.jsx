@@ -120,7 +120,7 @@ export default function HomeView() {
           <button type="button" className={styles['new-trip-btn']} onClick={() => navigate('/trip/events')}>
             <div className={styles['new-trip-icon']}>+</div>
             <div className={styles['new-trip-text']}>
-              <div className={styles['new-trip-title']}>새 동선 만들기</div>
+              <div className={styles['new-trip-title']}>일정 만들기</div>
               <div className={styles['new-trip-sub']}>아티스트 · 공연을 선택해 동선 시작</div>
             </div>
             <span className={styles['new-trip-chevron']}>›</span>

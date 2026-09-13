@@ -182,7 +182,7 @@ export default function HistoryView() {
 
         <div className={styles.footer} data-bottom-bar="true">
           <button type="button" className={styles['new-btn']} onClick={() => navigate('/trip/events')}>
-            새로운 일정 생성
+            일정 만들기
           </button>
         </div>
 

@@ -150,7 +150,7 @@ export const translations = {
       languageHint: (langName) =>
         `지금 보고 있는 언어는 ${langName}입니다. 상단에서 바로 바꿀 수 있고, 가입할 때 국적과 함께 계정에 저장됩니다.`,
       loginButton: '로그인',
-      signupButton: '계정 만들기',
+      signupButton: '회원가입',
     },
     feedback: {
       title: '이번 동선, 어땠어요?',

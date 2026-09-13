@@ -14,7 +14,7 @@
   max-width: 100%;
   height: 844px;
   background: #fff;
-  border-radius: 32px;
+  border-radius: 20px;
   box-shadow: 0px 3px 10px rgba(181, 179, 193, 0.11);
   outline: 1px solid #EFEDFA;
   outline-offset: -1px;
@@ -141,7 +141,7 @@
   display: inline-block;
   padding: 2px 7px;
   background: #6D57FC;
-  border-radius: 100px;
+  border-radius: 20px;
   font-size: 9.5px;
   font-weight: 700;
   letter-spacing: 0.4px;
@@ -219,7 +219,7 @@
 .stop-tag {
   padding: 2px 5px;
   background: #F0EEFF;
-  border-radius: 100px;
+  border-radius: 20px;
   font-family: 'Urbanist', sans-serif;
   font-size: 9px;
   font-weight: 600;
@@ -238,7 +238,7 @@
   white-space: nowrap;
   padding: 3px 9px;
   background: #6D57FC;
-  border-radius: 100px;
+  border-radius: 20px;
   font-size: 10.5px;
   font-weight: 700;
   letter-spacing: 0.2px;
@@ -355,7 +355,7 @@
 .candidate-category-tag {
   padding: 2px 5px;
   background: #F0EEFF;
-  border-radius: 100px;
+  border-radius: 20px;
   font-family: 'Urbanist', sans-serif;
   font-size: 9px;
   font-weight: 600;
@@ -397,7 +397,7 @@
   padding: 8px 14px;
   background: #fff;
   border: 1.5px solid #6D57FC;
-  border-radius: 100px;
+  border-radius: 12px;
   color: #6D57FC;
   font-size: 11.5px;
   font-weight: 600;
@@ -463,7 +463,7 @@
 .btn-outline {
   padding: 0 14px;
   min-height: 46px;
-  border-radius: 100px;
+  border-radius: 12px;
   background: #F8F7FF;
   border: 1px solid #E8E4FF;
   color: #1B163F;
@@ -477,7 +477,7 @@
   flex: 1;
   min-height: 46px;
   border: none;
-  border-radius: 100px;
+  border-radius: 12px;
   background: #6D57FC;
   color: #fff;
   font-size: 14px;

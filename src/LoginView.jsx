@@ -281,7 +281,7 @@ export default function LoginView() {
             </button>
             <span className={styles.dotSep}>·</span>
             <button type="button" className={styles.textToggle} onClick={() => navigate('/signup')}>
-              {t('login.signupButton') || '계정 만들기'}
+              {t('login.signupButton') || '회원가입'}
             </button>
           </div>
         </div>
