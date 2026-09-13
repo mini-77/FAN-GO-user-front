@@ -283,7 +283,7 @@ export default function SignupView() {
     const hasFieldError = Object.values(nextFieldErrors).some(Boolean)
 
     if (hasFieldError || !isFormValid) {
-      if (!emailChecked) setErrorMessage('이메일 중복확인을 눌러주세요.')
+      if (!emailChecked) setErrorMessage('이메일 중복확인이 필요해요. 이메일 입력 후 다른 곳을 탭해주세요.')
       else if (!nationality) setErrorMessage('국적을 선택해주세요.')
       else if (!agreedTerms || !agreedPrivacy || !agreedLocation) setErrorMessage('필수 약관에 동의해주세요.')
       else setErrorMessage('입력값을 확인해 주세요.')
@@ -314,58 +314,41 @@ export default function SignupView() {
       <div className={styles.card}>
         <AppHeader showProfile={false} />
         <div className={styles.body}>
-          <h1 className={styles.title}>계정 생성</h1>
+          <h1 className={styles.title}>가입하기</h1>
 
         <label className={styles['field-label']}>이메일</label>
-        <div className={styles['row-with-btn']}>
-          <input
-            className={`${styles.input} ${email ? styles['input-highlighted'] : ''} ${fieldErrors.email || emailCheckError ? styles.inputError : ''}`}
-            type="text"
-            name="signup-email-x92"
-            autoComplete="off"
-            placeholder="mina_tan@google.com"
-            value={email}
-            onChange={(e) => {
-              setEmail(e.target.value)
-              setEmailChecked(false)
-              setEmailCheckError('')
-              setEmailCheckSuccess('')
-              setFieldErrors((prev) => ({ ...prev, email: '' }))
-            }}
-            onBlur={(e) => {
-              if (e.target.value) {
-                setFieldErrors((prev) => ({ ...prev, email: validateEmail(e.target.value) }))
-              }
-            }}
-          />
-          <button
-            type="button"
-            className={styles['btn-mini']}
-            onClick={handleCheckDuplicate}
-            disabled={isCheckingEmail}
-          >
-            {isCheckingEmail ? '확인 중...' : '중복확인'}
-          </button>
-        </div>
+        <input
+          className={`${styles.input} ${email ? styles['input-highlighted'] : ''} ${fieldErrors.email || emailCheckError ? styles.inputError : ''}`}
+          type="text"
+          name="signup-email-x92"
+          autoComplete="off"
+          placeholder="mina_tan@google.com"
+          value={email}
+          onChange={(e) => {
+            setEmail(e.target.value)
+            setEmailChecked(false)
+            setEmailCheckError('')
+            setEmailCheckSuccess('')
+            setFieldErrors((prev) => ({ ...prev, email: '' }))
+          }}
+          onBlur={(e) => {
+            // 다른 영역을 탭하면 자동으로 유효성 검사(빈값 -> 형식) 후 중복확인까지 이어서 실행
+            if (e.target.value) {
+              handleCheckDuplicate()
+            }
+          }}
+        />
         {fieldErrors.email ? (
-          <p className={styles['field-hint-warning']}>
-            <span className={styles['warning-mark']}>!</span> {fieldErrors.email}
-          </p>
+          <p className={styles['field-hint-warning']}>{fieldErrors.email}</p>
+        ) : isCheckingEmail ? (
+          <p className={styles.hint}>중복확인 중이에요...</p>
         ) : emailCheckError ? (
-          <p className={styles['field-hint-warning']}>
-            <span className={styles['warning-mark']}>!</span> {emailCheckError}
-          </p>
+          <p className={styles['field-hint-warning']}>{emailCheckError}</p>
         ) : emailCheckSuccess ? (
           <p className={styles['field-hint-success']}>
             <span className={styles['success-mark']}>✓</span> {emailCheckSuccess}
           </p>
-        ) : (
-          !emailChecked && (
-            <p className={styles['field-hint-warning']}>
-              <span className={styles['warning-mark']}>!</span> 중복확인을 눌러 주세요.
-            </p>
-          )
-        )}
+        ) : null}
 
         {/* 비밀번호 / 비밀번호 확인 - 이메일 바로 다음, 세로로 하나씩 */}
         <div className={styles['form-field']}>
@@ -384,7 +367,7 @@ export default function SignupView() {
           />
           {fieldErrors.password && (
             <p className={styles['field-hint-warning']}>
-              <span className={styles['warning-mark']}>!</span> {fieldErrors.password}
+              {fieldErrors.password}
             </p>
           )}
         </div>
@@ -408,7 +391,7 @@ export default function SignupView() {
           />
           {fieldErrors.passwordConfirm && (
             <p className={styles['field-hint-warning']}>
-              <span className={styles['warning-mark']}>!</span> {fieldErrors.passwordConfirm}
+              {fieldErrors.passwordConfirm}
             </p>
           )}
         </div>
@@ -441,7 +424,7 @@ export default function SignupView() {
             </select>
             {fieldErrors.nationality && (
               <p className={styles['field-hint-warning']}>
-                <span className={styles['warning-mark']}>!</span> {fieldErrors.nationality}
+                {fieldErrors.nationality}
               </p>
             )}
           </div>
@@ -467,7 +450,7 @@ export default function SignupView() {
           />
           {fieldErrors.nickname && (
             <p className={styles['field-hint-warning']}>
-              <span className={styles['warning-mark']}>!</span> {fieldErrors.nickname}
+              {fieldErrors.nickname}
             </p>
           )}
         </div>
@@ -505,35 +488,9 @@ export default function SignupView() {
           </div>
           {fieldErrors.phone && (
             <p className={styles['field-hint-warning']}>
-              <span className={styles['warning-mark']}>!</span> {fieldErrors.phone}
+              {fieldErrors.phone}
             </p>
           )}
-        </div>
-
-        <div className={styles['lang-block']}>
-          <div className={styles['lang-header']}>
-            <span className={styles['lang-label']}>화면 언어</span>
-            <span className={styles['lang-current']}>
-              {langs.find((l) => l.lang_no === selectedLanguage)?.lang_nm || ''}
-            </span>
-          </div>
-          <div className={styles['lang-chips']}>
-            {langs.map((lang) => (
-              <button
-                key={lang.lang_no}
-                type="button"
-                className={`${styles['lang-chip']} ${selectedLanguage === lang.lang_no ? styles.active : ''}`}
-                onClick={() => setSelectedLanguage(lang.lang_no)}
-              >
-                {lang.lang_nm}
-              </button>
-            ))}
-          </div>
-          <p className={styles.hint}>
-            국적을 고르면 그 나라 언어가 먼저 잡히고, 여기서 다르게 바꿀 수 있어요.
-            <br />
-            화면과 장소 이름 표기에 쓰입니다.
-          </p>
         </div>
 
         <div className={styles['agree-block']}>

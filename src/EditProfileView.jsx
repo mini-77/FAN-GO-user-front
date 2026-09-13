@@ -294,22 +294,6 @@ export default function EditProfileView() {
             </select>
           </div>
 
-          <div className={styles['lang-block']}>
-            <span className={styles['section-label']}>화면 언어</span>
-            <div className={styles['lang-pills']}>
-              {langs.map((lang) => (
-                <button
-                  key={lang.lang_no}
-                  type="button"
-                  className={`${styles['lang-pill']} ${selectedLanguage === lang.lang_no ? styles.active : ''}`}
-                  onClick={() => setSelectedLanguage(lang.lang_no)}
-                >
-                  {lang.lang_nm}
-                </button>
-              ))}
-            </div>
-          </div>
-
           <div className={styles['pw-block']}>
             <span className={styles['section-label']}>비밀번호 변경</span>
             <p className={styles.infoBannerMuted}>비밀번호 변경 기능은 아직 준비 중이에요 (관련 API 대기 중).</p>
