@@ -125,13 +125,16 @@
   margin-bottom: 5px;
 }
 
+/* 06 입력 필드 규칙 - 기본 1.5px #ECECF2 / Focus 1.5px Primary+Glow, radius는
+   Medium(버튼·입력필드) 12px. 배경은 "공식 이벤트 기준" 필터임을 살짝 드러내려
+   연보라를 유지하되, 테두리·라운드·포커스 상태는 다른 입력 필드와 통일함 */
 .select {
   width: 100%;
   box-sizing: border-box;
   min-height: 36px;
   padding: 13px 30px 13px 16px;
-  border: 1px solid var(--color-primary-200);
-  border-radius: 16px;
+  border: 1.5px solid var(--color-border);
+  border-radius: 12px;
   background: var(--color-primary-50);
   font-family: 'IBM Plex Sans KR', sans-serif;
   font-size: 14px;
@@ -142,6 +145,12 @@
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath fill='none' stroke='%236b6b7d' stroke-width='1.5' d='M1 1l4 4 4-4'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 14px center;
+}
+
+.select:focus {
+  outline: none;
+  border-color: var(--color-primary-500);
+  box-shadow: 0 0 0 3px rgba(109, 87, 252, 0.15);
 }
 
 .hint {

@@ -35,7 +35,9 @@
 }
 
 /* 05 헤더 규칙 - 좌우 아이콘 버튼은 squircle 28x28px, radius 12px, 배경 22% 흰색으로 통일 */
+/* 접근성 - 터치 영역 44×44px 이상. 시각적 크기는 28px 유지, ::before로 히트박스만 확장 */
 .headerIconBtn {
+  position: relative;
   width: 28px;
   height: 28px;
   border-radius: 12px;
@@ -48,6 +50,12 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+}
+
+.headerIconBtn::before {
+  content: '';
+  position: absolute;
+  inset: -8px;
 }
 
 .headerBotInfo {
