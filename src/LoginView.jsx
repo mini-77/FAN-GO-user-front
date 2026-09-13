@@ -157,7 +157,7 @@ export default function LoginView() {
         // 무시
       }
 
-      navigate('/trip/events', { replace: true })
+      navigate('/home', { replace: true })
     } catch (e) {
       setErrorMessage(t('login.connectionError'))
       setIsSubmitting(false)

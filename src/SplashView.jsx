@@ -41,7 +41,7 @@ export default function SplashView() {
                 name: g.group_nm,
               })),
             })
-            navigate('/trip/events')
+            navigate('/home')
             return
           }
         } catch (e) {

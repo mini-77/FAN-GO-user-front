@@ -53,9 +53,9 @@ export default function SignupSuccessView() {
           <button
             type="button"
             className={styles['btn-primary']}
-            onClick={() => navigate('/trip/events')}
+            onClick={() => navigate('/home')}
           >
-            일정 만들기
+            홈으로 가기
           </button>
         </div>
       </div>
