@@ -175,8 +175,11 @@
   cursor: pointer;
 }
 
+/* 03 컬러 규칙 - 강조는 배경 전면 채움 대신 좌측 액센트 바로 (Primary 사용 비중 절제) */
 .event-row.pinned {
-  background: var(--color-primary-500);
+  border-left: 4px solid var(--color-primary-500);
+  padding-left: 14px;
+  background: #fff;
 }
 
 .event-datetime {
@@ -202,10 +205,6 @@
   opacity: 0.75;
 }
 
-.event-row.pinned .event-date,
-.event-row.pinned .event-time {
-  color: #fff;
-}
 
 .event-text {
   flex: 1;
@@ -229,11 +228,6 @@
   opacity: 0.72;
 }
 
-.event-row.pinned .event-title,
-.event-row.pinned .event-venue {
-  color: #fff;
-}
-
 .event-toggle {
   font-family: 'Urbanist', sans-serif;
   font-size: 11px;
@@ -243,6 +237,9 @@
 }
 
 .event-row.pinned .event-toggle {
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: var(--color-primary-500);
   color: #fff;
 }
 
