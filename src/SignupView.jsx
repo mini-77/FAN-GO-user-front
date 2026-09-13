@@ -319,7 +319,7 @@ export default function SignupView() {
         <label className={styles['field-label']}>이메일</label>
         <div className={styles['row-with-btn']}>
           <input
-            className={`${styles.input} ${email ? styles['input-highlighted'] : ''}`}
+            className={`${styles.input} ${email ? styles['input-highlighted'] : ''} ${fieldErrors.email || emailCheckError ? styles.inputError : ''}`}
             type="text"
             name="signup-email-x92"
             autoComplete="off"
@@ -371,7 +371,7 @@ export default function SignupView() {
         <div className={styles['form-field']}>
           <label className={styles['field-label']}>비밀번호</label>
           <input
-            className={`${styles.input} ${styles['input-en']}`}
+            className={`${styles.input} ${styles['input-en']} ${fieldErrors.password ? styles.inputError : ''}`}
             type="password"
             name="signup-pw-x92"
             autoComplete="off"
@@ -392,7 +392,7 @@ export default function SignupView() {
         <div className={styles['form-field']}>
           <label className={styles['field-label']}>비밀번호 확인</label>
           <input
-            className={`${styles.input} ${styles['input-en']}`}
+            className={`${styles.input} ${styles['input-en']} ${fieldErrors.passwordConfirm ? styles.inputError : ''}`}
             type="password"
             name="signup-pw-confirm-x92"
             autoComplete="off"
@@ -418,7 +418,7 @@ export default function SignupView() {
           <div>
             <label className={styles['field-label']}>국적</label>
             <select
-              className={styles.input}
+              className={`${styles.input} ${fieldErrors.nationality ? styles.inputError : ''}`}
               value={nationality}
               onChange={(e) => {
                 handleNationalityChange(e.target.value)
@@ -456,7 +456,7 @@ export default function SignupView() {
         <div className={styles['form-field']}>
           <label className={styles['field-label']}>닉네임</label>
           <input
-            className={styles.input}
+            className={`${styles.input} ${fieldErrors.nickname ? styles.inputError : ''}`}
             type="text"
             placeholder="닉네임"
             value={nickname}
@@ -475,7 +475,7 @@ export default function SignupView() {
         <div className={styles['form-field']}>
           <label className={styles['field-label']}>휴대전화번호</label>
           {/* 국가번호 + 전화번호를 하나의 박스 안에서, 국가번호가 맨 앞에 오게 */}
-          <div className={styles['phone-single-box']}>
+          <div className={`${styles['phone-single-box']} ${fieldErrors.phone ? styles.inputError : ''}`}>
             <span className={styles['phone-code-plus']}>+</span>
             <input
               className={styles['phone-code-input']}

@@ -199,7 +199,7 @@ export default function LoginView() {
           {/* 입력 폼 */}
           <div className={styles.formBlock}>
             <input
-              className={styles.pillInput}
+              className={`${styles.pillInput} ${fieldErrors.email ? styles.inputError : ''}`}
               type="text"
               name="loginfield-email-x92"
               id="loginfield-email-x92"
@@ -216,7 +216,7 @@ export default function LoginView() {
             />
             {fieldErrors.email && <p className={styles.error}>{fieldErrors.email}</p>}
 
-            <div className={styles.pillInputWithIcon}>
+            <div className={`${styles.pillInputWithIcon} ${fieldErrors.password ? styles.inputError : ''}`}>
               <input
                 className={styles.pillInputBare}
                 type={showPassword ? 'text' : 'password'}

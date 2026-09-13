@@ -249,6 +249,11 @@ select.input {
   margin: 0;
 }
 
+/* 06 입력 필드 규칙 - 에러 상태는 테두리 색으로도 보이게 */
+.inputError {
+  border: 1.5px solid var(--color-danger) !important;
+}
+
 .agree-block {
   border-top: 1px solid var(--color-border);
   padding-top: 12px;

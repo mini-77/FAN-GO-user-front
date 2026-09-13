@@ -464,7 +464,7 @@ export default function TripDateView() {
               <label className={styles['field-label']}>시작일</label>
               <PickerSheet
                 type="date"
-                className={styles.input}
+                className={`${styles.input} ${fieldErrors.startDate ? styles.inputError : ''}`}
                 value={startDate}
                 min={allowedMinDate || undefined}
                 max={eventDate || allowedMaxDate || undefined}
@@ -493,7 +493,7 @@ export default function TripDateView() {
               <label className={styles['field-label']}>완료일</label>
               <PickerSheet
                 type="date"
-                className={styles.input}
+                className={`${styles.input} ${fieldErrors.endDate ? styles.inputError : ''}`}
                 value={endDate}
                 min={eventDate || allowedMinDate || undefined}
                 max={allowedMaxDate || undefined}
@@ -525,7 +525,7 @@ export default function TripDateView() {
               <label className={styles['field-label']}>시작</label>
               <PickerSheet
                 type="time"
-                className={styles.input}
+                className={`${styles.input} ${fieldErrors.startTime ? styles.inputError : ''}`}
                 value={startTime}
                 placeholder="시작 시간을 골라주세요"
                 onChange={(next) => {
@@ -542,7 +542,7 @@ export default function TripDateView() {
               <label className={styles['field-label']}>완료</label>
               <PickerSheet
                 type="time"
-                className={styles.input}
+                className={`${styles.input} ${fieldErrors.endTime ? styles.inputError : ''}`}
                 value={endTime}
                 placeholder="완료 시간을 골라주세요"
                 onChange={(next) => {
@@ -824,7 +824,7 @@ export default function TripDateView() {
                     <label className={styles['field-label']}>체크인</label>
                     <PickerSheet
                       type="date"
-                      className={styles.input}
+                      className={`${styles.input} ${stayDateError ? styles.inputError : ''}`}
                       value={stayCheckIn}
                       min={stayAllowedMinDate || undefined}
                       max={stayAllowedMaxDate || undefined}
@@ -837,7 +837,7 @@ export default function TripDateView() {
                     <label className={styles['field-label']}>체크아웃</label>
                     <PickerSheet
                       type="date"
-                      className={styles.input}
+                      className={`${styles.input} ${stayDateError ? styles.inputError : ''}`}
                       value={stayCheckOut}
                       min={stayAllowedMinDate || undefined}
                       max={stayAllowedMaxDate || undefined}
