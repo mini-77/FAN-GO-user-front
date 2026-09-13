@@ -256,7 +256,8 @@
 }
 
 .btn-primary.disabled {
-  opacity: 0.45;
+  background: #D9D4F5;
+  color: var(--color-primary-600);
   cursor: default;
 }
 

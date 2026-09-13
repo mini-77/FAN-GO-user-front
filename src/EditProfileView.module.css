@@ -152,7 +152,9 @@
   color: var(--color-ink-900);
 }
 
+/* 06 입력 필드 - Disabled 상태 배경 규정값 */
 .field-input.disabled {
+  background: #F6F6F9;
   color: rgba(27, 22, 63, 0.4);
   cursor: not-allowed;
 }

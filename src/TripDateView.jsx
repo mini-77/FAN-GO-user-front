@@ -870,7 +870,7 @@ export default function TripDateView() {
                 type="button"
                 className={styles['btn-primary']}
                 disabled={!canConfirmPlace}
-                style={!canConfirmPlace ? { opacity: 0.45, cursor: 'default', width: '100%' } : { width: '100%' }}
+                style={!canConfirmPlace ? { background: '#D9D4F5', color: 'var(--color-primary-600)', cursor: 'default', width: '100%' } : { width: '100%' }}
                 onClick={confirmPlace}
               >
                 {!pickedPlace
