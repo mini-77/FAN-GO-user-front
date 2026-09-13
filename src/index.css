@@ -24,7 +24,7 @@
   --color-ink-200: #E2E2E9;
 
   --color-surface: #FFFFFF;
-  --color-border: #EFEDFA;
+  --color-border: #ECECF2; /* 04 라운드&그림자 - 기본 구분선 규정값 */
   --color-screen-bg: #ECECEC;
 
   --text: #6b6375;

@@ -161,13 +161,19 @@
   padding: 9px 11px;
   background: var(--color-primary-50);
   border: 1px solid var(--color-primary-200);
-  border-radius: 4px;
+  border-radius: 12px;
   font-family: 'IBM Plex Sans KR', sans-serif;
   font-size: 12px;
   line-height: 19.2px;
   color: var(--color-ink-900);
   resize: vertical;
   box-sizing: border-box;
+}
+
+.textarea:focus {
+  outline: none;
+  border: 1.5px solid var(--color-primary-500);
+  box-shadow: 0 0 0 3px rgba(109, 87, 252, 0.15);
 }
 
 .textarea::placeholder {

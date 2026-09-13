@@ -320,7 +320,7 @@
   min-height: 36px;
   padding: 8px 12px;
   border: 1px solid var(--color-primary-200);
-  border-radius: 4px;
+  border-radius: 12px;
   background: var(--color-primary-50);
   font-family: 'Urbanist', sans-serif;
   font-size: 13px;
