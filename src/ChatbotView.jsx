@@ -252,7 +252,7 @@ export default function ChatbotView() {
             onClick={() => navigate(-1)}
             aria-label="뒤로가기"
           >
-            ←
+            <Icon name="back" size={16} color="#fff" />
           </button>
           <div className={styles.headerBotInfo}>
             <div className={styles.headerAvatar}><FenggoIcon size={44} /></div>

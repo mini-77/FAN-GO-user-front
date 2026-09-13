@@ -111,7 +111,8 @@ export default function HomeView() {
   return (
     <div className={styles.screen}>
       <div className={styles.card}>
-        <AppHeader showBack={false} />
+        {/* 05 헤더 규칙 - 진입점(홈·로그인)은 뒤로가기 없이 로고만 중앙 */}
+        <AppHeader showBack={false} showProfile={false} />
 
         <div className={styles.body}>
           <h1 className={styles.title}>다가오는 이벤트</h1>
