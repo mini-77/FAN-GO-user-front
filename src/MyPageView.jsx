@@ -70,6 +70,9 @@ export default function MyPageView() {
     } catch (e) {
       // 서버 로그아웃 실패해도 프론트 쪽 세션 정보는 지우고 로그인 화면으로 보냄
     }
+    // "로그인 유지" 체크로 저장해둔 자동로그인 플래그도 같이 지워야
+    // 로그아웃한 다음 앱을 다시 열었을 때 또 자동으로 로그인 시도하지 않음
+    localStorage.removeItem('fango_auto_login')
     resetTrip()
     navigate('/login')
   }

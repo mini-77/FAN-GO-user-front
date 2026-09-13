@@ -61,6 +61,10 @@ export default function AppHeader({ showBack = true, showProfile = true, onBack,
       // 네트워크 오류가 있어도 화면 이동은 진행
     }
 
+    // "로그인 유지" 체크로 저장해둔 자동로그인 플래그도 같이 지워야
+    // 로그아웃한 다음 앱을 다시 열었을 때 또 자동으로 로그인 시도하지 않음
+    localStorage.removeItem('fango_auto_login')
+
     resetTrip()
     navigate('/login')
   }
