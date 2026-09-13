@@ -148,7 +148,15 @@ export default function PaceView() {
             <span className={`${styles['picker-arrow']} ${isOpen ? styles.open : ''}`}>▼</span>
           </button>
 
+          {/* 04 팝업&모달 - 바텀시트 멀티선택: 화면 하단에서 올라오는 시트 + 딤 배경,
+              바깥을 탭하면 취소(닫기) 가능. X 버튼은 따로 안 둠(초기화/확인 두 버튼이 곧 닫는 방법). */}
           {isOpen && (
+            <div
+              className={styles.sheetOverlay}
+              onClick={(e) => {
+                if (e.target === e.currentTarget) setIsOpen(false)
+              }}
+            >
             <div className={styles['picker-panel']}>
               {isLoading && <p className={styles.hint}>멤버 목록을 불러오는 중이에요...</p>}
               {!isLoading && loadError && <p className={styles.hint}>{loadError}</p>}
@@ -217,6 +225,7 @@ export default function PaceView() {
                   </div>
                 </>
               )}
+            </div>
             </div>
           )}
 

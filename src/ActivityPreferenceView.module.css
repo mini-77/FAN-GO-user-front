@@ -172,17 +172,17 @@
   cursor: default;
 }
 
+/* 우선순위 선택 카드 - 항목명 13.5px Bold, 부가설명 11px Regular Ink-600 */
 .category-name {
-  font-size: 14px;
-  font-weight: 600;
+  font-size: 13.5px;
+  font-weight: 700;
   color: var(--color-ink-900);
 }
 
 .category-sub {
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 400;
-  color: var(--color-ink-900);
-  opacity: 0.65;
+  color: var(--color-ink-600);
 }
 
 .rank-badge {
@@ -190,7 +190,7 @@
   top: 8px;
   right: 10px;
   font-family: 'Urbanist', sans-serif;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.4px;
   color: #fff;

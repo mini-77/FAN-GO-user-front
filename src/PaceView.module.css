@@ -135,12 +135,27 @@
   transform: rotate(180deg);
 }
 
+/* 04 팝업&모달 - 바텀시트: 화면 전체를 덮는 딤 배경 + 하단 정렬 */
+.sheetOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(27, 22, 63, 0.55);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  z-index: 1100;
+}
+
 .picker-panel {
+  width: 100%;
+  max-width: 430px;
+  max-height: 80vh;
+  overflow-y: auto;
   background: #fff;
-  box-shadow: 0px 8px 24px rgba(27, 22, 63, 0.08);
-  border: 1px solid var(--color-border);
-  border-radius: 20px;
+  box-shadow: 0px -8px 24px rgba(27, 22, 63, 0.12);
+  border-radius: 20px 20px 0 0;
   padding: 16px;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   gap: 12px;

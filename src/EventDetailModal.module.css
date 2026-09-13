@@ -3,10 +3,10 @@
   inset: 0;
   background: rgba(27, 22, 63, 0.55);
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: center;
   z-index: 1000;
-  padding: 8vh 8px 24px;
+  padding: 16px;
 }
 
 /* 화면 폭 거의 꽉 차게, 세로도 크게 - 앱 프레임(.card) 폭인 390px을 넘지 않게 맞춤 */
