@@ -334,24 +334,37 @@
   cursor: default;
 }
 
-/* 입력창 */
+/* 입력창 - 레퍼런스 목업처럼 입력창+전송 버튼이 하나의 둥근 알약 안에 같이 들어있는 형태 */
 .inputBar {
   flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  gap: 8px;
   padding: 12px 14px;
   background: #fff;
-  border-top: 1px solid var(--color-border);
+}
+
+.inputWrap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 48px;
+  padding: 4px 4px 4px 18px;
+  border-radius: 999px;
+  background: #fff;
+  border: 1px solid var(--color-border);
+  box-shadow: 0 4px 14px rgba(27, 22, 63, 0.1);
+}
+
+/* 06 입력 필드 규칙 - Focus 1.5px Primary + Glow */
+.inputWrap:focus-within {
+  border-color: var(--color-primary-500);
+  box-shadow: 0 0 0 3px rgba(109, 87, 252, 0.15);
 }
 
 .input {
   flex: 1;
-  height: 42px;
-  padding: 0 16px;
-  border: 1px solid var(--color-border);
-  border-radius: 999px;
-  background: #F7F6FC;
+  min-width: 0;
+  height: 100%;
+  border: none;
+  background: transparent;
   font-family: 'IBM Plex Sans KR', sans-serif;
   font-size: 13px;
   color: var(--color-ink-900);
@@ -363,7 +376,6 @@
 
 .input:focus {
   outline: none;
-  border-color: var(--color-primary-400);
 }
 
 .sendBtn {

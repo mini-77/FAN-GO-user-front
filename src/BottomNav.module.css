@@ -6,6 +6,10 @@
   display: flex;
 }
 
+.no-border {
+  border-top: none;
+}
+
 .bottom-tab {
   flex: 1;
   padding: 12px 0;

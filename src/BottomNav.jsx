@@ -21,13 +21,18 @@ const TABS = [
  * 지금 주소(pathname)를 보고 알아서 어떤 탭이 활성 상태인지 표시함.
  * 홈 버튼은 가운데 있고, 활성일 때 채워진 아이콘 + 아래 밑줄 바로 표시됨.
  * 사용 예: <BottomNav />
+ * noBorder - 바로 위에 이미 다른 구분선(예: 챗봇 입력창)이 있어서 위쪽 구분선이
+ * 겹쳐 보일 때만 true로 넘김. 기본은 false라 다른 화면엔 영향 없음.
  */
-export default function BottomNav() {
+export default function BottomNav({ noBorder = false }) {
   const navigate = useNavigate()
   const location = useLocation()
 
   return (
-    <div className={styles['bottom-tabs']} data-bottom-bar="true">
+    <div
+      className={`${styles['bottom-tabs']} ${noBorder ? styles['no-border'] : ''}`}
+      data-bottom-bar="true"
+    >
       {TABS.map((tab, i) => {
         const isActive = tab.match.some((p) => location.pathname.startsWith(p))
         return (

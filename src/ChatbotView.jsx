@@ -354,28 +354,30 @@ export default function ChatbotView() {
           ))}
         </div>
 
-        {/* 입력창 */}
+        {/* 입력창 - 입력창과 전송 버튼을 하나의 둥근 알약 안에 담음(레퍼런스 목업 기준) */}
         <div className={styles.inputBar}>
-          <input
-            className={styles.input}
-            type="text"
-            placeholder="장소명이나 아티스트 이름을 입력해 보세요"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={handleKeyDown}
-            maxLength={1000}
-          />
-          <button
-            type="button"
-            className={styles.sendBtn}
-            onClick={() => sendMessage()}
-            disabled={isSending || !input.trim()}
-            aria-label="전송"
-          >
-            <Icon name="send" size={16} color="#fff" />
-          </button>
+          <div className={styles.inputWrap}>
+            <input
+              className={styles.input}
+              type="text"
+              placeholder="장소명이나 아티스트 이름을 입력해 보세요"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={handleKeyDown}
+              maxLength={1000}
+            />
+            <button
+              type="button"
+              className={styles.sendBtn}
+              onClick={() => sendMessage()}
+              disabled={isSending || !input.trim()}
+              aria-label="전송"
+            >
+              <Icon name="send" size={16} color="#fff" />
+            </button>
+          </div>
         </div>
-        <BottomNav />
+        <BottomNav noBorder />
       </div>
     </div>
   )
