@@ -95,9 +95,17 @@
 .map-area {
   position: relative;
   height: 220px;
-  flex-shrink: 0;
+  min-height: 120px;
+  flex-shrink: 1;
   background: var(--color-primary-100);
   overflow: hidden;
+}
+
+/* 화면 세로가 짧을 땐 지도를 줄여서라도 목록(.timeline)이 최소 높이를 확보하게 함 */
+@media (max-height: 700px) {
+  .map-area {
+    height: 150px;
+  }
 }
 
 .map-canvas {
@@ -169,10 +177,11 @@
   white-space: nowrap;
 }
 
-/* 타임라인 */
+/* 타임라인 - 장소가 몇 개든 최소 2~3개는 보이고 그 아래는 스크롤되게, 화면이 낮아도
+   이 아래로는 줄어들지 않게 최소 높이를 둠 (모자란 공간은 지도 쪽에서 줄어듦) */
 .timeline {
   flex: 1;
-  min-height: 0;
+  min-height: 190px;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
