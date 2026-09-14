@@ -30,7 +30,7 @@ export default function TripReadyView() {
         <p className={styles.subtitle}>다음 화면에서 동선 정보를 확인해요.</p>
       </div>
 
-      <div className={styles.footer}>
+      <div className={styles.footer} data-bottom-bar="true">
         <button type="button" className={styles['btn-primary']} onClick={() => navigate('/trip/itinerary')}>
           동선 보기
         </button>

@@ -348,7 +348,7 @@ export default function EditProfileView() {
           </p>
         )}
 
-        <div className={styles.footer}>
+        <div className={styles.footer} data-bottom-bar="true">
           <button type="button" className={styles['save-btn']} onClick={handleSave} disabled={isSaving}>
             {isSaving ? '저장 중...' : '저장'}
           </button>

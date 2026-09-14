@@ -190,7 +190,7 @@ export default function ConfirmView() {
           )}
         </div>
 
-        <div className={styles.footer}>
+        <div className={styles.footer} data-bottom-bar="true">
           <span className={styles['footer-note']}>선택한 스타일로 동선을 만들어요</span>
           <button
             type="button"
