@@ -40,6 +40,16 @@
   width: 20px;
   border-radius: 4px;
   background: rgba(255, 255, 255, 0.9);
+  animation: dotPulse 1s ease-in-out infinite;
+}
+
+@keyframes dotPulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
 }
 
 .title {
@@ -97,11 +107,38 @@
   overflow: hidden;
 }
 
+/* 진행률이 단계별로 툭툭 뛰는 구조라, API 응답을 기다리는 동안 값이 한참 안 바뀔 수 있음.
+   그동안에도 "멈춘 게 아니라 계속 진행 중"이라는 걸 보여주려고, 채워진 바 위에
+   반짝이는 하이라이트가 계속 지나가게 함 */
 .progress-fill {
+  position: relative;
   height: 3px;
   background: rgba(255, 255, 255, 0.9);
   border-radius: 4px;
   transition: width 0.4s ease;
+  overflow: hidden;
+}
+
+.progress-fill::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(109, 87, 252, 0.55),
+    transparent
+  );
+  animation: progressShimmer 1.2s ease-in-out infinite;
+}
+
+@keyframes progressShimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
 }
 
 .progress-label {
