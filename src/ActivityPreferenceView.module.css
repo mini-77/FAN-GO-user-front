@@ -244,6 +244,9 @@
   display: flex;
   justify-content: flex-end;
   align-items: center;
+  /* 목록이 짧아 화면을 다 못 채울 때 버튼이 콘텐츠 바로 밑에 붕 뜨고 그 아래
+     빈 흰 공간이 남던 문제 - 고정 없이 스크롤 영역 맨 아래로 붙임 */
+  margin-top: auto;
 }
 
 .footer-count {

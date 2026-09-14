@@ -287,6 +287,7 @@
   border-top: 1px solid var(--color-border);
   display: flex;
   justify-content: flex-end;
+  margin-top: auto;
 }
 
 /* 동선 스타일(A/B/C) 선택 - ConfirmView에서 옮겨옴 */

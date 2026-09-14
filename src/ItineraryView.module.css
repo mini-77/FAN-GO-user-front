@@ -291,6 +291,7 @@
   border-top: 1px solid var(--color-border);
   display: flex;
   gap: 8px;
+  margin-top: auto;
 }
 
 .btn-outline {

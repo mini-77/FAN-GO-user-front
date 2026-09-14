@@ -271,6 +271,11 @@
   border-top: 1px solid var(--color-border);
   position: relative;
   overflow: hidden;
+  /* 목록이 짧아 화면을 다 못 채울 때, 이 아래(map-summary+footer)가 콘텐츠 바로 밑
+     붕 뜬 채로 남고 그 아래에 빈 흰 공간이 생기던 문제 - 고정(position:fixed) 없이도
+     이 블록을 스크롤 영역 맨 아래로 붙여서, 목록이 길어지면 여전히 자연스럽게
+     같이 스크롤되고 짧을 땐 화면 하단에 붙어 보이게 함 */
+  margin-top: auto;
 }
 
 .map-summary-text {

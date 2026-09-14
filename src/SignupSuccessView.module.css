@@ -146,6 +146,7 @@
   border-top: 1px solid var(--color-border);
   display: flex;
   justify-content: flex-end;
+  margin-top: auto;
 }
 
 /* 06 버튼 규칙 - 하단 고정 CTA는 Large(52px), 혼자 있을 땐 폭 전체를 채움.

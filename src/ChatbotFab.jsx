@@ -54,11 +54,13 @@ export default function ChatbotFab() {
   const { tripData } = useTrip()
   const isLoggedIn = Boolean(tripData.account?.email)
   // 챗봇 화면(/chat) 자체에서는 "챗봇 열기" 버튼이 의미가 없어 그 화면만 예외로 숨김.
-  // 그 외 모든 화면에는 항상 표시하고, 팝업/모달/피커가 열려 있을 때만 숨긴다.
+  // 로그인 화면(/login)에서도 표시 안 함(사용자 요청). 그 외 모든 화면에는 항상
+  // 표시하고, 팝업/모달/피커가 열려 있을 때만 숨긴다.
   const isChatScreen = location.pathname.startsWith('/chat')
+  const isLoginScreen = location.pathname.startsWith('/login')
   const [anchor, setAnchor] = useState({ right: 16, bottom: BASE_GAP })
   const [isPopupOpen, setIsPopupOpen] = useState(false)
-  const isShown = !isChatScreen && !isPopupOpen
+  const isShown = !isChatScreen && !isLoginScreen && !isPopupOpen
 
   useEffect(() => {
     function recalcPopup() {

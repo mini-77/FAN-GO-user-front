@@ -316,39 +316,41 @@ export default function SignupView() {
         <div className={styles.body}>
           <h1 className={styles.title}>가입하기</h1>
 
-        <label className={styles['field-label']}>이메일</label>
-        <input
-          className={`${styles.input} ${email ? styles['input-highlighted'] : ''} ${fieldErrors.email || emailCheckError ? styles.inputError : ''}`}
-          type="text"
-          name="signup-email-x92"
-          autoComplete="off"
-          placeholder="mina_tan@google.com"
-          value={email}
-          onChange={(e) => {
-            setEmail(e.target.value)
-            setEmailChecked(false)
-            setEmailCheckError('')
-            setEmailCheckSuccess('')
-            setFieldErrors((prev) => ({ ...prev, email: '' }))
-          }}
-          onBlur={(e) => {
-            // 다른 영역을 탭하면 자동으로 유효성 검사(빈값 -> 형식) 후 중복확인까지 이어서 실행
-            if (e.target.value) {
-              handleCheckDuplicate()
-            }
-          }}
-        />
-        {fieldErrors.email ? (
-          <p className={styles['field-hint-warning']}>{fieldErrors.email}</p>
-        ) : isCheckingEmail ? (
-          <p className={styles.hint}>중복확인 중이에요...</p>
-        ) : emailCheckError ? (
-          <p className={styles['field-hint-warning']}>{emailCheckError}</p>
-        ) : emailCheckSuccess ? (
-          <p className={styles['field-hint-success']}>
-            <span className={styles['success-mark']}>✓</span> {emailCheckSuccess}
-          </p>
-        ) : null}
+        <div className={styles['form-field']}>
+          <label className={styles['field-label']}>이메일</label>
+          <input
+            className={`${styles.input} ${email ? styles['input-highlighted'] : ''} ${fieldErrors.email || emailCheckError ? styles.inputError : ''}`}
+            type="text"
+            name="signup-email-x92"
+            autoComplete="off"
+            placeholder="mina_tan@google.com"
+            value={email}
+            onChange={(e) => {
+              setEmail(e.target.value)
+              setEmailChecked(false)
+              setEmailCheckError('')
+              setEmailCheckSuccess('')
+              setFieldErrors((prev) => ({ ...prev, email: '' }))
+            }}
+            onBlur={(e) => {
+              // 다른 영역을 탭하면 자동으로 유효성 검사(빈값 -> 형식) 후 중복확인까지 이어서 실행
+              if (e.target.value) {
+                handleCheckDuplicate()
+              }
+            }}
+          />
+          {fieldErrors.email ? (
+            <p className={styles['field-hint-warning']}>{fieldErrors.email}</p>
+          ) : isCheckingEmail ? (
+            <p className={styles.hint}>중복확인 중이에요...</p>
+          ) : emailCheckError ? (
+            <p className={styles['field-hint-warning']}>{emailCheckError}</p>
+          ) : emailCheckSuccess ? (
+            <p className={styles['field-hint-success']}>
+              <span className={styles['success-mark']}>✓</span> {emailCheckSuccess}
+            </p>
+          ) : null}
+        </div>
 
         {/* 비밀번호 / 비밀번호 확인 - 이메일 바로 다음, 세로로 하나씩 */}
         <div className={styles['form-field']}>
@@ -417,7 +419,7 @@ export default function SignupView() {
 
         {/* 국적: 국가번호 자동채움을 위해 휴대전화번호보다는 먼저 선택하도록 배치 */}
         <div className={styles['two-col']}>
-          <div>
+          <div className={styles['form-field']}>
             <label className={styles['field-label']}>국적</label>
             <select
               className={`${styles.input} ${fieldErrors.nationality ? styles.inputError : ''}`}
@@ -447,9 +449,10 @@ export default function SignupView() {
               </p>
             )}
           </div>
-          <div>
-            <label className={styles['field-label']}>국적 기준 기본 언어</label>
-            <div className={styles['input-outline-only']}>{defaultLangHint}</div>
+          <div className={styles['form-field']}>
+            <p className={styles['default-lang-hint']}>
+              국적 기준 기본 언어: <strong>{defaultLangHint}</strong>
+            </p>
           </div>
         </div>
 
