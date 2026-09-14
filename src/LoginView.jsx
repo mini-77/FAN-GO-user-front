@@ -1,17 +1,10 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTrip } from './TripContext'
 import { useLanguage } from './LanguageContext'
 import { apiFetch, safeText } from './api'
 import AppHeader from './AppHeader'
 import styles from './LoginView.module.css'
-
-// 백엔드 /langs가 내려주는 lang_no <-> 앱에서 쓰는 언어 코드 매핑.
-const LANG_NO_TO_CODE = {
-  1: 'ko',
-  2: 'en',
-  3: 'ja',
-}
 
 const AUTO_LOGIN_KEY = 'fango_auto_login'
 
@@ -38,60 +31,17 @@ function EyeOffIcon() {
   )
 }
 
-function GlobeIcon() {
-  return (
-    <svg width="18" height="18" viewBox="0 0 22 22" fill="none">
-      <circle cx="11" cy="11" r="8" stroke="currentColor" strokeWidth="1.6" />
-      <ellipse cx="11" cy="11" rx="3.4" ry="8" stroke="currentColor" strokeWidth="1.6" />
-      <path d="M3 11h16" stroke="currentColor" strokeWidth="1.6" />
-    </svg>
-  )
-}
-
 export default function LoginView() {
   const navigate = useNavigate()
   const { updateTrip, resetTrip } = useTrip()
-  const { t, setLanguage: setAppLanguage } = useLanguage()
+  const { t } = useLanguage()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
   const [fieldErrors, setFieldErrors] = useState({ email: '', password: '' })
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [languages, setLanguages] = useState([])
-  const [langNo, setLangNo] = useState(null)
   const [autoLogin, setAutoLogin] = useState(false)
-
-  useEffect(() => {
-    let cancelled = false
-    async function loadLangs() {
-      try {
-        const res = await apiFetch('/langs')
-        if (!res.ok) return
-        const data = await res.json()
-        if (!cancelled) {
-          setLanguages(data)
-          if (data.length > 0) {
-            setLangNo(data[0].lang_no)
-            const code = LANG_NO_TO_CODE[data[0].lang_no]
-            if (code) setAppLanguage(code)
-          }
-        }
-      } catch (e) {
-        // 무시
-      }
-    }
-    loadLangs()
-    return () => {
-      cancelled = true
-    }
-  }, [setAppLanguage])
-
-  function handleLangChange(nextLangNo) {
-    setLangNo(nextLangNo)
-    const code = LANG_NO_TO_CODE[nextLangNo]
-    if (code) setAppLanguage(code)
-  }
 
   function validateEmail(value) {
     return value.trim() ? '' : t('login.emailRequired')
@@ -175,26 +125,8 @@ export default function LoginView() {
       <div className={styles.card}>
         <AppHeader showBack={false} showProfile={false} />
         <div className={styles.body}>
-          {/* 상단: 언어 선택(지구본 아이콘) - 오른쪽 정렬 */}
-          <div className={styles['top-bar']}>
-            <div className={styles.langButtonWrap}>
-              <div className={styles.globeIconBtn} aria-hidden="true">
-                <GlobeIcon />
-              </div>
-              <select
-                className={styles.langSelectOverlay}
-                value={langNo ?? ''}
-                onChange={(e) => handleLangChange(Number(e.target.value))}
-                aria-label="언어 선택"
-              >
-                {languages.map((lang) => (
-                  <option key={lang.lang_no} value={lang.lang_no}>
-                    {lang.lang_nm}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
+          {/* 언어 선택(지구본 아이콘)은 AppHeader의 언어 필("KR ⌄")로 옮김 -
+              14_step3_partial_implementation.md 12번 참고 */}
 
           {/* 브랜드 마크 - 텍스트 로고 (브랜드 폰트 느낌으로 스타일링) */}
           <div className={styles.brandBlock}>

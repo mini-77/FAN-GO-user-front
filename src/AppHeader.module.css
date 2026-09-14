@@ -1,5 +1,5 @@
 .top-bar {
-  background: var(--color-primary-500);
+  background: var(--header-bg);
   padding: 10px 16px;
   display: flex;
   align-items: center;
@@ -9,14 +9,15 @@
 }
 
 /* 접근성 - 터치 영역 44×44px 이상. 시각적 크기는 가이드 규격(28×28px squircle)을
-   그대로 유지하고, ::before로 보이지 않는 확장 히트박스만 덧붙임 */
+   그대로 유지하고, ::before로 보이지 않는 확장 히트박스만 덧붙임.
+   크기/라운드/배경은 --menu-icon-* 토큰과 값이 이미 일치해서 참조로 전환함(값 변경 없음). */
 .top-bar-btn {
   position: relative;
-  width: 28px;
-  height: 28px;
-  min-width: 28px;
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.22);
+  width: var(--menu-icon-size);
+  height: var(--menu-icon-size);
+  min-width: var(--menu-icon-size);
+  border-radius: var(--menu-icon-radius);
+  background: var(--menu-icon-bg);
   border: none;
   color: #fff;
   font-size: 14px;
@@ -37,22 +38,101 @@
 }
 
 .top-bar-spacer {
-  width: 28px;
-  min-width: 28px;
-  height: 28px;
+  width: var(--menu-icon-size);
+  min-width: var(--menu-icon-size);
+  height: var(--menu-icon-size);
 }
 
+/* 로고를 flex 흐름에서 완전히 빼서 가운데 절대배치함 - 로고 실제 렌더 폭이 얼마든
+   좌/우 요소(뒤로가기, 언어 필+메뉴)의 공간 계산에 전혀 영향을 주지 않게 하기 위함. */
 .top-bar-logo-img {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
   height: 20px;
   width: auto;
   display: block;
+  pointer-events: none;
+}
+
+/* 언어 필 + 메뉴 아이콘을 나란히 배치 (11_impact_plan.md 9번 섹션) */
+.right-area {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.lang-area {
+  position: relative;
+}
+
+/* 언어 필("KR ⌄") - 09 헤더 규칙: 지구본 아이콘 대신 국가코드 2자만 표기.
+   1단계에서 정의한 --lang-pill-* 토큰 사용 */
+.lang-pill {
+  height: var(--lang-pill-height);
+  padding: 0 var(--lang-pill-padding-x-max) 0 var(--lang-pill-padding-x-min);
+  border-radius: var(--lang-pill-radius);
+  border: none;
+  background: rgba(255, 255, 255, 0.22);
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.lang-pill-caret {
+  font-size: 10px;
+  line-height: 1;
+}
+
+.lang-menu {
+  position: absolute;
+  top: 30px;
+  right: 0;
+  min-width: 140px;
+  background: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: 0 8px 32px rgba(109, 87, 252, 0.18);
+  overflow: hidden;
+  z-index: 999;
+  padding: 6px 0;
+}
+
+.lang-item {
+  width: 100%;
+  padding: 9px 14px;
+  border: none;
+  background: #fff;
+  color: var(--color-ink-900);
+  font-family: 'IBM Plex Sans KR', sans-serif;
+  font-size: 12.5px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.lang-item:hover {
+  background: #FAF9FF;
+}
+
+.lang-item-active {
+  color: var(--color-primary-500);
+  font-weight: 600;
 }
 
 .profile-area {
   position: relative;
-  width: 34px;
-  min-width: 34px;
-  height: 34px;
+  width: var(--menu-icon-size);
+  min-width: var(--menu-icon-size);
+  height: var(--menu-icon-size);
 }
 
 .profile-menu {
@@ -62,7 +142,7 @@
   width: 238px;
   background: #fff;
   border: 1px solid var(--color-border);
-  border-radius: 20px;
+  border-radius: var(--radius-lg-max);
   box-shadow: 0 8px 32px rgba(109, 87, 252, 0.18);
   overflow: hidden;
   z-index: 999;

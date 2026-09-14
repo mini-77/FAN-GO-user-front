@@ -33,7 +33,7 @@
 }
 
 .header {
-  padding: 16px 16px 12px;
+  padding: 24px 16px 12px; /* 헤더-타이틀 간격 24px 통일 (11_impact_plan.md 3번 섹션) */
   border-bottom: 1px solid var(--color-border);
   display: flex;
   flex-direction: column;
@@ -105,79 +105,40 @@
   font-size: 34px;
 }
 
-.text-block {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-  text-align: center;
-}
-
-.success-title {
-  font-size: 22px;
+/* 완료 화면 재구성 - 헤드카피 1줄 (11_impact_plan.md 8번 섹션, 요약#21) */
+.headcopy {
+  font-size: 15px;
   font-weight: 600;
-  line-height: 30px;
-  letter-spacing: 0.33px;
+  line-height: 1.5;
+  letter-spacing: 0.2px;
   color: var(--color-ink-900);
-  margin: 0;
-}
-
-.success-subtitle {
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 22px;
-  letter-spacing: 0.21px;
-  color: rgba(27, 22, 63, 0.55);
-  margin: 0;
   text-align: center;
+  margin: 0;
 }
 
-.feature-list {
+/* 불릿 2개 + 라인아이콘 - 기존 채움 아이콘 카드(feature-card) 대신 아웃라인 아이콘 목록으로 교체 */
+.bullet-list {
   width: 100%;
+  list-style: none;
+  margin: 0;
+  padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-}
-
-.feature-card {
-  padding: 16px 16px;
-  background: var(--color-primary-50);
-  border: 1px solid var(--color-primary-200);
-  border-radius: 16px;
-  display: flex;
-  align-items: center;
   gap: 14px;
 }
 
-.feature-icon {
-  width: 36px;
-  height: 36px;
-  min-width: 36px;
-  border-radius: 10px;
-  background: var(--color-primary-500);
+.bullet {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-  font-size: 16px;
-}
-
-.feature-text {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.feature-title {
+  align-items: flex-start;
+  gap: 10px;
   font-size: 13px;
-  font-weight: 600;
-  color: var(--color-ink-900);
+  line-height: 1.5;
+  color: var(--color-ink-700);
 }
 
-.feature-desc {
-  font-size: 12px;
-  font-weight: 400;
-  color: rgba(27, 22, 63, 0.55);
+.bullet svg {
+  flex-shrink: 0;
+  margin-top: 1px;
 }
 
 .footer {

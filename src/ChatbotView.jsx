@@ -89,6 +89,10 @@ export default function ChatbotView() {
 
   const [sessions, setSessions] = useState([])
   const [isLoadingSessions, setIsLoadingSessions] = useState(true)
+  // 08 리스트 섹션 규칙 — 길이가 정해지지 않은 리스트는 무한스크롤 대신 8~10개씩 "더보기"로
+  // 불러옴 (EventSelectView/HistoryView와 동일 기준, 11_impact_plan.md 12번 섹션)
+  const HISTORY_PAGE_SIZE = 8
+  const [historyVisibleCount, setHistoryVisibleCount] = useState(HISTORY_PAGE_SIZE)
   const [currentSessionNo, setCurrentSessionNo] = useState(null)
   const [messages, setMessages] = useState([WELCOME_MESSAGE])
   const [input, setInput] = useState('')
@@ -106,7 +110,10 @@ export default function ChatbotView() {
         const res = await apiFetch('/chat/sessions')
         if (!res.ok) throw new Error('대화 목록을 불러오지 못했어요.')
         const data = await res.json()
-        if (!cancelled) setSessions(data)
+        if (!cancelled) {
+          setSessions(data)
+          setHistoryVisibleCount(HISTORY_PAGE_SIZE)
+        }
       } catch (e) {
         // 히스토리를 못 불러와도 새 대화 자체는 계속 가능해야 함
       } finally {
@@ -279,7 +286,7 @@ export default function ChatbotView() {
               <p className={styles.historyHint}>아직 대화 기록이 없어요.</p>
             )}
             {!isLoadingSessions &&
-              sessions.map((s) => (
+              sessions.slice(0, historyVisibleCount).map((s) => (
                 <button
                   type="button"
                   key={s.chat_session_no}
@@ -295,6 +302,15 @@ export default function ChatbotView() {
                   </span>
                 </button>
               ))}
+            {!isLoadingSessions && sessions.length > historyVisibleCount && (
+              <button
+                type="button"
+                className={styles.historyLoadMoreBtn}
+                onClick={() => setHistoryVisibleCount((v) => v + HISTORY_PAGE_SIZE)}
+              >
+                더보기 <Icon name="chevronDown" size={14} />
+              </button>
+            )}
           </div>
         </div>
 

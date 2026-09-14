@@ -15,7 +15,7 @@
 
 .bottom-tab {
   flex: 1;
-  padding: 12px 0;
+  padding: var(--nav-padding-y) 0;
   background: none;
   border: none;
   cursor: pointer;

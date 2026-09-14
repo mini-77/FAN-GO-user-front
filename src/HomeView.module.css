@@ -54,7 +54,7 @@
   flex: 1;
   min-height: 0;
   overflow-y: auto;
-  padding: 20px 16px 0;
+  padding: 24px 16px 0; /* 헤더-타이틀 간격 24px 통일 (11_impact_plan.md 3번 섹션) */
   display: flex;
   flex-direction: column;
 }

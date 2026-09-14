@@ -34,7 +34,7 @@
 }
 
 .header {
-  padding: 14px 22px;
+  padding: 24px 22px 14px; /* 헤더-타이틀 간격 24px 통일 (11_impact_plan.md 3번 섹션) */
   border-bottom: 1px solid var(--color-border);
   display: flex;
   align-items: center;
@@ -274,11 +274,12 @@
 }
 
 /* 기능 준비중 안내 - Ink-50 배경 박스 */
+/* 안내문 박스 배경 제거 - 화면과 동일한 흰색, 텍스트 색으로만 톤 구분 (11_impact_plan.md 1번 섹션) */
 .infoBannerMuted {
   margin: 0;
   padding: 10px 12px;
   border-radius: 12px;
-  background: #F7F7FA;
+  background: #fff;
   color: var(--color-ink-600);
   font-size: 11.5px;
   line-height: 1.5;

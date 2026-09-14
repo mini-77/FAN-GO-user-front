@@ -44,7 +44,8 @@ export default function BottomNav({ noBorder = false }) {
             aria-label={tab.label}
           >
             <span className={styles['bottom-tab-icon']}>
-              <Icon name={tab.iconName} size={22} filled={tab.isHome && isActive} />
+              {/* strokeWidth 1.6 - --nav-icon-stroke-width 토큰 값(2026-09-14 확정), 다른 화면 아이콘(1.5px)과는 다름 */}
+              <Icon name={tab.iconName} size={22} strokeWidth={1.6} filled={tab.isHome && isActive} />
             </span>
           </button>
         )

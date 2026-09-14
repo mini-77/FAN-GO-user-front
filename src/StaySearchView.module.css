@@ -33,7 +33,7 @@
 }
 
 .header {
-  padding: 14px 16px 12px;
+  padding: 24px 16px 12px; /* 헤더-타이틀 간격 24px 통일 (11_impact_plan.md 3번 섹션) */
   border-bottom: 1px solid var(--color-border);
   display: flex;
   flex-direction: column;
@@ -63,8 +63,10 @@
   cursor: pointer;
 }
 
+/* 화면 타이틀은 20px Bold (일반 H1 22px과 별도 기준) - 여행 만들기 단계별(마법사) 화면 통일,
+   ActivityPreferenceView/PaceView/ArtistSelectView와 동일 기준 (2026-09-14) */
 .title {
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 700;
   line-height: 28px;
   letter-spacing: -0.3px;

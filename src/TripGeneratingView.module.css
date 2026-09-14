@@ -185,13 +185,16 @@
   border: none;
 }
 
+/* "다시 시도" 버튼을 Outline 스타일로 통일 (11_impact_plan.md 6·7·14번 섹션) -
+   1단계에서 확정한 --button-border-outline 토큰(1.5px solid Primary-100) 사용 */
 .btn-outline {
   background: #fff;
-  border: 1px solid var(--color-primary-200);
+  border: var(--button-border-outline);
   color: var(--color-ink-900);
 }
 
 .btn-white {
-  background: var(--color-primary-500);
-  color: #fff;
+  background: #fff;
+  border: var(--button-border-outline);
+  color: var(--color-ink-900);
 }

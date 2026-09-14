@@ -34,7 +34,7 @@
 
 /* 헤더 */
 .header {
-  padding: 14px 16px;
+  padding: 24px 16px 14px; /* 헤더-타이틀 간격 24px 통일 (11_impact_plan.md 3번 섹션) */
   border-bottom: 1px solid var(--color-border);
   display: flex;
   flex-direction: column;
