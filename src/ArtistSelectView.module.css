@@ -107,6 +107,8 @@
   padding: 14px 16px 8px;
   display: flex;
   flex-direction: column;
+  flex: 1;
+  min-height: 0;
 }
 
 .section-head {
@@ -134,6 +136,9 @@
   flex-direction: column;
   gap: 8px;
   padding-top: 10px;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
 }
 
 /* 아티스트 카드 */
@@ -306,7 +311,8 @@
 
   .card {
     max-width: 100%;
-    min-height: 100vh;
+    height: 100vh;
+    height: 100dvh;
     border-radius: 0;
     box-shadow: none;
     outline: none;

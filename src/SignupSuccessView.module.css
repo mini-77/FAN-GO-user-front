@@ -82,6 +82,8 @@
 
 .body {
   flex: 1;
+  min-height: 0;
+  overflow-y: auto;
   padding: 60px 32px;
   display: flex;
   flex-direction: column;
@@ -219,7 +221,8 @@
 
   .card {
     max-width: 100%;
-    min-height: 100vh;
+    height: 100vh;
+    height: 100dvh;
     border-radius: 0;
     box-shadow: none;
     outline: none;

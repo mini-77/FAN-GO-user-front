@@ -36,6 +36,9 @@
 
 /* AppHeader는 JSX/CSS 모두 수정하지 않음 */
 .body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
   padding: 16px 16px 20px;
   display: flex;
   flex-direction: column;
@@ -407,7 +410,8 @@ select.input {
 
   .card {
     max-width: 100%;
-    min-height: 100vh;
+    height: 100vh;
+    height: 100dvh;
     border-radius: 0;
     box-shadow: none;
     outline: none;

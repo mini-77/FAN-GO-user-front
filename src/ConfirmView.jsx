@@ -158,35 +158,37 @@ export default function ConfirmView() {
           </div>
         </div>
 
-        <div className={styles['summary-list']}>
-          {summary.map((row) => (
-            <div key={row.num} className={styles['summary-row']}>
-              {!row.events && <span className={styles['summary-label']}>{row.label}</span>}
-              {row.value && <span className={styles['summary-value']}>{row.value}</span>}
-              {row.sub && <span className={styles['summary-sub']}>{row.sub}</span>}
-              {row.events &&
-                row.events.map((ev) => (
-                  <div key={ev.title} className={styles['event-item']}>
-                    <div className={styles['event-title']}>
-                      {splitEventTitle(ev.title).map((line, i) => (
-                        <span key={i}>
-                          {i > 0 && <br />}
-                          {line}
-                        </span>
-                      ))}
+        <div className={styles.scrollArea}>
+          <div className={styles['summary-list']}>
+            {summary.map((row) => (
+              <div key={row.num} className={styles['summary-row']}>
+                {!row.events && <span className={styles['summary-label']}>{row.label}</span>}
+                {row.value && <span className={styles['summary-value']}>{row.value}</span>}
+                {row.sub && <span className={styles['summary-sub']}>{row.sub}</span>}
+                {row.events &&
+                  row.events.map((ev) => (
+                    <div key={ev.title} className={styles['event-item']}>
+                      <div className={styles['event-title']}>
+                        {splitEventTitle(ev.title).map((line, i) => (
+                          <span key={i}>
+                            {i > 0 && <br />}
+                            {line}
+                          </span>
+                        ))}
+                      </div>
+                      <div className={styles['event-sub']}>{ev.sub}</div>
                     </div>
-                    <div className={styles['event-sub']}>{ev.sub}</div>
-                  </div>
-                ))}
-            </div>
-          ))}
-        </div>
+                  ))}
+              </div>
+            ))}
+          </div>
 
-        {submitError && (
-          <p className={styles.hint} style={{ padding: '10px 22px 0', color: 'var(--color-danger)' }}>
-            {submitError}
-          </p>
-        )}
+          {submitError && (
+            <p className={styles.hint} style={{ padding: '10px 22px 0', color: 'var(--color-danger)' }}>
+              {submitError}
+            </p>
+          )}
+        </div>
 
         <div className={styles.footer}>
           <span className={styles['footer-note']}>선택한 스타일로 동선을 만들어요</span>

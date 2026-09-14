@@ -155,6 +155,7 @@ export default function ActivityPreferenceView() {
           </div>
         </div>
 
+        <div className={styles.scrollArea}>
         <div className={styles.section}>
           <div className={styles['section-head']}>
             <span className={styles['section-label']}>선호 카테고리</span>
@@ -228,6 +229,7 @@ export default function ActivityPreferenceView() {
             {errorMessage}
           </p>
         )}
+        </div>
 
         <div className={styles.footer}>
           <button

@@ -361,6 +361,7 @@ export default function StaySearchView() {
           </div>
         </div>
 
+        <div className={styles.scrollArea}>
         {/* 실제 카카오맵이 그려지는 영역 */}
         <div className={styles['map-area']}>
           <div ref={mapRef} className={styles['map-canvas']} />
@@ -499,6 +500,10 @@ export default function StaySearchView() {
               {nights}박 · {selected.name}
             </p>
           )}
+        </div>
+        </div>
+
+        <div className={styles.footer}>
           <div className={styles['bottom-row']}>
             <button
               type="button"

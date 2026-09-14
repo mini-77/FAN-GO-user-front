@@ -136,6 +136,7 @@ export default function PaceView() {
           </div>
         </div>
 
+        <div className={styles.scrollArea}>
         <div className={styles.section}>
           <span className={styles['field-label']}>일정 기준</span>
 
@@ -246,33 +247,34 @@ export default function PaceView() {
         {/* 멤버 선택을 먼저 끝내야("확인") 받아볼 동선 안 선택이 보이게 함 - 한 번에
             고를 게 너무 많아 보이지 않도록 단계를 나눔 */}
         {!isOpen && (
-          <>
-            <div className={styles['pace-section']}>
-              <span className={styles['pace-label']}>받아볼 동선 안</span>
-              <div className={styles['pace-list']}>
-                {PACE_OPTIONS.map((opt) => (
-                  <div
-                    key={opt.id}
-                    className={`${styles['pace-option']} ${selectedPace === opt.id ? styles.selected : ''}`}
-                    onClick={() => setSelectedPace(opt.id)}
-                  >
-                    <span className={styles['pace-letter']}>{opt.id}</span>
-                    <div className={styles['pace-text']}>
-                      <span className={styles['pace-name']}>{opt.name}</span>
-                      <span className={styles['pace-desc']}>{opt.desc}</span>
-                    </div>
-                    {selectedPace === opt.id && <span className={styles['pace-check']}>✓</span>}
+          <div className={styles['pace-section']}>
+            <span className={styles['pace-label']}>받아볼 동선 안</span>
+            <div className={styles['pace-list']}>
+              {PACE_OPTIONS.map((opt) => (
+                <div
+                  key={opt.id}
+                  className={`${styles['pace-option']} ${selectedPace === opt.id ? styles.selected : ''}`}
+                  onClick={() => setSelectedPace(opt.id)}
+                >
+                  <span className={styles['pace-letter']}>{opt.id}</span>
+                  <div className={styles['pace-text']}>
+                    <span className={styles['pace-name']}>{opt.name}</span>
+                    <span className={styles['pace-desc']}>{opt.desc}</span>
                   </div>
-                ))}
-              </div>
+                  {selectedPace === opt.id && <span className={styles['pace-check']}>✓</span>}
+                </div>
+              ))}
             </div>
+          </div>
+        )}
+        </div>
 
-            <div className={styles.footer}>
-              <button type="button" className={styles['btn-primary']} onClick={goNext}>
-                다음: 확인
-              </button>
-            </div>
-          </>
+        {!isOpen && (
+          <div className={styles.footer}>
+            <button type="button" className={styles['btn-primary']} onClick={goNext}>
+              다음: 확인
+            </button>
+          </div>
         )}
       </div>
     </div>

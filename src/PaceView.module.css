@@ -101,6 +101,14 @@
   color: var(--color-ink-400);
 }
 
+.scrollArea {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
 .section {
   padding: 14px 16px;
   display: flex;
@@ -389,7 +397,8 @@
 
   .card {
     max-width: 100%;
-    min-height: 100vh;
+    height: 100vh;
+    height: 100dvh;
     border-radius: 0;
     box-shadow: none;
     outline: none;
