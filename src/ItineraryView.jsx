@@ -350,6 +350,13 @@ export default function ItineraryView() {
           <button
             type="button"
             className={styles['btn-outline']}
+            onClick={() => navigate('/trip/schedule', { state: { visitDay: activeDay } })}
+          >
+            목록보기
+          </button>
+          <button
+            type="button"
+            className={styles['btn-outline']}
             onClick={() => navigate('/trip/itinerary/edit', { state: { visitDay: activeDay } })}
           >
             동선 수정

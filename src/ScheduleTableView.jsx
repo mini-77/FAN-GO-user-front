@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { useTrip } from './TripContext'
 import { apiFetch, safeErrorMessage } from './api'
 import AppHeader from './AppHeader'
@@ -40,6 +40,7 @@ function formatDateRange(startIso, endIso) {
 
 export default function ScheduleTableView() {
   const navigate = useNavigate()
+  const location = useLocation()
   const { tripData, updateTrip } = useTrip()
   const { startDate, endDate } = tripData.tripDates || {}
   const stays = tripData.stays || []
@@ -48,7 +49,8 @@ export default function ScheduleTableView() {
       ? Math.max(1, Math.round((new Date(endDate) - new Date(startDate)) / (1000 * 60 * 60 * 24)) + 1)
       : 3
 
-  const [activeDay, setActiveDay] = useState(1)
+  // ItineraryView(지도+목록)의 "목록보기" 버튼에서 넘어올 때 보고 있던 날짜를 그대로 이어감
+  const [activeDay, setActiveDay] = useState(location.state?.visitDay || 1)
   const [routesByDay, setRoutesByDay] = useState({})
   const [isLoading, setIsLoading] = useState(true)
   const [loadError, setLoadError] = useState('')

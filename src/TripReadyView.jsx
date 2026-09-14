@@ -2,7 +2,8 @@ import { useNavigate } from 'react-router-dom'
 import styles from './TripReadyView.module.css'
 
 // TripGeneratingView에서 동선 생성이 다 끝나면 이 화면으로 넘어옴.
-// "동선 보러가기" 버튼을 눌러야 실제 결과 화면(ScheduleTableView)으로 이동함.
+// "동선 보기" 버튼을 눌러야 실제 결과 화면으로 이동함 - 지도와 목록을 같이 보여주는
+// ItineraryView를 먼저 보여주고, 목록만 보는 ScheduleTableView는 거기서 넘어가게 함.
 export default function TripReadyView() {
   const navigate = useNavigate()
 
@@ -30,7 +31,7 @@ export default function TripReadyView() {
       </div>
 
       <div className={styles.footer}>
-        <button type="button" className={styles['btn-primary']} onClick={() => navigate('/trip/schedule')}>
+        <button type="button" className={styles['btn-primary']} onClick={() => navigate('/trip/itinerary')}>
           동선 보기
         </button>
       </div>
