@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom'
 import { useTrip } from './TripContext'
 import { apiFetch, safeErrorMessage } from './api'
 import AppHeader from './AppHeader'
-import EventDetailModal from './EventDetailModal'
 import Icon from './Icon'
 import styles from './EventSelectView.module.css'
 
@@ -80,7 +79,6 @@ export default function EventSelectView() {
       ? { key: `${tripData.selectedEvent.event_no}-${tripData.selectedEvent.event_date}` }
       : null
   )
-  const [detailCard, setDetailCard] = useState(null) // 팝업용 - 정보 확인 목적으로 띄우는 카드
   const [errorMessage, setErrorMessage] = useState('')
   // 08 리스트 섹션 규칙 — 길이가 정해지지 않은 리스트는 무한스크롤 대신 8~10개씩 "더보기"로 불러옴
   const PAGE_SIZE = 8
@@ -145,10 +143,11 @@ export default function EventSelectView() {
 
   const dayCards = useMemo(() => events.flatMap(expandEventToDayCards), [events])
 
+  // 이벤트마다 포스터 사진을 매번 등록/교체할 수 없어서, 사진을 보여주는 정보확인
+  // 팝업은 없애고 리스트에서 바로 선택만 하는 방식으로 단순화함 (하단 요약에 선택 내용 표시)
   function selectCard(card) {
     setSelectedCard(card)
     setErrorMessage('')
-    setDetailCard(card) // 선택과 동시에 정보 확인 팝업도 띄움
   }
 
   const selectedCardData = dayCards.find((c) => selectedCard && c.key === selectedCard.key)
@@ -286,13 +285,6 @@ export default function EventSelectView() {
           </button>
         </div>
       </div>
-
-      {detailCard && (
-        <EventDetailModal
-          card={detailCard}
-          onClose={() => setDetailCard(null)}
-        />
-      )}
     </div>
   )
 }
