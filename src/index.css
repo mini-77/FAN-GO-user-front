@@ -118,6 +118,17 @@ p {
   margin: 0;
 }
 
+/* iOS Safari는 입력 필드 font-size가 16px보다 작으면 포커스할 때 페이지 전체를
+   확대해버림(로그인 이메일 필드를 탭하면 화면이 커지면서 밖으로 벗어나던 문제).
+   각 화면 디자인상의 폰트 크기는 그대로 두고, 입력 요소에서만 이 줌을 막음. */
+@media (max-width: 430px) {
+  input,
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
+}
+
 code,
 .counter {
   font-family: var(--mono);

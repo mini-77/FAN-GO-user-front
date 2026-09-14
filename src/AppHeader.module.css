@@ -1,6 +1,6 @@
 .top-bar {
   background: var(--color-primary-500);
-  padding: 14px 16px;
+  padding: 10px 16px;
   display: flex;
   align-items: center;
   justify-content: space-between;
