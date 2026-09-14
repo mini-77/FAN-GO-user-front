@@ -72,7 +72,7 @@
   padding: 8px 0;
 }
 
-/* 09 기타 컴포넌트 - 빈 상태: 아이콘 + "아직 ~이 없어요" 문구, HistoryView·MyTripView와 동일 톤 */
+/* 09 기타 컴포넌트 - 빈 상태: 아이콘 + "아직 ~이 없어요" 문구, HistoryView와 동일 톤 */
 .empty-state {
   display: flex;
   flex-direction: column;

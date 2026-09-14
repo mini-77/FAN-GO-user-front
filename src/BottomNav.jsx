@@ -6,12 +6,12 @@ import styles from './BottomNav.module.css'
 // 예전엔 이 파일에서 별도로 그린 22px/1.6px 커스텀 SVG를 썼는데, 헤더·드롭다운 등
 // 다른 화면의 같은 의미 아이콘(홈·일정·채팅·마이)과 굵기·비율이 미묘하게 달라
 // "같은 역할은 항상 같은 모양" 일관성 원칙에 어긋났음 - 공용 Icon으로 통일.
-// 08 하단 내비 규칙 — 홈·일정·채팅·마이 4탭 고정 (예전엔 "나의 일정"·"일정표" 두 개가
-// 따로 있어서 5탭이었는데, "일정표"는 특정 여행 하나를 보는 상세 화면이라 탭이 아니라
-// "일정"(저장한 동선 목록) 안에서 들어가는 하위 화면으로 정리함)
+// 08 하단 내비 규칙 — 홈·일정·채팅·마이 4탭 고정. "일정" 탭은 나의 일정(HistoryView)으로
+// 바로 연결되고, 일정표(ScheduleTableView)는 그 안의 여행 하나를 보는 하위 화면.
+// "저장한 동선"(MyTripView)은 나의 일정과 중복돼서 삭제함.
 const TABS = [
   { iconName: 'home', path: '/home', match: ['/home'], isHome: true, label: '홈' },
-  { iconName: 'calendar', path: '/trip/my', match: ['/trip/my', '/trip/schedule', '/trip/history'], label: '일정' },
+  { iconName: 'calendar', path: '/trip/history', match: ['/trip/history', '/trip/schedule'], label: '일정' },
   { iconName: 'chat', path: '/chat', match: ['/chat'], label: '채팅' },
   { iconName: 'person', path: '/account', match: ['/account'], label: '마이' },
 ]

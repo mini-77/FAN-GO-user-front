@@ -9,7 +9,7 @@ import { useLanguage } from './LanguageContext';
 import styles from './FeedbackView.module.css';
 
 // 이 화면은 "오늘 하루"가 아니라 "여행 전체가 끝난 후" 딱 1번 뜨는 평가 화면임.
-// 정책: 여행이 완전히 끝난 후에만 제출 가능 (MyTripView에서 status==='완료'인 여행만 유도함).
+// 정책: 여행이 완전히 끝난 후에만 제출 가능 (HistoryView에서 status==='완료'인 여행만 유도함).
 // 제출한다고 이미 짜여진 동선이 바뀌지는 않음 - 순수 소감 기록 + 다음 여행 추천 참고용.
 export default function FeedbackView() {
   const navigate = useNavigate();
@@ -172,7 +172,7 @@ export default function FeedbackView() {
 
   // "이번엔 넘길게요" 버튼 - 절대 리뷰 저장 API를 호출하면 안 됨 (평가를 안 남기고 건너뜀).
   const handleSkip = () => {
-    navigate('/trip/my');
+    navigate('/trip/history');
   };
 
   if (isSubmitted) {
@@ -198,7 +198,7 @@ export default function FeedbackView() {
             <button
               type="button"
               className={styles.submitButton}
-              onClick={() => navigate('/trip/my')}
+              onClick={() => navigate('/trip/history')}
             >
               확인
             </button>

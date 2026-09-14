@@ -18,7 +18,6 @@ import TripReadyView from './TripReadyView'
 import ItineraryView from './ItineraryView'
 import ScheduleTableView from './ScheduleTableView'
 import ItineraryEditView from './ItineraryEditView'
-import MyTripView from './MyTripView'
 import FeedbackView from './FeedbackView'
 import HistoryView from './HistoryView'
 import MyPageView from './MyPageView'
@@ -72,7 +71,6 @@ function App() {
               <Route path="/trip/itinerary" element={<ItineraryView />} />
               <Route path="/trip/schedule" element={<ScheduleTableView />} />
               <Route path="/trip/itinerary/edit" element={<ItineraryEditView />} />
-              <Route path="/trip/my" element={<MyTripView />} />
               <Route path="/trip/feedback" element={<FeedbackView />} />
               <Route path="/trip/history" element={<HistoryView />} />
               <Route path="/account" element={<MyPageView />} />
