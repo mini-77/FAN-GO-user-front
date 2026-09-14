@@ -210,9 +210,8 @@ export default function EventSelectView() {
             </select>
           </div>
           <p className={styles.hint}>
-            가입할 때 고른 팀의 콘서트와 공식 팬미팅만 보여 드려요. 하나만 고를 수 있고, 고른
-            <br />
-            이벤트는 시작일시와 주소가 그대로 지도에 꽂혀요.
+            가입할 때 고른 팀의 콘서트와 공식 팬미팅만 보여 드려요. 하나만 고를 수 있고, 고른 이벤트는
+            시작일시와 주소가 그대로 지도에 꽂혀요.
           </p>
         </div>
 
