@@ -176,10 +176,6 @@ export default function HomeView() {
             </div>
           )}
 
-          {!isLoading && !loadError && !upcoming && (
-            <p className={styles['load-text']}>아직 등록된 일정이 없어요.</p>
-          )}
-
           <div className={styles['section-head']}>
             <span className={styles['section-title']}>내 공연 동선</span>
           </div>
