@@ -12,8 +12,8 @@
   position: relative;
   width: 100%;
   max-width: 390px;
-  max-height: 88vh;
-  max-height: 88dvh;
+  max-height: 92vh;
+  max-height: 92dvh;
   background: #fff;
   border-radius: 24px 24px 0 0;
   overflow-y: auto;

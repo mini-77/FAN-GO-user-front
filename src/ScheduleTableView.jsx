@@ -239,7 +239,8 @@ export default function ScheduleTableView() {
                 <div
                   key={ev.trip_route_event_no}
                   className={`${styles['event-row']} ${isPinned ? styles.pinned : ''}`}
-                  onClick={() => openPlace(ev)}
+                  onClick={isPinned ? undefined : () => openPlace(ev)}
+                  style={isPinned ? { cursor: 'default' } : undefined}
                 >
                   <div className={styles['event-text']}>
                     <span className={styles['event-name']}>{ev.event_nm}</span>
