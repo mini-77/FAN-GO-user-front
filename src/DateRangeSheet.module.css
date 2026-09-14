@@ -8,14 +8,15 @@
   z-index: 1200;
 }
 
+/* 다크모드 해제 - 흰 배경 라이트 시트로 변경 (사용자 요청) */
 .sheet {
   width: 100%;
   max-width: 430px;
-  background: var(--sheet-bg-dark);
+  background: #fff;
   border-radius: var(--radius-lg-max) var(--radius-lg-max) 0 0;
   padding: 20px 20px 22px;
   box-sizing: border-box;
-  color-scheme: dark;
+  box-shadow: 0px -8px 24px rgba(27, 22, 63, 0.12);
 }
 
 .label {
@@ -23,7 +24,7 @@
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.3px;
-  color: rgba(255, 255, 255, 0.55);
+  color: rgba(27, 22, 63, 0.55);
   text-align: center;
 }
 
@@ -41,7 +42,7 @@
   font-family: 'Urbanist', sans-serif;
   font-size: 15px;
   font-weight: 700;
-  color: #fff;
+  color: var(--color-ink-900);
 }
 
 .navBtn {
@@ -49,8 +50,8 @@
   height: 28px;
   border-radius: 14px;
   border: none;
-  background: rgba(255, 255, 255, 0.08);
-  color: #fff;
+  background: var(--color-primary-50);
+  color: var(--color-ink-900);
   font-size: 16px;
   line-height: 1;
   cursor: pointer;
@@ -66,7 +67,7 @@
   text-align: center;
   font-size: 11px;
   font-weight: 500;
-  color: rgba(255, 255, 255, 0.4);
+  color: rgba(27, 22, 63, 0.4);
   padding: 4px 0;
 }
 
@@ -84,7 +85,7 @@
   height: 38px;
   border: none;
   background: transparent;
-  color: #fff;
+  color: var(--color-ink-900);
   font-family: 'Urbanist', sans-serif;
   font-size: 13px;
   font-weight: 500;
@@ -93,11 +94,11 @@
 }
 
 .day:hover:not(:disabled) {
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--color-primary-50);
 }
 
 .dayDisabled {
-  color: rgba(255, 255, 255, 0.2);
+  color: rgba(27, 22, 63, 0.2);
   cursor: default;
 }
 
@@ -145,15 +146,15 @@
 }
 
 .closeBtn {
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(27, 22, 63, 0.5);
 }
 
 .selectBtn {
-  color: var(--color-primary-400);
+  color: var(--color-primary-500);
 }
 
 .selectBtn:disabled {
-  color: rgba(255, 255, 255, 0.3);
+  color: rgba(27, 22, 63, 0.25);
   cursor: default;
 }
 

@@ -103,7 +103,8 @@
   background: #3A3648;
 }
 
-.card.dark .logout-btn {
+.card.dark .logout-btn,
+.card.dark .delete-link {
   color: rgba(244, 242, 255, 0.8);
 }
 
@@ -373,14 +374,16 @@
   padding-bottom: 28px;
 }
 
+/* 로그아웃/계정 탈퇴 - 같은 색·밑줄로 통일 (사용자 요청) */
 .logout-btn {
   background: none;
   border: none;
   padding: 4px;
-  color: var(--color-ink-900);
+  color: rgba(27, 22, 63, 0.4);
   font-family: 'Urbanist', sans-serif;
   font-size: 13px;
   font-weight: 600;
+  text-decoration: underline;
   text-align: center;
   cursor: pointer;
 }

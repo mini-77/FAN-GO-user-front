@@ -180,11 +180,11 @@ export default function MyPageView() {
 
         <div className={styles.section}>
           <div className={styles['account-actions']}>
-            <button type="button" className={styles['logout-btn']} onClick={handleLogout}>
-              로그아웃
-            </button>
             <button type="button" className={styles['delete-link']} onClick={handleDeleteAccount}>
               계정 탈퇴
+            </button>
+            <button type="button" className={styles['logout-btn']} onClick={handleLogout}>
+              로그아웃
             </button>
           </div>
         </div>

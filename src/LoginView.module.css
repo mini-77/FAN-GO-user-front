@@ -129,7 +129,7 @@
   padding: 0 16px;
   border: 1px solid var(--color-primary-200);
   border-radius: var(--input-radius);
-  background: var(--color-primary-50);
+  background: #F7F7FA; /* 빈 값일 때는 연보라 대신 흰색/연회색 중간톤 (사용자 요청) */
   font-family: 'Urbanist', sans-serif;
   font-size: 14px;
   font-weight: 400;
@@ -153,7 +153,7 @@
   padding: 0 8px 0 16px;
   border: 1px solid var(--color-primary-200);
   border-radius: var(--input-radius);
-  background: var(--color-primary-50);
+  background: #F7F7FA; /* 빈 값일 때는 연보라 대신 흰색/연회색 중간톤 (사용자 요청) */
   display: flex;
   align-items: center;
   gap: 8px;
