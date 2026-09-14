@@ -270,12 +270,17 @@
   background: var(--color-primary-100);
   border-top: 1px solid var(--color-border);
   position: relative;
-  overflow: hidden;
   /* 목록이 짧아 화면을 다 못 채울 때, 이 아래(map-summary+footer)가 콘텐츠 바로 밑
      붕 뜬 채로 남고 그 아래에 빈 흰 공간이 생기던 문제 - 고정(position:fixed) 없이도
      이 블록을 스크롤 영역 맨 아래로 붙여서, 목록이 길어지면 여전히 자연스럽게
      같이 스크롤되고 짧을 땐 화면 하단에 붙어 보이게 함 */
   margin-top: auto;
+  /* overflow:hidden이 있으면 flex 아이템의 자동 최소 높이가 0이 되어, 이 부모
+     (.event-list)가 overflow-y:auto라도 스크롤 대신 이 카드 자체가 찌그러져
+     선택한 이벤트 제목(2줄)이 잘려 보이는 문제가 있었음 - flex-shrink:0으로
+     이 카드는 절대 찌그러지지 않게 하고, overflow도 visible로 되돌림 */
+  overflow: visible;
+  flex-shrink: 0;
 }
 
 .map-summary-text {
@@ -295,6 +300,7 @@
 
 /* 하단 */
 .footer {
+  flex-shrink: 0;
   padding: 12px 16px calc(22px + env(safe-area-inset-bottom));
   border-top: 1px solid var(--color-border);
   display: flex;

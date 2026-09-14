@@ -323,7 +323,7 @@ export default function SignupView() {
             type="text"
             name="signup-email-x92"
             autoComplete="off"
-            placeholder="mina_tan@google.com"
+            placeholder="fango@gmail.com"
             value={email}
             onChange={(e) => {
               setEmail(e.target.value)
