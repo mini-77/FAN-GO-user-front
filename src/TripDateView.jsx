@@ -456,36 +456,29 @@ export default function TripDateView() {
           </p>
           {/* 문안/배치 - 날짜·시간을 따로 두 줄로 나열하지 않고, 시작일+시작시간·종료일+종료시간처럼
               같은 날 기준으로 짝지어 보여줌 */}
-          <div className={styles['two-col']}>
-            <div>
-              <label className={styles['field-label']}>시작일</label>
-              <PickerSheet
-                type="date"
-                className={`${styles.input} ${fieldErrors.startDate ? styles.inputError : ''}`}
-                value={startDate}
-                min={allowedMinDate || undefined}
-                max={eventDate || allowedMaxDate || undefined}
-                formatValue={formatDot}
-                placeholder="시작일을 골라주세요"
-                onChange={(nextStart) => {
-                  // 시작일이 이벤트 날짜보다 늦어지면, 완료일이 이벤트 날짜보다 빨라지는 모순이
-                  // 생기지 않도록 완료일도 같이 이벤트 날짜 이상으로 끌어올림
-                  const patch = { startDate: nextStart }
-                  if (eventDate && endDate && nextStart > eventDate && endDate < eventDate) {
-                    patch.endDate = eventDate
-                  }
-                  updateDates(patch)
-                  setFieldErrors((prev) => ({ ...prev, startDate: '', endDate: '' }))
-                }}
-                onConfirm={() =>
-                  setFieldErrors((prev) => ({
-                    ...prev,
-                    ...validateDates(startDate, endDate, allowedMinDate, allowedMaxDate, eventDate),
-                  }))
-                }
-              />
-              {fieldErrors.startDate && <p className={styles.hint} style={{ color: 'var(--color-danger)' }}>{fieldErrors.startDate}</p>}
-            </div>
+          <div>
+            <label className={styles['field-label']}>시작일 · 종료일</label>
+            <DateRangeSheet
+              checkIn={startDate}
+              checkOut={endDate}
+              min={allowedMinDate || undefined}
+              max={allowedMaxDate || undefined}
+              onConfirm={(nextStart, nextEnd) => {
+                updateDates({ startDate: nextStart, endDate: nextEnd })
+                setFieldErrors((prev) => ({
+                  ...prev,
+                  ...validateDates(nextStart, nextEnd, allowedMinDate, allowedMaxDate, eventDate),
+                }))
+              }}
+            />
+            {(fieldErrors.startDate || fieldErrors.endDate) && (
+              <p className={styles.hint} style={{ color: 'var(--color-danger)' }}>
+                {fieldErrors.startDate || fieldErrors.endDate}
+              </p>
+            )}
+          </div>
+
+          <div className={styles['two-col']} style={{ marginTop: 14 }}>
             <div>
               <label className={styles['field-label']}>시작 시간</label>
               <PickerSheet
@@ -502,38 +495,6 @@ export default function TripDateView() {
                 }
               />
               {fieldErrors.startTime && <p className={styles.hint} style={{ color: 'var(--color-danger)' }}>{fieldErrors.startTime}</p>}
-            </div>
-          </div>
-
-          <div className={styles['two-col']} style={{ marginTop: 14 }}>
-            <div>
-              <label className={styles['field-label']}>종료일</label>
-              <PickerSheet
-                type="date"
-                className={`${styles.input} ${fieldErrors.endDate ? styles.inputError : ''}`}
-                value={endDate}
-                min={eventDate || allowedMinDate || undefined}
-                max={allowedMaxDate || undefined}
-                formatValue={formatDot}
-                placeholder="종료일을 골라주세요"
-                onChange={(nextEnd) => {
-                  // 완료일이 이벤트 날짜보다 빨라지면, 시작일도 같이 이벤트 날짜 이하로 내려서
-                  // "이벤트 날짜가 기간에서 아예 빠지는" 조합 자체가 안 만들어지게 함
-                  const patch = { endDate: nextEnd }
-                  if (eventDate && startDate && nextEnd < eventDate && startDate > eventDate) {
-                    patch.startDate = eventDate
-                  }
-                  updateDates(patch)
-                  setFieldErrors((prev) => ({ ...prev, startDate: '', endDate: '' }))
-                }}
-                onConfirm={() =>
-                  setFieldErrors((prev) => ({
-                    ...prev,
-                    ...validateDates(startDate, endDate, allowedMinDate, allowedMaxDate, eventDate),
-                  }))
-                }
-              />
-              {fieldErrors.endDate && <p className={styles.hint} style={{ color: 'var(--color-danger)' }}>{fieldErrors.endDate}</p>}
             </div>
             <div>
               <label className={styles['field-label']}>종료 시간</label>
@@ -637,7 +598,7 @@ export default function TripDateView() {
           </p>
         )}
 
-        <div className={styles.footer}>
+        <div className={styles.footer} data-bottom-bar="true">
           <button type="button" className={styles['btn-primary']} onClick={goNext}>
             선호 액티비티
           </button>
