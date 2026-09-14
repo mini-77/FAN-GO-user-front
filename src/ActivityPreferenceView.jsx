@@ -238,7 +238,7 @@ export default function ActivityPreferenceView() {
             onClick={goNext}
             disabled={!isFormValid}
           >
-            다음: 동선 스타일
+            동선 스타일
           </button>
         </div>
       </div>
