@@ -601,7 +601,7 @@ export default function SignupView() {
 
         <div className={styles['footer-row']}>
           {/* 09 카피&용어 - "다음 단계로 이동"은 콜론(:)+다음 화면명으로 표기.
-              비활성 상태는 .disabled 클래스(같은 Primary 색 + opacity)로만 구분 */}
+              06 버튼 규칙 - 비활성 상태는 .disabled(#D9D4F5)만으로 구분, opacity 이중 적용 금지 */}
           <button
             className={`${styles['btn-primary']} ${!isFormValid ? styles.disabled : ''}`}
             onClick={goNext}

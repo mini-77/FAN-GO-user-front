@@ -504,7 +504,7 @@ export default function StaySearchView() {
               type="button"
               className={styles['btn-primary']}
               disabled={!canAdd}
-              style={!canAdd ? { background: 'var(--color-primary-500)', color: '#fff', opacity: 0.45, cursor: 'default' } : undefined}
+              style={!canAdd ? { background: '#D9D4F5', color: '#fff', cursor: 'default' } : undefined}
               onClick={addStay}
             >
               {isLocationOnlyMode
