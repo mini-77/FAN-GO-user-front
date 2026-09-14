@@ -340,18 +340,20 @@ export default function EditProfileView() {
             </div>
             <p className={styles.hint}>고른 팀 기준으로 이벤트와 성지가 다시 정렬돼요.</p>
           </div>
-        </div>
 
-        {saveError && (
-          <p className={styles.hint} style={{ padding: '0 22px', color: 'var(--color-danger)' }}>
-            {saveError}
-          </p>
-        )}
+          {saveError && (
+            <p className={styles.hint} style={{ padding: '0 22px', color: 'var(--color-danger)' }}>
+              {saveError}
+            </p>
+          )}
 
-        <div className={styles.footer} data-bottom-bar="true">
-          <button type="button" className={styles['save-btn']} onClick={handleSave} disabled={isSaving}>
-            {isSaving ? '저장 중...' : '저장'}
-          </button>
+          {/* 하단 고정 바가 아니라 콘텐츠의 마지막 항목으로 스크롤에 같이 움직이게 함
+              (사용자 요청 - 다른 화면과 동일하게 고정 해제) */}
+          <div className={styles.footer}>
+            <button type="button" className={styles['save-btn']} onClick={handleSave} disabled={isSaving}>
+              {isSaving ? '저장 중...' : '저장'}
+            </button>
+          </div>
         </div>
 
         <BottomNav />

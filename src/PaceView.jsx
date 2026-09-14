@@ -267,15 +267,17 @@ export default function PaceView() {
             </div>
           </div>
         )}
-        </div>
 
+        {/* 하단 고정 바가 아니라 콘텐츠의 마지막 항목으로 스크롤에 같이 움직이게 함
+            (사용자 요청 - 다른 화면과 동일하게 고정 해제) */}
         {!isOpen && (
-          <div className={styles.footer} data-bottom-bar="true">
+          <div className={styles.footer}>
             <button type="button" className={styles['btn-primary']} onClick={goNext}>
               다음: 확인
             </button>
           </div>
         )}
+        </div>
       </div>
     </div>
   )

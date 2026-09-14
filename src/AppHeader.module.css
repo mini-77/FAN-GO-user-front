@@ -1,6 +1,6 @@
 .top-bar {
   background: var(--header-bg);
-  padding: 10px 16px;
+  padding: 7px 16px; /* 세로 높이 축소 요청(2026-09-15) - 10px에서 더 줄임 */
   display: flex;
   align-items: center;
   justify-content: space-between;

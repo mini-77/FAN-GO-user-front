@@ -121,8 +121,8 @@ export default function HomeView() {
   return (
     <div className={styles.screen}>
       <div className={styles.card}>
-        {/* 05 헤더 규칙 - 진입점(홈·로그인)은 뒤로가기 없이 로고만 중앙 */}
-        <AppHeader showBack={false} showProfile={false} />
+        {/* 05 헤더 규칙 - 진입점(홈)은 뒤로가기 없이 로고만 중앙, 메뉴 아이콘은 표시(사용자 요청) */}
+        <AppHeader showBack={false} showProfile />
 
         <div className={styles.body}>
           <h1 className={styles.title}>다가오는 이벤트</h1>
@@ -192,9 +192,6 @@ export default function HomeView() {
               const { artist, displayTitle } = splitArtistFromEventName(trip.event_nm)
               return (
                 <div key={trip.trip_no} className={styles['trip-row']} onClick={() => openTrip(trip)}>
-                  <div className={styles['trip-avatar']}>
-                    {(artist || displayTitle)?.slice(0, 1) || '?'}
-                  </div>
                   <div className={styles['trip-text']}>
                     <div className={styles['trip-name-row']}>
                       <span className={styles['trip-title']}>{displayTitle}</span>

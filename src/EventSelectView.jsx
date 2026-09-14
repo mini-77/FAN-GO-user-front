@@ -255,36 +255,39 @@ export default function EventSelectView() {
               더보기 <Icon name="chevronDown" size={14} />
             </button>
           )}
-        </div>
 
-        <div className={styles['map-summary']}>
-          {selectedCardData ? (
-            <>
-              <p className={styles['map-summary-text']}>{selectedCardData.title}</p>
-              <p className={styles['map-summary-sub']}>
-                {selectedCardData.dateLabel} · {selectedCardData.timeLabel} · {districtLabel}
-              </p>
-            </>
-          ) : (
-            <p className={styles['map-summary-text']}>아직 고른 이벤트가 없어요</p>
+          {/* 하단 고정 바가 아니라 목록의 마지막 항목으로 스크롤에 같이 움직이게 함
+              (사용자 요청 - 다른 화면과 동일하게 고정 해제) */}
+          <div className={styles['map-summary']}>
+            {selectedCardData ? (
+              <>
+                <p className={styles['map-summary-text']}>{selectedCardData.title}</p>
+                <p className={styles['map-summary-sub']}>
+                  {selectedCardData.dateLabel} · {selectedCardData.timeLabel} · {districtLabel}
+                </p>
+              </>
+            ) : (
+              <p className={styles['map-summary-text']}>아직 고른 이벤트가 없어요</p>
+            )}
+          </div>
+
+          {errorMessage && (
+            <p className={styles.hint} style={{ padding: '0 16px', color: 'var(--color-danger)' }}>
+              {errorMessage}
+            </p>
           )}
-        </div>
 
-        {errorMessage && (
-          <p className={styles.hint} style={{ padding: '0 16px', color: 'var(--color-danger)' }}>
-            {errorMessage}
-          </p>
-        )}
-
-        <div className={styles.footer} data-bottom-bar="true">
-          <button
-            type="button"
-            className={styles['btn-primary']}
-            style={!selectedCardData ? { background: 'var(--button-bg-disabled)', color: '#fff', cursor: 'default' } : undefined}
-            onClick={goNext}
-          >
-            기간·숙소
-          </button>
+          <div className={styles.footer}>
+            <button
+              type="button"
+              className={styles['btn-primary']}
+              style={!selectedCardData ? { background: 'var(--button-bg-disabled)', color: '#fff', cursor: 'default' } : undefined}
+              onClick={goNext}
+              disabled={!selectedCardData}
+            >
+              기간·숙소
+            </button>
+          </div>
         </div>
       </div>
     </div>

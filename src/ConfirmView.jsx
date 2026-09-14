@@ -53,6 +53,18 @@ export default function ConfirmView() {
   const firstDeparture = departure || null
   const finalArrival = arrival || null
 
+  // 필수 값이 하나라도 비어있으면 "일정 만들기" 버튼 자체를 막음 (handleCreateItinerary의
+  // 개별 검증과 동일한 조건 - 버튼을 disabled로도 표시해서 클릭 자체가 안 되게 함)
+  const isFormValid = Boolean(
+    selectedEvent &&
+      rankedCategoryIds.length > 0 &&
+      firstDeparture &&
+      finalArrival &&
+      (isWholeGroupSelected
+        ? paceArtistGroupNo
+        : (paceMembers?.length > 0 || allEventMemberIds?.length > 0))
+  )
+
   // 저장소에 쌓인 실제 값들로 요약 목록 구성
   // "팬덤" 항목은 삭제, "참여행사"가 01번(제일 위)으로 옴
   const summary = [
@@ -188,17 +200,21 @@ export default function ConfirmView() {
               {submitError}
             </p>
           )}
-        </div>
 
-        <div className={styles.footer} data-bottom-bar="true">
-          <span className={styles['footer-note']}>선택한 스타일로 동선을 만들어요</span>
-          <button
-            type="button"
-            className={styles['btn-primary']}
-            onClick={handleCreateItinerary}
-          >
-            일정 만들기
-          </button>
+          {/* 하단 고정 바가 아니라 목록의 마지막 항목으로 스크롤에 같이 움직이게 함
+              (사용자 요청 - 다른 화면과 동일하게 고정 해제) */}
+          <div className={styles.footer}>
+            <span className={styles['footer-note']}>선택한 스타일로 동선을 만들어요</span>
+            <button
+              type="button"
+              className={styles['btn-primary']}
+              style={!isFormValid ? { background: 'var(--button-bg-disabled)', cursor: 'default' } : undefined}
+              onClick={handleCreateItinerary}
+              disabled={!isFormValid}
+            >
+              일정 만들기
+            </button>
+          </div>
         </div>
       </div>
     </div>

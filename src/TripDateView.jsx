@@ -590,7 +590,6 @@ export default function TripDateView() {
             <p className={styles.hint}>등록된 숙소가 있으면 자동으로 채워져요.</p>
           )}
         </div>
-        </div>
 
         {errorMessage && (
           <p className={styles.hint} style={{ padding: '0 16px', color: 'var(--color-danger)' }}>
@@ -598,10 +597,13 @@ export default function TripDateView() {
           </p>
         )}
 
-        <div className={styles.footer} data-bottom-bar="true">
+        {/* 하단 고정 바가 아니라 콘텐츠의 마지막 항목으로 스크롤에 같이 움직이게 함
+            (사용자 요청 - 다른 화면과 동일하게 고정 해제) */}
+        <div className={styles.footer}>
           <button type="button" className={styles['btn-primary']} onClick={goNext}>
             선호 액티비티
           </button>
+        </div>
         </div>
       </div>
 

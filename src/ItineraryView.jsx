@@ -342,28 +342,28 @@ export default function ItineraryView() {
               <span className={styles['pinned-tag']}>고정 ✓</span>
             </div>
           )}
-        </div>
 
-        <div className={styles.spacer} />
-
-        <div className={styles['action-row']} data-bottom-bar="true">
-          <button
-            type="button"
-            className={styles['btn-outline']}
-            onClick={() => navigate('/trip/schedule', { state: { visitDay: activeDay } })}
-          >
-            목록보기
-          </button>
-          <button
-            type="button"
-            className={styles['btn-outline']}
-            onClick={() => navigate('/trip/itinerary/edit', { state: { visitDay: activeDay } })}
-          >
-            동선 수정
-          </button>
-          <button type="button" className={styles['btn-primary']} onClick={() => navigate('/trip/history')}>
-            확인
-          </button>
+          {/* 하단 고정 바가 아니라 목록의 마지막 항목으로 스크롤에 같이 움직이게 함
+              (사용자 요청 - 이 3버튼은 고정될 필요 없이 콘텐츠와 같이 내려가도 됨) */}
+          <div className={styles['action-row']}>
+            <button
+              type="button"
+              className={styles['btn-outline']}
+              onClick={() => navigate('/trip/schedule', { state: { visitDay: activeDay } })}
+            >
+              목록보기
+            </button>
+            <button
+              type="button"
+              className={styles['btn-outline']}
+              onClick={() => navigate('/trip/itinerary/edit', { state: { visitDay: activeDay } })}
+            >
+              동선 수정
+            </button>
+            <button type="button" className={styles['btn-primary']} onClick={() => navigate('/trip/history')}>
+              확인
+            </button>
+          </div>
         </div>
 
         <BottomNav />

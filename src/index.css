@@ -218,13 +218,24 @@ body {
    .card{overflow:hidden} + 안쪽 .list/.body{overflow-y:auto} 구조로 헤더·BottomNav는
    고정, 콘텐츠만 스크롤되게 짜여 있는데, html/body에는 이걸 막는 장치가 없어서 iOS
    Safari/WebView가 100vh를 실제 보이는 영역보다 살짝 크게 계산하는 순간 페이지 전체가
-   스크롤되며 헤더·BottomNav까지 같이 움직이는 문제가 있었음. 데스크톱 미리보기(카드 전체를
-   보려고 창을 스크롤하는 것)는 그대로 둬야 해서 이 잠금은 모바일 폭에서만 적용함. */
+   스크롤되며 헤더·BottomNav까지 같이 움직이는 문제가 있었음.
+   ⚠ overflow:hidden만으로는 iOS Safari에서 body 스크롤/바운스가 완전히 안 막히는
+   경우가 있어서(잘 알려진 iOS 특성), position:fixed + inset:0으로 body 자체를
+   레이아웃 흐름에서 완전히 떼어내는 더 확실한 방식으로 보강함. 데스크톱 미리보기(카드
+   전체를 보려고 창을 스크롤하는 것)는 그대로 둬야 해서 이 잠금은 모바일 폭에서만 적용함. */
 @media (max-width: 430px) {
   html,
   body {
+    position: fixed;
+    inset: 0;
+    width: 100%;
     height: 100%;
     overflow: hidden;
+    overscroll-behavior: none;
+  }
+
+  #root {
+    height: 100%;
   }
 }
 

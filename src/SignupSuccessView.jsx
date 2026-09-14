@@ -38,16 +38,18 @@ export default function SignupSuccessView() {
               <span>여행 일정 계획 — 콘서트에 맞춘 최적의 여행을 계획할 수 있어요</span>
             </li>
           </ul>
-        </div>
 
-        <div className={styles.footer} data-bottom-bar="true">
-          <button
-            type="button"
-            className={styles['btn-primary']}
-            onClick={() => navigate('/home')}
-          >
-            홈으로 가기
-          </button>
+          {/* 하단 고정 바가 아니라 콘텐츠의 마지막 항목으로 스크롤에 같이 움직이게 함
+              (사용자 요청 - 다른 화면과 동일하게 고정 해제) */}
+          <div className={styles.footer}>
+            <button
+              type="button"
+              className={styles['btn-primary']}
+              onClick={() => navigate('/home')}
+            >
+              홈으로 가기
+            </button>
+          </div>
         </div>
 
         <BottomNav />

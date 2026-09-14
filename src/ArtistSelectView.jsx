@@ -234,21 +234,24 @@ export default function ArtistSelectView() {
                 </div>
               )
             })}
+
+            {/* 하단 고정 바가 아니라 목록의 마지막 항목으로 스크롤에 같이 움직이게 함
+                (사용자 요청 - 다른 화면과 동일하게 고정 해제) */}
+            <div className={styles.footer}>
+              <span className={styles['footer-count']}>{selected.size}팀 선택했어요</span>
+              <button
+                type="button"
+                className={`${styles['btn-primary']} ${!isFormValid || isSubmitting ? styles.disabled : ''}`}
+                onClick={handleComplete}
+                disabled={!isFormValid || isSubmitting}
+              >
+                {isSubmitting ? '가입 중...' : '가입 완료'}
+              </button>
+            </div>
           </div>
         </div>
 
         {submitError && <p className={styles.hint} style={{ padding: '0 16px', color: 'var(--color-danger)' }}>{submitError}</p>}
-
-        <div className={styles.footer} data-bottom-bar="true">
-          <span className={styles['footer-count']}>{selected.size}팀 선택했어요</span>
-          <button
-            type="button"
-            className={`${styles['btn-primary']} ${!isFormValid || isSubmitting ? styles.disabled : ''}`}
-            onClick={handleComplete}
-          >
-            {isSubmitting ? '가입 중...' : '가입 완료'}
-          </button>
-        </div>
       </div>
     </div>
   )

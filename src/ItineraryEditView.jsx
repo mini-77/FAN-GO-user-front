@@ -444,9 +444,10 @@ export default function ItineraryEditView() {
             {saveError}
           </p>
         )}
-        </div>
 
-        <div className={styles['action-row']} data-bottom-bar="true">
+        {/* 하단 고정 바가 아니라 목록의 마지막 항목으로 스크롤에 같이 움직이게 함
+            (사용자 요청 - 다른 화면과 동일하게 고정 해제) */}
+        <div className={styles['action-row']}>
           <button
             type="button"
             className={styles['btn-primary']}
@@ -455,6 +456,7 @@ export default function ItineraryEditView() {
           >
             {isSaving ? '저장 중...' : '동선 저장'}
           </button>
+        </div>
         </div>
       </div>
     </div>

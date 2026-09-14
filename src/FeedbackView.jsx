@@ -321,7 +321,9 @@ export default function FeedbackView() {
             </p>
           )}
 
-          <div className={styles.actionRow} data-bottom-bar="true">
+          {/* 이 화면은 원래도 고정 바가 아니라 .body 안 마지막 항목이었음 - 잘못 붙어있던
+              data-bottom-bar만 제거(사용자 요청과 일치하도록 정리) */}
+          <div className={styles.actionRow}>
             <button type="button" className={styles.skipButton} onClick={handleSkip}>
               {t('feedback.skipButton')}
             </button>

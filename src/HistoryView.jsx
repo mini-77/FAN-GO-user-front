@@ -176,14 +176,14 @@ export default function HistoryView() {
               더보기 <Icon name="chevronDown" size={14} />
             </button>
           )}
-        </div>
 
-        <div className={styles.spacer} />
-
-        <div className={styles.footer} data-bottom-bar="true">
-          <button type="button" className={styles['new-btn']} onClick={() => navigate('/trip/events')}>
-            일정 만들기
-          </button>
+          {/* 하단 고정 바가 아니라 목록의 마지막 항목으로 스크롤에 같이 움직이게 함
+              (사용자 요청 - 다른 화면과 동일하게 고정 해제) */}
+          <div className={styles.footer}>
+            <button type="button" className={styles['new-btn']} onClick={() => navigate('/trip/events')}>
+              일정 만들기
+            </button>
+          </div>
         </div>
 
         <BottomNav />
