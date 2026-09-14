@@ -284,7 +284,7 @@ export default function EventSelectView() {
             style={!selectedCardData ? { background: '#D9D4F5', color: '#fff', cursor: 'default' } : undefined}
             onClick={goNext}
           >
-            다음: 기간·숙소
+            기간·숙소
           </button>
         </div>
       </div>
