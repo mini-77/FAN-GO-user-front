@@ -4,6 +4,9 @@ import Icon from './Icon'
 import styles from './PlaceDetailView.module.css'
 import modalStyles from './PlaceDetailModal.module.css'
 
+// cong_level(0=한산 1=보통 2=혼잡 3=매우혼잡)별 막대/텍스트 색상
+const CONGESTION_COLORS = ['#34C759', '#FFC107', '#FF9500', '#FF3B30']
+
 // 장소를 눌렀을 때 뜨는 팝업 - PlaceDetailView에 있던 내용(사진/총점수/혼잡도/지도링크)을
 // 페이지 이동 없이 모달로 그대로 보여줌.
 // props: eventNo(필수), tripRouteEventNo(좋아요용, 없으면 좋아요 버튼 안 보임),
@@ -14,6 +17,7 @@ export default function PlaceDetailModal({ eventNo, tripRouteEventNo, liked: ini
   const [loadError, setLoadError] = useState('')
   const [liked, setLiked] = useState(Boolean(initialLiked))
   const [isLiking, setIsLiking] = useState(false)
+  const [congestion, setCongestion] = useState(null)
 
   useEffect(() => {
     document.body.style.overflow = 'hidden'
@@ -45,6 +49,26 @@ export default function PlaceDetailModal({ eventNo, tripRouteEventNo, liked: ini
       }
     }
     loadPlace()
+    return () => {
+      cancelled = true
+    }
+  }, [eventNo])
+
+  // 예상 혼잡도 - 인증 불필요, 서버가 현재(KST) 요일/시간대 기준으로 계산해 내려줌
+  useEffect(() => {
+    if (!eventNo) return
+    let cancelled = false
+    async function loadCongestion() {
+      try {
+        const res = await apiFetch(`/events/${eventNo}/congestion`)
+        if (!res.ok) return
+        const data = await res.json()
+        if (!cancelled) setCongestion(data)
+      } catch (e) {
+        // 혼잡도는 부가 정보라 실패해도 "준비 중"으로만 보이면 되고 화면 전체를 막지 않음
+      }
+    }
+    loadCongestion()
     return () => {
       cancelled = true
     }
@@ -166,16 +190,29 @@ export default function PlaceDetailModal({ eventNo, tripRouteEventNo, liked: ini
                 <p className={styles.desc}>카카오맵 리뷰와 구글 리뷰를 기반으로 계산한 추천 점수예요.</p>
               )}
 
-              {/* 혼잡도 - 알고리즘팀이 실측 데이터 붙이기 전까지는 준비중으로 표시 */}
+              {/* 혼잡도 - GET /events/{event_no}/congestion. cong_level 0~3(한산~매우혼잡)을
+                  막대 5개 중 (cong_level+1)개를 채우는 방식으로 표현. 데이터가 없으면(has_data:false)
+                  기존처럼 "준비 중"으로 표시 */}
               <div className={styles['congestion-row']}>
                 <span className={styles['congestion-label']}>예상 혼잡도</span>
                 <div className={styles['congestion-bars']}>
                   {[0, 1, 2, 3, 4].map((i) => (
-                    <div key={i} className={styles['congestion-bar']} />
+                    <div
+                      key={i}
+                      className={styles['congestion-bar']}
+                      style={
+                        congestion?.has_data && i <= congestion.cong_level
+                          ? { background: CONGESTION_COLORS[congestion.cong_level] }
+                          : undefined
+                      }
+                    />
                   ))}
                 </div>
-                <span className={styles['congestion-text']} style={{ color: 'rgba(27,22,63,0.4)' }}>
-                  준비 중
+                <span
+                  className={styles['congestion-text']}
+                  style={congestion?.has_data ? { color: CONGESTION_COLORS[congestion.cong_level] } : { color: 'rgba(27,22,63,0.4)' }}
+                >
+                  {congestion?.has_data ? congestion.cong_label : '준비 중'}
                 </span>
               </div>
 
