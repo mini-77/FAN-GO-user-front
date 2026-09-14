@@ -149,7 +149,10 @@ export default function ActivityPreferenceView() {
           <div className={styles['progress-bar']}>
             <div className={styles['progress-fill']} style={{ width: '75%' }} />
           </div>
-          <span className={styles['progress-caption']}>3 / 4 단계 · 75%</span>
+          <div className={styles['progress-caption']}>
+            <span>3 / 4</span>
+            <span>75%</span>
+          </div>
         </div>
 
         <div className={styles.section}>

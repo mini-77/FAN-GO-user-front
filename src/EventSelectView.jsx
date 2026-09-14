@@ -187,7 +187,10 @@ export default function EventSelectView() {
           <div className={styles['progress-bar']}>
             <div className={styles['progress-fill']} style={{ width: '25%' }} />
           </div>
-          <span className={styles['progress-caption']}>1 / 4 단계 · 25%</span>
+          <div className={styles['progress-caption']}>
+            <span>1 / 4</span>
+            <span>25%</span>
+          </div>
         </div>
 
         <div className={styles['filter-section']}>

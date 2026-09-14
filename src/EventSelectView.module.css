@@ -98,7 +98,8 @@
 }
 
 .progress-caption {
-  display: block;
+  display: flex;
+  justify-content: space-between;
   margin-top: 6px;
   font-family: 'Inter', sans-serif;
   font-size: 11px;

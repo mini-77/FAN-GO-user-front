@@ -130,7 +130,10 @@ export default function PaceView() {
           <div className={styles['progress-bar']}>
             <div className={styles['progress-fill']} style={{ width: '100%' }} />
           </div>
-          <span className={styles['progress-caption']}>4 / 4 단계 · 100%</span>
+          <div className={styles['progress-caption']}>
+            <span>4 / 4</span>
+            <span>100%</span>
+          </div>
         </div>
 
         <div className={styles.section}>

@@ -452,7 +452,10 @@ export default function TripDateView() {
           <div className={styles['progress-bar']}>
             <div className={styles['progress-fill']} style={{ width: '50%' }} />
           </div>
-          <span className={styles['progress-caption']}>2 / 4 단계 · 50%</span>
+          <div className={styles['progress-caption']}>
+            <span>2 / 4</span>
+            <span>50%</span>
+          </div>
         </div>
 
         <div className={styles.scrollArea}>
@@ -643,9 +646,7 @@ export default function TripDateView() {
           </p>
         )}
 
-        {/* 하단 - 진행률은 우측 끝에 작게, 버튼은 중앙 배치 */}
         <div className={styles.footer}>
-          <span className={styles['footer-progress']}>2 / 4 단계 · 50%</span>
           <button type="button" className={styles['btn-primary']} onClick={goNext}>
             선호 액티비티
           </button>
