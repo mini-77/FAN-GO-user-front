@@ -614,12 +614,14 @@ export default function TripDateView() {
           )}
         </div>
 
-        {/* 출발지(첫날) - 프리셋 없이 지도에서 직접 검색해서 정확한 위치를 찍어야 함 */}
-        <div className={styles.section} ref={departureSectionRef}>
+        {/* 출발지(첫날) - 프리셋 없이 지도에서 직접 검색해서 정확한 위치를 찍어야 함
+            data-bottom-bar - 화면 맨 아래 버튼이 고정이 아니라 스크롤에 같이 움직여서,
+            이 섹션이 화면에 보이는 동안 챗봇 버튼이 "지도에서 선택" 링크와 겹치지 않게 함 */}
+        <div className={styles.section} ref={departureSectionRef} data-bottom-bar="true">
           <div className={styles['section-head']}>
             <span className={styles['section-label-strong']}>첫째날 출발지</span>
             <button type="button" className={styles['edit-link']} onClick={() => openSearch('departure')}>
-              {departure ? '수정' : '지도에서 찾기'}
+              지도에서 선택
             </button>
           </div>
           {departure ? (
@@ -639,7 +641,7 @@ export default function TripDateView() {
           <div className={styles['section-head']}>
             <span className={styles['section-label-strong']}>마지막날 도착지</span>
             <button type="button" className={styles['edit-link']} onClick={() => openSearch('arrival')}>
-              {arrival ? '수정' : '지도에서 찾기'}
+              지도에서 선택
             </button>
           </div>
           {arrival ? (

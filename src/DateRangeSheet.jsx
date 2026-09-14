@@ -83,7 +83,12 @@ export default function DateRangeSheet({
       return
     }
     if (iso > draftIn) {
+      // 체크아웃까지 고르면 "선택" 버튼을 따로 안 눌러도 바로 확정하고 닫음 -
+      // 화면이 낮은 기기에서 달력이 길어지면 하단 액션 버튼이 화면 밖으로
+      // 밀려 안 보이는 경우가 있어서, 두 번째 탭만으로 완결되게 함
       setDraftOut(iso)
+      onConfirm(draftIn, iso)
+      setIsOpen(false)
     } else {
       // 체크인보다 이르거나 같은 날을 누르면 체크인을 그 날로 다시 잡음
       setDraftIn(iso)

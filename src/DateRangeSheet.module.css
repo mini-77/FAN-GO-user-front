@@ -13,9 +13,12 @@
 .sheet {
   width: 100%;
   max-width: 430px;
+  max-height: 88vh;
+  max-height: 88dvh;
+  overflow-y: auto;
   background: #fff;
   border-radius: var(--radius-lg-max) var(--radius-lg-max) 0 0;
-  padding: 20px 20px 22px;
+  padding: 20px 20px calc(22px + env(safe-area-inset-bottom));
   box-sizing: border-box;
   box-shadow: 0px -8px 24px rgba(27, 22, 63, 0.12);
   color-scheme: light;
