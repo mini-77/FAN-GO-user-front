@@ -190,7 +190,7 @@
   width: 100%;
   min-height: 56px;
   padding: 9px 11px;
-  background: var(--color-primary-50);
+  background: #F7F7FA; /* 빈 값일 때는 연보라 대신 흰색/연회색 중간톤 (사용자 요청) */
   border: 1px solid var(--color-primary-200);
   border-radius: 12px;
   font-family: 'IBM Plex Sans KR', sans-serif;

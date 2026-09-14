@@ -61,7 +61,7 @@
   gap: 8px;
   padding: 0 14px;
   height: 44px;
-  background: var(--color-primary-50);
+  background: #F7F7FA; /* 빈 값일 때는 연보라 대신 흰색/연회색 중간톤 (사용자 요청) */
   border: 1.5px solid var(--color-primary-200);
   border-radius: 999px;
 }

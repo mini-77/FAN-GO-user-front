@@ -26,6 +26,7 @@ import ScreenIndex from './ScreenIndex'
 import RequireEvent from './RequireEvent'
 import ChatbotView from './ChatbotView'
 import ChatbotFab from './ChatbotFab'
+import ScrollToTop from './ScrollToTop'
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
       <ThemeProvider>
         <LanguageProvider>
           <BrowserRouter>
+            <ScrollToTop />
             <Routes>
               <Route path="/" element={<SplashView />} />
               <Route path="/home" element={<HomeView />} />
