@@ -155,18 +155,34 @@ export default function TripDateView() {
       if (!cancelled) setSdkStatus('error')
     }, SDK_LOAD_TIMEOUT_MS)
 
+    let resizeObserver = null
+
     try {
       window.kakao.maps.load(() => {
         if (cancelled) return
         clearTimeout(timeoutId)
         try {
-          const map = new window.kakao.maps.Map(mapRef.current, {
-            center: new window.kakao.maps.LatLng(SEOUL_CENTER.lat, SEOUL_CENTER.lng),
-            level: 5,
-          })
+          const center = new window.kakao.maps.LatLng(SEOUL_CENTER.lat, SEOUL_CENTER.lng)
+          const map = new window.kakao.maps.Map(mapRef.current, { center, level: 5 })
           mapObjRef.current = map
           placesRef.current = new window.kakao.maps.services.Places()
           setSdkStatus('ready')
+
+          // 팝업이 열리는 애니메이션/키보드 표시 타이밍에 따라 지도 컨테이너 크기가
+          // 아직 확정되지 않은 상태로 지도가 초기화되면 실제 칸보다 작게 그려지는
+          // 문제가 있었음 - relayout()으로 강제 재계산해서 항상 컨테이너 크기에 맞춤
+          requestAnimationFrame(() => {
+            if (cancelled) return
+            map.relayout()
+            map.setCenter(center)
+          })
+
+          if (window.ResizeObserver && mapRef.current) {
+            resizeObserver = new ResizeObserver(() => {
+              map.relayout()
+            })
+            resizeObserver.observe(mapRef.current)
+          }
         } catch (e) {
           setSdkStatus('error')
         }
@@ -179,6 +195,7 @@ export default function TripDateView() {
     return () => {
       cancelled = true
       clearTimeout(timeoutId)
+      if (resizeObserver) resizeObserver.disconnect()
     }
   }, [searchTarget])
 
@@ -614,8 +631,11 @@ export default function TripDateView() {
           )}
         </div>
 
-        {/* 완료지(마지막날) - 숙소가 있으면 자동으로 채워짐, 필요하면 수정 가능 */}
-        <div className={styles.section} style={{ borderBottom: 'none' }}>
+        {/* 완료지(마지막날) - 숙소가 있으면 자동으로 채워짐, 필요하면 수정 가능
+            data-bottom-bar - 이 화면 맨 아래 버튼이 고정이 아니라 스크롤에 같이 움직여서,
+            버튼이 화면 밖으로 나가면 챗봇 버튼이 대신 이 마지막 섹션(수정 링크)과 겹쳤음.
+            여기도 표시해서 화면에 보이는 동안은 챗봇이 위로 피하게 함 */}
+        <div className={styles.section} style={{ borderBottom: 'none' }} data-bottom-bar="true">
           <div className={styles['section-head']}>
             <span className={styles['section-label-strong']}>마지막날 도착지</span>
             <button type="button" className={styles['edit-link']} onClick={() => openSearch('arrival')}>
@@ -670,7 +690,14 @@ export default function TripDateView() {
             </div>
 
             <div className={styles['search-row']}>
-              <span className={styles['search-icon']}>⌕</span>
+              <button
+                type="button"
+                className={styles['search-icon']}
+                onClick={() => runSearch(query)}
+                aria-label="검색"
+              >
+                ⌕
+              </button>
               <input
                 className={styles['search-input']}
                 type="text"
@@ -817,19 +844,46 @@ export default function TripDateView() {
                   </p>
                 )}
 
-                <div>
-                  <label className={styles['field-label']}>체크인 · 체크아웃</label>
-                  <DateRangeSheet
-                    checkIn={stayCheckIn}
-                    checkOut={stayCheckOut}
-                    min={stayAllowedMinDate || undefined}
-                    max={stayAllowedMaxDate || undefined}
-                    onConfirm={(nextCheckIn, nextCheckOut) => {
-                      setStayCheckIn(nextCheckIn)
-                      setStayCheckOut(nextCheckOut)
-                    }}
-                  />
-                </div>
+                <DateRangeSheet
+                  checkIn={stayCheckIn}
+                  checkOut={stayCheckOut}
+                  min={stayAllowedMinDate || undefined}
+                  max={stayAllowedMaxDate || undefined}
+                  onConfirm={(nextCheckIn, nextCheckOut) => {
+                    setStayCheckIn(nextCheckIn)
+                    setStayCheckOut(nextCheckOut)
+                  }}
+                  renderTrigger={({ open, checkIn, checkOut }) => (
+                    <div className={styles['two-col']}>
+                      <div>
+                        <label className={styles['field-label']}>체크인</label>
+                        <button
+                          type="button"
+                          className={`${styles.trigger} ${!checkIn ? styles.placeholder : ''}`}
+                          onClick={open}
+                        >
+                          <span className={styles.triggerText}>
+                            {checkIn ? formatDot(checkIn) : '체크인 선택'}
+                          </span>
+                          <Icon name="calendar" size={16} color={checkIn ? 'var(--color-primary-500)' : 'rgba(12, 10, 28, 0.4)'} />
+                        </button>
+                      </div>
+                      <div>
+                        <label className={styles['field-label']}>체크아웃</label>
+                        <button
+                          type="button"
+                          className={`${styles.trigger} ${!checkOut ? styles.placeholder : ''}`}
+                          onClick={open}
+                        >
+                          <span className={styles.triggerText}>
+                            {checkOut ? formatDot(checkOut) : '체크아웃 선택'}
+                          </span>
+                          <Icon name="calendar" size={16} color={checkOut ? 'var(--color-primary-500)' : 'rgba(12, 10, 28, 0.4)'} />
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                />
 
                 {stayDateError && (
                   <p className={styles.hint} style={{ color: 'var(--color-danger)' }}>

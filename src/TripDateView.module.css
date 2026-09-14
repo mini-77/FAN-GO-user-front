@@ -311,7 +311,7 @@
 
 .footer {
   flex-shrink: 0;
-  padding: 12px 16px 22px;
+  padding: 12px 16px calc(22px + env(safe-area-inset-bottom));
   border-top: 1px solid var(--color-border);
   display: flex;
   justify-content: flex-end;
@@ -390,6 +390,8 @@
   flex: 1;
   min-height: 0;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
 }
 
 .search-panel-header {
@@ -446,8 +448,16 @@
 }
 
 .search-icon {
+  flex-shrink: 0;
+  border: none;
+  background: transparent;
+  padding: 4px;
   color: #A9A3C2;
   font-size: 15px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .search-input {
@@ -471,6 +481,10 @@
   border-radius: 16px;
   overflow: hidden;
   background: var(--color-primary-100);
+  /* 지도 위 터치 제스처(팬/드래그)가 패널·페이지 스크롤로 새어나가지 않게,
+     지도 영역 안의 터치는 지도 자체(카카오맵 JS)만 처리하게 함 */
+  touch-action: none;
+  overscroll-behavior: contain;
 }
 
 .map-canvas {
@@ -560,7 +574,7 @@
   }
 
   .map-area {
-    height: 200px !important;
-    min-height: 200px !important;
+    height: 240px !important;
+    min-height: 240px !important;
   }
 }

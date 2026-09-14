@@ -302,7 +302,7 @@
 
 .footer {
   flex-shrink: 0;
-  padding: 12px 22px 30px;
+  padding: 12px 22px calc(30px + env(safe-area-inset-bottom));
   border-top: 1px solid var(--color-border);
 }
 

@@ -239,7 +239,7 @@
 }
 
 .footer {
-  padding: 12px 16px 22px;
+  padding: 12px 16px calc(22px + env(safe-area-inset-bottom));
   border-top: 1px solid var(--color-border);
   display: flex;
   justify-content: flex-end;
