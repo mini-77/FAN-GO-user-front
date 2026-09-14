@@ -2,6 +2,7 @@
   width: 100%;
   max-width: 430px;
   height: 100vh;
+  height: 100dvh;
   max-height: 932px;
   margin: 0 auto;
   background: #fff;
@@ -51,7 +52,7 @@
 }
 
 .footer {
-  padding: 10px 16px;
+  padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
   border-top: 0.8px solid var(--color-border);
   display: flex;
   justify-content: flex-end;
