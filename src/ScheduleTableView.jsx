@@ -289,6 +289,13 @@ export default function ScheduleTableView() {
           <button
             type="button"
             className={styles['btn-outline']}
+            onClick={() => navigate('/trip/itinerary', { state: { visitDay: activeDay } })}
+          >
+            동선보기
+          </button>
+          <button
+            type="button"
+            className={styles['btn-outline']}
             onClick={() => navigate('/trip/itinerary/edit', { state: { visitDay: activeDay } })}
           >
             동선 수정
