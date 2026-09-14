@@ -34,7 +34,7 @@
 
 /* 헤더 */
 .header {
-  padding: 24px 16px 12px; /* 헤더-타이틀 간격 24px 통일 (11_impact_plan.md 3번 섹션) */
+  padding: var(--header-title-gap) 16px 12px; /* 헤더-타이틀 간격 24px 통일 (11_impact_plan.md 3번 섹션) */
   border-bottom: 1px solid var(--color-border);
   display: flex;
   flex-direction: column;
@@ -139,7 +139,7 @@
   min-height: 36px;
   padding: 8px 14px;
   border: 1px solid var(--color-primary-200);
-  border-radius: 12px;
+  border-radius: var(--input-radius);
   background: var(--color-primary-50);
   font-family: 'Urbanist', sans-serif;
   font-size: 14px;
@@ -160,7 +160,7 @@
 /* 06 입력 필드 규칙 - 에러 상태는 테두리 색으로도 보이게 */
 .inputError,
 .inputError:focus {
-  border: 1.5px solid var(--color-danger);
+  border: var(--input-border-error);
   box-shadow: none;
 }
 
@@ -290,7 +290,7 @@
 
 .btn-primary {
   padding: 13.6px 20px 15.4px;
-  min-height: 52px;
+  min-height: var(--button-height-lg);
   box-sizing: border-box;
   display: flex;
   align-items: center;

@@ -33,7 +33,7 @@
 }
 
 .header {
-  padding: 24px 16px 12px; /* 헤더-타이틀 간격 24px 통일 (11_impact_plan.md 3번 섹션) */
+  padding: var(--header-title-gap) 16px 12px; /* 헤더-타이틀 간격 24px 통일 (11_impact_plan.md 3번 섹션) */
   border-bottom: 1px solid var(--color-border);
   display: flex;
   flex-direction: column;
@@ -152,7 +152,7 @@
    기존 36px는 리스트 행 내부용(Small) 규격이라 하단 고정 CTA엔 맞지 않았음 */
 .btn-primary {
   width: 100%;
-  min-height: 52px;
+  min-height: var(--button-height-lg);
   box-sizing: border-box;
   padding: 10px 20px;
   display: flex;

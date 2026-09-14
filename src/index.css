@@ -84,10 +84,11 @@
   --elevation-2: 0 20px 44px rgba(20, 10, 50, 0.14), 0 2px 6px rgba(20, 10, 50, 0.06); /* 바텀시트·모달 */
 
   /* ===== 레이아웃 토큰 (신규) =====
-     ⚠ 헤더 높이는 가이드 기준 56px. 현재 AppHeader 실측(약 48~50px)과 다름 -
-     이번 단계에서는 토큰만 정의하고 AppHeader.module.css는 건드리지 않음
-     (09_v1_v2_master.md M-H-004, 10_token_mapping.md 8번 참고, 공통 컴포넌트 단계에서 결정). */
-  --header-height: 56px;
+     헤더 높이는 가이드 기준 56px이지만, 실제 AppHeader는 약 48px(패딩 10px+버튼 28px)로
+     다르게 유지하기로 확정함 - 세션 중 사용자가 "헤더가 너무 길어 보인다"고 요청해
+     패딩을 14px→10px로 줄인 결정. 가이드 값보다 이 결정을 우선함(2차 검수에서 재확인,
+     AppHeader.module.css는 의도적으로 건드리지 않음. 09_v1_v2_master.md M-H-004 참고). */
+  --header-height: 56px; /* 참고용 - 실제로는 사용하지 않음, 위 이유로 48px가 확정값 */
   --list-row-min-height: 56px;
 
   /* ===== 헤더 토큰 (신규) ===== */

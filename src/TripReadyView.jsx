@@ -1,4 +1,6 @@
 import { useNavigate } from 'react-router-dom'
+import AppHeader from './AppHeader'
+import BottomNav from './BottomNav'
 import styles from './TripReadyView.module.css'
 
 // TripGeneratingView에서 동선 생성이 다 끝나면 이 화면으로 넘어옴.
@@ -9,6 +11,7 @@ export default function TripReadyView() {
 
   return (
     <div className={styles.screen}>
+      <AppHeader showBack={false} showProfile={false} />
       <div className={styles.body}>
         <div className={styles['check-circle']}>
           <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
@@ -35,6 +38,8 @@ export default function TripReadyView() {
           동선 보기
         </button>
       </div>
+
+      <BottomNav />
     </div>
   )
 }

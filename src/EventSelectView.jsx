@@ -280,7 +280,7 @@ export default function EventSelectView() {
           <button
             type="button"
             className={styles['btn-primary']}
-            style={!selectedCardData ? { background: '#D9D4F5', color: '#fff', cursor: 'default' } : undefined}
+            style={!selectedCardData ? { background: 'var(--button-bg-disabled)', color: '#fff', cursor: 'default' } : undefined}
             onClick={goNext}
           >
             기간·숙소

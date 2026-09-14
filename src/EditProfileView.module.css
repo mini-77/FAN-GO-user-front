@@ -34,7 +34,7 @@
 }
 
 .header {
-  padding: 24px 22px 14px; /* 헤더-타이틀 간격 24px 통일 (11_impact_plan.md 3번 섹션) */
+  padding: var(--header-title-gap) 22px 14px; /* 헤더-타이틀 간격 24px 통일 (11_impact_plan.md 3번 섹션) */
   border-bottom: 1px solid var(--color-border);
   display: flex;
   align-items: center;
@@ -126,6 +126,21 @@
   cursor: pointer;
 }
 
+/* "다시 시도" 버튼을 Outline 스타일로 통일 (2차 검수 반영) - avatar-change-btn과는
+   별개 클래스로 분리해서 실제 "프로필 사진 변경" 버튼 스타일은 그대로 둠 */
+.retry-btn {
+  min-height: 34px;
+  padding: 0 14px;
+  background: #fff;
+  border: var(--button-border-outline);
+  border-radius: 12px;
+  color: var(--color-ink-900);
+  font-family: 'Urbanist', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
 .field {
   display: flex;
   flex-direction: column;
@@ -146,7 +161,7 @@
   padding: 13px 14px;
   background: var(--color-primary-50);
   border: 1px solid var(--color-primary-200);
-  border-radius: 12px;
+  border-radius: var(--input-radius);
   font-family: 'Inter', sans-serif;
   font-size: 14px;
   color: var(--color-ink-900);
@@ -293,7 +308,7 @@
 
 .save-btn {
   width: 100%;
-  min-height: 52px;
+  min-height: var(--button-height-lg);
   border: none;
   border-radius: 12px;
   background: var(--color-primary-500);

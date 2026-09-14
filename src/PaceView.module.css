@@ -29,7 +29,7 @@
 }
 
 .header {
-  padding: 24px 16px 12px; /* 헤더-타이틀 간격 24px 통일 (11_impact_plan.md 3번 섹션) */
+  padding: var(--header-title-gap) 16px 12px; /* 헤더-타이틀 간격 24px 통일 (11_impact_plan.md 3번 섹션) */
   border-bottom: 1px solid var(--color-border);
   display: flex;
   flex-direction: column;
@@ -370,7 +370,7 @@
 .btn-primary {
   width: 100%;
   padding: 13.6px 20px 15.4px;
-  min-height: 52px;
+  min-height: var(--button-height-lg);
   box-sizing: border-box;
   display: flex;
   align-items: center;

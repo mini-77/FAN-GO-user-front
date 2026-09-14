@@ -226,7 +226,7 @@ export default function EditProfileView() {
         {loadError && (
           <div style={{ padding: '0 22px' }}>
             <p className={styles.hint} style={{ color: 'var(--color-danger)' }}>{loadError}</p>
-            <button type="button" className={styles['avatar-change-btn']} onClick={loadOptions}>
+            <button type="button" className={styles['retry-btn']} onClick={loadOptions}>
               다시 시도
             </button>
           </div>

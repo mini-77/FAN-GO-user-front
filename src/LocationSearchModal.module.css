@@ -166,7 +166,7 @@
 
 .btn-primary {
   padding: 13.6px 20px 15.4px;
-  min-height: 52px;
+  min-height: var(--button-height-lg);
   display: flex;
   align-items: center;
   justify-content: center;

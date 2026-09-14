@@ -32,7 +32,7 @@
   min-height: 52px;
   padding: 10px 14px;
   border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 12px;
+  border-radius: var(--input-radius);
   background: rgba(255, 255, 255, 0.06);
   font-family: 'Urbanist', 'IBM Plex Sans KR', sans-serif;
   font-size: 20px;

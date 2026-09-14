@@ -30,7 +30,7 @@
 }
 
 .header {
-  padding: 24px 16px 10px; /* 헤더-타이틀 간격 24px 통일 (11_impact_plan.md 3번 섹션) */
+  padding: var(--header-title-gap) 16px 10px; /* 헤더-타이틀 간격 24px 통일 (11_impact_plan.md 3번 섹션) */
 }
 
 .title {

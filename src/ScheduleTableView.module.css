@@ -34,7 +34,7 @@
 }
 
 .header {
-  padding: 24px 16px 12px; /* 헤더-타이틀 간격 24px 통일 (11_impact_plan.md 3번 섹션) */
+  padding: var(--header-title-gap) 16px 12px; /* 헤더-타이틀 간격 24px 통일 (11_impact_plan.md 3번 섹션) */
 }
 
 .title {
@@ -235,12 +235,13 @@
   color: var(--color-ink-600);
 }
 
+/* Outline 스타일로 통일 (2차 검수 반영) */
 .partial-error-retry {
   padding: 7px 16px;
   border-radius: 12px;
-  border: 1px solid var(--color-primary-200);
+  border: var(--button-border-outline);
   background: #fff;
-  color: var(--color-primary-500);
+  color: var(--color-ink-900);
   font-size: 12px;
   font-weight: 600;
   cursor: pointer;

@@ -198,14 +198,14 @@ export default function LoginView() {
 
           {errorMessage && <p className={styles.error}>{errorMessage}</p>}
 
-          {/* 06 버튼 규칙 - 비활성 상태는 옅은 톤(#D9D4F5)으로 확실히 구분, opacity 사용 금지 */}
+          {/* 06 버튼 규칙 - 비활성 상태는 옅은 톤(--button-bg-disabled)으로 확실히 구분, opacity 사용 금지 */}
           <button
             className={styles.pillPrimaryBtn}
             onClick={handleLogin}
             disabled={isSubmitting || !isFormValid}
             style={
               isSubmitting || !isFormValid
-                ? { background: '#D9D4F5', color: '#fff', cursor: 'default' }
+                ? { background: 'var(--button-bg-disabled)', color: '#fff', cursor: 'default' }
                 : undefined
             }
           >

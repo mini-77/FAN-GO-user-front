@@ -23,7 +23,7 @@ export default function FenggoIcon({ size = 20 }) {
       <rect x="9.5" y="13" width="28" height="21" rx="10.5" fill="#EDE9FF" />
 
       {/* 화면(스크린) */}
-      <rect x="13.5" y="17.5" width="20" height="12" rx="6" fill="#4A3AC9" />
+      <rect x="13.5" y="17.5" width="20" height="12" rx="6" fill="#4B36D6" />
 
       {/* 눈 - 캡슐형 */}
       <rect x="18.5" y="20.5" width="4" height="6" rx="2" fill="#EDE9FF" />
