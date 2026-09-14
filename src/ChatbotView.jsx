@@ -249,9 +249,9 @@ export default function ChatbotView() {
             type="button"
             className={styles.headerIconBtn}
             onClick={() => navigate(-1)}
-            aria-label="뒤로가기"
+            aria-label="닫기"
           >
-            <Icon name="back" size={16} color="#fff" />
+            <Icon name="close" size={16} color="#fff" />
           </button>
           <div className={styles.headerBotInfo}>
             <div className={styles.headerAvatar}><FenggoIcon size={44} /></div>
@@ -259,18 +259,10 @@ export default function ChatbotView() {
               <span className={styles.headerTitle}>트립 버디</span>
               <span className={styles.headerStatus}>
                 <span className={styles.statusDot} />
-                FENGGO 지금 응답 가능
+                지금 응답 가능
               </span>
             </div>
           </div>
-          <button
-            type="button"
-            className={styles.headerIconBtn}
-            onClick={startNewChat}
-            aria-label="새 대화"
-          >
-            ⟳
-          </button>
         </div>
 
         {/* 대화 히스토리 */}
