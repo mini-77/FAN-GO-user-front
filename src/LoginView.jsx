@@ -50,7 +50,7 @@ function GlobeIcon() {
 
 export default function LoginView() {
   const navigate = useNavigate()
-  const { updateTrip } = useTrip()
+  const { updateTrip, resetTrip } = useTrip()
   const { t, setLanguage: setAppLanguage } = useLanguage()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -139,6 +139,11 @@ export default function LoginView() {
       } else {
         localStorage.removeItem(AUTO_LOGIN_KEY)
       }
+
+      // 로그인할 때마다 브라우저에 남아있던 이전 여행 계획(출발지·숙소·선호 등)을 깨끗하게
+      // 지움 - 안 그러면 다른 계정으로 로그인하거나 오래전에 만들다 만 여행이 남아있을 때
+      // 그 값들이 새 로그인에서도 그대로 남아 보이는 문제가 있었음
+      resetTrip()
 
       try {
         const [meRes, favRes] = await Promise.all([
