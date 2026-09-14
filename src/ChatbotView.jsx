@@ -373,7 +373,7 @@ export default function ChatbotView() {
               disabled={isSending || !input.trim()}
               aria-label="전송"
             >
-              <Icon name="send" size={16} color="#fff" filled />
+              <Icon name="send" size={16} color="#fff" />
             </button>
           </div>
         </div>
