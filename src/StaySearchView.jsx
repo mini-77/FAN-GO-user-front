@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import { useTrip } from './TripContext'
 import AppHeader from './AppHeader'
 import Icon from './Icon'
+import DateRangeSheet from './DateRangeSheet'
 import styles from './StaySearchView.module.css'
 
 function nightsBetween(checkIn, checkOut) {
@@ -456,31 +457,16 @@ export default function StaySearchView() {
                 </p>
               )}
 
-              <div className={styles['date-row']}>
-                <div className={styles['date-field']}>
-                  <label className={styles['field-label']}>체크인</label>
-                  <input
-                    type="date"
-                    className={styles['date-input']}
-                    value={checkIn}
-                    min={allowedMinDate || undefined}
-                    max={allowedMaxDate || undefined}
-                    onChange={(e) => setCheckIn(e.target.value)}
-                  />
-                </div>
-                <span className={styles['date-dash']}>—</span>
-                <div className={styles['date-field']}>
-                  <label className={styles['field-label']}>체크아웃</label>
-                  <input
-                    type="date"
-                    className={styles['date-input']}
-                    value={checkOut}
-                    min={allowedMinDate || undefined}
-                    max={allowedMaxDate || undefined}
-                    onChange={(e) => setCheckOut(e.target.value)}
-                  />
-                </div>
-              </div>
+              <DateRangeSheet
+                checkIn={checkIn}
+                checkOut={checkOut}
+                min={allowedMinDate || undefined}
+                max={allowedMaxDate || undefined}
+                onConfirm={(nextCheckIn, nextCheckOut) => {
+                  setCheckIn(nextCheckIn)
+                  setCheckOut(nextCheckOut)
+                }}
+              />
 
               {stayDateError && (
                 <p className={styles['field-label']} style={{ color: 'var(--color-danger)' }}>

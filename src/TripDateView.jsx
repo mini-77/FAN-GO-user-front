@@ -4,6 +4,7 @@ import { useTrip } from './TripContext'
 import AppHeader from './AppHeader'
 import Icon from './Icon'
 import PickerSheet from './PickerSheet'
+import DateRangeSheet from './DateRangeSheet'
 import styles from './TripDateView.module.css'
 
 function formatDot(isoDate) {
@@ -35,16 +36,6 @@ function addDaysToIso(iso, n) {
   return toLocalIsoDate(d)
 }
 
-// 네이티브 <input type="date">의 min/max는 일부 모바일 브라우저 달력 UI(특히 휠 방식)에서
-// 범위 밖 날짜로 스크롤/선택하는 것 자체를 못 막는 경우가 있어서, 값이 들어온 뒤에도
-// JS에서 한 번 더 허용 범위 안으로 눌러줌 (허용 범위 밖 값이 실제로 저장되지 않게).
-function clampDate(iso, min, max) {
-  if (!iso) return iso
-  if (min && iso < min) return min
-  if (max && iso > max) return max
-  return iso
-}
-
 const SEOUL_CENTER = { lat: 37.5665, lng: 126.978 }
 const SDK_LOAD_TIMEOUT_MS = 6000
 
@@ -66,9 +57,9 @@ export default function TripDateView() {
   const eventDate = tripData.selectedEvent?.event_date
   const allowedMinDate = eventDate ? addDaysToIso(eventDate, -1) : null
   const allowedMaxDate = eventDate ? addDaysToIso(eventDate, 1) : null
-  // 숙소는 백엔드 규칙에 맞춰 이벤트 날짜 기준 ±2일까지 허용
-  const stayAllowedMinDate = eventDate ? addDaysToIso(eventDate, -2) : null
-  const stayAllowedMaxDate = eventDate ? addDaysToIso(eventDate, 2) : null
+  // 숙소 체크인/체크아웃은 사용자가 정한 여행 기간(시작일~종료일) 기준 전후 +1일까지만 허용
+  const stayAllowedMinDate = startDate ? addDaysToIso(startDate, -1) : null
+  const stayAllowedMaxDate = endDate ? addDaysToIso(endDate, 1) : null
 
   // 이벤트가 바뀌었거나 처음 들어왔을 때, 지금 날짜가 허용 범위 밖이면 범위에 맞게 자동 보정.
   // (이벤트 선택은 이 화면보다 먼저 오는 단계라, 보통 여기 도착했을 때 처음 세팅됨)
@@ -821,37 +812,22 @@ export default function TripDateView() {
 
                 {stayAllowedMinDate && stayAllowedMaxDate && (
                   <p className={styles.infoBanner}>
-                    ⓘ 이벤트 기준 {formatDot(stayAllowedMinDate)} ~ {formatDot(stayAllowedMaxDate)} 사이만 가능해요.
+                    ⓘ 여행 기간 기준 {formatDot(stayAllowedMinDate)} ~ {formatDot(stayAllowedMaxDate)} 사이만 가능해요.
                   </p>
                 )}
 
-                <div className={styles['two-col']}>
-                  <div>
-                    <label className={styles['field-label']}>체크인</label>
-                    <PickerSheet
-                      type="date"
-                      className={`${styles.input} ${stayDateError ? styles.inputError : ''}`}
-                      value={stayCheckIn}
-                      min={stayAllowedMinDate || undefined}
-                      max={stayAllowedMaxDate || undefined}
-                      formatValue={formatDot}
-                      placeholder="체크인 날짜를 골라주세요"
-                      onChange={(next) => setStayCheckIn(clampDate(next, stayAllowedMinDate, stayAllowedMaxDate))}
-                    />
-                  </div>
-                  <div>
-                    <label className={styles['field-label']}>체크아웃</label>
-                    <PickerSheet
-                      type="date"
-                      className={`${styles.input} ${stayDateError ? styles.inputError : ''}`}
-                      value={stayCheckOut}
-                      min={stayAllowedMinDate || undefined}
-                      max={stayAllowedMaxDate || undefined}
-                      formatValue={formatDot}
-                      placeholder="체크아웃 날짜를 골라주세요"
-                      onChange={(next) => setStayCheckOut(clampDate(next, stayAllowedMinDate, stayAllowedMaxDate))}
-                    />
-                  </div>
+                <div>
+                  <label className={styles['field-label']}>체크인 · 체크아웃</label>
+                  <DateRangeSheet
+                    checkIn={stayCheckIn}
+                    checkOut={stayCheckOut}
+                    min={stayAllowedMinDate || undefined}
+                    max={stayAllowedMaxDate || undefined}
+                    onConfirm={(nextCheckIn, nextCheckOut) => {
+                      setStayCheckIn(nextCheckIn)
+                      setStayCheckOut(nextCheckOut)
+                    }}
+                  />
                 </div>
 
                 {stayDateError && (
