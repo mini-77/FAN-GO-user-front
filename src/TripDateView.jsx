@@ -96,6 +96,9 @@ export default function TripDateView() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stays, endDate])
 
+  // 숙소를 새로 추가하면 바로 아래 "첫째날 출발지" 섹션이 보이게 살짝 스크롤(사용자 요청)
+  const departureSectionRef = useRef(null)
+
   // ---- 공용 지도 검색 오버레이 (출발지/완료지/숙소 셋 다 이걸로 씀) ----
   const [searchTarget, setSearchTarget] = useState(null) // 'departure' | 'arrival' | 'stay' | null
   const mapRef = useRef(null)
@@ -328,12 +331,19 @@ export default function TripDateView() {
         checkIn: stayCheckIn,
         checkOut: stayCheckOut,
       }
-      if (editingStayId != null) {
+      const isNewStay = editingStayId == null
+      if (!isNewStay) {
         updateTrip({ stays: stays.map((s) => (s.id === editingStayId ? newStay : s)) })
       } else {
         updateTrip({ stays: [...stays, newStay] })
       }
       setSearchTarget(null)
+      // 숙소를 새로 추가했을 때만 - 수정은 이미 보고 있던 위치라 스크롤 안 함
+      if (isNewStay) {
+        setTimeout(() => {
+          departureSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        }, 100)
+      }
       return
     }
 
@@ -454,29 +464,57 @@ export default function TripDateView() {
           <p className={styles.infoBanner}>
             ⓘ 이벤트 날짜 기준 앞뒤 하루씩({eventDate ? `${formatDot(allowedMinDate)} — ${formatDot(allowedMaxDate)}` : '이벤트를 먼저 골라주세요'}) 안에서 원하는 기간만 골라도 돼요. 단, 이벤트 날짜({eventDate ? formatDot(eventDate) : '-'})는 선택한 기간에 꼭 포함돼야 해요.
           </p>
-          {/* 문안/배치 - 날짜·시간을 따로 두 줄로 나열하지 않고, 시작일+시작시간·종료일+종료시간처럼
-              같은 날 기준으로 짝지어 보여줌 */}
-          <div>
-            <label className={styles['field-label']}>시작일 · 종료일</label>
-            <DateRangeSheet
-              checkIn={startDate}
-              checkOut={endDate}
-              min={allowedMinDate || undefined}
-              max={allowedMaxDate || undefined}
-              onConfirm={(nextStart, nextEnd) => {
-                updateDates({ startDate: nextStart, endDate: nextEnd })
-                setFieldErrors((prev) => ({
-                  ...prev,
-                  ...validateDates(nextStart, nextEnd, allowedMinDate, allowedMaxDate, eventDate),
-                }))
-              }}
-            />
-            {(fieldErrors.startDate || fieldErrors.endDate) && (
-              <p className={styles.hint} style={{ color: 'var(--color-danger)' }}>
-                {fieldErrors.startDate || fieldErrors.endDate}
-              </p>
+          {/* 시작일/종료일을 다시 칸 두 개로 분리(사용자 요청) - 둘 중 어느 칸을 눌러도
+              같은 달력이 열리고, 범위를 고르면 두 칸이 한 번에 채워짐(DateRangeSheet의
+              renderTrigger로 트리거 영역만 두 칸으로 대체, 달력 자체는 공유) */}
+          <DateRangeSheet
+            checkIn={startDate}
+            checkOut={endDate}
+            min={allowedMinDate || undefined}
+            max={allowedMaxDate || undefined}
+            onConfirm={(nextStart, nextEnd) => {
+              updateDates({ startDate: nextStart, endDate: nextEnd })
+              setFieldErrors((prev) => ({
+                ...prev,
+                ...validateDates(nextStart, nextEnd, allowedMinDate, allowedMaxDate, eventDate),
+              }))
+            }}
+            renderTrigger={({ open, checkIn, checkOut }) => (
+              <div className={styles['two-col']}>
+                <div>
+                  <label className={styles['field-label']}>시작일</label>
+                  <button
+                    type="button"
+                    className={`${styles.trigger} ${!checkIn ? styles.placeholder : ''}`}
+                    onClick={open}
+                  >
+                    <span className={styles.triggerText}>
+                      {checkIn ? formatDot(checkIn) : '시작일 선택'}
+                    </span>
+                    <Icon name="calendar" size={16} color={checkIn ? 'var(--color-primary-500)' : 'rgba(12, 10, 28, 0.4)'} />
+                  </button>
+                </div>
+                <div>
+                  <label className={styles['field-label']}>종료일</label>
+                  <button
+                    type="button"
+                    className={`${styles.trigger} ${!checkOut ? styles.placeholder : ''}`}
+                    onClick={open}
+                  >
+                    <span className={styles.triggerText}>
+                      {checkOut ? formatDot(checkOut) : '종료일 선택'}
+                    </span>
+                    <Icon name="calendar" size={16} color={checkOut ? 'var(--color-primary-500)' : 'rgba(12, 10, 28, 0.4)'} />
+                  </button>
+                </div>
+              </div>
             )}
-          </div>
+          />
+          {(fieldErrors.startDate || fieldErrors.endDate) && (
+            <p className={styles.hint} style={{ color: 'var(--color-danger)' }}>
+              {fieldErrors.startDate || fieldErrors.endDate}
+            </p>
+          )}
 
           <div className={styles['two-col']} style={{ marginTop: 14 }}>
             <div>
@@ -560,7 +598,7 @@ export default function TripDateView() {
         </div>
 
         {/* 출발지(첫날) - 프리셋 없이 지도에서 직접 검색해서 정확한 위치를 찍어야 함 */}
-        <div className={styles.section}>
+        <div className={styles.section} ref={departureSectionRef}>
           <div className={styles['section-head']}>
             <span className={styles['section-label-strong']}>첫째날 출발지</span>
             <button type="button" className={styles['edit-link']} onClick={() => openSearch('departure')}>
@@ -599,7 +637,7 @@ export default function TripDateView() {
 
         {/* 하단 고정 바가 아니라 콘텐츠의 마지막 항목으로 스크롤에 같이 움직이게 함
             (사용자 요청 - 다른 화면과 동일하게 고정 해제) */}
-        <div className={styles.footer}>
+        <div className={styles.footer} data-bottom-bar="true">
           <button type="button" className={styles['btn-primary']} onClick={goNext}>
             선호 액티비티
           </button>

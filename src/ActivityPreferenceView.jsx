@@ -168,10 +168,6 @@ export default function ActivityPreferenceView() {
               ⚠ 실제 DB 데이터가 아직 없어서, 화면 확인용 미리보기 카테고리를 보여주고 있어요.
             </p>
           )}
-          <p className={styles.hint}>
-            고른 순서가 아니라 개수만 봐요. 많이 고르면 후보가 늘고, 적게 고르면 정확해져요.
-          </p>
-
           {isLoading && <p className={styles.hint}>카테고리 목록을 불러오는 중이에요...</p>}
           {!isLoading && loadError && <p className={styles.hint}>{loadError}</p>}
 
@@ -232,7 +228,7 @@ export default function ActivityPreferenceView() {
 
         {/* 하단 고정 바가 아니라 목록의 마지막 항목으로 스크롤에 같이 움직이게 함
             (사용자 요청 - 다른 화면과 동일하게 고정 해제) */}
-        <div className={styles.footer}>
+        <div className={styles.footer} data-bottom-bar="true">
           <button
             type="button"
             className={`${styles['btn-primary']} ${!isFormValid ? styles.disabled : ''}`}

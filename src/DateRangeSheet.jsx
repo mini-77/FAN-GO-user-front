@@ -43,6 +43,10 @@ export default function DateRangeSheet({
   max,
   onConfirm,
   triggerId,
+  // 시작일/종료일을 화면에 두 칸으로 따로 보여주고 싶을 때 씀 - ({ open, checkIn, checkOut })를
+  // 받아서 트리거 영역 전체를 대신 그려줌(둘 중 어느 칸을 눌러도 같은 달력이 열리고,
+  // 확정하면 onConfirm이 두 값을 한 번에 채움). 안 넘기면 기존처럼 칸 하나로 표시함.
+  renderTrigger,
 }) {
   const [isOpen, setIsOpen] = useState(false)
   const [draftIn, setDraftIn] = useState(checkIn || '')
@@ -106,19 +110,23 @@ export default function DateRangeSheet({
 
   return (
     <>
-      <button
-        type="button"
-        id={triggerId}
-        className={`${styles.trigger} ${!checkIn || !checkOut ? styles.placeholder : ''}`}
-        onClick={open}
-      >
-        <span className={styles.triggerText}>{displayText}</span>
-        <Icon
-          name="calendar"
-          size={16}
-          color={checkIn && checkOut ? 'var(--color-primary-500)' : 'rgba(12, 10, 28, 0.4)'}
-        />
-      </button>
+      {renderTrigger ? (
+        renderTrigger({ open, checkIn, checkOut })
+      ) : (
+        <button
+          type="button"
+          id={triggerId}
+          className={`${styles.trigger} ${!checkIn || !checkOut ? styles.placeholder : ''}`}
+          onClick={open}
+        >
+          <span className={styles.triggerText}>{displayText}</span>
+          <Icon
+            name="calendar"
+            size={16}
+            color={checkIn && checkOut ? 'var(--color-primary-500)' : 'rgba(12, 10, 28, 0.4)'}
+          />
+        </button>
+      )}
 
       {isOpen && (
         <div

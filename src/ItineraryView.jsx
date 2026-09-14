@@ -257,7 +257,7 @@ export default function ItineraryView() {
               className={`${styles['day-tab']} ${activeDay === d ? styles.active : ''}`}
               onClick={() => setActiveDay(d)}
             >
-              {d}일
+              {d}일차
             </button>
           ))}
         </div>
@@ -345,7 +345,7 @@ export default function ItineraryView() {
 
           {/* 하단 고정 바가 아니라 목록의 마지막 항목으로 스크롤에 같이 움직이게 함
               (사용자 요청 - 이 3버튼은 고정될 필요 없이 콘텐츠와 같이 내려가도 됨) */}
-          <div className={styles['action-row']}>
+          <div className={styles['action-row']} data-bottom-bar="true">
             <button
               type="button"
               className={styles['btn-outline']}

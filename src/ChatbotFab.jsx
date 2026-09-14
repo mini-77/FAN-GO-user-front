@@ -27,6 +27,10 @@ function computeBottomBarClearance() {
   bars.forEach((el) => {
     const rect = el.getBoundingClientRect()
     if (rect.height === 0) return
+    // 일부 화면은 이 바(하단 액션 버튼)가 고정이 아니라 콘텐츠와 같이 스크롤됨 -
+    // 지금 화면 밖으로 나가 있으면(스크롤로 안 보이면) 계산에서 빼야, 챗봇 버튼이
+    // 스크롤해서 다시 나타난 버튼과 겹치지 않고 안 보일 땐 원래 자리로 돌아감
+    if (rect.bottom <= 0 || rect.top >= window.innerHeight) return
     if (minTop === null || rect.top < minTop) minTop = rect.top
   })
   if (minTop === null) return null

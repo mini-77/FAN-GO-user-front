@@ -349,7 +349,7 @@ export default function EditProfileView() {
 
           {/* 하단 고정 바가 아니라 콘텐츠의 마지막 항목으로 스크롤에 같이 움직이게 함
               (사용자 요청 - 다른 화면과 동일하게 고정 해제) */}
-          <div className={styles.footer}>
+          <div className={styles.footer} data-bottom-bar="true">
             <button type="button" className={styles['save-btn']} onClick={handleSave} disabled={isSaving}>
               {isSaving ? '저장 중...' : '저장'}
             </button>

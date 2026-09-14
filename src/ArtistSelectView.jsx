@@ -237,7 +237,7 @@ export default function ArtistSelectView() {
 
             {/* 하단 고정 바가 아니라 목록의 마지막 항목으로 스크롤에 같이 움직이게 함
                 (사용자 요청 - 다른 화면과 동일하게 고정 해제) */}
-            <div className={styles.footer}>
+            <div className={styles.footer} data-bottom-bar="true">
               <span className={styles['footer-count']}>{selected.size}팀 선택했어요</span>
               <button
                 type="button"

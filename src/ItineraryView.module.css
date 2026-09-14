@@ -59,7 +59,7 @@
 .day-tabs {
   display: flex;
   gap: 2px;
-  margin: 12px 16px;
+  margin: 8px 16px 10px;
   padding: 4px;
   background: var(--color-primary-50);
   border-radius: 12px;
@@ -92,9 +92,12 @@
   display: block;
 }
 
+/* 지도를 더 크게 키움(사용자 요청) - 마커가 다닥다닥 붙어 경로가 안 보이던 문제.
+   지도 영역이 커지면 같은 동선을 fitBounds할 때 자동으로 덜 축소된(더 확대된)
+   상태로 보여서, 헤더·탭 쪽 여백을 줄여 그만큼을 지도 쪽으로 옮김 */
 .map-area {
   position: relative;
-  height: 220px;
+  height: 280px;
   min-height: 120px;
   flex-shrink: 1;
   background: var(--color-primary-100);
@@ -104,7 +107,7 @@
 /* 화면 세로가 짧을 땐 지도를 줄여서라도 목록(.timeline)이 최소 높이를 확보하게 함 */
 @media (max-height: 700px) {
   .map-area {
-    height: 150px;
+    height: 190px;
   }
 }
 
