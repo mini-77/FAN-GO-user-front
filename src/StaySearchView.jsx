@@ -66,10 +66,11 @@ export default function StaySearchView() {
   const [locationError, setLocationError] = useState('')
   const [dateRangeError, setDateRangeError] = useState('')
 
-  // 백엔드 규칙: accom.check_in_dt/check_out_dt는 이벤트 날짜(event_date) 기준 ±2일 안에 있어야 함.
-  const eventDate = tripData.selectedEvent?.event_date
-  const allowedMinDate = eventDate ? addDaysToIso(eventDate, -2) : null
-  const allowedMaxDate = eventDate ? addDaysToIso(eventDate, 2) : null
+  // 숙소 체크인/체크아웃은 TripDateView에서 정한 여행 기간(시작일~종료일) 기준 전후 +1일까지만
+  // 고를 수 있게 함 - 여행 기간이 3일이면 숙소는 그 앞뒤로 하루씩 여유를 두고 잡을 수 있는 정도로 제한.
+  const { startDate: tripStartDate, endDate: tripEndDate } = tripData.tripDates || {}
+  const allowedMinDate = tripStartDate ? addDaysToIso(tripStartDate, -1) : null
+  const allowedMaxDate = tripEndDate ? addDaysToIso(tripEndDate, 1) : null
 
   function validateStayDates(nextCheckIn, nextCheckOut) {
     if (!allowedMinDate || !allowedMaxDate) return ''
@@ -451,7 +452,7 @@ export default function StaySearchView() {
 
               {allowedMinDate && allowedMaxDate && (
                 <p className={styles['field-label']}>
-                  이벤트 기준 {allowedMinDate.slice(5)} ~ {allowedMaxDate.slice(5)} 사이만 가능해요.
+                  여행 기간 기준 {allowedMinDate.slice(5)} ~ {allowedMaxDate.slice(5)} 사이만 가능해요.
                 </p>
               )}
 
