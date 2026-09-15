@@ -491,7 +491,7 @@ export default function TripDateView() {
         <div className={styles.scrollArea}>
         <div className={styles.section}>
           <p className={styles.infoBanner}>
-            ⓘ 이벤트 날짜 기준 앞뒤 하루씩({eventDate ? `${formatDot(allowedMinDate)} — ${formatDot(allowedMaxDate)}` : '이벤트를 먼저 골라주세요'}) 안에서 원하는 기간만 골라도 돼요. 단, 이벤트 날짜({eventDate ? formatDot(eventDate) : '-'})는 선택한 기간에 꼭 포함돼야 해요.
+            <span className={styles.infoBannerIcon}>ⓘ</span> 이벤트 날짜 기준 앞뒤 하루씩({eventDate ? `${formatDot(allowedMinDate)} — ${formatDot(allowedMaxDate)}` : '이벤트를 먼저 골라주세요'}) 안에서 원하는 기간만 골라도 돼요. 단, 이벤트 날짜({eventDate ? formatDot(eventDate) : '-'})는 선택한 기간에 꼭 포함돼야 해요.
           </p>
           {/* 시작일/종료일을 다시 칸 두 개로 분리(사용자 요청) - 둘 중 어느 칸을 눌러도
               같은 달력이 열리고, 범위를 고르면 두 칸이 한 번에 채워짐(DateRangeSheet의
@@ -670,8 +670,13 @@ export default function TripDateView() {
         )}
 
         {/* 하단 고정 바가 아니라 콘텐츠의 마지막 항목으로 스크롤에 같이 움직이게 함
-            (사용자 요청 - 다른 화면과 동일하게 고정 해제) */}
+            (사용자 요청 - 다른 화면과 동일하게 고정 해제)
+            버튼 2개(디자인 요청) - 왼쪽은 이전 화면(행사 선택)으로, 오른쪽은 다음 화면(선호
+            액티비티)으로. "이전:"/"다음:" 같은 접두어 없이 이동할 화면 이름만 표기 */}
         <div className={styles.footer} data-bottom-bar="true">
+          <button type="button" className={styles['btn-outline']} onClick={() => navigate('/trip/events')}>
+            행사 선택
+          </button>
           <button type="button" className={styles['btn-primary']} onClick={goNext}>
             선호 액티비티
           </button>
@@ -861,7 +866,7 @@ export default function TripDateView() {
 
                 {stayAllowedMinDate && stayAllowedMaxDate && (
                   <p className={styles.infoBanner}>
-                    ⓘ 여행 기간 기준 {formatDot(stayAllowedMinDate)} ~ {formatDot(stayAllowedMaxDate)} 사이만 가능해요.
+                    <span className={styles.infoBannerIcon}>ⓘ</span> 여행 기간 기준 {formatDot(stayAllowedMinDate)} ~ {formatDot(stayAllowedMaxDate)} 사이만 가능해요.
                   </p>
                 )}
 
