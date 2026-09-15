@@ -182,7 +182,8 @@ export default function EventSelectView() {
             직접 URL 진입으로 왔을 때도(히스토리가 없어도) 항상 올바른 이전 화면으로 감 */}
         <AppHeader onBack={() => navigate('/home')} />
         <div className={styles.header}>
-          <h1 className={styles.title}>어떤 이벤트에 참여하시나요?</h1>
+          <h1 className={styles.title}>어떤 행사에 참여하시나요?</h1>
+          <p className={styles.subcopy}>참여하시는 행사의 아티스트와 행사를 선택해 주세요.</p>
           <div className={styles['progress-bar']}>
             <div className={styles['progress-fill']} style={{ width: '25%' }} />
           </div>
@@ -194,7 +195,7 @@ export default function EventSelectView() {
 
         <div className={styles['filter-section']}>
           <div>
-            <label className={styles['field-label']}>그룹 · 아티스트</label>
+            <label className={styles['field-label']}>아티스트 그룹 선택</label>
             <select
               className={styles.select}
               value={groupFilter}
@@ -208,15 +209,20 @@ export default function EventSelectView() {
               ))}
             </select>
           </div>
-          <p className={styles.hint}>
-            가입할 때 고른 팀의 콘서트와 공식 팬미팅만 보여 드려요. 하나만 고를 수 있고, 고른 이벤트는
-            시작일시와 주소가 그대로 지도에 꽂혀요.
-          </p>
         </div>
 
         <div className={styles['event-list']}>
+          <label className={styles['field-label']} style={{ padding: '0 16px', display: 'block' }}>
+            참여 행사 선택
+          </label>
           {!groupFilter && (
             <p className={styles.hint}>위에서 아티스트를 먼저 선택해주세요.</p>
+          )}
+          {groupFilter && (
+            <p className={styles.hint}>
+              가입할 때 고른 팀의 콘서트와 공식 팬미팅만 보여 드려요. 하나만 고를 수 있고, 고른 이벤트는
+              시작일시와 주소가 그대로 지도에 꽂혀요.
+            </p>
           )}
           {groupFilter && isLoading && <p className={styles.hint}>이벤트 목록을 불러오는 중이에요...</p>}
           {groupFilter && !isLoading && loadError && <p className={styles.hint}>{loadError}</p>}
@@ -265,6 +271,11 @@ export default function EventSelectView() {
           )}
 
           <div className={styles.footer} data-bottom-bar="true">
+            {selectedCardData && (
+              <p className={styles['footer-summary']}>
+                {selectedCardData.title} · {selectedCardData.dateLabel} · {selectedCardData.timeLabel}
+              </p>
+            )}
             <button
               type="button"
               className={styles['btn-primary']}
@@ -272,7 +283,7 @@ export default function EventSelectView() {
               onClick={goNext}
               disabled={!selectedCardData}
             >
-              기간·숙소
+              추천 기간 · 숙소 선택
             </button>
           </div>
         </div>
