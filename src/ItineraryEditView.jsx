@@ -449,6 +449,14 @@ export default function ItineraryEditView() {
                               </span>
                             </div>
                             <div className={styles['candidate-action']}>
+                              {c.relevance != null && (
+                                <span
+                                  className={styles['candidate-score']}
+                                  style={{ color: scoreColor(Math.round(c.relevance * 100)) }}
+                                >
+                                  {Math.round(c.relevance * 100)}
+                                </span>
+                              )}
                               <button
                                 type="button"
                                 className={styles['candidate-swap-btn']}
