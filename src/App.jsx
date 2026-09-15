@@ -26,6 +26,7 @@ import RequireEvent from './RequireEvent'
 import ChatbotView from './ChatbotView'
 import ChatbotFab from './ChatbotFab'
 import ScrollToTop from './ScrollToTop'
+import TokenRefreshScheduler from './TokenRefreshScheduler'
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
       <LanguageProvider>
         <BrowserRouter>
           <ScrollToTop />
+          <TokenRefreshScheduler />
           <Routes>
               <Route path="/" element={<SplashView />} />
               <Route path="/home" element={<HomeView />} />
