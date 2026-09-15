@@ -193,7 +193,7 @@ export default function PlaceDetailModal({ eventNo, tripRouteEventNo, liked: ini
                   막대 5개 중 (cong_level+1)개를 채우는 방식으로 표현. 데이터가 없으면(has_data:false)
                   기존처럼 "준비 중"으로 표시 */}
               <div className={styles['congestion-row']}>
-                <span className={styles['congestion-label']}>예상 혼잡도</span>
+                <span className={styles['congestion-label']}>현시각 예상 혼잡도</span>
                 <div className={styles['congestion-bars']}>
                   {[0, 1, 2, 3, 4].map((i) => (
                     <div
