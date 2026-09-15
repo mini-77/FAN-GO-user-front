@@ -179,6 +179,10 @@
   display: flex;
   flex-direction: column;
   gap: 2px;
+  /* 그리드 아이템은 기본적으로 min-width: auto(=콘텐츠 실제 폭)라서, 번역된 텍스트가
+     길어지면(영어 등) 카드가 제 칸 밖으로 밀려나며 2열 그리드 자체가 깨졌음.
+     0으로 낮춰서 카드가 칸 폭에 맞게 줄어들고, 텍스트는 줄바꿈되게 함. */
+  min-width: 0;
 }
 
 .category-card.locked {
@@ -191,12 +195,17 @@
   font-size: 13.5px;
   font-weight: 700;
   color: var(--color-ink-900);
+  overflow-wrap: break-word;
+  /* rank-badge가 카드 우측 상단에 절대 위치로 겹치므로, 긴 이름이 그 자리까지
+     차지하지 않게 여백을 비워둠 */
+  padding-right: 34px;
 }
 
 .category-sub {
   font-size: 11px;
   font-weight: 400;
   color: var(--color-ink-600);
+  overflow-wrap: break-word;
 }
 
 .rank-badge {
