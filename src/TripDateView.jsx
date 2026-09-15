@@ -602,7 +602,7 @@ export default function TripDateView() {
           <div className={styles['stay-list']}>
             {stays.map((stay) => (
               <div key={stay.id} className={styles['stay-row']}>
-                <div>
+                <div className={styles['stay-info']}>
                   <p className={styles['stay-name']}>{stay.name}</p>
                   <p className={styles['stay-dates']}>
                     {formatDot(stay.checkIn)} — {formatDot(stay.checkOut)} ·{' '}
