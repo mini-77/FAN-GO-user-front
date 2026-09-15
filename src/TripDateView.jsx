@@ -736,7 +736,7 @@ export default function TripDateView() {
                 onClick={() => runSearch(query)}
                 aria-label="검색"
               >
-                <Icon name="search" size={16} color="#fff" />
+                <Icon name="search" size={18} color="var(--color-primary-400)" />
               </button>
             </div>
 
