@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTrip } from './TripContext'
+import { useLanguage } from './LanguageContext'
 import { safeText } from './api'
 import AppHeader from './AppHeader'
 import styles from './ArtistSelectView.module.css'
@@ -21,7 +22,7 @@ function normalizeArtist(raw, index) {
     dotColor: DOT_COLORS[index % DOT_COLORS.length],
     debut: raw.debut_dt,
     agency: raw.agency,
-    memberCount: memberNames.length > 0 ? `${memberNames.length}인조` : null,
+    memberCount: memberNames.length > 0 ? memberNames.length : null,
     members: memberNames.join(' · '),
   }
 }
@@ -32,6 +33,7 @@ function normalizeArtist(raw, index) {
 export default function ArtistSelectView() {
   const navigate = useNavigate()
   const { tripData, updateTrip } = useTrip()
+  const { t } = useLanguage()
   const signupData = tripData.account
 
   const [selected, setSelected] = useState(new Set())
@@ -60,13 +62,13 @@ export default function ArtistSelectView() {
         const res = await fetch('/api/artist-groups', {
           credentials: 'include',
         })
-        if (!res.ok) throw new Error('아티스트 목록을 불러오지 못했어요.')
+        if (!res.ok) throw new Error('Failed to load artist list.')
         const data = await res.json()
         if (!cancelled) {
           setArtists(data.map(normalizeArtist))
         }
       } catch (e) {
-        if (!cancelled) setLoadError('아티스트 목록을 불러오지 못했어요. 잠시 후 다시 시도해주세요.')
+        if (!cancelled) setLoadError(t('artistSelect.loadError'))
       } finally {
         if (!cancelled) setIsLoading(false)
       }
@@ -128,7 +130,7 @@ export default function ArtistSelectView() {
             : detail?.message || (Array.isArray(detail) ? detail[0]?.msg : null)
         // 08 에러 화면 규칙 - Pydantic 검증 메시지(detail[0].msg)는 기본이 영어라서
         // 사용자에게 그대로 보여주면 안 됨 (보안·신뢰 원칙)
-        setSubmitError(safeText(message, '가입 중 문제가 생겼어요. 잠시 후 다시 시도해주세요.'))
+        setSubmitError(safeText(message, t('artistSelect.signupError')))
         setIsSubmitting(false)
         return
       }
@@ -158,7 +160,7 @@ export default function ArtistSelectView() {
       })
       navigate('/signup/success')
     } catch (e) {
-      setSubmitError('서버에 연결할 수 없어요. 잠시 후 다시 시도해주세요.')
+      setSubmitError(t('login.connectionError'))
       setIsSubmitting(false)
     }
   }
@@ -170,23 +172,20 @@ export default function ArtistSelectView() {
         <div className={styles.header}>
           <div className={styles['header-row']}>
           </div>
-          <h1 className={styles.title}>좋아하는 아티스트를 골라주세요</h1>
-          <p className={styles.subtitle}>
-            고른 팀의 콘서트와 공식 팬미팅만 일정에 올라오고, 성지와 굿즈샵도 그 팀 기준으로
-            추천해요. 최대 2팀까지 고를 수 있어요.
-          </p>
+          <h1 className={styles.title}>{t('onboarding.selectArtist')}</h1>
+          <p className={styles.subtitle}>{t('artistSelect.subtitle')}</p>
         </div>
 
         <div className={styles.section}>
           <div className={styles['section-head']}>
-            <span className={styles['section-label']}>팬덤 선택</span>
+            <span className={styles['section-label']}>{t('artistSelect.fandomSelect')}</span>
             <span className={styles['section-count']}>
               {selected.size} / {MAX_SELECTABLE}
             </span>
           </div>
 
           <div className={styles['artist-list']}>
-            {isLoading && <p className={styles.hint}>아티스트 목록을 불러오는 중이에요...</p>}
+            {isLoading && <p className={styles.hint}>{t('artistSelect.loading')}</p>}
             {!isLoading && loadError && <p className={styles.hint}>{loadError}</p>}
             {!isLoading &&
               !loadError &&
@@ -216,14 +215,14 @@ export default function ArtistSelectView() {
                   {isExpanded && (
                     <div className={styles['artist-detail']}>
                       <div className={styles['detail-row']}>
-                        <span className={styles['detail-label']}>데뷔</span>
+                        <span className={styles['detail-label']}>{t('artistSelect.debut')}</span>
                         <span className={styles['detail-value']}>{artist.debut}</span>
                         <span className={styles['detail-agency']}>{artist.agency}</span>
                       </div>
                       {artist.memberCount && (
                         <div className={styles['detail-row']}>
-                          <span className={styles['detail-label']}>멤버</span>
-                          <span className={styles['detail-value']}>{artist.memberCount}</span>
+                          <span className={styles['detail-label']}>{t('artistSelect.members')}</span>
+                          <span className={styles['detail-value']}>{t('artistSelect.memberCountFormat')(artist.memberCount)}</span>
                         </div>
                       )}
                       {artist.members && (
@@ -238,14 +237,14 @@ export default function ArtistSelectView() {
             {/* 하단 고정 바가 아니라 목록의 마지막 항목으로 스크롤에 같이 움직이게 함
                 (사용자 요청 - 다른 화면과 동일하게 고정 해제) */}
             <div className={styles.footer} data-bottom-bar="true">
-              <span className={styles['footer-count']}>{selected.size}팀 선택했어요</span>
+              <span className={styles['footer-count']}>{t('artistSelect.selectedCountFormat')(selected.size)}</span>
               <button
                 type="button"
                 className={`${styles['btn-primary']} ${!isFormValid || isSubmitting ? styles.disabled : ''}`}
                 onClick={handleComplete}
                 disabled={!isFormValid || isSubmitting}
               >
-                {isSubmitting ? '가입 중...' : '가입 완료'}
+                {isSubmitting ? t('artistSelect.signingUp') : t('artistSelect.completeSignup')}
               </button>
             </div>
           </div>

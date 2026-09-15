@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTrip } from './TripContext'
 import { apiFetch, safeErrorMessage, safeText } from './api'
+import { useLanguage } from './LanguageContext'
 import AppHeader from './AppHeader'
 import BottomNav from './BottomNav'
 import styles from './EditProfileView.module.css'
@@ -13,6 +14,7 @@ const ALLOWED_PHOTO_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp
 export default function EditProfileView() {
   const navigate = useNavigate()
   const { tripData, updateTrip, resetTripPlanning } = useTrip()
+  const { t } = useLanguage()
   const account = tripData.account || {}
 
   const [nickname, setNickname] = useState(account.nickname || '')
@@ -40,7 +42,7 @@ export default function EditProfileView() {
         apiFetch('/artist-groups'),
       ])
       if (!natRes.ok || !langRes.ok || !artistRes.ok) {
-        throw new Error('설정에 필요한 목록을 불러오지 못했어요.')
+        throw new Error(t('editProfile.loadListFailed'))
       }
       const natData = await natRes.json()
       const langData = await langRes.json()
@@ -53,7 +55,7 @@ export default function EditProfileView() {
       setLangs(langData)
       setArtistGroups(artistData)
     } catch (e) {
-      setLoadError(safeErrorMessage(e, '설정에 필요한 목록을 불러오지 못했어요. 잠시 후 다시 시도해주세요.'))
+      setLoadError(safeErrorMessage(e, t('editProfile.loadListFailedRetry')))
     } finally {
       setIsLoading(false)
     }
@@ -86,7 +88,7 @@ export default function EditProfileView() {
     setSaveError('')
 
     if (!nickname.trim()) {
-      setSaveError('닉네임을 입력해 주세요.')
+      setSaveError(t('editProfile.nicknameRequired'))
       return
     }
 
@@ -111,7 +113,7 @@ export default function EditProfileView() {
       })
 
       if (res.status === 401) {
-        setSaveError('로그인이 만료됐어요. 다시 로그인해주세요.')
+        setSaveError(t('editProfile.sessionExpired'))
         setIsSaving(false)
         return
       }
@@ -119,7 +121,7 @@ export default function EditProfileView() {
       if (!res.ok) {
         const data = await res.json().catch(() => null)
         const detail = data?.detail
-        let message = '저장 중 문제가 생겼어요. 잠시 후 다시 시도해주세요.'
+        let message = t('editProfile.saveFailed')
         if (typeof detail === 'string') message = detail
         else if (detail?.message) message = detail.message
         else if (Array.isArray(detail) && detail[0]?.msg) message = detail[0].msg
@@ -157,7 +159,7 @@ export default function EditProfileView() {
       }
       navigate('/account')
     } catch (e) {
-      setSaveError('서버에 연결할 수 없어요. 잠시 후 다시 시도해주세요.')
+      setSaveError(t('editProfile.connectionError'))
       setIsSaving(false)
     }
   }
@@ -170,12 +172,12 @@ export default function EditProfileView() {
 
     // 서버까지 보내기 전에 미리 걸러줌 (백엔드 명세: jpg/png/webp, 5MB 이하)
     if (!ALLOWED_PHOTO_TYPES.includes(file.type)) {
-      setSaveError('jpg, png, webp 형식의 사진만 올릴 수 있어요.')
+      setSaveError(t('editProfile.photoTypeError'))
       e.target.value = ''
       return
     }
     if (file.size > MAX_PHOTO_BYTES) {
-      setSaveError('사진 용량은 5MB 이하만 가능해요.')
+      setSaveError(t('editProfile.photoSizeError'))
       e.target.value = ''
       return
     }
@@ -190,7 +192,7 @@ export default function EditProfileView() {
         body: formData,
       })
       if (res.status === 401) {
-        setSaveError('로그인이 만료됐어요. 다시 로그인해주세요.')
+        setSaveError(t('editProfile.sessionExpired'))
         return
       }
       if (!res.ok) {
@@ -198,14 +200,14 @@ export default function EditProfileView() {
         const detail = data?.detail
         const rawMessage = typeof detail === 'string' ? detail : detail?.message
         // 08 에러 화면 규칙 - 백엔드 detail이 영어 기술 메시지일 수 있어 그대로 노출하지 않음
-        setSaveError(safeText(rawMessage, '사진 업로드에 실패했어요.'))
+        setSaveError(safeText(rawMessage, t('editProfile.photoUploadFailed')))
         return
       }
       const me = await res.json()
       setProfileImg(me.profile_img)
       updateTrip({ account: { ...account, profileImg: me.profile_img } })
     } catch (e) {
-      setSaveError('서버에 연결할 수 없어요. 잠시 후 다시 시도해주세요.')
+      setSaveError(t('editProfile.connectionError'))
     } finally {
       setIsUploadingPhoto(false)
       e.target.value = ''
@@ -217,9 +219,9 @@ export default function EditProfileView() {
       <div className={styles.card}>
         <AppHeader />
         <div className={styles.header}>
-          <span className={styles.title}>정보수정</span>
+          <span className={styles.title}>{t('editProfile.title')}</span>
           <button type="button" className={styles['save-btn-top']} onClick={handleSave} disabled={isSaving}>
-            {isSaving ? '저장 중...' : '저장'}
+            {isSaving ? t('editProfile.saving') : t('editProfile.save')}
           </button>
         </div>
 
@@ -227,7 +229,7 @@ export default function EditProfileView() {
           <div style={{ padding: '0 22px' }}>
             <p className={styles.hint} style={{ color: 'var(--color-danger)' }}>{loadError}</p>
             <button type="button" className={styles['retry-btn']} onClick={loadOptions}>
-              다시 시도
+              {t('common.retry')}
             </button>
           </div>
         )}
@@ -237,7 +239,7 @@ export default function EditProfileView() {
             {profileImg ? (
               <img
                 src={profileImg.startsWith('http') ? profileImg : `/api${profileImg}`}
-                alt="프로필 사진"
+                alt={t('mypage.profileAlt')}
                 className={styles.avatar}
                 style={{ objectFit: 'cover' }}
               />
@@ -245,7 +247,7 @@ export default function EditProfileView() {
               <div className={styles.avatar}>{(nickname || 'U').slice(0, 2).toUpperCase()}</div>
             )}
             <label className={styles['avatar-change-btn']}>
-              {isUploadingPhoto ? '업로드 중...' : '프로필 사진 변경'}
+              {isUploadingPhoto ? t('editProfile.uploading') : t('mypage.changeProfilePicture')}
               <input
                 type="file"
                 accept="image/jpeg,image/jpg,image/png,image/webp"
@@ -257,18 +259,18 @@ export default function EditProfileView() {
           </div>
 
           <div className={styles.field}>
-            <label className={styles['field-label']}>닉네임</label>
+            <label className={styles['field-label']}>{t('auth.nickname')}</label>
             <input
               className={styles['field-input']}
               type="text"
-              placeholder="표시 이름"
+              placeholder={t('editProfile.displayNamePlaceholder')}
               value={nickname}
               onChange={(e) => setNickname(e.target.value)}
             />
           </div>
 
           <div className={styles.field}>
-            <label className={styles['field-label']}>이메일</label>
+            <label className={styles['field-label']}>{t('auth.email')}</label>
             <input
               className={`${styles['field-input']} ${styles.disabled}`}
               type="text"
@@ -278,14 +280,14 @@ export default function EditProfileView() {
           </div>
 
           <div className={styles.field}>
-            <label className={styles['field-label']}>국적</label>
+            <label className={styles['field-label']}>{t('editProfile.nationality')}</label>
             <select
               className={styles['field-select']}
               value={nationality}
               onChange={(e) => setNationality(e.target.value)}
               disabled={isLoading}
             >
-              <option value="">국적 선택</option>
+              <option value="">{t('editProfile.selectNationality')}</option>
               {nationalities.map((n) => (
                 <option key={n.nationality_no} value={n.nationality_no}>
                   {n.nationality_nm}
@@ -295,25 +297,25 @@ export default function EditProfileView() {
           </div>
 
           <div className={styles['pw-block']}>
-            <span className={styles['section-label']}>비밀번호 변경</span>
-            <p className={styles.infoBannerMuted}>비밀번호 변경 기능은 아직 준비 중이에요 (관련 API 대기 중).</p>
+            <span className={styles['section-label']}>{t('editProfile.changePassword')}</span>
+            <p className={styles.infoBannerMuted}>{t('editProfile.passwordComingSoon')}</p>
             <div className={styles.field}>
-              <label className={styles['field-label']}>현재 비밀번호</label>
+              <label className={styles['field-label']}>{t('editProfile.currentPassword')}</label>
               <input
                 className={styles['field-input']}
                 type="password"
-                placeholder="현재 비밀번호"
+                placeholder={t('editProfile.currentPassword')}
                 value={currentPw}
                 onChange={(e) => setCurrentPw(e.target.value)}
                 disabled
               />
             </div>
             <div className={styles.field}>
-              <label className={styles['field-label']}>새 비밀번호</label>
+              <label className={styles['field-label']}>{t('editProfile.newPassword')}</label>
               <input
                 className={styles['field-input']}
                 type="password"
-                placeholder="8자 이상, 영문+숫자"
+                placeholder={t('editProfile.newPasswordPlaceholder')}
                 value={newPw}
                 onChange={(e) => setNewPw(e.target.value)}
                 disabled
@@ -322,7 +324,7 @@ export default function EditProfileView() {
           </div>
 
           <div className={styles['artist-block']}>
-            <span className={styles['section-label']}>관심 아티스트</span>
+            <span className={styles['section-label']}>{t('editProfile.favoriteArtists')}</span>
             <div className={styles['artist-tags']}>
               {artistGroups.map((a) => {
                 const isActive = selectedArtistIds.has(a.artist_group_no)
@@ -338,7 +340,7 @@ export default function EditProfileView() {
                 )
               })}
             </div>
-            <p className={styles.hint}>고른 팀 기준으로 이벤트와 성지가 다시 정렬돼요.</p>
+            <p className={styles.hint}>{t('editProfile.artistHint')}</p>
           </div>
 
           {saveError && (
@@ -351,7 +353,7 @@ export default function EditProfileView() {
               (사용자 요청 - 다른 화면과 동일하게 고정 해제) */}
           <div className={styles.footer} data-bottom-bar="true">
             <button type="button" className={styles['save-btn']} onClick={handleSave} disabled={isSaving}>
-              {isSaving ? '저장 중...' : '저장'}
+              {isSaving ? t('editProfile.saving') : t('editProfile.save')}
             </button>
           </div>
         </div>

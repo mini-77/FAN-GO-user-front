@@ -1,21 +1,14 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { apiFetch, safeText } from './api'
+import { useLanguage } from './LanguageContext'
 import BottomNav from './BottomNav'
 import FenggoIcon from './FenggoIcon'
 import Icon from './Icon'
 import styles from './ChatbotView.module.css'
 
-const WELCOME_MESSAGE = {
-  role: 'assistant',
-  content: '안녕! 난 너의 완벽한 성지순례를 도울 트립 버디 팽고야 💜 궁금한 장소나 아티스트를 편하게 물어봐!',
-}
-
-// 빠른 질문 칩 - 누르면 그 문장 그대로 전송됨 (목업 기준 고정 문구)
-const QUICK_REPLIES = ['영업시간 알려줘', '여기에 어떤 에피소드가 있어?']
-
 // 세션 목록의 last_message_at을 "방금 / N분 전 / 어제 / N일 전 / 지난주" 식으로 표시
-function formatRelativeTime(isoString) {
+function formatRelativeTime(isoString, t) {
   if (!isoString) return ''
   const then = new Date(isoString)
   const now = new Date()
@@ -24,40 +17,38 @@ function formatRelativeTime(isoString) {
   const diffHour = Math.floor(diffMin / 60)
   const diffDay = Math.floor(diffHour / 24)
 
-  if (diffMin < 1) return '방금'
-  if (diffMin < 60) return `${diffMin}분 전`
-  if (diffHour < 24) return `${diffHour}시간 전`
-  if (diffDay === 1) return '어제'
-  if (diffDay < 7) return `${diffDay}일 전`
-  return '지난주'
+  if (diffMin < 1) return t('chat.justNow')
+  if (diffMin < 60) return t('chat.minutesAgo')(diffMin)
+  if (diffHour < 24) return t('chat.hoursAgo')(diffHour)
+  if (diffDay === 1) return t('chat.yesterday')
+  if (diffDay < 7) return t('chat.daysAgo')(diffDay)
+  return t('chat.lastWeek')
 }
 
 // 혼잡도 관련 답변일 때 보여줄 막대그래프 카드.
 // ⚠️ /chat API가 시간대별 숫자를 안 내려줘서, 지금은 화면 모양만 보여주는 예시 데이터임.
 // 백엔드가 실제 시간대별 혼잡도 수치를 내려주게 되면 이 하드코딩된 값을 그 데이터로 바꾸면 됨.
-const DEMO_CONGESTION = {
-  placeName: '고척 스카이돔 서측 광장',
-  dayLabel: '토요일',
-  hours: [
-    { label: '10시', level: 1 },
-    { label: '12시', level: 2 },
-    { label: '14시', level: 2 },
-    { label: '16시', level: 3 },
-    { label: '18시', level: 3 },
-    { label: '20시', level: 2 },
-  ],
+function buildDemoCongestion(t) {
+  return {
+    placeName: t('chat.demoPlaceName'),
+    dayLabel: t('chat.demoDayLabel'),
+    hours: [10, 12, 14, 16, 18, 20].map((h, i) => ({
+      label: t('chat.demoHourLabel')(h),
+      level: [1, 2, 2, 3, 3, 2][i],
+    })),
+  }
 }
 
 // 01 컬러 규칙 — 여유/혼잡 같은 점수·상태 색은 브랜드색이 아니라 Success/Warning/Danger로 고정
 const LEVEL_COLOR = { 1: 'var(--color-success)', 2: 'var(--color-warning)', 3: 'var(--color-danger)' }
 const LEVEL_HEIGHT = { 1: 18, 2: 34, 3: 52 }
 
-function CongestionCard({ data }) {
+function CongestionCard({ data, t }) {
   return (
     <div className={styles.congestionCard}>
-      <span className={styles.congestionEyebrow}>평균 혼잡도 · {data.dayLabel}</span>
+      <span className={styles.congestionEyebrow}>{t('chat.congestionEyebrow')(data.dayLabel)}</span>
       <span className={styles.congestionTitle}>{data.placeName}</span>
-      <span className={styles.congestionDesc}>이 시간대는 보통 붐비는 편이에요.</span>
+      <span className={styles.congestionDesc}>{t('chat.congestionDesc')}</span>
       <div className={styles.congestionChart}>
         {data.hours.map((h) => (
           <div key={h.label} className={styles.congestionBarCol}>
@@ -71,13 +62,13 @@ function CongestionCard({ data }) {
       </div>
       <div className={styles.congestionLegend}>
         <span className={styles.legendItem}>
-          <span className={styles.legendDot} style={{ background: LEVEL_COLOR[1] }} /> 여유
+          <span className={styles.legendDot} style={{ background: LEVEL_COLOR[1] }} /> {t('chat.legendCalm')}
         </span>
         <span className={styles.legendItem}>
-          <span className={styles.legendDot} style={{ background: LEVEL_COLOR[2] }} /> 보통
+          <span className={styles.legendDot} style={{ background: LEVEL_COLOR[2] }} /> {t('chat.legendNormal')}
         </span>
         <span className={styles.legendItem}>
-          <span className={styles.legendDot} style={{ background: LEVEL_COLOR[3] }} /> 붐빔
+          <span className={styles.legendDot} style={{ background: LEVEL_COLOR[3] }} /> {t('chat.legendCrowded')}
         </span>
       </div>
     </div>
@@ -86,6 +77,14 @@ function CongestionCard({ data }) {
 
 export default function ChatbotView() {
   const navigate = useNavigate()
+  const { t } = useLanguage()
+
+  const welcomeMessage = useMemo(
+    () => ({ role: 'assistant', content: t('chat.welcomeMessage') }),
+    [t]
+  )
+  // 빠른 질문 칩 - 누르면 그 문장 그대로 전송됨 (목업 기준 고정 문구)
+  const quickReplies = t('chat.quickReplies')
 
   const [sessions, setSessions] = useState([])
   const [isLoadingSessions, setIsLoadingSessions] = useState(true)
@@ -94,7 +93,7 @@ export default function ChatbotView() {
   const HISTORY_PAGE_SIZE = 8
   const [historyVisibleCount, setHistoryVisibleCount] = useState(HISTORY_PAGE_SIZE)
   const [currentSessionNo, setCurrentSessionNo] = useState(null)
-  const [messages, setMessages] = useState([WELCOME_MESSAGE])
+  const [messages, setMessages] = useState([welcomeMessage])
   const [input, setInput] = useState('')
   const [isSending, setIsSending] = useState(false)
   const [isLoadingMessages, setIsLoadingMessages] = useState(false)
@@ -108,7 +107,7 @@ export default function ChatbotView() {
       setIsLoadingSessions(true)
       try {
         const res = await apiFetch('/chat/sessions')
-        if (!res.ok) throw new Error('대화 목록을 불러오지 못했어요.')
+        if (!res.ok) throw new Error(t('chat.loadSessionsError'))
         const data = await res.json()
         if (!cancelled) {
           setSessions(data)
@@ -139,7 +138,7 @@ export default function ChatbotView() {
     setIsLoadingMessages(true)
     try {
       const res = await apiFetch(`/chat/sessions/${sessionNo}/messages`)
-      if (!res.ok) throw new Error('대화 내용을 불러오지 못했어요.')
+      if (!res.ok) throw new Error(t('chat.loadMessagesError'))
       const data = await res.json()
       setMessages(
         data.map((m) => ({
@@ -151,7 +150,7 @@ export default function ChatbotView() {
       )
       setCurrentSessionNo(sessionNo)
     } catch (e) {
-      setErrorMessage('대화 내용을 불러오지 못했어요. 잠시 후 다시 시도해주세요.')
+      setErrorMessage(t('chat.loadMessagesErrorRetry'))
     } finally {
       setIsLoadingMessages(false)
     }
@@ -160,7 +159,7 @@ export default function ChatbotView() {
   // "새 대화" - 화면을 초기 환영 메시지로 되돌리고, 세션 번호를 비워서 다음 전송 때 새 세션이 생성되게 함
   function startNewChat() {
     setCurrentSessionNo(null)
-    setMessages([WELCOME_MESSAGE])
+    setMessages([welcomeMessage])
     setErrorMessage('')
   }
 
@@ -168,7 +167,7 @@ export default function ChatbotView() {
     const text = (rawText ?? input).trim()
     if (!text || isSending) return
     if (text.length > 1000) {
-      setErrorMessage('메시지는 1000자 이내로 입력해 주세요.')
+      setErrorMessage(t('chat.messageTooLong'))
       return
     }
 
@@ -192,7 +191,7 @@ export default function ChatbotView() {
         const detail = data?.detail
         const rawMessage = typeof detail === 'string' ? detail : detail?.message
         // 08 에러 화면 규칙 - 백엔드 detail이 영어 기술 메시지일 수 있어 그대로 노출하지 않음
-        const message = safeText(rawMessage, '메시지를 보내는 중 문제가 생겼어요. 잠시 후 다시 시도해주세요.')
+        const message = safeText(rawMessage, t('chat.sendMessageError'))
         setMessages((prev) => [...prev, { role: 'assistant', content: message, isError: true }])
         return
       }
@@ -233,7 +232,7 @@ export default function ChatbotView() {
     } catch (e) {
       setMessages((prev) => [
         ...prev,
-        { role: 'assistant', content: '서버에 연결할 수 없어요. 잠시 후 다시 시도해주세요.', isError: true },
+        { role: 'assistant', content: t('login.connectionError'), isError: true },
       ])
     } finally {
       setIsSending(false)
@@ -256,17 +255,17 @@ export default function ChatbotView() {
             type="button"
             className={styles.headerIconBtn}
             onClick={() => navigate(-1)}
-            aria-label="닫기"
+            aria-label={t('chat.close')}
           >
             <Icon name="close" size={16} color="#fff" />
           </button>
           <div className={styles.headerBotInfo}>
             <div className={styles.headerAvatar}><FenggoIcon size={44} /></div>
             <div className={styles.headerTexts}>
-              <span className={styles.headerTitle}>트립 버디</span>
+              <span className={styles.headerTitle}>{t('chat.tripBuddy')}</span>
               <span className={styles.headerStatus}>
                 <span className={styles.statusDot} />
-                지금 응답 가능
+                {t('chat.availableNow')}
               </span>
             </div>
           </div>
@@ -275,15 +274,15 @@ export default function ChatbotView() {
         {/* 대화 히스토리 */}
         <div className={styles.historySection}>
           <div className={styles.historySectionHeader}>
-            <span className={styles.historyLabel}>대화 히스토리</span>
+            <span className={styles.historyLabel}>{t('chat.chatHistory')}</span>
             <button type="button" className={styles.newChatLink} onClick={startNewChat}>
-              새 대화
+              {t('chat.newChat')}
             </button>
           </div>
           <div className={styles.historyList}>
-            {isLoadingSessions && <p className={styles.historyHint}>불러오는 중이에요...</p>}
+            {isLoadingSessions && <p className={styles.historyHint}>{t('common.loading')}</p>}
             {!isLoadingSessions && sessions.length === 0 && (
-              <p className={styles.historyHint}>아직 대화 기록이 없어요.</p>
+              <p className={styles.historyHint}>{t('chat.noHistory')}</p>
             )}
             {!isLoadingSessions &&
               sessions.slice(0, historyVisibleCount).map((s) => (
@@ -297,8 +296,8 @@ export default function ChatbotView() {
                 >
                   <span className={styles.historyIcon}><Icon name="chat" size={16} color="var(--color-primary-500)" /></span>
                   <span className={styles.historyTexts}>
-                    <span className={styles.historyTitle}>{s.preview || '대화'}</span>
-                    <span className={styles.historyMeta}>{formatRelativeTime(s.last_message_at)}</span>
+                    <span className={styles.historyTitle}>{s.preview || t('chat.conversation')}</span>
+                    <span className={styles.historyMeta}>{formatRelativeTime(s.last_message_at, t)}</span>
                   </span>
                 </button>
               ))}
@@ -308,7 +307,7 @@ export default function ChatbotView() {
                 className={styles.historyLoadMoreBtn}
                 onClick={() => setHistoryVisibleCount((v) => v + HISTORY_PAGE_SIZE)}
               >
-                더보기 <Icon name="chevronDown" size={14} />
+                {t('common.loadMore')} <Icon name="chevronDown" size={14} />
               </button>
             )}
           </div>
@@ -316,7 +315,7 @@ export default function ChatbotView() {
 
         {/* 채팅 영역 */}
         <div className={styles.chatArea} ref={scrollRef}>
-          {isLoadingMessages && <p className={styles.chatHint}>대화를 불러오는 중이에요...</p>}
+          {isLoadingMessages && <p className={styles.chatHint}>{t('chat.loadingChat')}</p>}
           {!isLoadingMessages &&
             messages.map((m, i) => (
               <div
@@ -333,10 +332,10 @@ export default function ChatbotView() {
                 >
                   {m.content}
                   {m.role === 'assistant' && m.isFallback && (
-                    <div className={styles.fallbackTag}>관련 정보를 찾지 못했어요</div>
+                    <div className={styles.fallbackTag}>{t('chat.fallbackTag')}</div>
                   )}
                   {m.role === 'assistant' && !m.isFallback && m.content.includes('혼잡') && (
-                    <CongestionCard data={DEMO_CONGESTION} />
+                    <CongestionCard data={buildDemoCongestion(t)} t={t} />
                   )}
                 </div>
               </div>
@@ -357,12 +356,12 @@ export default function ChatbotView() {
 
         {/* 빠른 질문 칩 */}
         <div className={styles.quickReplies}>
-          {QUICK_REPLIES.map((q) => (
+          {quickReplies.map((q) => (
             <button
               type="button"
               key={q}
               className={styles.quickReplyChip}
-              onClick={() => sendMessage(q.replace(/^[^\s]+\s/, ''))}
+              onClick={() => sendMessage(q)}
               disabled={isSending}
             >
               {q}
@@ -376,7 +375,7 @@ export default function ChatbotView() {
             <input
               className={styles.input}
               type="text"
-              placeholder="장소명이나 아티스트 이름을 입력해 보세요"
+              placeholder={t('chat.inputPlaceholder')}
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
@@ -387,7 +386,7 @@ export default function ChatbotView() {
               className={styles.sendBtn}
               onClick={() => sendMessage()}
               disabled={isSending || !input.trim()}
-              aria-label="전송"
+              aria-label={t('common.send')}
             >
               <Icon name="send" size={16} color="#fff" />
             </button>

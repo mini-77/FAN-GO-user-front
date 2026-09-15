@@ -2,25 +2,20 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTrip } from './TripContext'
 import { apiFetch, safeErrorMessage } from './api'
+import { useLanguage } from './LanguageContext'
 import AppHeader from './AppHeader'
 import BottomNav from './BottomNav'
 import Icon from './Icon'
 import styles from './HistoryView.module.css'
 
-const TABS = [
-  { label: '전체', tab: 'all' },
-  { label: '지난 여행', tab: 'past' },
-  { label: '예정', tab: 'upcoming' },
-]
-
 // 08 리스트 섹션 규칙 — 길이가 정해지지 않은 리스트는 무한스크롤 대신 8~10개씩 "더보기"로 불러옴
 const PAGE_SIZE = 8
 
-// status → 표시 라벨/색 종류
-function statusToLabel(status) {
-  if (status === '진행중') return '진행 중'
-  if (status === '완료') return '완료'
-  return '예정'
+// status → 표시 라벨/색 종류 (status 자체는 백엔드가 내려주는 한국어 원문 값이라 비교값은 그대로 둠)
+function statusToLabel(status, t) {
+  if (status === '진행중') return t('history.ongoing')
+  if (status === '완료') return t('history.done')
+  return t('date.upcomingTrip')
 }
 function statusToKind(status) {
   if (status === '진행중') return 'ongoing'
@@ -28,9 +23,17 @@ function statusToKind(status) {
   return 'upcoming'
 }
 
+const TAB_KEYS = [
+  { key: 'common.all', tab: 'all' },
+  { key: 'date.pastTrip', tab: 'past' },
+  { key: 'date.upcomingTrip', tab: 'upcoming' },
+]
+
 export default function HistoryView() {
   const navigate = useNavigate()
   const { tripData, updateTrip } = useTrip()
+  const { t } = useLanguage()
+  const TABS = TAB_KEYS.map((item) => ({ label: t(item.key), tab: item.tab }))
   const [activeTab, setActiveTab] = useState('all')
   const [trips, setTrips] = useState([])
   const [isLoading, setIsLoading] = useState(true)
@@ -47,14 +50,14 @@ export default function HistoryView() {
       try {
         const res = await apiFetch(`/trips?tab=${activeTab}`)
         if (res.status === 401) {
-          throw new Error('로그인이 만료됐어요. 다시 로그인해주세요.')
+          throw new Error(t('history.sessionExpired'))
         }
-        if (!res.ok) throw new Error('여행 목록을 불러오지 못했어요.')
+        if (!res.ok) throw new Error(t('history.loadFailed'))
         const data = await res.json()
         if (!cancelled) setTrips(data)
       } catch (e) {
         if (!cancelled) {
-          setLoadError(safeErrorMessage(e, '여행 목록을 불러오지 못했어요. 잠시 후 다시 시도해주세요.'))
+          setLoadError(safeErrorMessage(e, t('history.loadFailedRetry')))
         }
       } finally {
         if (!cancelled) setIsLoading(false)
@@ -65,6 +68,7 @@ export default function HistoryView() {
     return () => {
       cancelled = true
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeTab])
 
   function retryLoad() {
@@ -73,12 +77,12 @@ export default function HistoryView() {
     ;(async () => {
       try {
         const res = await apiFetch(`/trips?tab=${activeTab}`)
-        if (res.status === 401) throw new Error('로그인이 만료됐어요. 다시 로그인해주세요.')
-        if (!res.ok) throw new Error('여행 목록을 불러오지 못했어요.')
+        if (res.status === 401) throw new Error(t('history.sessionExpired'))
+        if (!res.ok) throw new Error(t('history.loadFailed'))
         const data = await res.json()
         setTrips(data)
       } catch (e) {
-        setLoadError(safeErrorMessage(e, '여행 목록을 불러오지 못했어요. 잠시 후 다시 시도해주세요.'))
+        setLoadError(safeErrorMessage(e, t('history.loadFailedRetry')))
       } finally {
         setIsLoading(false)
       }
@@ -98,30 +102,30 @@ export default function HistoryView() {
       <div className={styles.card}>
         <AppHeader />
         <div className={styles.header}>
-          <h1 className={styles.title}>나의 일정</h1>
+          <h1 className={styles.title}>{t('schedule.mySchedule')}</h1>
         </div>
 
         <div className={styles['tab-row']}>
-          {TABS.map((t) => (
+          {TABS.map((tabItem) => (
             <button
-              key={t.tab}
+              key={tabItem.tab}
               type="button"
-              className={`${styles['tab-btn']} ${activeTab === t.tab ? styles.active : ''}`}
-              onClick={() => setActiveTab(t.tab)}
+              className={`${styles['tab-btn']} ${activeTab === tabItem.tab ? styles.active : ''}`}
+              onClick={() => setActiveTab(tabItem.tab)}
             >
-              {t.label}
+              {tabItem.label}
             </button>
           ))}
         </div>
 
         <div className={styles.list}>
-          {isLoading && <p className={styles['empty-hint']}>불러오는 중이에요...</p>}
+          {isLoading && <p className={styles['empty-hint']}>{t('common.loading')}</p>}
 
           {!isLoading && loadError && (
             <div className={styles['empty-hint']}>
               <p>{loadError}</p>
               <button type="button" className={styles['retry-btn']} onClick={retryLoad}>
-                다시 시도
+                {t('common.retry')}
               </button>
             </div>
           )}
@@ -129,7 +133,7 @@ export default function HistoryView() {
           {!isLoading && !loadError && filteredTrips.length === 0 && (
             <div className={styles['empty-state']}>
               <Icon name="folder" size={32} color="#C0BCD8" />
-              <p className={styles['empty-hint']}>아직 만든 일정이 없어요.</p>
+              <p className={styles['empty-hint']}>{t('history.empty')}</p>
             </div>
           )}
 
@@ -150,7 +154,8 @@ export default function HistoryView() {
                 <div className={styles['trip-body']}>
                   <span className={styles['trip-title']}>{trip.event_nm}</span>
                   <span className={styles['trip-meta']}>
-                    {trip.event_add} · {trip.place_count}곳{trip.pace ? ` · ${trip.pace}` : ''}
+                    {trip.event_add} · {t('history.placeCount')(trip.place_count)}
+                    {trip.pace ? ` · ${trip.pace}` : ''}
                   </span>
                   {trip.placePreview && (
                     <span className={styles['trip-preview']}>{trip.placePreview}</span>
@@ -161,7 +166,7 @@ export default function HistoryView() {
                     {trip.rating ? `★ ${trip.rating}` : '—'}
                   </span>
                   <span className={`${styles['trip-status']} ${styles[statusToKind(trip.status)]}`}>
-                    {statusToLabel(trip.status)}
+                    {statusToLabel(trip.status, t)}
                   </span>
                 </div>
               </div>
@@ -173,7 +178,7 @@ export default function HistoryView() {
               className={styles['load-more-btn']}
               onClick={() => setVisibleCount((v) => v + PAGE_SIZE)}
             >
-              더보기 <Icon name="chevronDown" size={14} />
+              {t('history.loadMore')} <Icon name="chevronDown" size={14} />
             </button>
           )}
 
@@ -181,7 +186,7 @@ export default function HistoryView() {
               (사용자 요청 - 다른 화면과 동일하게 고정 해제) */}
           <div className={styles.footer} data-bottom-bar="true">
             <button type="button" className={styles['new-btn']} onClick={() => navigate('/trip/events')}>
-              일정 만들기
+              {t('schedule.createNewSchedule')}
             </button>
           </div>
         </div>

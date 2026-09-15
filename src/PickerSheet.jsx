@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import Icon from './Icon'
+import { useLanguage } from './LanguageContext'
 import styles from './PickerSheet.module.css'
 
 // 04 팝업 & 모달 - "다크 시트 · 시스템 피커" 규칙 적용.
@@ -13,11 +14,12 @@ export default function PickerSheet({
   min,
   max,
   onConfirm,
-  placeholder = '선택해주세요',
+  placeholder,
   formatValue,
   className,
   triggerId,
 }) {
+  const { t } = useLanguage()
   const [isOpen, setIsOpen] = useState(false)
   const [draft, setDraft] = useState(value || '')
 
@@ -36,7 +38,7 @@ export default function PickerSheet({
     if (onConfirm) onConfirm(draft)
   }
 
-  const displayText = value ? (formatValue ? formatValue(value) : value) : placeholder
+  const displayText = value ? (formatValue ? formatValue(value) : value) : (placeholder ?? t('picker.selectPlaceholder'))
 
   return (
     <>
@@ -63,7 +65,7 @@ export default function PickerSheet({
           data-fab-hide="true"
         >
           <div className={styles.sheet}>
-            <p className={styles.label}>{type === 'date' ? '날짜 선택' : '시간 선택'}</p>
+            <p className={styles.label}>{type === 'date' ? t('picker.selectDate') : t('picker.selectTime')}</p>
             <input
               type={type}
               className={styles.nativeInput}
@@ -75,10 +77,10 @@ export default function PickerSheet({
             />
             <div className={styles.actions}>
               <button type="button" className={styles.closeBtn} onClick={close}>
-                닫기
+                {t('picker.close')}
               </button>
               <button type="button" className={styles.selectBtn} onClick={confirm} disabled={!draft}>
-                선택
+                {t('picker.select')}
               </button>
             </div>
           </div>

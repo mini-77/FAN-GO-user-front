@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { apiFetch, safeErrorMessage } from './api'
+import { useLanguage } from './LanguageContext'
 import Icon from './Icon'
 import styles from './PlaceDetailView.module.css'
 import modalStyles from './PlaceDetailModal.module.css'
@@ -12,6 +13,7 @@ const CONGESTION_COLORS = ['#34C759', '#FFC107', '#FF9500', '#FF3B30']
 // props: eventNo(필수), tripRouteEventNo(좋아요용, 없으면 좋아요 버튼 안 보임),
 //        liked(초기 좋아요 상태), businessHours(호출한 화면이 이미 갖고 있으면 넘겨줌), onClose
 export default function PlaceDetailModal({ eventNo, tripRouteEventNo, liked: initialLiked, businessHours, onClose }) {
+  const { t } = useLanguage()
   const [place, setPlace] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
   const [loadError, setLoadError] = useState('')
@@ -29,7 +31,7 @@ export default function PlaceDetailModal({ eventNo, tripRouteEventNo, liked: ini
   useEffect(() => {
     if (!eventNo) {
       setIsLoading(false)
-      setLoadError('장소 정보를 찾을 수 없어요.')
+      setLoadError(t('placeDetail.placeNotFound'))
       return
     }
     let cancelled = false
@@ -38,12 +40,12 @@ export default function PlaceDetailModal({ eventNo, tripRouteEventNo, liked: ini
       setLoadError('')
       try {
         const res = await apiFetch(`/events/${eventNo}`)
-        if (res.status === 404) throw new Error('존재하지 않는 장소예요.')
-        if (!res.ok) throw new Error('장소 정보를 불러오지 못했어요.')
+        if (res.status === 404) throw new Error(t('placeDetail.placeDoesNotExist'))
+        if (!res.ok) throw new Error(t('placeDetail.loadFailed'))
         const data = await res.json()
         if (!cancelled) setPlace(data)
       } catch (e) {
-        if (!cancelled) setLoadError(safeErrorMessage(e, '장소 정보를 불러오지 못했어요.'))
+        if (!cancelled) setLoadError(safeErrorMessage(e, t('placeDetail.loadFailed')))
       } finally {
         if (!cancelled) setIsLoading(false)
       }
@@ -52,6 +54,7 @@ export default function PlaceDetailModal({ eventNo, tripRouteEventNo, liked: ini
     return () => {
       cancelled = true
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [eventNo])
 
   // 예상 혼잡도 - 인증 불필요, 서버가 현재(KST) 요일/시간대 기준으로 계산해 내려줌
@@ -102,19 +105,19 @@ export default function PlaceDetailModal({ eventNo, tripRouteEventNo, liked: ini
 
   function formatHours() {
     if (!businessHours || !businessHours.has_data) return null
-    if (businessHours.is_closed) return '오늘 휴무'
-    return `오픈 ${businessHours.open_tm}  마감 ${businessHours.close_tm}`
+    if (businessHours.is_closed) return t('businessHours.closedToday')
+    return t('businessHours.openClose')(businessHours.open_tm, businessHours.close_tm)
   }
   const hoursText = formatHours()
 
   return (
     <div className={modalStyles.overlay} onClick={handleOverlayClick} data-fab-hide="true">
       <div className={modalStyles.sheet}>
-        <button type="button" className={modalStyles.closeBtn} onClick={onClose} aria-label="닫기">
+        <button type="button" className={modalStyles.closeBtn} onClick={onClose} aria-label={t('placeDetail.close')}>
           <Icon name="close" size={16} />
         </button>
 
-        {isLoading && <p className={styles.desc} style={{ padding: 24 }}>불러오는 중이에요...</p>}
+        {isLoading && <p className={styles.desc} style={{ padding: 24 }}>{t('common.loading')}</p>}
         {!isLoading && (loadError || !place) && (
           <p className={styles.desc} style={{ padding: 24 }}>{loadError}</p>
         )}
@@ -138,7 +141,7 @@ export default function PlaceDetailModal({ eventNo, tripRouteEventNo, liked: ini
             <div className={styles.body}>
               {place.event_img_url && (
                 <div className={styles['map-row']}>
-                  <span className={styles['photo-credit']}>사진 출처: Google Map, Kakao Map</span>
+                  <span className={styles['photo-credit']}>{t('placeDetail.photoCredit')}</span>
                 </div>
               )}
               <p className={styles.breadcrumb}>
@@ -155,7 +158,7 @@ export default function PlaceDetailModal({ eventNo, tripRouteEventNo, liked: ini
                     onClick={toggleLike}
                     disabled={isLiking}
                   >
-                    <Icon name="heart" size={14} filled={liked} /> 좋아요
+                    <Icon name="heart" size={14} filled={liked} /> {t('placeDetail.like')}
                   </button>
                 )}
               </div>
@@ -172,10 +175,10 @@ export default function PlaceDetailModal({ eventNo, tripRouteEventNo, liked: ini
                 <div className={styles['score-card']}>
                   <div className={styles['score-num-block']}>
                     <div className={styles['score-num']}>{overallScore}</div>
-                    <div className={styles['score-num-label']}>총 점수</div>
+                    <div className={styles['score-num-label']}>{t('schedule.totalScore')}</div>
                   </div>
                   <div className={styles['score-bar-block']}>
-                    <span className={styles['score-bar-label']}>FAN:GO 추천점수</span>
+                    <span className={styles['score-bar-label']}>{t('placeDetail.fangoScore')}</span>
                     <div className={styles['score-bar-track']}>
                       <div
                         className={styles['score-bar-fill']}
@@ -186,7 +189,7 @@ export default function PlaceDetailModal({ eventNo, tripRouteEventNo, liked: ini
                 </div>
               )}
               {overallScore != null && (
-                <p className={styles.desc}>카카오맵 리뷰와 구글 리뷰를 기반으로 계산한 추천 점수예요.</p>
+                <p className={styles.desc}>{t('placeDetail.scoreDesc')}</p>
               )}
 
               {/* 혼잡도 - GET /events/{event_no}/congestion. cong_level 0~3(한산~매우혼잡)을
@@ -194,7 +197,7 @@ export default function PlaceDetailModal({ eventNo, tripRouteEventNo, liked: ini
                   혼잡도 영역 자체를 표시하지 않음 */}
               {congestion?.has_data && (
                 <div className={styles['congestion-row']}>
-                  <span className={styles['congestion-label']}>현시각 예상 혼잡도</span>
+                  <span className={styles['congestion-label']}>{t('placeDetail.currentCongestion')}</span>
                   <div className={styles['congestion-bars']}>
                     {[0, 1, 2, 3, 4].map((i) => (
                       <div
@@ -224,7 +227,7 @@ export default function PlaceDetailModal({ eventNo, tripRouteEventNo, liked: ini
                   target="_blank"
                   rel="noreferrer"
                 >
-                  카카오맵에서 열기
+                  {t('placeDetail.openInKakaoMap')}
                 </a>
                 <a
                   className={styles['link-btn']}
@@ -232,7 +235,7 @@ export default function PlaceDetailModal({ eventNo, tripRouteEventNo, liked: ini
                   target="_blank"
                   rel="noreferrer"
                 >
-                  구글맵에서 열기
+                  {t('placeDetail.openInGoogleMap')}
                 </a>
               </div>
             </div>

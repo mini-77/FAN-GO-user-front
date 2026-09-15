@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useTrip } from './TripContext'
 import AppHeader from './AppHeader'
 import BottomNav from './BottomNav'
+import { useLanguage } from './LanguageContext'
 import styles from './ConfirmView.module.css'
 
 // trip_density_no: 백엔드 확인 완료 - 1=A(여유 우선) / 2=B(적당히) / 3=C(많이 보기)
@@ -12,7 +13,6 @@ const PACE_OPTIONS = [
   { id: 'B', density_no: 2 },
   { id: 'C', density_no: 3 },
 ]
-const PACE_NAMES = { A: 'A · 여유 우선', B: 'B · 적당히 (AI 추천)', C: 'C · 많이 보기' }
 
 function formatDot(isoDate) {
   return isoDate ? isoDate.replaceAll('-', '.') : ''
@@ -33,6 +33,12 @@ function splitEventTitle(title) {
 
 export default function ConfirmView() {
   const navigate = useNavigate()
+  const { t } = useLanguage()
+  const PACE_NAMES = {
+    A: `A · ${t('pace.optionARelaxedName')}`,
+    B: `B · ${t('pace.optionBModerateName')}`,
+    C: `C · ${t('pace.optionCPackedName')}`,
+  }
   const { tripData, updateTrip } = useTrip()
   const selectedPace = tripData.selectedPace || 'B'
   const [submitError, setSubmitError] = useState('')
@@ -71,48 +77,48 @@ export default function ConfirmView() {
   const summary = [
     {
       num: '01',
-      label: '참여행사',
+      label: t('confirm.participatingEvent'),
       value: selectedEvent
         ? undefined
-        : '고른 이벤트 없음 (이벤트 선택 화면에서 먼저 골라주세요)',
+        : t('confirm.noEventChosen'),
       events: selectedEvent
         ? [{ title: selectedEvent.title, sub: `${formatDot(selectedEvent.event_date)} · ${selectedEvent.address}` }]
         : null,
     },
     {
       num: '02',
-      label: '시작일 · 완료일',
+      label: t('confirm.startEndDate'),
       value: tripDates
-        ? `${formatDot(tripDates.startDate)} — ${tripDates.endDate?.slice(5).replace('-', '.')} · ${daysBetween(tripDates.startDate, tripDates.endDate)}박`
+        ? `${formatDot(tripDates.startDate)} — ${tripDates.endDate?.slice(5).replace('-', '.')} · ${t('confirm.nightsCount')(daysBetween(tripDates.startDate, tripDates.endDate))}`
         : '-',
-      sub: tripDates ? `매일 ${tripDates.startTime} — ${tripDates.endTime}` : '',
+      sub: tripDates ? t('confirm.dailyTimeRange')(tripDates.startTime, tripDates.endTime) : '',
     },
     {
       num: '03',
-      label: '숙소 · 출발지',
-      value: stays.length > 0 ? stays.map((s) => s.name.split(' · ')[0]).join(' · ') : '숙소 없음',
-      sub: `출발지 · ${firstDeparture ? firstDeparture.name : '미입력'} / 도착지 · ${finalArrival ? finalArrival.name : '미입력'}`,
+      label: t('confirm.stayAndDeparture'),
+      value: stays.length > 0 ? stays.map((s) => s.name.split(' · ')[0]).join(' · ') : t('confirm.noStay'),
+      sub: `${t('confirm.departurePoint')} · ${firstDeparture ? firstDeparture.name : t('confirm.notEntered')} / ${t('confirm.arrivalPoint')} · ${finalArrival ? finalArrival.name : t('confirm.notEntered')}`,
     },
     {
       num: '04',
-      label: '선호 카테고리',
+      label: t('activityPreference.categoryLabel'),
       value:
         rankedCategoryIds.length > 0
           ? rankedCategoryIds.map((c) => c.name).join(' · ')
-          : '선택 안 함',
+          : t('confirm.notSelected'),
     },
     {
       num: '05',
-      label: '선호 멤버',
+      label: t('confirm.preferredMember'),
       value: isWholeGroupSelected
-        ? '그룹 전체'
+        ? t('pace.wholeGroup')
         : paceMemberNames && paceMemberNames.length > 0
           ? paceMemberNames.join(' · ')
-          : '특정 멤버 없음 (그룹 전체 일정 기준)',
+          : t('confirm.noSpecificMember'),
     },
     {
       num: '06',
-      label: '동선 스타일',
+      label: t('confirm.paceStyle'),
       value: PACE_NAMES[selectedPace] || selectedPace,
     },
   ]
@@ -121,29 +127,29 @@ export default function ConfirmView() {
     setSubmitError('')
 
     if (!selectedEvent) {
-      setSubmitError('이벤트를 먼저 골라주세요.')
+      setSubmitError(t('confirm.errorNoEvent'))
       return
     }
     if (rankedCategoryIds.length === 0) {
-      setSubmitError('선호 카테고리를 1개 이상 골라주세요.')
+      setSubmitError(t('activityPreference.selectAtLeastOne'))
       return
     }
     if (!firstDeparture) {
-      setSubmitError('여행 시작 지점(1일차 출발지)을 먼저 정해주세요.')
+      setSubmitError(t('confirm.errorNoDeparture'))
       return
     }
     if (!finalArrival) {
-      setSubmitError('여행 완료 지점(마지막날 도착지)을 먼저 정해주세요.')
+      setSubmitError(t('confirm.errorNoArrival'))
       return
     }
     if (isWholeGroupSelected && !paceArtistGroupNo) {
-      setSubmitError('그룹 정보를 확인할 수 없어요. 동선 스타일 화면부터 다시 진행해주세요.')
+      setSubmitError(t('confirm.errorNoGroupInfo'))
       return
     }
     if (!isWholeGroupSelected) {
       const artistNos = paceMembers.length > 0 ? paceMembers : allEventMemberIds
       if (!artistNos || artistNos.length === 0) {
-        setSubmitError('멤버 정보를 확인할 수 없어요. 앞 화면부터 다시 진행해주세요.')
+        setSubmitError(t('confirm.errorNoMemberInfo'))
         return
       }
     }
@@ -161,7 +167,7 @@ export default function ConfirmView() {
             히스토리가 없어도 항상 올바른 이전 화면(동선 스타일)으로 감 */}
         <AppHeader onBack={() => navigate('/trip/pace')} />
         <div className={styles.header}>
-          <h1 className={styles.title}>이대로 진행할까요?</h1>
+          <h1 className={styles.title}>{t('confirm.title')}</h1>
           <div className={styles['progress-bar']}>
             <div className={styles['progress-fill']} style={{ width: '100%' }} />
           </div>
@@ -205,7 +211,7 @@ export default function ConfirmView() {
           {/* 하단 고정 바가 아니라 목록의 마지막 항목으로 스크롤에 같이 움직이게 함
               (사용자 요청 - 다른 화면과 동일하게 고정 해제) */}
           <div className={styles.footer} data-bottom-bar="true">
-            <span className={styles['footer-note']}>선택한 스타일로 동선을 만들어요</span>
+            <span className={styles['footer-note']}>{t('confirm.footerNote')}</span>
             <button
               type="button"
               className={styles['btn-primary']}
@@ -213,7 +219,7 @@ export default function ConfirmView() {
               onClick={handleCreateItinerary}
               disabled={!isFormValid}
             >
-              일정 만들기
+              {t('schedule.createNewSchedule')}
             </button>
           </div>
         </div>

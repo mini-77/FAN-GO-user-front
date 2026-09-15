@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useTrip } from './TripContext'
+import { useLanguage } from './LanguageContext'
 import FenggoIcon from './FenggoIcon'
 import styles from './ChatbotFab.module.css'
 
@@ -80,6 +81,7 @@ function hasOpenPopup() {
 export default function ChatbotFab() {
   const navigate = useNavigate()
   const location = useLocation()
+  const { t } = useLanguage()
   const { tripData } = useTrip()
   const isLoggedIn = Boolean(tripData.account?.email)
   // 챗봇 화면(/chat) 자체에서는 "챗봇 열기" 버튼이 의미가 없어 그 화면만 예외로 숨김.
@@ -245,7 +247,7 @@ export default function ChatbotFab() {
     <div className={styles.fabWrapper} style={positionStyle}>
       {showTooltip && (
         <div className={styles.tooltip} role="status">
-          챗봇을 꾹 눌러서 원하는곳으로 이동할 수 있어요
+          {t('chatbotFab.dragHint')}
           <span className={styles.tooltipArrow} />
         </div>
       )}
@@ -257,7 +259,7 @@ export default function ChatbotFab() {
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
         onPointerCancel={handlePointerUp}
-        aria-label="트립 버디 챗봇 열기 (누르고 있으면 위치를 옮길 수 있어요)"
+        aria-label={t('chatbotFab.openLabel')}
       >
         <FenggoIcon size={56} />
       </button>

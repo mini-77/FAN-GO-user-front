@@ -2,23 +2,25 @@ import { useEffect, useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useTrip } from './TripContext'
 import { apiFetch } from './api'
+import { useLanguage } from './LanguageContext'
 import AppHeader from './AppHeader'
 import BottomNav from './BottomNav'
 import Icon from './Icon'
 import styles from './MyPageView.module.css'
-
-const MENU_ITEMS = [
-  { icon: 'plane', title: '여행 히스토리', sub: '지난 동선 · 별점 · 재사용', path: '/trip/history' },
-]
 
 export default function MyPageView() {
   const navigate = useNavigate()
   const location = useLocation()
   const isPreview = location.state?.preview
   const { tripData, updateTrip, resetTrip } = useTrip()
+  const { t } = useLanguage()
   const [locationRecommend, setLocationRecommend] = useState(true)
 
-  const nickname = tripData.account?.nickname || '사용자'
+  const MENU_ITEMS = [
+    { icon: 'plane', title: t('mypage.travelHistory'), sub: t('mypage.historySub'), path: '/trip/history' },
+  ]
+
+  const nickname = tripData.account?.nickname || t('mypage.defaultNickname')
   const email = tripData.account?.email || ''
   const artistNames = tripData.selectedArtists?.map((a) => a.name) || []
 
@@ -75,18 +77,18 @@ export default function MyPageView() {
   }
 
   async function handleDeleteAccount() {
-    const confirmed = window.confirm('정말 계정을 탈퇴하시겠어요? 이 작업은 되돌릴 수 없어요.')
+    const confirmed = window.confirm(t('mypage.confirmDelete'))
     if (!confirmed) return
 
     try {
       const res = await apiFetch('/me/withdraw', { method: 'POST' })
       if (!res.ok) {
-        window.alert('탈퇴 처리 중 문제가 생겼어요. 잠시 후 다시 시도해주세요.')
+        window.alert(t('mypage.deleteFailed'))
         return
       }
       // 명세상 탈퇴 처리와 동시에 서버에서 쿠키를 지워서 바로 로그아웃 상태가 됨
     } catch (e) {
-      window.alert('서버에 연결할 수 없어요. 잠시 후 다시 시도해주세요.')
+      window.alert(t('mypage.deleteConnectionError'))
       return
     }
     resetTrip()
@@ -99,7 +101,7 @@ export default function MyPageView() {
         <AppHeader onBack={() => navigate('/trip/itinerary')} />
 
         <div className={styles.scrollArea}>
-        <h1 className={styles.title}>마이 페이지</h1>
+        <h1 className={styles.title}>{t('mypage.title')}</h1>
 
         <div className={styles.section}>
           <div className={styles['profile-card']}>
@@ -110,7 +112,7 @@ export default function MyPageView() {
                     ? tripData.account.profileImg
                     : `/api${tripData.account.profileImg}`
                 }
-                alt="프로필 사진"
+                alt={t('mypage.profileAlt')}
                 className={styles.avatar}
                 style={{ objectFit: 'cover' }}
               />
@@ -164,7 +166,7 @@ export default function MyPageView() {
         <div className={styles.section}>
           <div className={styles['toggle-card']}>
             <div className={styles['toggle-row']}>
-              <span className={styles['toggle-label']}>위치 정보 활성화</span>
+              <span className={styles['toggle-label']}>{t('settings.enableLocation')}</span>
               <button
                 type="button"
                 className={`${styles['toggle-switch']} ${locationRecommend ? styles.on : ''}`}
@@ -181,10 +183,10 @@ export default function MyPageView() {
         <div className={styles.section}>
           <div className={styles['account-actions']}>
             <button type="button" className={styles['logout-btn']} onClick={handleLogout}>
-              로그아웃
+              {t('auth.logout')}
             </button>
             <button type="button" className={styles['delete-link']} onClick={handleDeleteAccount}>
-              계정 탈퇴
+              {t('auth.deleteAccount')}
             </button>
           </div>
         </div>

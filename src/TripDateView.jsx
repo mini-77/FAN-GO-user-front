@@ -6,6 +6,7 @@ import BottomNav from './BottomNav'
 import Icon from './Icon'
 import PickerSheet from './PickerSheet'
 import DateRangeSheet from './DateRangeSheet'
+import { useLanguage } from './LanguageContext'
 import styles from './TripDateView.module.css'
 
 function formatDot(isoDate) {
@@ -45,6 +46,7 @@ let nextStayId = 100
 export default function TripDateView() {
   const navigate = useNavigate()
   const { tripData, updateTrip } = useTrip()
+  const { t } = useLanguage()
   const { startDate, endDate, startTime, endTime } = tripData.tripDates
   const stays = tripData.stays
   const departure = tripData.departure
@@ -295,11 +297,11 @@ export default function TripDateView() {
   function useMyLocation() {
     setLocationError('')
     if (!navigator.geolocation) {
-      setLocationError('이 브라우저에서는 내 위치를 사용할 수 없어요.')
+      setLocationError(t('locationSearch.geoUnsupported'))
       return
     }
     if (!mapObjRef.current) {
-      setLocationError('지도가 아직 준비되지 않았어요. 잠시 후 다시 시도해주세요.')
+      setLocationError(t('locationSearch.mapNotReady'))
       return
     }
 
@@ -312,9 +314,9 @@ export default function TripDateView() {
       },
       (err) => {
         if (err.code === err.PERMISSION_DENIED) {
-          setLocationError('위치 권한이 꺼져 있어요. 브라우저 설정에서 위치 권한을 허용해주세요.')
+          setLocationError(t('locationSearch.geoPermissionDenied'))
         } else {
-          setLocationError('내 위치를 가져오지 못했어요. 잠시 후 다시 시도해주세요.')
+          setLocationError(t('locationSearch.geoFailed'))
         }
       }
     )
@@ -324,19 +326,19 @@ export default function TripDateView() {
   const stayDateError = (() => {
     if (searchTarget !== 'stay') return ''
     if (!stayCheckIn || !stayCheckOut) return ''
-    if (stayNights <= 0) return '체크아웃은 체크인보다 늦어야 해요.'
+    if (stayNights <= 0) return t('tripDate.checkOutBeforeCheckIn')
     if (stayAllowedMinDate && (stayCheckIn < stayAllowedMinDate || stayCheckIn > stayAllowedMaxDate)) {
-      return `체크인은 ${stayAllowedMinDate.slice(5)} ~ ${stayAllowedMaxDate.slice(5)} 사이여야 해요.`
+      return t('stay.checkInRangeError')(stayAllowedMinDate.slice(5), stayAllowedMaxDate.slice(5))
     }
     if (stayAllowedMaxDate && (stayCheckOut < stayAllowedMinDate || stayCheckOut > stayAllowedMaxDate)) {
-      return `체크아웃은 ${stayAllowedMinDate.slice(5)} ~ ${stayAllowedMaxDate.slice(5)} 사이여야 해요.`
+      return t('stay.checkOutRangeError')(stayAllowedMinDate.slice(5), stayAllowedMaxDate.slice(5))
     }
     const overlapsWith = stays.find((s) => {
       if (editingStayId != null && s.id === editingStayId) return false
       return stayCheckIn < s.checkOut && s.checkIn < stayCheckOut
     })
     if (overlapsWith) {
-      return `'${overlapsWith.name}' 숙소와 날짜가 겹쳐요 (${overlapsWith.checkIn} ~ ${overlapsWith.checkOut}).`
+      return t('stay.overlapError')(overlapsWith.name, overlapsWith.checkIn, overlapsWith.checkOut)
     }
     return ''
   })()
@@ -394,23 +396,23 @@ export default function TripDateView() {
 
   function validateDates(nextStart, nextEnd, minDate, maxDate, eventDate) {
   const errors = { startDate: '', endDate: '' }
-  if (!nextStart) errors.startDate = '시작일을 선택해 주세요.'
-  if (!nextEnd) errors.endDate = '종료일을 선택해 주세요.'
+  if (!nextStart) errors.startDate = t('tripDate.startDateRequired')
+  if (!nextEnd) errors.endDate = t('tripDate.endDateRequired')
   if (nextStart && nextEnd && daysBetween(nextStart, nextEnd) < 0) {
-    errors.endDate = '종료일은 시작일보다 빠를 수 없어요.'
+    errors.endDate = t('tripDate.endDateBeforeStart')
   }
   if (minDate && maxDate) {
     if (nextStart && (nextStart < minDate || nextStart > maxDate)) {
-      errors.startDate = `시작일은 ${minDate.slice(5)} ~ ${maxDate.slice(5)} 사이여야 해요.`
+      errors.startDate = t('tripDate.startDateRangeError')(minDate.slice(5), maxDate.slice(5))
     }
     if (nextEnd && (nextEnd < minDate || nextEnd > maxDate)) {
-      errors.endDate = `종료일은 ${minDate.slice(5)} ~ ${maxDate.slice(5)} 사이여야 해요.`
+      errors.endDate = t('tripDate.endDateRangeError')(minDate.slice(5), maxDate.slice(5))
     }
   }
   // 최종 안전장치 - 위 min/max 제한을 다 통과했어도 혹시 이벤트 날짜가 기간에서 빠지면 여기서 막음
   if (!errors.startDate && !errors.endDate && eventDate && nextStart && nextEnd) {
     if (eventDate < nextStart || eventDate > nextEnd) {
-      errors.endDate = '선택한 기간에 이벤트 날짜가 꼭 포함되어야 해요.'
+      errors.endDate = t('tripDate.eventDateMustBeIncluded')
     }
   }
   return errors
@@ -418,10 +420,10 @@ export default function TripDateView() {
 
   function validateTimes(nextStart, nextEnd) {
     const errors = { startTime: '', endTime: '' }
-    if (!nextStart) errors.startTime = '시작 시간을 선택해 주세요.'
-    if (!nextEnd) errors.endTime = '종료 시간을 선택해 주세요.'
+    if (!nextStart) errors.startTime = t('tripDate.startTimeRequired')
+    if (!nextEnd) errors.endTime = t('tripDate.endTimeRequired')
     if (nextStart && nextEnd && nextStart >= nextEnd) {
-      errors.endTime = '종료 시간은 시작 시간보다 늦어야 해요.'
+      errors.endTime = t('tripDate.endTimeBeforeStart')
     }
     return errors
   }
@@ -452,15 +454,15 @@ export default function TripDateView() {
 
     const hasError = Object.values(nextFieldErrors).some(Boolean)
     if (hasError) {
-      setErrorMessage('입력값을 확인해 주세요.')
+      setErrorMessage(t('tripDate.fillRequiredFields'))
       return
     }
     if (!departure) {
-      setErrorMessage('첫째날 출발지를 정해주세요.')
+      setErrorMessage(t('tripDate.departureRequired'))
       return
     }
     if (!arrival) {
-      setErrorMessage('마지막날 도착지를 정해주세요.')
+      setErrorMessage(t('tripDate.arrivalRequired'))
       return
     }
 
@@ -475,9 +477,12 @@ export default function TripDateView() {
         <AppHeader onBack={() => navigate('/trip/events')} />
         <div className={styles.header}>
           <h1 className={styles.title}>
-            추천 일정의 기간을
-            <br />
-            알려주세요
+            {t('onboarding.askSchedulePeriod').split('\n').map((line, i, arr) => (
+              <span key={i}>
+                {line}
+                {i < arr.length - 1 && <br />}
+              </span>
+            ))}
           </h1>
           <div className={styles['progress-bar']}>
             <div className={styles['progress-fill']} style={{ width: '50%' }} />
@@ -491,7 +496,10 @@ export default function TripDateView() {
         <div className={styles.scrollArea}>
         <div className={styles.section}>
           <p className={styles.infoBanner}>
-            <span className={styles.infoBannerIcon}>ⓘ</span> 이벤트 날짜 기준 앞뒤 하루씩({eventDate ? `${formatDot(allowedMinDate)} — ${formatDot(allowedMaxDate)}` : '이벤트를 먼저 골라주세요'}) 안에서 원하는 기간만 골라도 돼요. 단, 이벤트 날짜({eventDate ? formatDot(eventDate) : '-'})는 선택한 기간에 꼭 포함돼야 해요.
+            <span className={styles.infoBannerIcon}>ⓘ</span> {t('tripDate.infoBanner')(
+              eventDate ? `${formatDot(allowedMinDate)} — ${formatDot(allowedMaxDate)}` : t('tripDate.selectEventFirst'),
+              eventDate ? formatDot(eventDate) : '-'
+            )}
           </p>
           {/* 시작일/종료일을 다시 칸 두 개로 분리(사용자 요청) - 둘 중 어느 칸을 눌러도
               같은 달력이 열리고, 범위를 고르면 두 칸이 한 번에 채워짐(DateRangeSheet의
@@ -511,27 +519,27 @@ export default function TripDateView() {
             renderTrigger={({ open, checkIn, checkOut }) => (
               <div className={styles['two-col']}>
                 <div>
-                  <label className={styles['field-label']}>시작일</label>
+                  <label className={styles['field-label']}>{t('date.startDate')}</label>
                   <button
                     type="button"
                     className={`${styles.trigger} ${!checkIn ? styles.placeholder : ''}`}
                     onClick={open}
                   >
                     <span className={styles.triggerText}>
-                      {checkIn ? formatDot(checkIn) : '시작일 선택'}
+                      {checkIn ? formatDot(checkIn) : t('tripDate.startDatePlaceholder')}
                     </span>
                     <Icon name="calendar" size={16} color={checkIn ? 'var(--color-primary-500)' : 'rgba(12, 10, 28, 0.4)'} />
                   </button>
                 </div>
                 <div>
-                  <label className={styles['field-label']}>종료일</label>
+                  <label className={styles['field-label']}>{t('tripDate.endDateLabel')}</label>
                   <button
                     type="button"
                     className={`${styles.trigger} ${!checkOut ? styles.placeholder : ''}`}
                     onClick={open}
                   >
                     <span className={styles.triggerText}>
-                      {checkOut ? formatDot(checkOut) : '종료일 선택'}
+                      {checkOut ? formatDot(checkOut) : t('tripDate.endDatePlaceholder')}
                     </span>
                     <Icon name="calendar" size={16} color={checkOut ? 'var(--color-primary-500)' : 'rgba(12, 10, 28, 0.4)'} />
                   </button>
@@ -547,12 +555,12 @@ export default function TripDateView() {
 
           <div className={styles['two-col']} style={{ marginTop: 14 }}>
             <div>
-              <label className={styles['field-label']}>시작 시간</label>
+              <label className={styles['field-label']}>{t('tripDate.startTimeLabel')}</label>
               <PickerSheet
                 type="time"
                 className={`${styles.input} ${fieldErrors.startTime ? styles.inputError : ''}`}
                 value={startTime}
-                placeholder="시작 시간을 골라주세요"
+                placeholder={t('tripDate.startTimePlaceholder')}
                 onChange={(next) => {
                   updateDates({ startTime: next })
                   setFieldErrors((prev) => ({ ...prev, startTime: '', endTime: '' }))
@@ -564,12 +572,12 @@ export default function TripDateView() {
               {fieldErrors.startTime && <p className={styles.hint} style={{ color: 'var(--color-danger)' }}>{fieldErrors.startTime}</p>}
             </div>
             <div>
-              <label className={styles['field-label']}>종료 시간</label>
+              <label className={styles['field-label']}>{t('tripDate.endTimeLabel')}</label>
               <PickerSheet
                 type="time"
                 className={`${styles.input} ${fieldErrors.endTime ? styles.inputError : ''}`}
                 value={endTime}
-                placeholder="종료 시간을 골라주세요"
+                placeholder={t('tripDate.endTimePlaceholder')}
                 onChange={(next) => {
                   updateDates({ endTime: next })
                   setFieldErrors((prev) => ({ ...prev, startTime: '', endTime: '' }))
@@ -585,8 +593,8 @@ export default function TripDateView() {
 
         <div className={styles.section}>
           <div className={styles['section-head']}>
-            <span className={styles['section-label-strong']}>숙소</span>
-            <span className={styles['section-count']}>{stays.length}곳</span>
+            <span className={styles['section-label-strong']}>{t('accommodation.title')}</span>
+            <span className={styles['section-count']}>{t('tripDate.placesCount')(stays.length)}</span>
           </div>
           <div className={styles['stay-list']}>
             {stays.map((stay) => (
@@ -595,7 +603,7 @@ export default function TripDateView() {
                   <p className={styles['stay-name']}>{stay.name}</p>
                   <p className={styles['stay-dates']}>
                     {formatDot(stay.checkIn)} — {formatDot(stay.checkOut)} ·{' '}
-                    {daysBetween(stay.checkIn, stay.checkOut)}박
+                    {t('tripDate.nightsSuffix')(daysBetween(stay.checkIn, stay.checkOut))}
                   </p>
                 </div>
                 <div style={{ display: 'flex', gap: 8 }}>
@@ -604,14 +612,14 @@ export default function TripDateView() {
                     className={styles['stay-delete']}
                     onClick={() => editStay(stay)}
                   >
-                    수정
+                    {t('tripDate.editButton')}
                   </button>
                   <button
                     type="button"
                     className={`${styles['stay-delete']} ${styles['stay-delete-danger']}`}
                     onClick={() => removeStay(stay.id)}
                   >
-                    삭제
+                    {t('tripDate.deleteButton')}
                   </button>
                 </div>
               </div>
@@ -619,10 +627,10 @@ export default function TripDateView() {
           </div>
           {stays.length < 3 ? (
             <button type="button" className={styles['add-stay']} onClick={addStay}>
-              + 숙소 추가
+              {t('tripDate.addStayButton')}
             </button>
           ) : (
-            <p className={styles.hint}>숙소는 최대 3개까지만 등록할 수 있어요.</p>
+            <p className={styles.hint}>{t('stay.maxStaysError')}</p>
           )}
         </div>
 
@@ -631,16 +639,16 @@ export default function TripDateView() {
             이 섹션이 화면에 보이는 동안 챗봇 버튼이 "지도에서 선택" 링크와 겹치지 않게 함 */}
         <div className={styles.section} ref={departureSectionRef} data-bottom-bar="true">
           <div className={styles['section-head']}>
-            <span className={styles['section-label-strong']}>첫째날 출발지</span>
+            <span className={styles['section-label-strong']}>{t('tripDate.firstDayDeparture')}</span>
             <button type="button" className={styles['edit-link']} onClick={() => openSearch('departure')}>
-              지도에서 선택
+              {t('tripDate.selectOnMap')}
             </button>
           </div>
           {departure ? (
             <p className={styles['place-summary']}>{departure.name}</p>
           ) : (
             <p className={styles.hint} style={{ color: 'var(--color-danger)' }}>
-              여행이 시작되는 정확한 위치를 지도에서 검색해주세요.
+              {t('tripDate.departureRequiredHint')}
             </p>
           )}
         </div>
@@ -651,15 +659,15 @@ export default function TripDateView() {
             여기도 표시해서 화면에 보이는 동안은 챗봇이 위로 피하게 함 */}
         <div className={styles.section} style={{ borderBottom: 'none' }} data-bottom-bar="true">
           <div className={styles['section-head']}>
-            <span className={styles['section-label-strong']}>마지막날 도착지</span>
+            <span className={styles['section-label-strong']}>{t('tripDate.lastDayArrival')}</span>
             <button type="button" className={styles['edit-link']} onClick={() => openSearch('arrival')}>
-              지도에서 선택
+              {t('tripDate.selectOnMap')}
             </button>
           </div>
           {arrival ? (
             <p className={styles['place-summary']}>{arrival.name}</p>
           ) : (
-            <p className={styles.hint}>등록된 숙소가 있으면 자동으로 채워져요.</p>
+            <p className={styles.hint}>{t('tripDate.arrivalAutoHint')}</p>
           )}
         </div>
 
@@ -675,10 +683,10 @@ export default function TripDateView() {
             액티비티)으로. "이전:"/"다음:" 같은 접두어 없이 이동할 화면 이름만 표기 */}
         <div className={styles.footer} data-bottom-bar="true">
           <button type="button" className={styles['btn-outline']} onClick={() => navigate('/trip/events')}>
-            행사 선택
+            {t('tripDate.eventSelectButton')}
           </button>
           <button type="button" className={styles['btn-primary']} onClick={goNext}>
-            선호 액티비티
+            {t('onboarding.preferredActivity')}
           </button>
         </div>
         </div>
@@ -701,9 +709,9 @@ export default function TripDateView() {
           >
             <div className={styles['search-panel-header']}>
               <span>
-                {searchTarget === 'departure' && '첫째날 출발지 검색'}
-                {searchTarget === 'arrival' && '마지막날 도착지 검색'}
-                {searchTarget === 'stay' && (editingStayId != null ? '숙소 수정' : '숙소 추가')}
+                {searchTarget === 'departure' && t('tripDate.searchDepartureTitle')}
+                {searchTarget === 'arrival' && t('tripDate.searchArrivalTitle')}
+                {searchTarget === 'stay' && (editingStayId != null ? t('tripDate.searchStayEditTitle') : t('accommodation.add'))}
               </span>
               <button type="button" className={styles['close-btn']} onClick={closeSearch}>
                 <Icon name="close" size={14} />
@@ -719,7 +727,7 @@ export default function TripDateView() {
                 onKeyDown={(e) => {
                   if (e.key === 'Enter') runSearch(query)
                 }}
-                placeholder={searchTarget === 'stay' ? '지역, 역, 숙소 이름으로 검색' : '장소, 역, 주소로 검색'}
+                placeholder={searchTarget === 'stay' ? t('stay.searchPlaceholder') : t('locationSearch.searchPlaceholder')}
                 disabled={sdkStatus === 'error'}
                 autoFocus
               />
@@ -727,7 +735,7 @@ export default function TripDateView() {
                 <button
                   type="button"
                   onClick={() => setQuery('')}
-                  aria-label="검색어 지우기"
+                  aria-label={t('locationSearch.clearSearch')}
                   style={{ border: 0, background: 'transparent', cursor: 'pointer', padding: 6, display: 'flex' }}
                 >
                   <Icon name="close" size={14} />
@@ -739,7 +747,7 @@ export default function TripDateView() {
                 type="button"
                 className={styles['search-submit-btn']}
                 onClick={() => runSearch(query)}
-                aria-label="검색"
+                aria-label={t('tripDate.searchButtonLabel')}
               >
                 <Icon name="search" size={18} color="var(--color-primary-400)" />
               </button>
@@ -751,11 +759,11 @@ export default function TripDateView() {
             >
               <div ref={mapRef} className={styles['map-canvas']} style={{ width: '100%', height: '100%' }} />
               {sdkStatus === 'loading' && (
-                <div className={styles['map-loading']}>지도를 불러오는 중이에요...</div>
+                <div className={styles['map-loading']}>{t('locationSearch.mapLoading')}</div>
               )}
               {sdkStatus === 'error' && (
                 <div className={styles['map-loading']}>
-                  지도를 불러오지 못했어요. 인터넷 연결을 확인하거나 잠시 후 다시 시도해주세요.
+                  {t('locationSearch.mapLoadError')}
                 </div>
               )}
               {sdkStatus === 'ready' && searchStatus === 'ok' && searchResults.length > 0 && (
@@ -772,12 +780,12 @@ export default function TripDateView() {
                     fontWeight: 600,
                   }}
                 >
-                  {searchResults.length}곳 검색됨
+                  {t('locationSearch.resultsCount')(searchResults.length)}
                 </div>
               )}
               <button
                 type="button"
-                title="내 위치"
+                title={t('locationSearch.myLocation')}
                 onClick={useMyLocation}
                 disabled={sdkStatus !== 'ready'}
                 style={{
@@ -807,11 +815,11 @@ export default function TripDateView() {
             )}
 
             {searchStatus === 'zero' && (
-              <p className={styles.hint}>'{query}'(으)로 검색된 곳이 없어요. 다른 키워드로 검색해보세요.</p>
+              <p className={styles.hint}>{t('locationSearch.zeroResult')(query)}</p>
             )}
             {searchStatus === 'error' && (
               <p className={styles.hint} style={{ color: 'var(--color-danger)' }}>
-                검색 중 문제가 생겼어요. 잠시 후 다시 시도해주세요.
+                {t('locationSearch.searchError')}
               </p>
             )}
 
@@ -850,7 +858,7 @@ export default function TripDateView() {
                   {pickedPlace.address}
                 </div>
                 <div style={{ marginTop: 5, fontSize: 11, color: 'var(--color-primary-500)' }}>
-                  지도 위 마커를 드래그해서 위치를 조정할 수 있어요.
+                  {t('locationSearch.dragHint')}
                 </div>
               </div>
             )}
@@ -858,15 +866,15 @@ export default function TripDateView() {
             {searchTarget === 'stay' && (
               <div ref={stayDateSectionRef} style={{ padding: '14px 16px 24px' }}>
                 <div className={styles['section-head']} style={{ marginBottom: 8 }}>
-                  <span className={styles['section-label']}>체류 기간</span>
+                  <span className={styles['section-label']}>{t('accommodation.stayPeriod')}</span>
                   {stayNights > 0 && (
-                    <span className={styles['section-count']}>{stayNights}박 {stayNights + 1}일</span>
+                    <span className={styles['section-count']}>{t('dateRange.nightsDays')(stayNights)}</span>
                   )}
                 </div>
 
                 {stayAllowedMinDate && stayAllowedMaxDate && (
                   <p className={styles.infoBanner}>
-                    <span className={styles.infoBannerIcon}>ⓘ</span> 여행 기간 기준 {formatDot(stayAllowedMinDate)} ~ {formatDot(stayAllowedMaxDate)} 사이만 가능해요.
+                    <span className={styles.infoBannerIcon}>ⓘ</span> {t('stay.allowedRangeHint')(formatDot(stayAllowedMinDate), formatDot(stayAllowedMaxDate))}
                   </p>
                 )}
 
@@ -882,27 +890,27 @@ export default function TripDateView() {
                   renderTrigger={({ open, checkIn, checkOut }) => (
                     <div className={styles['two-col']}>
                       <div>
-                        <label className={styles['field-label']}>체크인</label>
+                        <label className={styles['field-label']}>{t('accommodation.checkIn')}</label>
                         <button
                           type="button"
                           className={`${styles.trigger} ${!checkIn ? styles.placeholder : ''}`}
                           onClick={open}
                         >
                           <span className={styles.triggerText}>
-                            {checkIn ? formatDot(checkIn) : '체크인 날짜'}
+                            {checkIn ? formatDot(checkIn) : t('tripDate.checkInPlaceholder')}
                           </span>
                           <Icon name="calendar" size={16} color={checkIn ? 'var(--color-primary-500)' : 'rgba(12, 10, 28, 0.4)'} />
                         </button>
                       </div>
                       <div>
-                        <label className={styles['field-label']}>체크아웃</label>
+                        <label className={styles['field-label']}>{t('accommodation.checkOut')}</label>
                         <button
                           type="button"
                           className={`${styles.trigger} ${!checkOut ? styles.placeholder : ''}`}
                           onClick={open}
                         >
                           <span className={styles.triggerText}>
-                            {checkOut ? formatDot(checkOut) : '체크아웃 날짜'}
+                            {checkOut ? formatDot(checkOut) : t('tripDate.checkOutPlaceholder')}
                           </span>
                           <Icon name="calendar" size={16} color={checkOut ? 'var(--color-primary-500)' : 'rgba(12, 10, 28, 0.4)'} />
                         </button>
@@ -925,7 +933,7 @@ export default function TripDateView() {
               {/* 06 버튼 규칙 - 정보(숙박일수·숙소명)는 버튼 밖 캡션으로, 버튼엔 행동만 담음 */}
               {searchTarget === 'stay' && pickedPlace && stayNights > 0 && (
                 <p className={styles.hint} style={{ marginBottom: 8 }}>
-                  {stayNights}박 · {pickedPlace.name}
+                  {t('stay.nightsWithName')(stayNights, pickedPlace.name)}
                 </p>
               )}
               <button
@@ -936,14 +944,14 @@ export default function TripDateView() {
                 onClick={confirmPlace}
               >
                 {!pickedPlace
-                  ? '지도에서 장소를 골라주세요'
+                  ? t('locationSearch.pickPlaceholder')
                   : searchTarget === 'stay' && (!stayCheckIn || !stayCheckOut)
-                    ? '체크인·체크아웃을 골라주세요'
+                    ? t('tripDate.pickCheckInOut')
                     : searchTarget === 'stay' && stayDateError
-                      ? '체류 기간을 확인해주세요'
+                      ? t('tripDate.checkStayPeriod')
                       : searchTarget === 'stay'
-                        ? `숙소로 ${editingStayId != null ? '수정' : '추가'}`
-                        : '이 장소로 정하기'}
+                        ? t('stay.addOrEditStay')(editingStayId != null)
+                        : t('tripDate.confirmThisPlace')}
               </button>
             </div>
           </div>

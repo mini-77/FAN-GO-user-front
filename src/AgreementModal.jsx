@@ -1,10 +1,12 @@
 import { useEffect } from 'react'
+import { useLanguage } from './LanguageContext'
 import styles from './AgreementModal.module.css'
 
 // 회원가입 화면의 "이용약관/위치정보/개인정보" 링크를 누르면 뜨는 팝업.
 // 결정이 필요한 모달(약관 동의)이라 반드시 "닫기"/"동의하고 닫기" 중 하나를 골라야 함 —
 // X나 바깥 영역 클릭으로 아무 선택 없이 빠져나갈 수 있게 하지 않음 (디자인 가이드 04번 규칙).
 export default function AgreementModal({ title, content, onClose, onAgree }) {
+  const { t } = useLanguage()
   // 모달 열려있는 동안 뒷배경 스크롤 방지
   useEffect(() => {
     const prevOverflow = document.body.style.overflow
@@ -25,10 +27,10 @@ export default function AgreementModal({ title, content, onClose, onAgree }) {
         </div>
         <div className={styles.footer}>
           <button type="button" className={styles.secondaryBtn} onClick={onClose}>
-            닫기
+            {t('common.close')}
           </button>
           <button type="button" className={styles.primaryBtn} onClick={onAgree}>
-            동의하고 닫기
+            {t('signup.agreeAndClose')}
           </button>
         </div>
       </div>

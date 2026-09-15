@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTrip } from './TripContext'
+import { useLanguage } from './LanguageContext'
 import AppHeader from './AppHeader'
 import AgreementModal from './AgreementModal'
 import { TERMS_TEXT, LOCATION_TEXT, PRIVACY_TEXT } from './agreementTexts'
@@ -9,6 +10,7 @@ import styles from './SignupView.module.css'
 export default function SignupView() {
   const navigate = useNavigate()
   const { updateTrip } = useTrip()
+  const { t } = useLanguage()
 
   // 국적 이름(nationality_nm) → 국제전화 코드. API가 이름만 주고 전화코드는 안 줘서
   // 이름 기준으로 매칭. 예전에 하드코딩했던 국가 목록(DB에 그대로 들어간 이름들) 기준으로 전부 매핑함.
@@ -118,34 +120,34 @@ export default function SignupView() {
   const EMAIL_RULE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
   function validateEmail(value) {
-    return EMAIL_RULE.test(value) ? '' : '이메일 형식이 맞지 않아요.'
+    return EMAIL_RULE.test(value) ? '' : t('signup.emailInvalid')
   }
 
   function validateNickname(value) {
-    return value.trim() ? '' : '닉네임을 입력해 주세요.'
+    return value.trim() ? '' : t('signup.nicknameRequired')
   }
 
   // 국가번호/전화번호 각각 확인. 국가번호는 숫자만, 전화번호는 숫자+하이픈만 허용.
   function validatePhone(code, local) {
-    if (!code) return '국가번호를 확인해 주세요.'
-    if (!/^\d{1,4}$/.test(code)) return '국가번호는 숫자만 입력해 주세요.'
-    if (!local) return '휴대전화번호를 입력해 주세요.'
-    if (!/^\d[\d\s-]*$/.test(local)) return '휴대전화번호는 숫자만 입력해 주세요.'
+    if (!code) return t('signup.phoneCodeRequired')
+    if (!/^\d{1,4}$/.test(code)) return t('signup.phoneCodeNumeric')
+    if (!local) return t('signup.phoneRequired')
+    if (!/^\d[\d\s-]*$/.test(local)) return t('signup.phoneNumeric')
     return ''
   }
 
   function validatePassword(value) {
-    if (!value) return '8자 이상, 영문과 특수문자를 섞어 주세요.'
-    return PASSWORD_RULE.test(value) ? '' : '8자 이상, 영문과 특수문자를 섞어 주세요.'
+    if (!value) return t('signup.passwordRule')
+    return PASSWORD_RULE.test(value) ? '' : t('signup.passwordRule')
   }
 
   function validatePasswordConfirm(value, currentPassword) {
     if (!value) return ''
-    return value === currentPassword ? '' : '두 비밀번호가 서로 달라요.'
+    return value === currentPassword ? '' : t('signup.passwordMismatch')
   }
 
   function validateNationality(value) {
-    return value ? '' : '국적을 선택해 주세요.'
+    return value ? '' : t('signup.nationalityRequired')
   }
 
   const [nationalities, setNationalities] = useState([])
@@ -179,7 +181,7 @@ export default function SignupView() {
           setSelectedLanguage((koDefault || langData[0])?.lang_no ?? null)
         }
       } catch (e) {
-        if (!cancelled) setOptionsError('국적/언어 목록을 불러오지 못했어요. 새로고침해주세요.')
+        if (!cancelled) setOptionsError(t('signup.optionsLoadError'))
       } finally {
         if (!cancelled) setIsLoadingOptions(false)
       }
@@ -234,18 +236,18 @@ export default function SignupView() {
       if (data.available) {
         setEmailChecked(true)
         setEmailCheckError('')
-        setEmailCheckSuccess('사용 가능한 이메일 주소예요.')
+        setEmailCheckSuccess(t('signup.emailAvailable'))
       } else {
         // ⚠️ 이 상태(emailChecked=false + emailCheckError 있음)일 땐 가입 버튼이
         // 실제로 눌리지 않게(disabled 속성) 처리함 - isFormValid가 false가 되고,
         // 아래 버튼에 disabled={!isFormValid}가 걸려있어서 클릭 자체가 막힘.
         setEmailChecked(false)
-        setEmailCheckError('이미 사용 중인 이메일이에요.')
+        setEmailCheckError(t('signup.emailTaken'))
         setEmailCheckSuccess('')
       }
     } catch (e) {
       setEmailChecked(false)
-      setEmailCheckError('중복확인 중 문제가 생겼어요. 잠시 후 다시 시도해주세요.')
+      setEmailCheckError(t('signup.emailCheckError'))
       setEmailCheckSuccess('')
     } finally {
       setIsCheckingEmail(false)
@@ -283,10 +285,10 @@ export default function SignupView() {
     const hasFieldError = Object.values(nextFieldErrors).some(Boolean)
 
     if (hasFieldError || !isFormValid) {
-      if (!emailChecked) setErrorMessage('이메일 중복확인이 필요해요. 이메일 입력 후 다른 곳을 탭해주세요.')
-      else if (!nationality) setErrorMessage('국적을 선택해주세요.')
-      else if (!agreedTerms || !agreedPrivacy || !agreedLocation) setErrorMessage('필수 약관에 동의해주세요.')
-      else setErrorMessage('입력값을 확인해 주세요.')
+      if (!emailChecked) setErrorMessage(t('signup.emailCheckNeeded'))
+      else if (!nationality) setErrorMessage(t('signup.nationalityNeeded'))
+      else if (!agreedTerms || !agreedPrivacy || !agreedLocation) setErrorMessage(t('signup.agreementsNeeded'))
+      else setErrorMessage(t('signup.checkInputs'))
       return
     }
 
@@ -314,10 +316,10 @@ export default function SignupView() {
       <div className={styles.card}>
         <AppHeader showProfile={false} />
         <div className={styles.body}>
-          <h1 className={styles.title}>가입하기</h1>
+          <h1 className={styles.title}>{t('signup.title')}</h1>
 
         <div className={styles['form-field']}>
-          <label className={styles['field-label']}>이메일</label>
+          <label className={styles['field-label']}>{t('auth.email')}</label>
           <input
             className={`${styles.input} ${email ? styles['input-highlighted'] : ''} ${fieldErrors.email || emailCheckError ? styles.inputError : ''}`}
             type="text"
@@ -342,7 +344,7 @@ export default function SignupView() {
           {fieldErrors.email ? (
             <p className={styles['field-hint-warning']}>{fieldErrors.email}</p>
           ) : isCheckingEmail ? (
-            <p className={styles.hint}>중복확인 중이에요...</p>
+            <p className={styles.hint}>{t('signup.checkingEmail')}</p>
           ) : emailCheckError ? (
             <p className={styles['field-hint-warning']}>{emailCheckError}</p>
           ) : emailCheckSuccess ? (
@@ -354,13 +356,13 @@ export default function SignupView() {
 
         {/* 비밀번호 / 비밀번호 확인 - 이메일 바로 다음, 세로로 하나씩 */}
         <div className={styles['form-field']}>
-          <label className={styles['field-label']}>비밀번호</label>
+          <label className={styles['field-label']}>{t('login.passwordLabel')}</label>
           <input
             className={`${styles.input} ${styles['input-en']} ${fieldErrors.password ? styles.inputError : ''}`}
             type="password"
             name="signup-pw-x92"
             autoComplete="off"
-            placeholder="비밀번호"
+            placeholder={t('login.passwordPlaceholder')}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             onBlur={(e) =>
@@ -375,13 +377,13 @@ export default function SignupView() {
         </div>
 
         <div className={styles['form-field']}>
-          <label className={styles['field-label']}>비밀번호 확인</label>
+          <label className={styles['field-label']}>{t('signup.passwordConfirmLabel')}</label>
           <input
             className={`${styles.input} ${styles['input-en']} ${fieldErrors.passwordConfirm ? styles.inputError : ''}`}
             type="password"
             name="signup-pw-confirm-x92"
             autoComplete="off"
-            placeholder="비밀번호 확인"
+            placeholder={t('signup.passwordConfirmLabel')}
             value={passwordConfirm}
             onChange={(e) => setPasswordConfirm(e.target.value)}
             onBlur={(e) =>
@@ -399,11 +401,11 @@ export default function SignupView() {
         </div>
 
         <div className={styles['form-field']}>
-          <label className={styles['field-label']}>닉네임</label>
+          <label className={styles['field-label']}>{t('auth.nickname')}</label>
           <input
             className={`${styles.input} ${fieldErrors.nickname ? styles.inputError : ''}`}
             type="text"
-            placeholder="닉네임"
+            placeholder={t('auth.nickname')}
             value={nickname}
             onChange={(e) => setNickname(e.target.value)}
             onBlur={(e) =>
@@ -420,7 +422,7 @@ export default function SignupView() {
         {/* 국적: 국가번호 자동채움을 위해 휴대전화번호보다는 먼저 선택하도록 배치 */}
         <div className={styles['two-col']}>
           <div className={styles['form-field']}>
-            <label className={styles['field-label']}>국적</label>
+            <label className={styles['field-label']}>{t('signup.nationalityLabel')}</label>
             <select
               className={`${styles.input} ${fieldErrors.nationality ? styles.inputError : ''}`}
               value={nationality}
@@ -436,7 +438,7 @@ export default function SignupView() {
               }
               disabled={isLoadingOptions}
             >
-              <option value="">{isLoadingOptions ? '불러오는 중...' : '국적 선택'}</option>
+              <option value="">{isLoadingOptions ? t('common.loading') : t('signup.nationalitySelect')}</option>
               {nationalities.map((n) => (
                 <option key={n.nationality_no} value={n.nationality_no}>
                   {n.nationality_nm}
@@ -451,7 +453,7 @@ export default function SignupView() {
           </div>
           <div className={styles['form-field']}>
             <p className={styles['default-lang-hint']}>
-              국적 기준 기본 언어: <strong>{defaultLangHint}</strong>
+              {t('signup.defaultLangHint')} <strong>{defaultLangHint}</strong>
             </p>
           </div>
         </div>
@@ -459,7 +461,7 @@ export default function SignupView() {
         {optionsError && <p className={styles.error}>{optionsError}</p>}
 
         <div className={styles['form-field']}>
-          <label className={styles['field-label']}>휴대전화번호</label>
+          <label className={styles['field-label']}>{t('signup.phoneLabel')}</label>
           {/* 국가번호 + 전화번호를 하나의 박스 안에서, 국가번호가 맨 앞에 오게 */}
           <div className={`${styles['phone-single-box']} ${fieldErrors.phone ? styles.inputError : ''}`}>
             <span className={styles['phone-code-plus']}>+</span>
@@ -514,9 +516,9 @@ export default function SignupView() {
                   setActiveModal('terms')
                 }}
               >
-                이용약관
+                {t('auth.termsOfService')}
               </button>
-              <span className={styles['agree-text']}> 동의 (필수)</span>
+              <span className={styles['agree-text']}> {t('signup.agreeRequired')}</span>
             </span>
           </label>
           <label className={styles['agree-row']}>
@@ -536,9 +538,9 @@ export default function SignupView() {
                   setActiveModal('privacy')
                 }}
               >
-                개인정보 수집 및 활용
+                {t('auth.privacyPolicy')}
               </button>
-              <span className={styles['agree-text']}> 동의 (필수)</span>
+              <span className={styles['agree-text']}> {t('signup.agreeRequired')}</span>
             </span>
           </label>
           <label className={styles['agree-row']}>
@@ -558,16 +560,16 @@ export default function SignupView() {
                   setActiveModal('location')
                 }}
               >
-                위치정보 수집 및 이용
+                {t('signup.locationConsent')}
               </button>
-              <span className={styles['agree-text']}> 동의 (필수)</span>
+              <span className={styles['agree-text']}> {t('signup.agreeRequired')}</span>
             </span>
           </label>
         </div>
 
         {activeModal === 'terms' && (
           <AgreementModal
-            title="이용약관"
+            title={t('auth.termsOfService')}
             content={TERMS_TEXT}
             onClose={() => setActiveModal(null)}
             onAgree={() => {
@@ -578,7 +580,7 @@ export default function SignupView() {
         )}
         {activeModal === 'privacy' && (
           <AgreementModal
-            title="개인정보 수집 및 활용 동의"
+            title={t('signup.privacyModalTitle')}
             content={PRIVACY_TEXT}
             onClose={() => setActiveModal(null)}
             onAgree={() => {
@@ -589,7 +591,7 @@ export default function SignupView() {
         )}
         {activeModal === 'location' && (
           <AgreementModal
-            title="위치정보 수집 및 이용 동의"
+            title={t('signup.locationModalTitle')}
             content={LOCATION_TEXT}
             onClose={() => setActiveModal(null)}
             onAgree={() => {
@@ -610,7 +612,7 @@ export default function SignupView() {
             onClick={goNext}
             disabled={!isFormValid}
           >
-            다음: 아티스트 선택
+            {t('signup.nextButton')}
           </button>
         </div>
         </div>

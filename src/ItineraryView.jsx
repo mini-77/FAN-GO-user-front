@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useTrip } from './TripContext'
 import { apiFetch, safeErrorMessage } from './api'
+import { useLanguage } from './LanguageContext'
 import AppHeader from './AppHeader'
 import BottomNav from './BottomNav'
 import PlaceDetailModal from './PlaceDetailModal'
@@ -40,6 +41,7 @@ function formatTimeLabel(iso) {
 export default function ItineraryView() {
   const navigate = useNavigate()
   const location = useLocation()
+  const { t } = useLanguage()
   const { tripData } = useTrip()
   const { startDate, endDate } = tripData.tripDates || {}
   const totalDays =
@@ -82,7 +84,7 @@ export default function ItineraryView() {
           // 화면(사용자)에는 친절한 문장만 보여줌 (보안·신뢰 원칙)
           const body = await routesRes.json().catch(() => null)
           console.error('[ItineraryView] 동선 조회 실패:', routesRes.status, body?.detail)
-          throw new Error('동선을 불러오지 못했어요.')
+          throw new Error(t('itinerary.loadFailed'))
         }
         const data = await routesRes.json()
         const dayRoute = Array.isArray(data) && data.length > 0 ? data[0] : null
@@ -140,7 +142,7 @@ export default function ItineraryView() {
           setIsPreview(true)
           setDayErrorByDay((prev) => ({
             ...prev,
-            [activeDay]: safeErrorMessage(e, '동선을 불러오지 못했어요. 잠시 후 다시 시도해주세요.'),
+            [activeDay]: safeErrorMessage(e, t('itinerary.loadFailedRetry')),
           }))
           // 실패를 dayDataByDay에 null로 저장해두면 재시도가 막히니, 여기엔 저장하지 않음
           // (재시도 버튼을 누르면 dayErrorByDay만 초기화해서 이 effect가 다시 돌게 함)
@@ -153,6 +155,7 @@ export default function ItineraryView() {
     return () => {
       cancelled = true
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeDay, tripData.tripNo, tripData.selectedEvent, dayErrorByDay[activeDay]])
 
   function retryLoadDay() {
@@ -243,7 +246,7 @@ export default function ItineraryView() {
         <AppHeader />
         <div className={styles.header}>
           <h1 className={styles.title}>
-            동선을 확인해주세요
+            {t('itinerary.confirmRoute')}
             <br />
             <span className={styles.date}>{formatDateRange(startDate, endDate)}</span>
           </h1>
@@ -257,7 +260,7 @@ export default function ItineraryView() {
               className={`${styles['day-tab']} ${activeDay === d ? styles.active : ''}`}
               onClick={() => setActiveDay(d)}
             >
-              {d}일차
+              {t('scheduleTable.dayN')(d)}
             </button>
           ))}
         </div>
@@ -265,7 +268,7 @@ export default function ItineraryView() {
         {isPreview && (
           <div style={{ padding: '0 16px' }}>
             <p className={styles['day-label']} style={{ color: 'var(--color-danger)', marginBottom: 4 }}>
-              ⚠ 아직 실제로 만든 동선이 없어서 미리보기 데이터를 보여주고 있어요.
+              {t('itinerary.previewNotice')}
             </p>
             {dayErrorByDay[activeDay] && (
               <>
@@ -288,7 +291,7 @@ export default function ItineraryView() {
                     cursor: 'pointer',
                   }}
                 >
-                  다시 불러오기
+                  {t('itinerary.reload')}
                 </button>
               </>
             )}
@@ -298,12 +301,12 @@ export default function ItineraryView() {
         <div className={styles['map-area']}>
           <div ref={mapRef} className={styles['map-canvas']} />
           {(!isSdkReady || isLoading) && (
-            <div className={styles['map-loading']}>지도를 불러오는 중이에요...</div>
+            <div className={styles['map-loading']}>{t('itinerary.mapLoading')}</div>
           )}
         </div>
         <div className={styles['map-summary-bar']}>
           <span className={styles['map-label']}>MAP</span>
-          <span className={styles['map-summary-text']}>총 {totalPlaceCount}개 장소</span>
+          <span className={styles['map-summary-text']}>{t('itinerary.totalPlaces')(totalPlaceCount)}</span>
         </div>
 
         <div className={styles.timeline}>
@@ -337,9 +340,9 @@ export default function ItineraryView() {
             <div className={styles['pinned-bar']}>
               <span className={styles['pinned-time']}>{formatTimeLabel(displayPinned.startDt) || displayPinned.time}</span>
               <span className={styles['pinned-title']}>
-                {displayPinned.name || displayPinned.title} · 입장 시작
+                {displayPinned.name || displayPinned.title} · {t('itinerary.enterStart')}
               </span>
-              <span className={styles['pinned-tag']}>고정 ✓</span>
+              <span className={styles['pinned-tag']}>{t('itinerary.fixedTag')}</span>
             </div>
           )}
 
@@ -351,17 +354,17 @@ export default function ItineraryView() {
               className={styles['btn-outline']}
               onClick={() => navigate('/trip/schedule', { state: { visitDay: activeDay } })}
             >
-              목록보기
+              {t('itinerary.viewList')}
             </button>
             <button
               type="button"
               className={styles['btn-outline']}
               onClick={() => navigate('/trip/itinerary/edit', { state: { visitDay: activeDay } })}
             >
-              동선 수정
+              {t('schedule.editRoute')}
             </button>
             <button type="button" className={styles['btn-primary']} onClick={() => navigate('/trip/history')}>
-              확인
+              {t('common.confirm')}
             </button>
           </div>
         </div>

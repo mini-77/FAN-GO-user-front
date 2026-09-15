@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import AppHeader from './AppHeader'
 import BottomNav from './BottomNav'
+import { useLanguage } from './LanguageContext'
 import styles from './TripReadyView.module.css'
 
 // TripGeneratingView에서 동선 생성이 다 끝나면 이 화면으로 넘어옴.
@@ -8,6 +9,7 @@ import styles from './TripReadyView.module.css'
 // ItineraryView를 먼저 보여주고, 목록만 보는 ScheduleTableView는 거기서 넘어가게 함.
 export default function TripReadyView() {
   const navigate = useNavigate()
+  const { t } = useLanguage()
 
   return (
     <div className={styles.screen}>
@@ -26,16 +28,16 @@ export default function TripReadyView() {
         </div>
         {/* 09 카피&용어 - 화면 제목은 부드러운 해요체로 (합쇼체 "준비되었습니다" 사용 금지) */}
         <h1 className={styles.title}>
-          새로운 동선이
+          {t('tripReady.titleLine1')}
           <br />
-          준비됐어요
+          {t('tripReady.titleLine2')}
         </h1>
-        <p className={styles.subtitle}>다음 화면에서 동선 정보를 확인해요.</p>
+        <p className={styles.subtitle}>{t('tripReady.subtitle')}</p>
       </div>
 
       <div className={styles.footer} data-bottom-bar="true">
         <button type="button" className={styles['btn-primary']} onClick={() => navigate('/trip/itinerary')}>
-          동선 보기
+          {t('tripReady.viewRouteButton')}
         </button>
       </div>
 

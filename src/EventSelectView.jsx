@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTrip } from './TripContext'
 import { apiFetch, safeErrorMessage } from './api'
+import { useLanguage } from './LanguageContext'
 import AppHeader from './AppHeader'
 import BottomNav from './BottomNav'
 import Icon from './Icon'
@@ -27,7 +28,7 @@ function toLocalIsoDate(d) {
 
 // 멀티데이 이벤트(start_dt~end_dt)를 하루짜리 카드 여러 개로 쪼갬 (백엔드는 원본 그대로 주고,
 // 하루씩 쪼개서 보여주는 건 프론트 몫이라고 명세에 적혀있음)
-function expandEventToDayCards(event) {
+function expandEventToDayCards(event, t) {
   const start = new Date(event.start_dt)
   const end = new Date(event.end_dt)
   const cards = []
@@ -53,7 +54,7 @@ function expandEventToDayCards(event) {
         event_date: dateStr,
         dateLabel,
         timeLabel,
-        title: event.event_nm + (totalDays > 1 ? ` (${dayIndex}일차)` : ''),
+        title: event.event_nm + (totalDays > 1 ? ` (${t('scheduleTable.dayN')(dayIndex)})` : ''),
         address: event.add,
         artist_group_no: event.artist_group_no,
       })
@@ -68,6 +69,7 @@ function expandEventToDayCards(event) {
 
 export default function EventSelectView() {
   const navigate = useNavigate()
+  const { t } = useLanguage()
   const { tripData, updateTrip } = useTrip()
 
   const [favoriteGroups, setFavoriteGroups] = useState([])
@@ -120,22 +122,22 @@ export default function EventSelectView() {
       try {
         const res = await apiFetch(`/events/main?artist_group_no=${groupFilter}`)
         if (res.status === 401) {
-          throw new Error('로그인이 만료됐어요. 다시 로그인해주세요.')
+          throw new Error(t('scheduleTable.sessionExpired'))
         }
         if (res.status === 403) {
           const data = await res.json().catch(() => null)
           throw new Error(
-            typeof data?.detail === 'string' ? data.detail : '즐겨찾기한 그룹이 아니에요.'
+            typeof data?.detail === 'string' ? data.detail : t('eventSelect.notFavoriteGroup')
           )
         }
-        if (!res.ok) throw new Error('이벤트 목록을 불러오지 못했어요.')
+        if (!res.ok) throw new Error(t('eventSelect.loadEventsFailed'))
         const data = await res.json()
         if (!cancelled) {
           setEvents(data)
           setVisibleCount(PAGE_SIZE)
         }
       } catch (e) {
-        if (!cancelled) setLoadError(safeErrorMessage(e, '이벤트 목록을 불러오지 못했어요. 잠시 후 다시 시도해주세요.'))
+        if (!cancelled) setLoadError(safeErrorMessage(e, t('eventSelect.loadEventsFailedRetry')))
       } finally {
         if (!cancelled) setIsLoading(false)
       }
@@ -144,9 +146,10 @@ export default function EventSelectView() {
     return () => {
       cancelled = true
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [groupFilter])
 
-  const dayCards = useMemo(() => events.flatMap(expandEventToDayCards), [events])
+  const dayCards = useMemo(() => events.flatMap((ev) => expandEventToDayCards(ev, t)), [events, t])
 
   // 이벤트마다 포스터 사진을 매번 등록/교체할 수 없어서, 사진을 보여주는 정보확인
   // 팝업은 없애고 리스트에서 바로 선택만 하는 방식으로 단순화함 (하단 요약에 선택 내용 표시)
@@ -160,7 +163,7 @@ export default function EventSelectView() {
   function goNext() {
     setErrorMessage('')
     if (!selectedCardData) {
-      setErrorMessage('이벤트를 하나 골라주세요.')
+      setErrorMessage(t('eventSelect.pleaseSelectEvent'))
       return
     }
     updateTrip({
@@ -182,8 +185,8 @@ export default function EventSelectView() {
             직접 URL 진입으로 왔을 때도(히스토리가 없어도) 항상 올바른 이전 화면으로 감 */}
         <AppHeader onBack={() => navigate('/home')} />
         <div className={styles.header}>
-          <h1 className={styles.title}>어떤 행사에 참여하시나요?</h1>
-          <p className={styles.subcopy}>참여하시는 행사의 아티스트와 행사를 선택해 주세요.</p>
+          <h1 className={styles.title}>{t('eventSelect.title')}</h1>
+          <p className={styles.subcopy}>{t('eventSelect.subcopy')}</p>
           <div className={styles['progress-bar']}>
             <div className={styles['progress-fill']} style={{ width: '25%' }} />
           </div>
@@ -195,13 +198,13 @@ export default function EventSelectView() {
 
         <div className={styles['filter-section']}>
           <div>
-            <label className={styles['field-label']}>아티스트 그룹 선택</label>
+            <label className={styles['field-label']}>{t('eventSelect.selectArtistGroup')}</label>
             <select
               className={styles.select}
               value={groupFilter}
               onChange={(e) => setGroupFilter(e.target.value)}
             >
-              <option value="">아티스트를 선택해주세요</option>
+              <option value="">{t('eventSelect.selectArtistPlaceholder')}</option>
               {favoriteGroups.map((g) => (
                 <option key={g.artist_group_no} value={g.artist_group_no}>
                   {g.group_nm}
@@ -213,23 +216,21 @@ export default function EventSelectView() {
 
         <div className={styles['event-list']}>
           <label className={styles['field-label']} style={{ padding: '0 16px', display: 'block' }}>
-            참여 행사 선택
+            {t('eventSelect.selectParticipatingEvent')}
           </label>
           {!groupFilter && (
-            <p className={styles.hint}>위에서 아티스트를 먼저 선택해주세요.</p>
+            <p className={styles.hint}>{t('eventSelect.selectArtistFirst')}</p>
           )}
           {groupFilter && (
             <p className={styles.hint}>
-              가입할 때 고른 팀의 콘서트와 공식 팬미팅만 보여 드려요. 하나만 고를 수 있고, 고른 이벤트는
-              시작일시와 주소가 그대로 지도에 꽂혀요.
+              {t('eventSelect.filterHint')}
             </p>
           )}
-          {groupFilter && isLoading && <p className={styles.hint}>이벤트 목록을 불러오는 중이에요...</p>}
+          {groupFilter && isLoading && <p className={styles.hint}>{t('eventSelect.loadingEvents')}</p>}
           {groupFilter && !isLoading && loadError && <p className={styles.hint}>{loadError}</p>}
           {groupFilter && !isLoading && !loadError && dayCards.length === 0 && (
             <p className={styles.hint}>
-              고를 수 있는 이벤트가 없어요. 가입할 때 고른 팀의 예정된 콘서트/팬미팅이 없거나,
-              팬덤을 먼저 골라야 해요.
+              {t('eventSelect.noEventsAvailable')}
             </p>
           )}
           {groupFilter &&
@@ -260,7 +261,7 @@ export default function EventSelectView() {
               className={styles['load-more-btn']}
               onClick={() => setVisibleCount((v) => v + PAGE_SIZE)}
             >
-              더보기 <Icon name="chevronDown" size={14} />
+              {t('eventSelect.loadMore')} <Icon name="chevronDown" size={14} />
             </button>
           )}
 
@@ -283,7 +284,7 @@ export default function EventSelectView() {
               onClick={goNext}
               disabled={!selectedCardData}
             >
-              추천 기간 · 숙소 선택
+              {t('eventSelect.nextButton')}
             </button>
           </div>
         </div>

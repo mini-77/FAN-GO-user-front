@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useTrip } from './TripContext'
 import { apiFetch, safeErrorMessage, safeText } from './api'
+import { useLanguage } from './LanguageContext'
 import AppHeader from './AppHeader'
 import BottomNav from './BottomNav'
 import { scoreColor } from './scoreColor'
@@ -39,6 +40,7 @@ function addDays(iso, n) {
 export default function ItineraryEditView() {
   const navigate = useNavigate()
   const location = useLocation()
+  const { t } = useLanguage()
   const { tripData, updateTrip } = useTrip()
   // ScheduleTableView 등에서 "이 날짜 동선 고치기"로 들어올 때 넘겨줘야 함:
   // navigate('/trip/itinerary/edit', { state: { visitDay: 2 } })
@@ -106,7 +108,7 @@ export default function ItineraryEditView() {
   useEffect(() => {
     if (!tripNo) {
       setIsLoading(false)
-      setLoadError('여행 정보를 찾을 수 없어요. 확인 화면부터 다시 진행해주세요.')
+      setLoadError(t('itineraryEdit.tripInfoNotFound'))
       return
     }
 
@@ -116,7 +118,7 @@ export default function ItineraryEditView() {
       setLoadError('')
       try {
         const routesRes = await apiFetch(`/trips/${tripNo}/routes?visit_day=${visitDay}`)
-        if (!routesRes.ok) throw new Error('동선을 불러오지 못했어요. 잠시 후 다시 시도해주세요.')
+        if (!routesRes.ok) throw new Error(t('itineraryEdit.loadFailedRetry'))
         const data = await routesRes.json()
         const dayRoute = Array.isArray(data) && data.length > 0 ? data[0] : null
         const events = (dayRoute?.events || []).slice().sort((a, b) => a.seq - b.seq)
@@ -171,7 +173,7 @@ export default function ItineraryEditView() {
         }
       } catch (e) {
         if (!cancelled) {
-          setLoadError(safeErrorMessage(e, '동선을 불러오지 못했어요. 잠시 후 다시 시도해주세요.'))
+          setLoadError(safeErrorMessage(e, t('itineraryEdit.loadFailedRetry')))
           setIsLoading(false)
         }
       }
@@ -227,11 +229,11 @@ export default function ItineraryEditView() {
     setSaveError('')
 
     if (!tripNo) {
-      setSaveError('여행 정보를 찾을 수 없어요. 확인 화면부터 다시 진행해주세요.')
+      setSaveError(t('itineraryEdit.tripInfoNotFound'))
       return
     }
     if (stops.length === 0) {
-      setSaveError('이 날짜엔 저장할 동선이 없어요.')
+      setSaveError(t('itineraryEdit.noRouteToSave'))
       return
     }
 
@@ -248,7 +250,7 @@ export default function ItineraryEditView() {
         // 지금 편집한 날짜만 보내면 다른 날짜(visit_day)의 동선이 전부 삭제돼버림.
         const currentRes = await apiFetch(`/trips/${tripNo}/routes`)
         if (!currentRes.ok) {
-          throw new Error('기존 동선을 불러오지 못해서 저장을 진행할 수 없어요. 잠시 후 다시 시도해주세요.')
+          throw new Error(t('itineraryEdit.fetchCurrentRoutesFailed'))
         }
         const currentData = await currentRes.json()
         const otherDaysRoutes = (currentData || [])
@@ -274,7 +276,7 @@ export default function ItineraryEditView() {
         else if (detail?.message) rawMessage = detail.message
         else if (Array.isArray(detail) && detail[0]?.msg) rawMessage = detail[0].msg
         // 08 에러 화면 규칙 - 백엔드 detail이 영어 기술 메시지일 수 있어 그대로 노출하지 않음
-        setSaveError(safeText(rawMessage, '동선 저장에 실패했어요. 잠시 후 다시 시도해주세요.'))
+        setSaveError(safeText(rawMessage, t('itineraryEdit.saveFailed')))
         setIsSaving(false)
         return
       }
@@ -282,7 +284,7 @@ export default function ItineraryEditView() {
       updateTrip({ routesSaved: true })
       navigate('/trip/schedule')
     } catch (e) {
-      setSaveError(safeErrorMessage(e, '서버에 연결할 수 없어요. 잠시 후 다시 시도해주세요.'))
+      setSaveError(safeErrorMessage(e, t('itineraryEdit.connectionFailed')))
       setIsSaving(false)
     }
   }
@@ -293,16 +295,16 @@ export default function ItineraryEditView() {
         <AppHeader />
         <div className={styles.header}>
           <div className={styles['header-row']}>
-            <span className={styles['context-label']}>{visitDay}일차</span>
+            <span className={styles['context-label']}>{t('scheduleTable.dayN')(visitDay)}</span>
           </div>
-          <h1 className={styles.title}>동선 직접 고치기</h1>
-          <p className={styles.subtitle}>바꾸고 싶은 곳을 눌러 주세요. 가까운 순서로 후보가 나와요.</p>
+          <h1 className={styles.title}>{t('itineraryEdit.title')}</h1>
+          <p className={styles.subtitle}>{t('itineraryEdit.subtitle')}</p>
         </div>
 
         <div className={styles.list}>
         {departurePlace && (
           <div className={styles['place-row']}>
-            <span className={styles['place-tag']}>출발 지점</span>
+            <span className={styles['place-tag']}>{t('scheduleTable.departurePoint')}</span>
             <div className={styles['place-text']}>
               <span className={styles['place-name']}>{departurePlace.name}</span>
               {departurePlace.address && (
@@ -312,20 +314,20 @@ export default function ItineraryEditView() {
           </div>
         )}
 
-        {isLoading && <p className={styles.note}>동선을 불러오는 중이에요...</p>}
+        {isLoading && <p className={styles.note}>{t('itineraryEdit.loadingRoute')}</p>}
         {/* 08 부분 영역 에러 - 헤더·출발지점 행은 정상 표시 유지, 실패한 목록 구역만 회색 박스로 */}
         {!isLoading && loadError && (
           <div className={styles['partial-error']}>
             <p className={styles['partial-error-text']}>{loadError}</p>
             {tripNo && (
               <button type="button" className={styles['partial-error-retry']} onClick={retryLoadDay}>
-                다시 시도
+                {t('scheduleTable.retry')}
               </button>
             )}
           </div>
         )}
         {!isLoading && !loadError && stops.length === 0 && (
-          <p className={styles.note}>이 날짜는 아직 동선이 만들어지지 않았어요.</p>
+          <p className={styles.note}>{t('scheduleTable.noRouteYet')}</p>
         )}
 
         {!isLoading && !loadError && stops.length > 0 && (
@@ -349,13 +351,13 @@ export default function ItineraryEditView() {
                       <div className={styles['stop-name-row']}>
                         <span className={styles['stop-name']}>{stop.name}</span>
                         {stop.pinned && (
-                          <span className={styles['stop-tag-fixed']}>고정 · 공연</span>
+                          <span className={styles['stop-tag-fixed']}>{t('itineraryEdit.fixedPerformance')}</span>
                         )}
                       </div>
                       <span className={styles['stop-meta']}>
-                        {stop.address || '주소 정보 없음'}
+                        {stop.address || t('itineraryEdit.noAddressInfo')}
                         {myLocation && stop.lat != null && stop.lon != null && (
-                          <> · 내 위치에서 {haversineKm(myLocation.lat, myLocation.lon, stop.lat, stop.lon).toFixed(1)}km</>
+                          <> · {t('itineraryEdit.distanceFromMe')(haversineKm(myLocation.lat, myLocation.lon, stop.lat, stop.lon).toFixed(1))}</>
                         )}
                       </span>
                     </div>
@@ -372,18 +374,18 @@ export default function ItineraryEditView() {
                   {isExpanded && !stop.pinned && (
                     <div className={styles['candidates-panel']}>
                       <div className={styles['candidates-head']}>
-                        <span className={styles['candidates-label']}>교체 후보</span>
+                        <span className={styles['candidates-label']}>{t('itineraryEdit.replaceCandidates')}</span>
                       </div>
                       {candidatesByEventNo[stop.event_no]?.status === 'loading' && (
-                        <p className={styles['candidates-empty']}>후보를 찾는 중이에요...</p>
+                        <p className={styles['candidates-empty']}>{t('itineraryEdit.findingCandidates')}</p>
                       )}
                       {candidatesByEventNo[stop.event_no]?.status === 'error' && (
-                        <p className={styles['candidates-empty']}>후보를 불러오지 못했어요. 다시 눌러주세요.</p>
+                        <p className={styles['candidates-empty']}>{t('itineraryEdit.candidatesLoadFailed')}</p>
                       )}
                       {candidatesByEventNo[stop.event_no]?.status === 'ok' &&
                         candidatesByEventNo[stop.event_no].list.length === 0 && (
                           <p className={styles['candidates-empty']}>
-                            이 칸은 지금 근처에 조건에 맞는 교체 후보가 없어요.
+                            {t('itineraryEdit.noCandidatesNearby')}
                           </p>
                         )}
                       {candidatesByEventNo[stop.event_no]?.status === 'ok' &&
@@ -398,7 +400,7 @@ export default function ItineraryEditView() {
                               </div>
                               <span className={styles['candidate-diff']}>
                                 {c.distance_km != null ? `${c.distance_km.toFixed(1)}km` : ''}
-                                {c.is_open === false ? ' · 지금 영업 종료' : ''}
+                                {c.is_open === false ? ` · ${t('itineraryEdit.currentlyClosed')}` : ''}
                               </span>
                             </div>
                             <div className={styles['candidate-action']}>
@@ -407,7 +409,7 @@ export default function ItineraryEditView() {
                                 className={styles['candidate-swap-btn']}
                                 onClick={() => swapStop(stop.num, c)}
                               >
-                                교체
+                                {t('itineraryEdit.swap')}
                               </button>
                             </div>
                           </div>
@@ -422,7 +424,7 @@ export default function ItineraryEditView() {
 
         {arrivalPlace && (
           <div className={styles['place-row']}>
-            <span className={styles['place-tag']}>도착 지점</span>
+            <span className={styles['place-tag']}>{t('scheduleTable.arrivalPoint')}</span>
             <div className={styles['place-text']}>
               <span className={styles['place-name']}>{arrivalPlace.name}</span>
               {arrivalPlace.address && (
@@ -447,7 +449,7 @@ export default function ItineraryEditView() {
             onClick={handleSave}
             disabled={isSaving || isLoading || stops.length === 0}
           >
-            {isSaving ? '저장 중...' : '동선 저장'}
+            {isSaving ? t('itineraryEdit.saving') : t('itineraryEdit.saveRoute')}
           </button>
         </div>
         </div>

@@ -1,8 +1,7 @@
 import { useState } from 'react'
 import Icon from './Icon'
+import { useLanguage } from './LanguageContext'
 import styles from './DateRangeSheet.module.css'
-
-const WEEKDAY_LABELS = ['일', '월', '화', '수', '목', '금', '토']
 
 function toLocalIsoDate(d) {
   const y = d.getFullYear()
@@ -48,6 +47,8 @@ export default function DateRangeSheet({
   // 확정하면 onConfirm이 두 값을 한 번에 채움). 안 넘기면 기존처럼 칸 하나로 표시함.
   renderTrigger,
 }) {
+  const { t } = useLanguage()
+  const weekdayLabels = t('dateRange.weekdays')
   const [isOpen, setIsOpen] = useState(false)
   const [draftIn, setDraftIn] = useState(checkIn || '')
   const [draftOut, setDraftOut] = useState(checkOut || '')
@@ -118,7 +119,7 @@ export default function DateRangeSheet({
   const displayText =
     checkIn && checkOut
       ? `${checkIn.slice(5).replace('-', '.')} — ${checkOut.slice(5).replace('-', '.')}`
-      : '체크인 · 체크아웃 선택해주세요'
+      : t('dateRange.selectPlaceholder')
 
   return (
     <>
@@ -150,21 +151,25 @@ export default function DateRangeSheet({
         >
           <div className={styles.sheet}>
             <p className={styles.label}>
-              {!draftIn ? '체크인 날짜를 선택해주세요' : !draftOut ? '체크아웃 날짜를 선택해주세요' : `${nights}박 ${nights + 1}일`}
+              {!draftIn
+                ? t('dateRange.selectCheckIn')
+                : !draftOut
+                  ? t('dateRange.selectCheckOut')
+                  : t('dateRange.nightsDays')(nights)}
             </p>
 
             <div className={styles.monthNav}>
-              <button type="button" className={styles.navBtn} onClick={() => changeMonth(-1)} aria-label="이전 달">
+              <button type="button" className={styles.navBtn} onClick={() => changeMonth(-1)} aria-label={t('dateRange.prevMonth')}>
                 ‹
               </button>
               <span className={styles.monthLabel}>{year}.{String(month + 1).padStart(2, '0')}</span>
-              <button type="button" className={styles.navBtn} onClick={() => changeMonth(1)} aria-label="다음 달">
+              <button type="button" className={styles.navBtn} onClick={() => changeMonth(1)} aria-label={t('dateRange.nextMonth')}>
                 ›
               </button>
             </div>
 
             <div className={styles.weekdayRow}>
-              {WEEKDAY_LABELS.map((w) => (
+              {weekdayLabels.map((w) => (
                 <span key={w} className={styles.weekdayCell}>{w}</span>
               ))}
             </div>
@@ -193,10 +198,10 @@ export default function DateRangeSheet({
 
             <div className={styles.actions}>
               <button type="button" className={styles.closeBtn} onClick={close}>
-                닫기
+                {t('picker.close')}
               </button>
               <button type="button" className={styles.selectBtn} onClick={confirm} disabled={!draftIn || !draftOut}>
-                선택
+                {t('picker.select')}
               </button>
             </div>
           </div>

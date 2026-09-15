@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTrip } from './TripContext'
+import { useLanguage } from './LanguageContext'
 import { apiFetch, safeErrorMessage } from './api'
 import AppHeader from './AppHeader'
 import BottomNav from './BottomNav'
@@ -9,10 +10,10 @@ import styles from './HomeView.module.css'
 
 // 실제 status 값(진행중/완료/예정) → 화면에 보여줄 라벨/스타일 매핑.
 // 디자인 예시에는 "준비 중"(예정)과 "완료" 2개만 나왔는데, 진행중도 있을 수 있어서 추가함.
-function statusToLabel(status) {
-  if (status === '완료') return '완료'
-  if (status === '진행중') return '진행 중'
-  return '준비 중' // 예정
+function statusToLabel(status, t) {
+  if (status === '완료') return t('home.statusDone')
+  if (status === '진행중') return t('home.statusOngoing')
+  return t('home.statusUpcoming') // 예정
 }
 function statusToKind(status) {
   if (status === '완료') return 'done'
@@ -31,10 +32,10 @@ function daysUntil(dateIso) {
   return diff
 }
 
-function formatKoreanDate(iso) {
+function formatKoreanDate(iso, t) {
   if (!iso) return ''
   const d = new Date(iso)
-  const days = ['일', '월', '화', '수', '목', '금', '토']
+  const days = t('date.weekdaysShort')
   return `${d.getFullYear()}.${String(d.getMonth() + 1).padStart(2, '0')}.${String(d.getDate()).padStart(2, '0')} (${days[d.getDay()]})`
 }
 
@@ -56,6 +57,7 @@ const PAGE_SIZE = 8
 
 export default function HomeView() {
   const navigate = useNavigate()
+  const { t } = useLanguage()
   const { tripData, updateTrip } = useTrip()
   const [trips, setTrips] = useState([])
   const [isLoading, setIsLoading] = useState(true)
@@ -69,15 +71,15 @@ export default function HomeView() {
       setLoadError('')
       try {
         const res = await apiFetch('/trips?tab=all')
-        if (res.status === 401) throw new Error('로그인이 만료됐어요. 다시 로그인해주세요.')
-        if (!res.ok) throw new Error('일정 목록을 불러오지 못했어요.')
+        if (res.status === 401) throw new Error(t('home.sessionExpiredError'))
+        if (!res.ok) throw new Error(t('home.loadTripsError'))
         const data = await res.json()
         if (!cancelled) {
           setTrips(data)
           setVisibleCount(PAGE_SIZE)
         }
       } catch (e) {
-        if (!cancelled) setLoadError(safeErrorMessage(e, '일정 목록을 불러오지 못했어요. 잠시 후 다시 시도해주세요.'))
+        if (!cancelled) setLoadError(safeErrorMessage(e, t('home.loadTripsErrorRetry')))
       } finally {
         if (!cancelled) setIsLoading(false)
       }
@@ -95,13 +97,13 @@ export default function HomeView() {
     ;(async () => {
       try {
         const res = await apiFetch('/trips?tab=all')
-        if (res.status === 401) throw new Error('로그인이 만료됐어요. 다시 로그인해주세요.')
-        if (!res.ok) throw new Error('일정 목록을 불러오지 못했어요.')
+        if (res.status === 401) throw new Error(t('home.sessionExpiredError'))
+        if (!res.ok) throw new Error(t('home.loadTripsError'))
         const data = await res.json()
         setTrips(data)
         setVisibleCount(PAGE_SIZE)
       } catch (e) {
-        setLoadError(safeErrorMessage(e, '일정 목록을 불러오지 못했어요. 잠시 후 다시 시도해주세요.'))
+        setLoadError(safeErrorMessage(e, t('home.loadTripsErrorRetry')))
       } finally {
         setIsLoading(false)
       }
@@ -125,25 +127,25 @@ export default function HomeView() {
         <AppHeader showBack={false} showProfile />
 
         <div className={styles.body}>
-          <h1 className={styles.title}>다가오는 이벤트</h1>
+          <h1 className={styles.title}>{t('home.upcomingEvents')}</h1>
 
           {/* "새 동선 만들기"를 맨 위로 - 항상 제일 먼저 보이게 */}
           <button type="button" className={styles['new-trip-btn']} onClick={() => navigate('/trip/events')}>
             <div className={styles['new-trip-icon']}>+</div>
             <div className={styles['new-trip-text']}>
-              <div className={styles['new-trip-title']}>일정 만들기</div>
-              <div className={styles['new-trip-sub']}>아티스트 · 공연을 선택해 동선 시작</div>
+              <div className={styles['new-trip-title']}>{t('schedule.createNewSchedule')}</div>
+              <div className={styles['new-trip-sub']}>{t('home.newTripSub')}</div>
             </div>
             <span className={styles['new-trip-chevron']}>›</span>
           </button>
 
-          {isLoading && <p className={styles['load-text']}>불러오는 중이에요...</p>}
+          {isLoading && <p className={styles['load-text']}>{t('common.loading')}</p>}
 
           {!isLoading && loadError && (
             <div>
               <p className={styles['load-text']} style={{ color: 'var(--color-danger)' }}>{loadError}</p>
               <button type="button" className={styles['retry-btn']} onClick={retry}>
-                다시 시도
+                {t('home.retry')}
               </button>
             </div>
           )}
@@ -167,23 +169,23 @@ export default function HomeView() {
                 })()}
                 <div className={styles['hero-meta-row']}>
                   <Icon name="calendar" size={13} />
-                  <span>{formatKoreanDate(upcoming.start_dt)}</span>
+                  <span>{formatKoreanDate(upcoming.start_dt, t)}</span>
                 </div>
                 <div className={styles['hero-meta-sub']}>
-                  {upcoming.event_add} · 동선 {upcoming.place_count}곳 준비됨
+                  {t('home.placesReady')(upcoming.event_add, upcoming.place_count)}
                 </div>
               </div>
             </div>
           )}
 
           <div className={styles['section-head']}>
-            <span className={styles['section-title']}>내 공연 동선</span>
+            <span className={styles['section-title']}>{t('home.myRoutes')}</span>
           </div>
 
           {!isLoading && !loadError && trips.length === 0 && (
             <div className={styles['empty-state']}>
               <Icon name="folder" size={32} color="#C0BCD8" />
-              <p className={styles['load-text']}>아직 등록된 일정이 없어요.</p>
+              <p className={styles['load-text']}>{t('home.noTrips')}</p>
             </div>
           )}
 
@@ -196,14 +198,14 @@ export default function HomeView() {
                     <div className={styles['trip-name-row']}>
                       <span className={styles['trip-title']}>{displayTitle}</span>
                       <span className={`${styles['trip-status']} ${styles[statusToKind(trip.status)]}`}>
-                        {statusToLabel(trip.status)}
+                        {statusToLabel(trip.status, t)}
                       </span>
                     </div>
                     {artist && <div className={styles['trip-artist']}>{artist}</div>}
-                    <div className={styles['trip-meta']}>{trip.event_add} · 동선 {trip.place_count}곳</div>
+                    <div className={styles['trip-meta']}>{t('home.tripMeta')(trip.event_add, trip.place_count)}</div>
                     <div className={styles['trip-date-row']}>
                       <Icon name="calendar" size={13} />
-                      <span>{formatKoreanDate(trip.start_dt)}</span>
+                      <span>{formatKoreanDate(trip.start_dt, t)}</span>
                     </div>
                   </div>
                   <span className={styles['trip-chevron']}>›</span>
@@ -218,7 +220,7 @@ export default function HomeView() {
               className={styles['load-more-btn']}
               onClick={() => setVisibleCount((v) => v + PAGE_SIZE)}
             >
-              더보기 <Icon name="chevronDown" size={14} />
+              {t('common.loadMore')} <Icon name="chevronDown" size={14} />
             </button>
           )}
         </div>

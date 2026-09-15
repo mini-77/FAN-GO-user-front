@@ -131,7 +131,7 @@ export default function LoginView() {
           {/* 브랜드 마크 - 텍스트 로고 (브랜드 폰트 느낌으로 스타일링) */}
           <div className={styles.brandBlock}>
             <span className={`${styles.brandLogoText} notranslate`} translate="no">FAN:GO</span>
-            <p className={styles.tagline}>나만의 성지순례, 지금 시작해요</p>
+            <p className={styles.tagline}>{t('login.tagline')}</p>
           </div>
 
           {/* 입력 폼 */}
@@ -142,7 +142,7 @@ export default function LoginView() {
               name="loginfield-email-x92"
               id="loginfield-email-x92"
               autoComplete="off"
-              placeholder="이메일 주소"
+              placeholder={t('login.emailPlaceholder')}
               value={email}
               onChange={(e) => {
                 setEmail(stripKorean(e.target.value))
@@ -175,7 +175,7 @@ export default function LoginView() {
                 type="button"
                 className={styles.eyeToggle}
                 onClick={() => setShowPassword((prev) => !prev)}
-                aria-label={showPassword ? '비밀번호 숨기기' : '비밀번호 보기'}
+                aria-label={showPassword ? t('login.hidePassword') : t('login.showPassword')}
               >
                 {showPassword ? <EyeOffIcon /> : <EyeIcon />}
               </button>
@@ -191,7 +191,7 @@ export default function LoginView() {
                   checked={autoLogin}
                   onChange={(e) => setAutoLogin(e.target.checked)}
                 />
-                로그인 유지
+                {t('auth.keepLoggedIn')}
               </label>
             </div>
           </div>
@@ -216,15 +216,15 @@ export default function LoginView() {
           <div className={styles.bottomTextRow}>
             {/* TODO: 아이디 찾기·비밀번호 찾기 화면이 아직 없어서 경로 연결 전. 화면 생기면 navigate 추가 */}
             <button type="button" className={styles.textToggle} onClick={() => {}}>
-              아이디 찾기
+              {t('auth.findId')}
             </button>
             <span className={styles.dotSep}>·</span>
             <button type="button" className={styles.textToggle} onClick={() => {}}>
-              비밀번호 찾기
+              {t('auth.findPassword')}
             </button>
             <span className={styles.dotSep}>·</span>
             <button type="button" className={styles.textToggle} onClick={() => navigate('/signup')}>
-              {t('login.signupButton') || '회원가입'}
+              {t('login.signupButton')}
             </button>
           </div>
         </div>

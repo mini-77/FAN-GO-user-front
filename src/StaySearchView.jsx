@@ -1,9 +1,10 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useTrip } from './TripContext'
 import AppHeader from './AppHeader'
 import Icon from './Icon'
 import DateRangeSheet from './DateRangeSheet'
+import { useLanguage } from './LanguageContext'
 import styles from './StaySearchView.module.css'
 
 function nightsBetween(checkIn, checkOut) {
@@ -35,6 +36,7 @@ export default function StaySearchView() {
   const navigate = useNavigate()
   const location = useLocation()
   const { tripData, updateTrip } = useTrip()
+  const { t } = useLanguage()
 
   // TripDateView에서 "수정" 버튼으로 들어올 때 넘겨줌:
   // navigate('/trip/stay-search', { state: { editStay: stay } })
@@ -65,7 +67,6 @@ export default function StaySearchView() {
   const [checkIn, setCheckIn] = useState(editStay?.checkIn || '')
   const [checkOut, setCheckOut] = useState(editStay?.checkOut || '')
   const [locationError, setLocationError] = useState('')
-  const [dateRangeError, setDateRangeError] = useState('')
 
   // 숙소 체크인/체크아웃은 TripDateView에서 정한 여행 기간(시작일~종료일) 기준 전후 +1일까지만
   // 고를 수 있게 함 - 여행 기간이 3일이면 숙소는 그 앞뒤로 하루씩 여유를 두고 잡을 수 있는 정도로 제한.
@@ -76,10 +77,10 @@ export default function StaySearchView() {
   function validateStayDates(nextCheckIn, nextCheckOut) {
     if (!allowedMinDate || !allowedMaxDate) return ''
     if (nextCheckIn && (nextCheckIn < allowedMinDate || nextCheckIn > allowedMaxDate)) {
-      return `체크인은 ${allowedMinDate.slice(5)} ~ ${allowedMaxDate.slice(5)} 사이여야 해요.`
+      return t('stay.checkInRangeError')(allowedMinDate.slice(5), allowedMaxDate.slice(5))
     }
     if (nextCheckOut && (nextCheckOut < allowedMinDate || nextCheckOut > allowedMaxDate)) {
-      return `체크아웃은 ${allowedMinDate.slice(5)} ~ ${allowedMaxDate.slice(5)} 사이여야 해요.`
+      return t('stay.checkOutRangeError')(allowedMinDate.slice(5), allowedMaxDate.slice(5))
     }
     // 다른 숙소들과 날짜가 겹치면 안 됨 (수정 중인 숙소 자기 자신은 비교에서 제외)
     if (nextCheckIn && nextCheckOut) {
@@ -88,7 +89,7 @@ export default function StaySearchView() {
         return nextCheckIn < s.checkOut && s.checkIn < nextCheckOut
       })
       if (overlapsWith) {
-        return `'${overlapsWith.name}' 숙소랑 날짜가 겹쳐요 (${overlapsWith.checkIn} ~ ${overlapsWith.checkOut}).`
+        return t('stay.overlapError')(overlapsWith.name, overlapsWith.checkIn, overlapsWith.checkOut)
       }
     }
     return ''
@@ -234,11 +235,11 @@ export default function StaySearchView() {
   function useMyLocation() {
     setLocationError('')
     if (!navigator.geolocation) {
-      setLocationError('이 브라우저에서는 내 위치를 사용할 수 없어요.')
+      setLocationError(t('locationSearch.geoUnsupported'))
       return
     }
     if (!mapObjRef.current) {
-      setLocationError('지도가 아직 준비되지 않았어요. 잠시 후 다시 시도해주세요.')
+      setLocationError(t('locationSearch.mapNotReady'))
       return
     }
     navigator.geolocation.getCurrentPosition(
@@ -249,9 +250,9 @@ export default function StaySearchView() {
       },
       (err) => {
         if (err.code === err.PERMISSION_DENIED) {
-          setLocationError('위치 권한이 꺼져 있어요. 브라우저 설정에서 위치 권한을 허용해주세요.')
+          setLocationError(t('locationSearch.geoPermissionDenied'))
         } else {
-          setLocationError('내 위치를 가져오지 못했어요. 잠시 후 다시 시도해주세요.')
+          setLocationError(t('locationSearch.geoFailed'))
         }
       }
     )
@@ -263,7 +264,7 @@ export default function StaySearchView() {
   // 위치전용모드는 숙소가 아니라서 이 제한 자체가 상관없음)
   const maxStaysError =
     !isLocationOnlyMode && !editStay && tripData.stays.length >= 3
-      ? '숙소는 최대 3개까지만 등록할 수 있어요.'
+      ? t('stay.maxStaysError')
       : ''
   const canAdd = isLocationOnlyMode
     ? Boolean(selected)
@@ -327,22 +328,23 @@ export default function StaySearchView() {
           <h1 className={styles.title}>
             {isLocationOnlyMode ? (
               <>
-                {editLocation.field === 'departure' ? '출발지를' : '도착지를'}
+                {editLocation.field === 'departure' ? t('stay.departureLabel') : t('stay.arrivalLabel')}
                 <br />
-                지도에서 찾아요
+                {t('stay.findOnMap')}
               </>
             ) : editStay ? (
               <>
-                숙소 위치를
+                {t('stay.editLocationTitleLine1')}
                 <br />
-                수정해요
+                {t('stay.editLocationTitleLine2')}
               </>
             ) : (
-              <>
-                숙소를 검색해
-                <br />
-                지도에 표시해요
-              </>
+              t('onboarding.searchAccommodation').split('\n').map((line, i, arr) => (
+                <span key={i}>
+                  {line}
+                  {i < arr.length - 1 && <br />}
+                </span>
+              ))
             )}
           </h1>
           <div className={styles['search-row']}>
@@ -352,7 +354,7 @@ export default function StaySearchView() {
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="지역, 역, 숙소 이름으로 검색"
+              placeholder={t('stay.searchPlaceholder')}
               disabled={sdkStatus === 'error'}
             />
             {query && (
@@ -368,20 +370,20 @@ export default function StaySearchView() {
         <div className={styles['map-area']}>
           <div ref={mapRef} className={styles['map-canvas']} />
           {sdkStatus === 'loading' && (
-            <div className={styles['map-loading']}>지도를 불러오는 중이에요...</div>
+            <div className={styles['map-loading']}>{t('locationSearch.mapLoading')}</div>
           )}
           {sdkStatus === 'error' && (
             <div className={styles['map-loading']}>
-              지도를 불러오지 못했어요. 인터넷 연결을 확인하거나 잠시 후 새로고침 해주세요.
+              {t('stay.mapLoadError')}
             </div>
           )}
           {sdkStatus === 'ready' && searchStatus === 'ok' && searchResults.length > 0 && (
-            <div className={styles['map-badge']}>{searchResults.length}곳 검색됨</div>
+            <div className={styles['map-badge']}>{t('locationSearch.resultsCount')(searchResults.length)}</div>
           )}
           <button
             type="button"
             className={styles['map-locate-btn']}
-            title="내 위치"
+            title={t('locationSearch.myLocation')}
             onClick={useMyLocation}
             disabled={sdkStatus !== 'ready'}
           >
@@ -398,12 +400,12 @@ export default function StaySearchView() {
         <div className={styles['result-section']}>
           {searchStatus === 'zero' && (
             <p className={styles['field-label']}>
-              '{query}'(으)로 검색된 곳이 없어요. 다른 키워드로 검색해보세요.
+              {t('locationSearch.zeroResult')(query)}
             </p>
           )}
           {searchStatus === 'error' && (
             <p className={styles['field-label']} style={{ color: 'var(--color-danger)' }}>
-              검색 중 문제가 생겼어요. 잠시 후 다시 시도해주세요.
+              {t('locationSearch.searchError')}
             </p>
           )}
 
@@ -435,25 +437,25 @@ export default function StaySearchView() {
                   <span className={styles['result-name']}>{selected.name}</span>
                 </div>
                 <p className={styles['result-address']}>{selected.address}</p>
-                <p className={styles['result-detail']}>지도 위 마커를 드래그해서 위치를 조정할 수 있어요.</p>
+                <p className={styles['result-detail']}>{t('locationSearch.dragHint')}</p>
               </div>
             </div>
           ) : (
             <p className={styles['field-label']}>
-              검색 결과 목록에서 숙소를 하나 선택해주세요.
+              {t('stay.selectFromList')}
             </p>
           )}
 
           {!isLocationOnlyMode && (
             <>
               <div className={styles['stay-head']}>
-                <span className={styles['stay-label']}>체류 기간</span>
-                {nights && <span className={styles['stay-nights']}>{nights}박 {nights + 1}일</span>}
+                <span className={styles['stay-label']}>{t('accommodation.stayPeriod')}</span>
+                {nights && <span className={styles['stay-nights']}>{t('dateRange.nightsDays')(nights)}</span>}
               </div>
 
               {allowedMinDate && allowedMaxDate && (
                 <p className={styles['field-label']}>
-                  여행 기간 기준 {allowedMinDate.slice(5)} ~ {allowedMaxDate.slice(5)} 사이만 가능해요.
+                  {t('stay.allowedRangeHint')(allowedMinDate.slice(5), allowedMaxDate.slice(5))}
                 </p>
               )}
 
@@ -484,7 +486,7 @@ export default function StaySearchView() {
           {/* 06 버튼 규칙 - 정보(숙박일수)는 버튼 밖 캡션으로, 버튼엔 행동만 담음 */}
           {!isLocationOnlyMode && nights && selected && (
             <p style={{ margin: '0 0 8px', fontSize: 12.5, color: 'var(--color-ink-600)' }}>
-              {nights}박 · {selected.name}
+              {t('stay.nightsWithName')(nights, selected.name)}
             </p>
           )}
         </div>
@@ -501,11 +503,11 @@ export default function StaySearchView() {
             >
               {isLocationOnlyMode
                 ? selected
-                  ? `${selected.name}(으)로 정하기`
-                  : '지도에서 장소를 골라주세요'
+                  ? t('locationSearch.confirmPlace')(selected.name)
+                  : t('locationSearch.pickPlaceholder')
                 : !selected
-                  ? '지도에서 장소를 골라주세요'
-                  : `숙소로 ${editStay ? '수정' : '추가'}`}
+                  ? t('locationSearch.pickPlaceholder')
+                  : t('stay.addOrEditStay')(Boolean(editStay))}
             </button>
           </div>
         </div>

@@ -1,3 +1,4 @@
+import { useLanguage } from './LanguageContext'
 import styles from './PartialErrorBox.module.css'
 
 /**
@@ -15,11 +16,12 @@ import styles from './PartialErrorBox.module.css'
  * 사용 예: <PartialErrorBox message="이동 시간을 불러오지 못했어요" onRetry={refetch} />
  */
 export default function PartialErrorBox({ message, onRetry }) {
+  const { t } = useLanguage()
   return (
     <div className={styles.box}>
       <p className={styles.message}>{message}</p>
       <button type="button" className={styles['retry-btn']} onClick={onRetry}>
-        다시 시도
+        {t('common.retry')}
       </button>
     </div>
   )

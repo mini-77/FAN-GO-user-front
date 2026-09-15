@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useTrip } from './TripContext'
 import { apiFetch } from './api'
 import Icon from './Icon'
+import { useLanguage } from './LanguageContext'
 import styles from './TripGeneratingView.module.css'
 
 // trip_density_no: 백엔드 확인 완료 - 1=A(여유 우선) / 2=B(적당히) / 3=C(많이 보기)
@@ -10,14 +11,6 @@ const PACE_OPTIONS = [
   { id: 'A', density_no: 1 },
   { id: 'B', density_no: 2 },
   { id: 'C', density_no: 3 },
-]
-
-// 로딩 화면에서 스윽 지나가며 순환 표시할 문구 3개 - 자동 줄바꿈에 맡기면 이상한 지점에서
-// 잘려서, 쉼표 등 자연스러운 끊어읽기 지점에서 직접 2줄로 나눠둠
-const LOADING_TITLES = [
-  ['네 설렘이 지도 위에', '그려지고 있어'],
-  ['조금만 기다려줘,', '너의 하루를 완성하는 중이야'],
-  ['너와 최애 사이,', '가장 예쁜 길을 찾는 중이야'],
 ]
 
 // 백엔드 에러 detail은 API 키·환경변수명·필드 경로 같은 개발자용 정보를 담고 있을 수 있어서
@@ -34,9 +27,13 @@ function parseErrorDetail(detail, fallback) {
 // 완료되면 /trip/ready(완료 안내)로, 실패하면 이 화면에서 에러+재시도 보여줌.
 export default function TripGeneratingView() {
   const navigate = useNavigate()
+  const { t } = useLanguage()
+  // 로딩 화면에서 스윽 지나가며 순환 표시할 문구 3개 - 자동 줄바꿈에 맡기면 이상한 지점에서
+  // 잘려서, 쉼표 등 자연스러운 끊어읽기 지점에서 직접 2줄로 나눠둠 (언어별 배열은 translations.js에 있음)
+  const LOADING_TITLES = t('tripGenerating.loadingTitles')
   const { tripData, updateTrip } = useTrip()
   const [progress, setProgress] = useState(0) // 0~100, 단계별로 올라감
-  const [statusLabel, setStatusLabel] = useState('시작하는 중')
+  const [statusLabel, setStatusLabel] = useState(t('tripGenerating.startingLabel'))
   const [error, setError] = useState('')
   const hasStartedRef = useRef(false)
   const [titleIndex, setTitleIndex] = useState(0) // 항상 0번(5번 문구)부터 시작
@@ -58,14 +55,14 @@ export default function TripGeneratingView() {
   async function runGeneration() {
     setError('')
     setProgress(5)
-    setStatusLabel('시작하는 중')
+    setStatusLabel(t('tripGenerating.startingLabel'))
     const startedAt = Date.now()
     // 문구 3개가 한 바퀴는 다 보이도록 최소 노출 시간을 보장함 - API가 빨리 끝나면
     // 두 번째 문구도 못 보고 바로 다음 화면으로 넘어가버리는 문제가 있었음
     const MIN_DURATION_MS = LOADING_TITLES.length * 3000
 
     if (!selectedEvent || rankedCategoryIds.length === 0 || !departure || !arrival) {
-      setError('앞 단계 정보가 부족해요. 확인 화면부터 다시 진행해주세요.')
+      setError(t('tripGenerating.missingInfoError'))
       return
     }
 
@@ -74,13 +71,13 @@ export default function TripGeneratingView() {
     if (isWholeGroupSelected) {
       artistGroupNo = paceArtistGroupNo
       if (!artistGroupNo) {
-        setError('그룹 정보를 확인할 수 없어요. 동선 스타일 화면부터 다시 진행해주세요.')
+        setError(t('confirm.errorNoGroupInfo'))
         return
       }
     } else {
       artistNos = paceMembers.length > 0 ? paceMembers : allEventMemberIds
       if (!artistNos || artistNos.length === 0) {
-        setError('멤버 정보를 확인할 수 없어요. 앞 화면부터 다시 진행해주세요.')
+        setError(t('confirm.errorNoMemberInfo'))
         return
       }
     }
@@ -127,7 +124,7 @@ export default function TripGeneratingView() {
 
     try {
       // 1단계 - 여행 생성
-      setStatusLabel('여행 정보 저장 중')
+      setStatusLabel(t('tripGenerating.savingTripLabel'))
       const createRes = await apiFetch('/trips', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -135,7 +132,7 @@ export default function TripGeneratingView() {
       })
       if (!createRes.ok) {
         const data = await createRes.json().catch(() => null)
-        const message = parseErrorDetail(data?.detail, '여행 정보를 저장하지 못했어요. 입력값을 다시 확인해주세요.')
+        const message = parseErrorDetail(data?.detail, t('tripGenerating.tripSaveFailedError'))
         fail(message)
         return
       }
@@ -144,11 +141,11 @@ export default function TripGeneratingView() {
       setProgress(35)
 
       // 2단계 - 동선 추천 계산
-      setStatusLabel('최적 동선 계산 중')
+      setStatusLabel(t('tripGenerating.calculatingLabel'))
       const recommendRes = await apiFetch(`/trips/${tripNo}/recommend`, { method: 'POST' })
       if (!recommendRes.ok) {
         const data = await recommendRes.json().catch(() => null)
-        const message = parseErrorDetail(data?.detail, '동선을 계산하지 못했어요. 잠시 후 다시 시도해주세요.')
+        const message = parseErrorDetail(data?.detail, t('tripGenerating.routeCalcFailedError'))
         fail(message)
         return
       }
@@ -158,7 +155,7 @@ export default function TripGeneratingView() {
       setProgress(70)
 
       // 3단계 - 계산된 동선 저장
-      setStatusLabel('동선 저장 중')
+      setStatusLabel(t('tripGenerating.savingRouteLabel'))
       const routes = days.flatMap((day) =>
         (day.schedule || []).map((s) => ({ visit_day: day.visit_day, event_no: s.event_no }))
       )
@@ -169,7 +166,7 @@ export default function TripGeneratingView() {
       })
       if (!saveRes.ok) {
         const data = await saveRes.json().catch(() => null)
-        const message = parseErrorDetail(data?.detail, '계산된 동선을 저장하지 못했어요. 잠시 후 다시 시도해주세요.')
+        const message = parseErrorDetail(data?.detail, t('tripGenerating.routeSaveFailedError'))
         fail(message)
         return
       }
@@ -186,12 +183,12 @@ export default function TripGeneratingView() {
       const remaining = Math.max(MIN_DURATION_MS - elapsed, 0)
       setTimeout(() => {
         setProgress(100)
-        setStatusLabel('완료')
+        setStatusLabel(t('tripGenerating.completeLabel'))
         // 완료 표시를 잠깐 보여준 뒤 안내 화면으로 이동
         setTimeout(() => navigate('/trip/ready'), 500)
       }, remaining)
     } catch (e) {
-      fail('서버에 연결할 수 없어요. 잠시 후 다시 시도해주세요.')
+      fail(t('login.connectionError'))
     }
   }
 
@@ -210,6 +207,7 @@ export default function TripGeneratingView() {
       setTitleIndex((i) => (i + 1) % LOADING_TITLES.length)
     }, 3000)
     return () => clearInterval(timer)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [error])
 
   function retry() {
@@ -239,7 +237,7 @@ export default function TripGeneratingView() {
               </span>
             ))}
           </h1>
-          <p className={styles.subtitle}>YOUR ULTIMATE FAN COMPANION</p>
+          <p className={styles.subtitle}>{t('common.slogan')}</p>
 
           <div className={styles['progress-wrap']}>
             <div className={styles['progress-track']}>
@@ -256,10 +254,10 @@ export default function TripGeneratingView() {
           <p className={styles['error-text']}>{error}</p>
           <div className={styles['error-actions']}>
             <button type="button" className={styles['btn-white']} onClick={retry}>
-              다시 시도
+              {t('tripGenerating.retryButton')}
             </button>
             <button type="button" className={styles['btn-outline']} onClick={() => navigate('/trip/confirm')}>
-              이전 화면으로
+              {t('tripGenerating.backButton')}
             </button>
           </div>
         </div>

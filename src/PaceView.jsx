@@ -4,19 +4,26 @@ import { useTrip } from './TripContext'
 import { apiFetch, safeErrorMessage } from './api'
 import AppHeader from './AppHeader'
 import BottomNav from './BottomNav'
+import { useLanguage } from './LanguageContext'
 import styles from './PaceView.module.css'
 
 // 동선 스타일(밀도) 옵션 - 원래 ConfirmView에 있었는데, "동선 스타일을 정해주세요" 화면인
 // 여기(PaceView)가 맞는 위치라서 옮겨옴. trip_density_no 매핑은 백엔드 확인 완료:
 // 1=A(여유 우선) / 2=B(적당히) / 3=C(많이 보기)
-const PACE_OPTIONS = [
-  { id: 'A', density_no: 1, name: '여유 우선', desc: '적게 보고 오래 머물기' },
-  { id: 'B', density_no: 2, name: '적당히 (AI 추천)', desc: '팬 취향 적합도가 가장 높은 안' },
-  { id: 'C', density_no: 3, name: '많이 보기', desc: '하루에 최대한 많은 곳' },
+const PACE_OPTION_IDS = [
+  { id: 'A', density_no: 1, nameKey: 'pace.optionARelaxedName', descKey: 'pace.optionARelaxedDesc' },
+  { id: 'B', density_no: 2, nameKey: 'pace.optionBModerateName', descKey: 'pace.optionBModerateDesc' },
+  { id: 'C', density_no: 3, nameKey: 'pace.optionCPackedName', descKey: 'pace.optionCPackedDesc' },
 ]
 
 export default function PaceView() {
   const navigate = useNavigate()
+  const { t } = useLanguage()
+  const PACE_OPTIONS = PACE_OPTION_IDS.map((opt) => ({
+    ...opt,
+    name: t(opt.nameKey),
+    desc: t(opt.descKey),
+  }))
   const { tripData, updateTrip } = useTrip()
   const [isOpen, setIsOpen] = useState(true)
   const memberListRef = useRef(null)
@@ -39,7 +46,7 @@ export default function PaceView() {
   useEffect(() => {
     if (!eventNo) {
       setIsLoading(false)
-      setLoadError('앞에서 이벤트를 먼저 골라야 멤버 목록을 볼 수 있어요.')
+      setLoadError(t('pace.selectEventFirst'))
       return
     }
 
@@ -50,13 +57,13 @@ export default function PaceView() {
       try {
         const res = await apiFetch(`/events/${eventNo}/members`)
         if (res.status === 401) {
-          throw new Error('로그인이 만료됐어요. 다시 로그인해주세요.')
+          throw new Error(t('pace.sessionExpired'))
         }
-        if (!res.ok) throw new Error('멤버 목록을 불러오지 못했어요.')
+        if (!res.ok) throw new Error(t('pace.memberLoadFailed'))
         const data = await res.json()
         if (!cancelled) setMembers(data)
       } catch (e) {
-        if (!cancelled) setLoadError(safeErrorMessage(e, '멤버 목록을 불러오지 못했어요. 잠시 후 다시 시도해주세요.'))
+        if (!cancelled) setLoadError(safeErrorMessage(e, t('pace.memberLoadFailedRetry')))
       } finally {
         if (!cancelled) setIsLoading(false)
       }
@@ -65,6 +72,7 @@ export default function PaceView() {
     return () => {
       cancelled = true
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [eventNo])
 
   function toggleMember(artistNo) {
@@ -100,10 +108,10 @@ export default function PaceView() {
     .map((m) => m.artist_nm)
 
   const summaryLabel = isWholeGroupSelected
-    ? `${tripData.selectedEvent?.title || '전체'} · 그룹 전체`
+    ? `${tripData.selectedEvent?.title || t('common.all')} · ${t('pace.wholeGroup')}`
     : selectedMembers.size > 0
-      ? `${selectedMembers.size}명 선택`
-      : `${tripData.selectedEvent?.title || '전체'} · 멤버 전체`
+      ? t('pace.membersSelectedCount')(selectedMembers.size)
+      : `${tripData.selectedEvent?.title || t('common.all')} · ${t('pace.allMembers')}`
 
   function goNext() {
     updateTrip({
@@ -127,7 +135,7 @@ export default function PaceView() {
             히스토리가 없어도 항상 올바른 이전 화면(선호 액티비티)으로 감 */}
         <AppHeader onBack={() => navigate('/trip/activities')} />
         <div className={styles.header}>
-          <h1 className={styles.title}>동선 스타일을 정해 주세요</h1>
+          <h1 className={styles.title}>{t('pace.title')}</h1>
           <div className={styles['progress-bar']}>
             <div className={styles['progress-fill']} style={{ width: '100%' }} />
           </div>
@@ -139,7 +147,7 @@ export default function PaceView() {
 
         <div className={styles.scrollArea}>
         <div className={styles.section}>
-          <span className={styles['field-label']}>일정 기준</span>
+          <span className={styles['field-label']}>{t('pace.scheduleBasis')}</span>
 
           <button
             type="button"
@@ -161,7 +169,7 @@ export default function PaceView() {
               data-fab-hide="true"
             >
             <div className={styles['picker-panel']}>
-              {isLoading && <p className={styles.hint}>멤버 목록을 불러오는 중이에요...</p>}
+              {isLoading && <p className={styles.hint}>{t('pace.loadingMembers')}</p>}
               {!isLoading && loadError && <p className={styles.hint}>{loadError}</p>}
 
               {!isLoading && !loadError && (
@@ -170,14 +178,14 @@ export default function PaceView() {
                       "전체(선택 안 함)"은 목록 맨 앞 칩 하나로 두고, 별도 텍스트 링크로
                       만들지 않음. 다중 선택 가능하되 "전체" 칩을 고르면 나머지는 자동 해제 */}
                   <div>
-                    <span className={styles['panel-group-label']}>멤버 선택</span>
+                    <span className={styles['panel-group-label']}>{t('pace.selectMember')}</span>
                     <div className={styles['member-list']} ref={memberListRef}>
                       <button
                         type="button"
                         className={`${styles['member-chip']} ${isWholeGroupSelected ? styles.selected : ''}`}
                         onClick={toggleWholeGroup}
                       >
-                        전체 (선택 안 함)
+                        {t('pace.allUnselected')}
                       </button>
                       {members.map((m) => {
                         const isSelected = selectedMembers.has(m.artist_no)
@@ -198,10 +206,10 @@ export default function PaceView() {
                   <div className={styles['selection-summary-row']}>
                     <span className={styles['selection-summary']}>
                       {isWholeGroupSelected
-                        ? '전체(선택 안 함) 선택됨'
+                        ? t('pace.allUnselectedChosen')
                         : selectedNames.length > 0
-                          ? `${selectedNames.join(', ')} 선택됨`
-                          : '선택 안 함'}
+                          ? t('pace.namesChosen')(selectedNames.join(', '))
+                          : t('pace.noneChosen')}
                     </span>
                   </div>
 
@@ -209,8 +217,8 @@ export default function PaceView() {
                   <p className={styles['info-banner']}>
                     ⓘ{' '}
                     {isWholeGroupSelected
-                      ? '그룹 전체를 선택하면 그룹 활동 일정 위주로 추천받아요.'
-                      : '멤버를 선택하면 그 멤버 일정을 우선 추천받아요.'}
+                      ? t('pace.infoBannerWholeGroup')
+                      : t('pace.infoBannerMember')}
                   </p>
 
                   {/* 초기화 버튼 공통 가이드 - 확인 버튼과 짝을 이뤄 왼쪽에, 비율 40:60 */}
@@ -221,7 +229,7 @@ export default function PaceView() {
                       style={{ flex: '0 1 40%', textAlign: 'center' }}
                       onClick={resetSelection}
                     >
-                      초기화
+                      {t('common.reset')}
                     </button>
                     <button
                       type="button"
@@ -229,7 +237,7 @@ export default function PaceView() {
                       style={{ flex: '0 1 60%' }}
                       onClick={() => setIsOpen(false)}
                     >
-                      확인
+                      {t('common.confirm')}
                     </button>
                   </div>
                 </>
@@ -240,8 +248,8 @@ export default function PaceView() {
 
           <p className={styles.hint}>
             {isWholeGroupSelected
-              ? '그룹 전체를 선택하면 그룹 활동 일정 위주로 추천 받아요.'
-              : '멤버 선택시 멤버별 일정을 우선 추천 받아요.'}
+              ? t('pace.hintWholeGroup')
+              : t('pace.hintMember')}
           </p>
         </div>
 
@@ -249,7 +257,7 @@ export default function PaceView() {
             고를 게 너무 많아 보이지 않도록 단계를 나눔 */}
         {!isOpen && (
           <div className={styles['pace-section']}>
-            <span className={styles['pace-label']}>받아볼 동선 안</span>
+            <span className={styles['pace-label']}>{t('pace.routeOptionsLabel')}</span>
             <div className={styles['pace-list']}>
               {PACE_OPTIONS.map((opt) => (
                 <div
@@ -274,7 +282,7 @@ export default function PaceView() {
         {!isOpen && (
           <div className={styles.footer} data-bottom-bar="true">
             <button type="button" className={styles['btn-primary']} onClick={goNext}>
-              다음: 확인
+              {t('pace.nextButton')}
             </button>
           </div>
         )}

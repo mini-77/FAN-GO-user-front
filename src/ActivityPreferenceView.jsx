@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTrip } from './TripContext'
-import { apiFetch, safeErrorMessage } from './api'
+import { apiFetch } from './api'
 import AppHeader from './AppHeader'
 import BottomNav from './BottomNav'
+import { useLanguage } from './LanguageContext'
 import styles from './ActivityPreferenceView.module.css'
 
 const MAX_RANK = 3
-const RANK_LABELS = ['1순위', '2순위', '3순위']
 
 // 카테고리 이름 → 부제(설명) 매칭용. API는 이름만 주고 부제는 안 주기 때문에, 최종 디자인에
 // 나온 설명 문구를 이름 기준으로 붙여줌. 못 찾으면 부제 없이 이름만 표시.
@@ -17,36 +17,37 @@ const RANK_LABELS = ['1순위', '2순위', '3순위']
 // 유적지·카페·식당·관광지·쇼핑)을 순서대로 그대로 보여드리려면 실제 DB 항목 중 하나씩을
 // 그 이름표 자리에 배치하는 방식일 수밖에 없어요. 아래는 그 대응표입니다.
 const CATEGORY_ORDER = [
-  '생일 카페', // → "생일카페"
-  '기타 성지', // → "성지"
-  '팝업/굿즈', // → "팝업/굿즈샵"
-  '문화/유적지', // → "유적지"
-  '성지 디저트/카페', // → "카페"
-  '성지 음식점', // → "식당"
-  '여행지', // → "관광지"
-  '쇼핑', // → "쇼핑"
+  '생일 카페', // → category.birthdayCafe
+  '기타 성지', // → category.sacredPlace
+  '팝업/굿즈', // → category.popupShop
+  '문화/유적지', // → category.historicalSite
+  '성지 디저트/카페', // → category.cafe
+  '성지 음식점', // → category.restaurant
+  '여행지', // → category.touristAttraction
+  '쇼핑', // → category.shopping
 ]
 
-// 백엔드 원본 이름 → 화면에 보여줄 이름 (요청하신 8개 명칭 그대로)
-const DISPLAY_NAME_MAP = {
-  '생일 카페': '생일카페',
-  '기타 성지': '성지',
-  '팝업/굿즈': '팝업/굿즈샵',
-  '문화/유적지': '유적지',
-  '성지 디저트/카페': '카페',
-  '성지 음식점': '식당',
-  여행지: '관광지',
+// 백엔드 원본 이름 → 화면에 보여줄 이름의 번역 키(기존 `category` 네임스페이스 재사용)
+const DISPLAY_NAME_KEY_MAP = {
+  '생일 카페': 'category.birthdayCafe',
+  '기타 성지': 'category.sacredPlace',
+  '팝업/굿즈': 'category.popupShop',
+  '문화/유적지': 'category.historicalSite',
+  '성지 디저트/카페': 'category.cafe',
+  '성지 음식점': 'category.restaurant',
+  여행지: 'category.touristAttraction',
+  쇼핑: 'category.shopping',
 }
 
-const SUBTITLE_MAP = {
-  '생일 카페': '진행중인 생일카페',
-  '기타 성지': '뮤비 스팟 · 각종 성지 순례',
-  '팝업/굿즈': '공식 · 비공식',
-  '문화/유적지': 'K-문화 체험',
-  '성지 디저트/카페': '아티스트 단골',
-  '성지 음식점': '아티스트 단골 맛집',
-  여행지: '인기 관광지 추천',
-  쇼핑: '백화점 아웃렛 잡화',
+const SUBTITLE_KEY_MAP = {
+  '생일 카페': 'activityPreference.subtitleBirthdayCafe',
+  '기타 성지': 'activityPreference.subtitleSacredPlace',
+  '팝업/굿즈': 'activityPreference.subtitlePopupShop',
+  '문화/유적지': 'activityPreference.subtitleHistoricalSite',
+  '성지 디저트/카페': 'activityPreference.subtitleCafe',
+  '성지 음식점': 'activityPreference.subtitleRestaurant',
+  여행지: 'activityPreference.subtitleTouristAttraction',
+  쇼핑: 'activityPreference.subtitleShopping',
 }
 
 // TODO: 실제 DB에 ctg(카테고리) 데이터가 없을 경우를 대비한 미리보기용 배열.
@@ -59,7 +60,9 @@ const PREVIEW_CATEGORIES = CATEGORY_ORDER.map((name, i) => ({
 
 export default function ActivityPreferenceView() {
   const navigate = useNavigate()
+  const { t } = useLanguage()
   const { tripData, updateTrip } = useTrip()
+  const RANK_LABELS = [t('activityPreference.rank1'), t('activityPreference.rank2'), t('activityPreference.rank3')]
   // 배열 순서 = 고른 순서 = 순위 (0번째가 1순위) - 값은 ctg_no
   // 뒤로 갔다가 다시 오는 경우, tripData에 이미 저장된 이전 선택을 그대로 복원함
   const [rankedIds, setRankedIds] = useState(() => (tripData.rankedCategoryIds || []).map((c) => c.id))
@@ -77,7 +80,7 @@ export default function ActivityPreferenceView() {
       setLoadError('')
       try {
         const res = await apiFetch('/interests')
-        if (!res.ok) throw new Error('선호 카테고리를 불러오지 못했어요.')
+        if (!res.ok) throw new Error(t('activityPreference.loadError'))
         const data = await res.json()
         if (!cancelled) {
           if (data.length === 0) {
@@ -103,6 +106,7 @@ export default function ActivityPreferenceView() {
     return () => {
       cancelled = true
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   function toggleCategory(id) {
@@ -125,7 +129,7 @@ export default function ActivityPreferenceView() {
 
   function goNext() {
     if (!isFormValid) {
-      setErrorMessage('선호 카테고리를 1개 이상 골라주세요.')
+      setErrorMessage(t('activityPreference.selectAtLeastOne'))
       return
     }
     updateTrip({
@@ -133,7 +137,8 @@ export default function ActivityPreferenceView() {
       rankedCategoryIds: rankedIds.map((id) => {
         const found = interests.find((i) => i.ctg_no === id)
         const rawName = found?.ctg_nm || String(id)
-        return { id, name: DISPLAY_NAME_MAP[rawName] || rawName }
+        const nameKey = DISPLAY_NAME_KEY_MAP[rawName]
+        return { id, name: nameKey ? t(nameKey) : rawName }
       }),
     })
     navigate('/trip/pace')
@@ -146,7 +151,7 @@ export default function ActivityPreferenceView() {
             히스토리가 없어도 항상 올바른 이전 화면(날짜·숙소 선택)으로 감 */}
         <AppHeader onBack={() => navigate('/trip/date')} />
         <div className={styles.header}>
-          <h1 className={styles.title}>선호 액티비티</h1>
+          <h1 className={styles.title}>{t('onboarding.preferredActivity')}</h1>
           <div className={styles['progress-bar']}>
             <div className={styles['progress-fill']} style={{ width: '75%' }} />
           </div>
@@ -159,17 +164,17 @@ export default function ActivityPreferenceView() {
         <div className={styles.scrollArea}>
         <div className={styles.section}>
           <div className={styles['section-head']}>
-            <span className={styles['section-label']}>선호 카테고리</span>
+            <span className={styles['section-label']}>{t('activityPreference.categoryLabel')}</span>
             <span className={styles['section-count']}>
               {rankedIds.length} / {interests.length}
             </span>
           </div>
           {isPreview && (
             <p className={styles.hint} style={{ color: 'var(--color-danger)' }}>
-              ⚠ 실제 DB 데이터가 아직 없어서, 화면 확인용 미리보기 카테고리를 보여주고 있어요.
+              {t('activityPreference.previewWarning')}
             </p>
           )}
-          {isLoading && <p className={styles.hint}>카테고리 목록을 불러오는 중이에요...</p>}
+          {isLoading && <p className={styles.hint}>{t('activityPreference.loadingCategories')}</p>}
           {!isLoading && loadError && <p className={styles.hint}>{loadError}</p>}
 
           {!isLoading && !loadError && (
@@ -187,8 +192,10 @@ export default function ActivityPreferenceView() {
                 const isLocked = !isSelected && rankedIds.length >= MAX_RANK
                 const rankClass =
                   rankIndex === 0 ? 'rank-1' : rankIndex === 1 ? 'rank-2' : rankIndex === 2 ? 'rank-3' : ''
-                const subtitle = SUBTITLE_MAP[interest.ctg_nm]
-                const displayName = DISPLAY_NAME_MAP[interest.ctg_nm] || interest.ctg_nm
+                const subtitleKey = SUBTITLE_KEY_MAP[interest.ctg_nm]
+                const subtitle = subtitleKey ? t(subtitleKey) : undefined
+                const nameKey = DISPLAY_NAME_KEY_MAP[interest.ctg_nm]
+                const displayName = nameKey ? t(nameKey) : interest.ctg_nm
 
                 return (
                   <div
@@ -215,10 +222,10 @@ export default function ActivityPreferenceView() {
             onClick={resetRanking}
             disabled={rankedIds.length === 0}
           >
-            초기화
+            {t('common.reset')}
           </button>
 
-          <p className={styles.hint}>고른 순서대로 순위가 정해져요.</p>
+          <p className={styles.hint}>{t('preference.rankedByOrder')}</p>
         </div>
 
         {errorMessage && (
@@ -236,7 +243,7 @@ export default function ActivityPreferenceView() {
             onClick={goNext}
             disabled={!isFormValid}
           >
-            동선 스타일
+            {t('activityPreference.nextButton')}
           </button>
         </div>
         </div>

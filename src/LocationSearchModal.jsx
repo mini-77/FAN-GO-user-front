@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import Icon from './Icon'
+import { useLanguage } from './LanguageContext'
 import styles from './LocationSearchModal.module.css'
 
 const SEOUL_CENTER = { lat: 37.5665, lng: 126.978 }
@@ -15,6 +16,7 @@ const SDK_LOAD_TIMEOUT_MS = 6000
 //  - onConfirm(place): 확정 버튼 눌렀을 때 호출
 //  - onClose(): 닫기
 export default function LocationSearchModal({ title, initialPlace, onConfirm, onClose }) {
+  const { t } = useLanguage()
   const mapRef = useRef(null)
   const mapObjRef = useRef(null)
   const placesRef = useRef(null)
@@ -166,11 +168,11 @@ export default function LocationSearchModal({ title, initialPlace, onConfirm, on
   function useMyLocation() {
     setLocationError('')
     if (!navigator.geolocation) {
-      setLocationError('이 브라우저에서는 내 위치를 사용할 수 없어요.')
+      setLocationError(t('locationSearch.geoUnsupported'))
       return
     }
     if (!mapObjRef.current) {
-      setLocationError('지도가 아직 준비되지 않았어요. 잠시 후 다시 시도해주세요.')
+      setLocationError(t('locationSearch.mapNotReady'))
       return
     }
     navigator.geolocation.getCurrentPosition(
@@ -182,9 +184,9 @@ export default function LocationSearchModal({ title, initialPlace, onConfirm, on
       },
       (err) => {
         if (err.code === err.PERMISSION_DENIED) {
-          setLocationError('위치 권한이 꺼져 있어요. 브라우저 설정에서 위치 권한을 허용해주세요.')
+          setLocationError(t('locationSearch.geoPermissionDenied'))
         } else {
-          setLocationError('내 위치를 가져오지 못했어요. 잠시 후 다시 시도해주세요.')
+          setLocationError(t('locationSearch.geoFailed'))
         }
       }
     )
@@ -214,7 +216,7 @@ export default function LocationSearchModal({ title, initialPlace, onConfirm, on
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="장소, 역, 주소로 검색"
+            placeholder={t('locationSearch.searchPlaceholder')}
             disabled={sdkStatus === 'error'}
             autoFocus
           />
@@ -222,7 +224,7 @@ export default function LocationSearchModal({ title, initialPlace, onConfirm, on
             <button
               type="button"
               onClick={() => setQuery('')}
-              aria-label="검색어 지우기"
+              aria-label={t('locationSearch.clearSearch')}
               style={{ border: 0, background: 'transparent', cursor: 'pointer', padding: 6, display: 'flex' }}
             >
               <Icon name="close" size={14} />
@@ -232,10 +234,10 @@ export default function LocationSearchModal({ title, initialPlace, onConfirm, on
 
         <div className={styles['map-area']} style={{ position: 'relative', height: '317px', minHeight: '317px' }}>
           <div ref={mapRef} className={styles['map-canvas']} style={{ width: '100%', height: '100%' }} />
-          {sdkStatus === 'loading' && <div className={styles['map-loading']}>지도를 불러오는 중이에요...</div>}
+          {sdkStatus === 'loading' && <div className={styles['map-loading']}>{t('locationSearch.mapLoading')}</div>}
           {sdkStatus === 'error' && (
             <div className={styles['map-loading']}>
-              지도를 불러오지 못했어요. 인터넷 연결을 확인하거나 잠시 후 다시 시도해주세요.
+              {t('locationSearch.mapLoadError')}
             </div>
           )}
           {sdkStatus === 'ready' && searchStatus === 'ok' && searchResults.length > 0 && (
@@ -252,12 +254,12 @@ export default function LocationSearchModal({ title, initialPlace, onConfirm, on
                 fontWeight: 600,
               }}
             >
-              {searchResults.length}곳 검색됨
+              {t('locationSearch.resultsCount')(searchResults.length)}
             </div>
           )}
           <button
             type="button"
-            title="내 위치"
+            title={t('locationSearch.myLocation')}
             onClick={useMyLocation}
             disabled={sdkStatus !== 'ready'}
             style={{
@@ -285,11 +287,11 @@ export default function LocationSearchModal({ title, initialPlace, onConfirm, on
         )}
 
         {searchStatus === 'zero' && (
-          <p className={styles.hint}>'{query}'(으)로 검색된 곳이 없어요. 다른 키워드로 검색해보세요.</p>
+          <p className={styles.hint}>{t('locationSearch.zeroResult')(query)}</p>
         )}
         {searchStatus === 'error' && (
           <p className={styles.hint} style={{ color: 'var(--color-danger)' }}>
-            검색 중 문제가 생겼어요. 잠시 후 다시 시도해주세요.
+            {t('locationSearch.searchError')}
           </p>
         )}
 
@@ -325,7 +327,7 @@ export default function LocationSearchModal({ title, initialPlace, onConfirm, on
             <div style={{ fontSize: 13, fontWeight: 700 }}>{pickedPlace.name}</div>
             <div style={{ marginTop: 4, fontSize: 11.5, color: 'rgba(27,22,63,0.58)' }}>{pickedPlace.address}</div>
             <div style={{ marginTop: 5, fontSize: 11, color: 'var(--color-primary-500)' }}>
-              지도 위 마커를 드래그해서 위치를 조정할 수 있어요.
+              {t('locationSearch.dragHint')}
             </div>
           </div>
         )}
@@ -340,7 +342,7 @@ export default function LocationSearchModal({ title, initialPlace, onConfirm, on
             style={!pickedPlace ? { background: 'var(--button-bg-disabled)', color: '#fff', cursor: 'default', width: '100%' } : { width: '100%' }}
             onClick={() => pickedPlace && onConfirm(pickedPlace)}
           >
-            {!pickedPlace ? '지도에서 장소를 골라주세요' : `${pickedPlace.name}(으)로 정하기`}
+            {!pickedPlace ? t('locationSearch.pickPlaceholder') : t('locationSearch.confirmPlace')(pickedPlace.name)}
           </button>
         </div>
       </div>

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTrip } from './TripContext'
+import { useLanguage } from './LanguageContext'
 import { apiFetch } from './api'
 import logoImg from './assets/fango-logo-mark.png'
 import styles from './SplashView.module.css'
@@ -15,10 +16,11 @@ const AUTO_LOGIN_KEY = 'fango_auto_login'
 export default function SplashView() {
   const navigate = useNavigate()
   const { updateTrip } = useTrip()
-  const [label, setLabel] = useState('불러오는 중')
+  const { t } = useLanguage()
+  const [labelKey, setLabelKey] = useState('loading')
 
   useEffect(() => {
-    const readyTimer = setTimeout(() => setLabel('준비 완료'), LOAD_DURATION_MS - 200)
+    const readyTimer = setTimeout(() => setLabelKey('ready'), LOAD_DURATION_MS - 200)
 
     const navTimer = setTimeout(async () => {
       const wantsAutoLogin = localStorage.getItem(AUTO_LOGIN_KEY) === 'true'
@@ -78,7 +80,7 @@ export default function SplashView() {
           <div className={styles['progress-track']}>
             <div className={styles['progress-fill']} />
           </div>
-          <span className={styles['progress-label']}>{label}</span>
+          <span className={styles['progress-label']}>{t(`splash.${labelKey}`)}</span>
         </div>
       </div>
     </div>

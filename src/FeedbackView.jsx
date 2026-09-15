@@ -44,11 +44,11 @@ export default function FeedbackView() {
       setOptsError('');
       try {
         const res = await apiFetch('/review-opts');
-        if (!res.ok) throw new Error('한마디 목록을 불러오지 못했어요.');
+        if (!res.ok) throw new Error(t('feedback.loadOptsFailed'));
         const data = await res.json();
         if (!cancelled) setReviewOpts(data);
       } catch (e) {
-        if (!cancelled) setOptsError('한마디 목록을 불러오지 못했어요.');
+        if (!cancelled) setOptsError(t('feedback.loadOptsFailed'));
       } finally {
         if (!cancelled) setIsLoadingOpts(false);
       }
@@ -57,6 +57,7 @@ export default function FeedbackView() {
     return () => {
       cancelled = true;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // 08 부분 영역 에러 규칙 - 이 목록만 실패해도 별점·태그 등 나머지 폼은 그대로 쓸 수 있게,
@@ -75,7 +76,7 @@ export default function FeedbackView() {
       setPlacesError('');
       try {
         const res = await apiFetch(`/trips/${tripNo}/routes`);
-        if (!res.ok) throw new Error('다녀온 장소 목록을 불러오지 못했어요.');
+        if (!res.ok) throw new Error(t('feedback.loadPlacesFailed'));
         const data = await res.json();
         // 일자별로 중첩된 걸 평평하게 펼침. 메인 이벤트(공연) 장소는 후기 대상이 아니므로 제외.
         const mainEventNo = tripData.selectedEvent?.event_no;
@@ -84,7 +85,7 @@ export default function FeedbackView() {
           .filter((ev) => ev.event_no !== mainEventNo);
         if (!cancelled) setPlaces(flat);
       } catch (e) {
-        if (!cancelled) setPlacesError('다녀온 장소 목록을 불러오지 못했어요.');
+        if (!cancelled) setPlacesError(t('feedback.loadPlacesFailed'));
       } finally {
         if (!cancelled) setIsLoadingPlaces(false);
       }
@@ -93,6 +94,7 @@ export default function FeedbackView() {
     return () => {
       cancelled = true;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tripNo, placesRetryKey]);
 
   async function togglePlaceLike(place) {
@@ -123,12 +125,12 @@ export default function FeedbackView() {
     setSubmitError('');
 
     if (!tripNo) {
-      setSubmitError('여행 정보를 찾을 수 없어요. 나의 일정에서 다시 들어와주세요.');
+      setSubmitError(t('feedback.tripNotFound'));
       return;
     }
     // 서버 규칙: opt_no/rating/review_content 셋 다 비어있으면 422
     if (!selectedOptNo && rating === 0 && !comment.trim()) {
-      setSubmitError('별점, 한마디, 코멘트 중 최소 하나는 입력해주세요.');
+      setSubmitError(t('feedback.minInputRequired'));
       return;
     }
 
@@ -145,7 +147,7 @@ export default function FeedbackView() {
       });
 
       if (res.status === 409) {
-        setSubmitError('이미 이 여행에 리뷰를 작성했어요. 리뷰는 한 번만 남길 수 있어요.');
+        setSubmitError(t('feedback.alreadyReviewed'));
         setIsSubmitting(false);
         return;
       }
@@ -157,7 +159,7 @@ export default function FeedbackView() {
         else if (detail?.message) rawMessage = detail.message;
         else if (Array.isArray(detail) && detail[0]?.msg) rawMessage = detail[0].msg;
         // 08 에러 화면 규칙 - 백엔드 detail이 영어 기술 메시지일 수 있어 그대로 노출하지 않음
-        setSubmitError(safeText(rawMessage, '리뷰를 저장하지 못했어요. 잠시 후 다시 시도해주세요.'));
+        setSubmitError(safeText(rawMessage, t('feedback.submitFailed')));
         setIsSubmitting(false);
         return;
       }
@@ -165,7 +167,7 @@ export default function FeedbackView() {
       setIsSubmitting(false);
       setIsSubmitted(true);
     } catch (e) {
-      setSubmitError('서버에 연결할 수 없어요. 잠시 후 다시 시도해주세요.');
+      setSubmitError(t('feedback.connectionError'));
       setIsSubmitting(false);
     }
   };
@@ -193,14 +195,14 @@ export default function FeedbackView() {
               </svg>
             </div>
             {/* 09 카피&용어 - 부드러운 해요체로 (합쇼체 사용 금지) */}
-            <p className={styles.doneTitle}>리뷰 작성이 완료됐어요</p>
-            <p className={styles.doneSub}>소중한 후기 남겨주셔서 감사해요.</p>
+            <p className={styles.doneTitle}>{t('feedback.doneTitle')}</p>
+            <p className={styles.doneSub}>{t('feedback.doneSub')}</p>
             <button
               type="button"
               className={styles.submitButton}
               onClick={() => navigate('/trip/history')}
             >
-              확인
+              {t('common.confirm')}
             </button>
           </div>
         </div>
@@ -226,7 +228,7 @@ export default function FeedbackView() {
                 onClick={() => setRating(star)}
                 onMouseEnter={() => setHoverRating(star)}
                 onMouseLeave={() => setHoverRating(0)}
-                aria-label={`${star}점`}
+                aria-label={t('feedback.starAriaLabel')(star)}
               >
                 <span
                   className={`${styles.star} ${
@@ -243,7 +245,7 @@ export default function FeedbackView() {
           <div className={styles.section}>
             <p className={styles.sectionLabel}>{t('feedback.tagSectionLabel')}</p>
 
-            {isLoadingOpts && <p className={styles.starHint}>불러오는 중이에요...</p>}
+            {isLoadingOpts && <p className={styles.starHint}>{t('common.loading')}</p>}
             {!isLoadingOpts && optsError && <p className={styles.starHint}>{optsError}</p>}
 
             {!isLoadingOpts && !optsError && (
@@ -274,7 +276,7 @@ export default function FeedbackView() {
           <div className={styles.section}>
             <p className={styles.sectionLabel}>{t('feedback.placeSectionLabel')}</p>
 
-            {isLoadingPlaces && <p className={styles.starHint}>불러오는 중이에요...</p>}
+            {isLoadingPlaces && <p className={styles.starHint}>{t('common.loading')}</p>}
             {/* 08 부분 영역 에러 - 별점·태그 등 나머지 폼은 그대로 두고 이 목록 구역만 회색 박스로 */}
             {!isLoadingPlaces && placesError && (
               <div className={styles['partial-error']}>
@@ -284,12 +286,12 @@ export default function FeedbackView() {
                   className={styles['partial-error-retry']}
                   onClick={() => setPlacesRetryKey((k) => k + 1)}
                 >
-                  다시 시도
+                  {t('common.retry')}
                 </button>
               </div>
             )}
             {!isLoadingPlaces && !placesError && places.length === 0 && (
-              <p className={styles.starHint}>다녀온 장소가 없어요.</p>
+              <p className={styles.starHint}>{t('feedback.noPlaces')}</p>
             )}
 
             {!isLoadingPlaces && !placesError && places.length > 0 && (
@@ -333,7 +335,7 @@ export default function FeedbackView() {
               onClick={handleSubmit}
               disabled={isSubmitting}
             >
-              {isSubmitting ? '저장 중...' : t('feedback.submitButton')}
+              {isSubmitting ? t('feedback.saving') : t('feedback.submitButton')}
             </button>
           </div>
         </div>

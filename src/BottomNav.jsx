@@ -1,4 +1,5 @@
 import { useLocation, useNavigate } from 'react-router-dom'
+import { useLanguage } from './LanguageContext'
 import Icon from './Icon'
 import styles from './BottomNav.module.css'
 
@@ -10,10 +11,10 @@ import styles from './BottomNav.module.css'
 // 바로 연결되고, 일정표(ScheduleTableView)는 그 안의 여행 하나를 보는 하위 화면.
 // "저장한 동선"(MyTripView)은 나의 일정과 중복돼서 삭제함.
 const TABS = [
-  { iconName: 'home', path: '/home', match: ['/home'], isHome: true, label: '홈' },
-  { iconName: 'calendar', path: '/trip/history', match: ['/trip/history', '/trip/schedule'], label: '일정' },
-  { iconName: 'chat', path: '/chat', match: ['/chat'], label: '채팅' },
-  { iconName: 'person', path: '/account', match: ['/account'], label: '마이' },
+  { iconName: 'home', path: '/home', match: ['/home'], isHome: true, labelKey: 'bottomNav.home' },
+  { iconName: 'calendar', path: '/trip/history', match: ['/trip/history', '/trip/schedule'], labelKey: 'bottomNav.schedule' },
+  { iconName: 'chat', path: '/chat', match: ['/chat'], labelKey: 'bottomNav.chat' },
+  { iconName: 'person', path: '/account', match: ['/account'], labelKey: 'bottomNav.myPage' },
 ]
 
 /**
@@ -27,6 +28,7 @@ const TABS = [
 export default function BottomNav({ noBorder = false }) {
   const navigate = useNavigate()
   const location = useLocation()
+  const { t } = useLanguage()
 
   return (
     <div
@@ -41,7 +43,7 @@ export default function BottomNav({ noBorder = false }) {
             type="button"
             className={`${styles['bottom-tab']} ${isActive ? styles.active : ''}`}
             onClick={() => navigate(tab.path)}
-            aria-label={tab.label}
+            aria-label={t(tab.labelKey)}
           >
             <span className={styles['bottom-tab-icon']}>
               {/* strokeWidth 1.6 - --nav-icon-stroke-width 토큰 값(2026-09-14 확정), 다른 화면 아이콘(1.5px)과는 다름 */}
