@@ -209,6 +209,17 @@ export default function ItineraryEditView() {
 
   // 후보를 고르면 그 칸의 event_no/이름만 바꿔치기 (순서·다른 칸은 그대로)
   function swapStop(stopNum, candidate) {
+    // toggleStop의 캐시 가드는 event_no를 키로 써서 "이미 불러온 적 있으면 다시 안 부름"
+    // 처리를 하는데, 방금 이 자리에 새로 들어온 candidate.event_no가 (다른 칸을 먼저
+    // 펼쳤을 때 등으로) 우연히 이미 캐시돼 있으면 이 칸을 다시 눌러도 API 요청 없이
+    // 그 낡은 캐시(빈 결과 등)를 그대로 보여줘버림. 교체할 때 그 키를 지워서 다음에
+    // 이 칸을 열면 항상 새로 요청하게 함.
+    setCandidatesByEventNo((prev) => {
+      if (!(candidate.event_no in prev)) return prev
+      const next = { ...prev }
+      delete next[candidate.event_no]
+      return next
+    })
     setStops((prev) =>
       prev.map((s) =>
         s.num === stopNum
