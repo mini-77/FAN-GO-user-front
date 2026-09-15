@@ -4,7 +4,7 @@
      viewport-fit=cover라 노치/다이나믹 아일랜드 영역까지 페이지가 깔리는데
      safe-area-inset-top 여백이 없어서, 패딩을 줄일수록 상단바(로고/버튼)가
      상태바에 가려 잘려 보이던 문제 - 상단에만 safe-area만큼 더해서 보정 */
-  padding: calc(7px + env(safe-area-inset-top)) 16px 7px;
+  padding: calc(10px + env(safe-area-inset-top)) 16px 10px;
   display: flex;
   align-items: center;
   justify-content: space-between;

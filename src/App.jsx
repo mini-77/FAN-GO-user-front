@@ -1,6 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { TripProvider } from './TripContext'
-import { ThemeProvider } from './ThemeContext'
 import { LanguageProvider } from './LanguageContext'
 import SplashView from './SplashView'
 import HomeView from './HomeView'
@@ -31,11 +30,10 @@ import ScrollToTop from './ScrollToTop'
 function App() {
   return (
     <TripProvider>
-      <ThemeProvider>
-        <LanguageProvider>
-          <BrowserRouter>
-            <ScrollToTop />
-            <Routes>
+      <LanguageProvider>
+        <BrowserRouter>
+          <ScrollToTop />
+          <Routes>
               <Route path="/" element={<SplashView />} />
               <Route path="/home" element={<HomeView />} />
               <Route path="/login" element={<LoginView />} />
@@ -79,11 +77,10 @@ function App() {
               <Route path="/account/edit" element={<EditProfileView />} />
               <Route path="/screens" element={<ScreenIndex />} />
               <Route path="/chat" element={<ChatbotView />} />
-            </Routes>
-            <ChatbotFab />
-          </BrowserRouter>
-        </LanguageProvider>
-      </ThemeProvider>
+          </Routes>
+          <ChatbotFab />
+        </BrowserRouter>
+      </LanguageProvider>
     </TripProvider>
   )
 }

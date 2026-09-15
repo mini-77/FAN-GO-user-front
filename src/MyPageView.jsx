@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useTrip } from './TripContext'
-import { useTheme } from './ThemeContext'
 import { apiFetch } from './api'
 import AppHeader from './AppHeader'
 import BottomNav from './BottomNav'
@@ -10,7 +9,6 @@ import styles from './MyPageView.module.css'
 
 const MENU_ITEMS = [
   { icon: 'plane', title: '여행 히스토리', sub: '지난 동선 · 별점 · 재사용', path: '/trip/history' },
-  { icon: 'globe', title: '앱 언어', sub: '한국어' },
 ]
 
 export default function MyPageView() {
@@ -18,7 +16,6 @@ export default function MyPageView() {
   const location = useLocation()
   const isPreview = location.state?.preview
   const { tripData, updateTrip, resetTrip } = useTrip()
-  const { isDarkMode, toggleDarkMode } = useTheme()
   const [locationRecommend, setLocationRecommend] = useState(true)
 
   const nickname = tripData.account?.nickname || '사용자'
@@ -98,7 +95,7 @@ export default function MyPageView() {
 
   return (
     <div className={styles.screen}>
-      <div className={`${styles.card} ${isDarkMode ? styles.dark : ''}`}>
+      <div className={styles.card}>
         <AppHeader onBack={() => navigate('/trip/itinerary')} />
 
         <div className={styles.scrollArea}>
@@ -106,9 +103,22 @@ export default function MyPageView() {
 
         <div className={styles.section}>
           <div className={styles['profile-card']}>
-            <div className={styles.avatar}>
-              {nickname.slice(0, 2).toUpperCase()}
-            </div>
+            {tripData.account?.profileImg ? (
+              <img
+                src={
+                  tripData.account.profileImg.startsWith('http')
+                    ? tripData.account.profileImg
+                    : `/api${tripData.account.profileImg}`
+                }
+                alt="프로필 사진"
+                className={styles.avatar}
+                style={{ objectFit: 'cover' }}
+              />
+            ) : (
+              <div className={styles.avatar}>
+                {nickname.slice(0, 2).toUpperCase()}
+              </div>
+            )}
             <div className={styles['profile-info']}>
               <div className={styles['profile-name']}>{nickname}</div>
               {email && <div className={styles['profile-email']}>{email}</div>}
@@ -159,16 +169,6 @@ export default function MyPageView() {
                 type="button"
                 className={`${styles['toggle-switch']} ${locationRecommend ? styles.on : ''}`}
                 onClick={() => setLocationRecommend((v) => !v)}
-              >
-                <span className={styles['toggle-knob']} />
-              </button>
-            </div>
-            <div className={styles['toggle-row']}>
-              <span className={styles['toggle-label']}>다크 모드</span>
-              <button
-                type="button"
-                className={`${styles['toggle-switch']} ${isDarkMode ? styles.on : ''}`}
-                onClick={toggleDarkMode}
               >
                 <span className={styles['toggle-knob']} />
               </button>
