@@ -321,6 +321,10 @@
   align-items: center;
   gap: 12px;
   cursor: pointer;
+  /* 번역된 텍스트 길이와 무관하게 항상 같은 높이를 갖도록 고정 - 아래 pace-name/
+     pace-desc의 line-clamp와 짝을 이룸(내용이 넘치면 "..."으로 잘림). */
+  min-height: 74px;
+  box-sizing: border-box;
 }
 
 .pace-option.selected {
@@ -343,6 +347,9 @@
 
 .pace-text {
   flex: 1;
+  /* flex 아이템은 기본 min-width: auto(=콘텐츠 실제 폭)라서, 번역된 텍스트가 길어지면
+     줄바꿈되지 않고 옵션 박스 자체가 옆으로 밀려 커졌음. 0으로 낮춰서 폭에 맞게 줄바꿈되게 함. */
+  min-width: 0;
   display: flex;
   flex-direction: column;
   gap: 2px;
@@ -352,12 +359,21 @@
   font-size: 13px;
   font-weight: 600;
   color: #49475B;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .pace-desc {
   font-family: 'Urbanist', sans-serif;
   font-size: 11.5px;
   color: var(--color-ink-900);
+  overflow-wrap: break-word;
+  /* 설명 문구가 길어져도 옵션 박스 높이가 늘어나지 않게 2줄까지만 보여주고 잘라냄 */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .pace-check {
