@@ -27,7 +27,8 @@ export const LANGUAGE_LABELS = {
 
 // 백엔드 /langs가 내려주는 lang_no <-> 앱 언어 코드 매핑 (원래 LoginView.jsx에 있던 것을
 // 헤더 언어 필로 옮김 - 09_v1_v2_master.md, 14_step3_partial_implementation.md 12번 참고)
-const LANG_NO_TO_CODE = { 1: 'ko', 2: 'en', 3: 'ja' }
+// 백엔드는 중국어를 간체/번체로 나누지 않고 "中文" 하나만 내려주므로 4번은 zh-CN(간체)으로 매핑함.
+const LANG_NO_TO_CODE = { 1: 'ko', 2: 'en', 3: 'ja', 4: 'zh-CN', 5: 'th', 6: 'id' }
 
 // 브라우저 locale(navigator.language, 예: 'zh-TW', 'zh', 'en-US', 'fr')을
 // 우리가 지원하는 언어 코드로 매핑. 지원 목록에 없는 언어는 전부 영어로 감.
