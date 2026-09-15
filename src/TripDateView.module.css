@@ -448,13 +448,16 @@
   box-shadow: 0 0 0 3px rgba(109, 87, 252, 0.15);
 }
 
-.search-icon {
+/* 입력창 오른쪽 검색 버튼 - 갤럭시 등 키보드에 "검색" 전용 키가 없는 경우를 위해
+   항상 누를 수 있는 버튼을 둠(왼쪽의 작은 돋보기 아이콘은 없앰) */
+.search-submit-btn {
   flex-shrink: 0;
+  width: 30px;
+  height: 30px;
+  min-width: 30px;
+  border-radius: 50%;
   border: none;
-  background: transparent;
-  padding: 4px;
-  color: #A9A3C2;
-  font-size: 15px;
+  background: var(--color-primary-500);
   cursor: pointer;
   display: flex;
   align-items: center;
