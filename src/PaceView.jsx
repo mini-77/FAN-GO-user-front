@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useTrip } from './TripContext'
 import { apiFetch, safeErrorMessage } from './api'
 import AppHeader from './AppHeader'
+import BottomNav from './BottomNav'
 import styles from './PaceView.module.css'
 
 // 동선 스타일(밀도) 옵션 - 원래 ConfirmView에 있었는데, "동선 스타일을 정해주세요" 화면인
@@ -278,6 +279,8 @@ export default function PaceView() {
           </div>
         )}
         </div>
+
+        <BottomNav />
       </div>
     </div>
   )

@@ -76,6 +76,13 @@ export default function DateRangeSheet({
     if (min && iso < min) return
     if (max && iso > max) return
 
+    // 체크인만 고른 상태에서 그 날짜를 다시 누르면 선택 해제(연하게로 되돌림) -
+    // 해제 후 다른 날짜를 눌러도 정상적으로 다시 진하게 선택되게 함
+    if (draftIn && !draftOut && iso === draftIn) {
+      setDraftIn('')
+      return
+    }
+
     if (!draftIn || draftOut) {
       // 새로 시작 - 체크인부터 다시 고름
       setDraftIn(iso)

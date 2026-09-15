@@ -134,7 +134,12 @@ export default function AppHeader({ showBack = true, showProfile = true, onBack,
         <span className={styles['top-bar-spacer']} />
       )}
 
-      <img src={logoImg} alt="FAN:GO" className={styles['top-bar-logo-img']} />
+      <img
+        src={logoImg}
+        alt="FAN:GO"
+        className={`${styles['top-bar-logo-img']} notranslate`}
+        translate="no"
+      />
 
       <div className={styles['right-area']}>
         <div className={styles['lang-area']} ref={langAreaRef}>

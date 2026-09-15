@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import { useTrip } from './TripContext'
 import { apiFetch, safeErrorMessage, safeText } from './api'
 import AppHeader from './AppHeader'
+import BottomNav from './BottomNav'
 import { scoreColor } from './scoreColor'
 import styles from './ItineraryEditView.module.css'
 
@@ -450,6 +451,8 @@ export default function ItineraryEditView() {
           </button>
         </div>
         </div>
+
+        <BottomNav />
       </div>
     </div>
   )

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useTrip } from './TripContext'
 import { apiFetch, safeErrorMessage } from './api'
 import AppHeader from './AppHeader'
+import BottomNav from './BottomNav'
 import styles from './ActivityPreferenceView.module.css'
 
 const MAX_RANK = 3
@@ -239,6 +240,8 @@ export default function ActivityPreferenceView() {
           </button>
         </div>
         </div>
+
+        <BottomNav />
       </div>
     </div>
   )

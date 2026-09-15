@@ -130,7 +130,7 @@ export default function LoginView() {
 
           {/* 브랜드 마크 - 텍스트 로고 (브랜드 폰트 느낌으로 스타일링) */}
           <div className={styles.brandBlock}>
-            <span className={styles.brandLogoText}>FAN:GO</span>
+            <span className={`${styles.brandLogoText} notranslate`} translate="no">FAN:GO</span>
             <p className={styles.tagline}>나만의 성지순례, 지금 시작해요</p>
           </div>
 

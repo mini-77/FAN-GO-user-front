@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTrip } from './TripContext'
 import AppHeader from './AppHeader'
+import BottomNav from './BottomNav'
 import styles from './ConfirmView.module.css'
 
 // trip_density_no: 백엔드 확인 완료 - 1=A(여유 우선) / 2=B(적당히) / 3=C(많이 보기)
@@ -216,6 +217,8 @@ export default function ConfirmView() {
             </button>
           </div>
         </div>
+
+        <BottomNav />
       </div>
     </div>
   )

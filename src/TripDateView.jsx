@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTrip } from './TripContext'
 import AppHeader from './AppHeader'
+import BottomNav from './BottomNav'
 import Icon from './Icon'
 import PickerSheet from './PickerSheet'
 import DateRangeSheet from './DateRangeSheet'
@@ -126,6 +127,7 @@ export default function TripDateView() {
     setSearchStatus('idle')
     setSdkStatus('loading')
     mapObjRef.current = null
+    selectedMarkerRef.current = null
     setStayCheckIn(prefill?.checkIn || '')
     setStayCheckOut(prefill?.checkOut || '')
     setEditingStayId(prefill?.stayId ?? null)
@@ -170,16 +172,26 @@ export default function TripDateView() {
 
           // 팝업이 열리는 애니메이션/키보드 표시 타이밍에 따라 지도 컨테이너 크기가
           // 아직 확정되지 않은 상태로 지도가 초기화되면 실제 칸보다 작게 그려지는
-          // 문제가 있었음 - relayout()으로 강제 재계산해서 항상 컨테이너 크기에 맞춤
+          // 문제가 있었음 - relayout()으로 강제 재계산해서 항상 컨테이너 크기에 맞춤.
+          // 안드로이드(갤럭시)에서는 컨테이너 크기가 0에 가까운 상태로 지도가 생성되면
+          // 카카오맵이 레벨(줌)을 훨씬 축소된 값으로 잡아버려 거의 대한민국 전체가
+          // 보이는 문제가 있었음 - relayout 이후 레벨을 다시 명시적으로 맞춰줌
           requestAnimationFrame(() => {
             if (cancelled) return
             map.relayout()
+            map.setLevel(5)
             map.setCenter(center)
           })
 
           if (window.ResizeObserver && mapRef.current) {
             resizeObserver = new ResizeObserver(() => {
               map.relayout()
+              // 이미 장소를 골라 마커를 찍은 뒤라면(줌인된 상태) 되돌리지 않음 -
+              // 검색 전 초기 상태에서만 레벨/중심을 강제로 맞춰줌
+              if (!selectedMarkerRef.current) {
+                map.setLevel(5)
+                map.setCenter(center)
+              }
             })
             resizeObserver.observe(mapRef.current)
           }
@@ -665,6 +677,8 @@ export default function TripDateView() {
           </button>
         </div>
         </div>
+
+        <BottomNav />
       </div>
 
       {/* 공용 지도 검색 오버레이 - StaySearchView 기능을 이 화면 안의 모달로 통합 */}
@@ -692,19 +706,14 @@ export default function TripDateView() {
             </div>
 
             <div className={styles['search-row']}>
-              <button
-                type="button"
-                className={styles['search-icon']}
-                onClick={() => runSearch(query)}
-                aria-label="검색"
-              >
-                ⌕
-              </button>
               <input
                 className={styles['search-input']}
                 type="text"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') runSearch(query)
+                }}
                 placeholder={searchTarget === 'stay' ? '지역, 역, 숙소 이름으로 검색' : '장소, 역, 주소로 검색'}
                 disabled={sdkStatus === 'error'}
                 autoFocus
@@ -719,6 +728,16 @@ export default function TripDateView() {
                   <Icon name="close" size={14} />
                 </button>
               )}
+              {/* 갤럭시 등 일부 안드로이드 키보드는 "검색" 전용 키가 따로 없어서,
+                  누르면 바로 검색되는 버튼을 입력창 오른쪽에 항상 둠 */}
+              <button
+                type="button"
+                className={styles['search-submit-btn']}
+                onClick={() => runSearch(query)}
+                aria-label="검색"
+              >
+                <Icon name="search" size={18} color="var(--color-primary-400)" />
+              </button>
             </div>
 
             <div
@@ -865,7 +884,7 @@ export default function TripDateView() {
                           onClick={open}
                         >
                           <span className={styles.triggerText}>
-                            {checkIn ? formatDot(checkIn) : '체크인 선택'}
+                            {checkIn ? formatDot(checkIn) : '체크인 날짜'}
                           </span>
                           <Icon name="calendar" size={16} color={checkIn ? 'var(--color-primary-500)' : 'rgba(12, 10, 28, 0.4)'} />
                         </button>
@@ -878,7 +897,7 @@ export default function TripDateView() {
                           onClick={open}
                         >
                           <span className={styles.triggerText}>
-                            {checkOut ? formatDot(checkOut) : '체크아웃 선택'}
+                            {checkOut ? formatDot(checkOut) : '체크아웃 날짜'}
                           </span>
                           <Icon name="calendar" size={16} color={checkOut ? 'var(--color-primary-500)' : 'rgba(12, 10, 28, 0.4)'} />
                         </button>

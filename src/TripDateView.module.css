@@ -434,8 +434,8 @@
   margin: 14px 16px 0;
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 0 14px;
+  gap: 6px;
+  padding: 0 8px 0 16px;
   height: 44px;
   background: #F7F7FA; /* 빈 값일 때는 연보라 대신 흰색/연회색 중간톤 (사용자 요청) */
   border: 1.5px solid var(--color-primary-200);
@@ -448,13 +448,17 @@
   box-shadow: 0 0 0 3px rgba(109, 87, 252, 0.15);
 }
 
-.search-icon {
+/* 입력창 오른쪽 검색 버튼 - 갤럭시 등 키보드에 "검색" 전용 키가 없는 경우를 위해
+   항상 누를 수 있는 버튼을 둠(왼쪽의 작은 돋보기 아이콘은 없앰). 채워진 원형 버튼 대신
+   입력창 안에 자연스럽게 들어가는 연보라 아이콘만 씀(사용자 요청) */
+.search-submit-btn {
   flex-shrink: 0;
+  width: 30px;
+  height: 30px;
+  min-width: 30px;
+  border-radius: 50%;
   border: none;
   background: transparent;
-  padding: 4px;
-  color: #A9A3C2;
-  font-size: 15px;
   cursor: pointer;
   display: flex;
   align-items: center;

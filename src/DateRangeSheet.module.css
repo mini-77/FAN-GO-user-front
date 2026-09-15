@@ -86,11 +86,13 @@
   height: 38px;
 }
 
+/* 기본(선택 안 한) 날짜는 연하게, 실제로 고른 날짜(.dayStart/.dayEnd)만 진하게
+   보이도록 대비를 줌 (사용자 요청) */
 .day {
   height: 38px;
   border: none;
   background: transparent;
-  color: var(--color-ink-900);
+  color: rgba(27, 22, 63, 0.55);
   font-family: 'Urbanist', sans-serif;
   font-size: 13px;
   font-weight: 500;
