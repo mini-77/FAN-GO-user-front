@@ -1,8 +1,33 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useTrip } from './TripContext'
 import FenggoIcon from './FenggoIcon'
 import styles from './ChatbotFab.module.css'
+
+const FAB_SIZE = 56
+// 폰 기종마다 자동 위치 계산이 딱 안 맞는 경우가 있어서, 사용자가 손으로 잡고
+// 옮겨두면 그 위치를 기기에 저장해두고 그 다음부턴 자동 계산 대신 그 자리를 씀
+const DRAG_POS_KEY = 'fango_chatbot_fab_pos'
+// 드래그와 탭(클릭)을 구분하는 최소 이동 거리(px) - 이보다 적게 움직였으면 탭으로 봄
+const DRAG_THRESHOLD = 6
+
+function loadSavedPos() {
+  try {
+    const raw = window.localStorage.getItem(DRAG_POS_KEY)
+    if (!raw) return null
+    const parsed = JSON.parse(raw)
+    if (typeof parsed?.x === 'number' && typeof parsed?.y === 'number') return parsed
+    return null
+  } catch (e) {
+    return null
+  }
+}
+
+function clampPos(x, y) {
+  const maxX = window.innerWidth - FAB_SIZE - 4
+  const maxY = window.innerHeight - FAB_SIZE - 4
+  return { x: Math.min(Math.max(4, x), Math.max(4, maxX)), y: Math.min(Math.max(4, y), Math.max(4, maxY)) }
+}
 
 // 09 기타 컴포넌트 - 플로팅 버튼(FAB) 규칙: "전체 화면(목록·상세 등)에는 항상 표시,
 // 팝업·모달·피커가 열려 있을 때는 숨김"이 확정 문구라서, 특정 경로만 골라 보여주던
@@ -62,6 +87,11 @@ export default function ChatbotFab() {
   const [isPopupOpen, setIsPopupOpen] = useState(false)
   const isShown = !isChatScreen && !isLoginScreen && !isPopupOpen
 
+  // 사용자가 직접 드래그해서 옮겨둔 위치(px, 뷰포트 기준 left/top) - 있으면 이걸 최우선으로 씀
+  const [dragPos, setDragPos] = useState(loadSavedPos)
+  const dragStateRef = useRef(null) // { startX, startY, originX, originY, moved, pointerId } | null
+  const fabRef = useRef(null)
+
   useEffect(() => {
     function recalcPopup() {
       setIsPopupOpen(hasOpenPopup())
@@ -75,7 +105,9 @@ export default function ChatbotFab() {
   }, [location.pathname])
 
   useEffect(() => {
-    if (!isShown) return
+    // 사용자가 이미 손으로 옮겨둔 위치가 있으면 자동 위치 계산은 아예 건너뜀 -
+    // 그 자리를 그대로 유지함(화면이 바뀌어도 항상 사용자가 정한 자리에 고정)
+    if (!isShown || dragPos) return
 
     function recalc() {
       const screenEl = getCurrentScreenEl()
@@ -116,18 +148,78 @@ export default function ChatbotFab() {
       window.removeEventListener('resize', recalc)
       window.removeEventListener('scroll', recalc, true)
     }
-  }, [isShown, location.pathname])
+  }, [isShown, location.pathname, dragPos])
+
+  // 화면 회전/크기 변경으로 저장해둔 위치가 화면 밖으로 나가면 다시 안쪽으로 당겨줌
+  useEffect(() => {
+    if (!dragPos) return
+    function handleResize() {
+      setDragPos((prev) => (prev ? clampPos(prev.x, prev.y) : prev))
+    }
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [dragPos])
+
+  function handlePointerDown(e) {
+    const rect = fabRef.current.getBoundingClientRect()
+    dragStateRef.current = {
+      startX: e.clientX,
+      startY: e.clientY,
+      originX: rect.left,
+      originY: rect.top,
+      moved: false,
+    }
+    e.currentTarget.setPointerCapture(e.pointerId)
+  }
+
+  function handlePointerMove(e) {
+    const drag = dragStateRef.current
+    if (!drag) return
+    const dx = e.clientX - drag.startX
+    const dy = e.clientY - drag.startY
+    if (!drag.moved && Math.hypot(dx, dy) < DRAG_THRESHOLD) return
+    drag.moved = true
+    setDragPos(clampPos(drag.originX + dx, drag.originY + dy))
+  }
+
+  function handlePointerUp(e) {
+    const drag = dragStateRef.current
+    dragStateRef.current = null
+    if (!drag) return
+    if (drag.moved) {
+      // 드래그가 끝난 최종 위치를 기기에 저장 - 다음에 켜도 같은 자리에 뜸
+      setDragPos((prev) => {
+        try {
+          window.localStorage.setItem(DRAG_POS_KEY, JSON.stringify(prev))
+        } catch (err) {
+          // 무시
+        }
+        return prev
+      })
+    } else {
+      // 실제로 안 움직였으면(=탭) 챗봇 화면으로 이동
+      navigate('/chat')
+    }
+  }
 
   if (!isLoggedIn) return null
   if (!isShown) return null
 
+  const positionStyle = dragPos
+    ? { left: dragPos.x, top: dragPos.y, right: 'auto', bottom: 'auto', transition: 'none' }
+    : { right: anchor.right, bottom: anchor.bottom }
+
   return (
     <button
+      ref={fabRef}
       type="button"
       className={styles.fab}
-      style={{ right: anchor.right, bottom: anchor.bottom }}
-      onClick={() => navigate('/chat')}
-      aria-label="트립 버디 챗봇 열기"
+      style={positionStyle}
+      onPointerDown={handlePointerDown}
+      onPointerMove={handlePointerMove}
+      onPointerUp={handlePointerUp}
+      onPointerCancel={handlePointerUp}
+      aria-label="트립 버디 챗봇 열기 (누르고 있으면 위치를 옮길 수 있어요)"
     >
       <FenggoIcon size={56} />
     </button>
