@@ -136,12 +136,11 @@ export default function PlaceDetailModal({ eventNo, tripRouteEventNo, liked: ini
             )}
 
             <div className={styles.body}>
-              <div className={styles['map-row']}>
-                <span className={styles['map-label']}>MAP</span>
-                {place.event_img_url && (
+              {place.event_img_url && (
+                <div className={styles['map-row']}>
                   <span className={styles['photo-credit']}>사진 출처: Google Map, Kakao Map</span>
-                )}
-              </div>
+                </div>
+              )}
               <p className={styles.breadcrumb}>
                 {place.event_nm} · {place.add}
               </p>
