@@ -1,6 +1,10 @@
 .top-bar {
-  background: #6D57FC;
-  padding: 14px 18px;
+  background: var(--header-bg);
+  /* 세로 높이 축소 요청(2026-09-15) - 10px에서 더 줄임.
+     viewport-fit=cover라 노치/다이나믹 아일랜드 영역까지 페이지가 깔리는데
+     safe-area-inset-top 여백이 없어서, 패딩을 줄일수록 상단바(로고/버튼)가
+     상태바에 가려 잘려 보이던 문제 - 상단에만 safe-area만큼 더해서 보정 */
+  padding: calc(7px + env(safe-area-inset-top)) 16px 7px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -8,12 +12,16 @@
   z-index: 50;
 }
 
+/* 접근성 - 터치 영역 44×44px 이상. 시각적 크기는 가이드 규격(28×28px squircle)을
+   그대로 유지하고, ::before로 보이지 않는 확장 히트박스만 덧붙임.
+   크기/라운드/배경은 --menu-icon-* 토큰과 값이 이미 일치해서 참조로 전환함(값 변경 없음). */
 .top-bar-btn {
-  width: 34px;
-  height: 34px;
-  min-width: 34px;
-  border-radius: 10px;
-  background: rgba(255, 255, 255, 0.18);
+  position: relative;
+  width: var(--menu-icon-size);
+  height: var(--menu-icon-size);
+  min-width: var(--menu-icon-size);
+  border-radius: var(--menu-icon-radius);
+  background: var(--menu-icon-bg);
   border: none;
   color: #fff;
   font-size: 14px;
@@ -23,26 +31,112 @@
   justify-content: center;
 }
 
+.top-bar-btn::before {
+  content: '';
+  position: absolute;
+  inset: -8px;
+}
+
 .top-bar-btn:hover {
   background: rgba(255, 255, 255, 0.25);
 }
 
 .top-bar-spacer {
-  width: 34px;
-  min-width: 34px;
+  width: var(--menu-icon-size);
+  min-width: var(--menu-icon-size);
+  height: var(--menu-icon-size);
 }
 
+/* 로고를 flex 흐름에서 완전히 빼서 가운데 절대배치함 - 로고 실제 렌더 폭이 얼마든
+   좌/우 요소(뒤로가기, 언어 필+메뉴)의 공간 계산에 전혀 영향을 주지 않게 하기 위함. */
 .top-bar-logo-img {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
   height: 20px;
   width: auto;
   display: block;
+  pointer-events: none;
+}
+
+/* 언어 필 + 메뉴 아이콘을 나란히 배치 (11_impact_plan.md 9번 섹션) */
+.right-area {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.lang-area {
+  position: relative;
+}
+
+/* 언어 필("KR ⌄") - 09 헤더 규칙: 지구본 아이콘 대신 국가코드 2자만 표기.
+   1단계에서 정의한 --lang-pill-* 토큰 사용 */
+.lang-pill {
+  height: var(--lang-pill-height);
+  padding: 0 var(--lang-pill-padding-x-max) 0 var(--lang-pill-padding-x-min);
+  border-radius: var(--lang-pill-radius);
+  border: none;
+  background: rgba(255, 255, 255, 0.22);
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.lang-pill-caret {
+  font-size: 10px;
+  line-height: 1;
+}
+
+.lang-menu {
+  position: absolute;
+  top: 30px;
+  right: 0;
+  min-width: 140px;
+  background: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: 0 8px 32px rgba(109, 87, 252, 0.18);
+  overflow: hidden;
+  z-index: 999;
+  padding: 6px 0;
+}
+
+.lang-item {
+  width: 100%;
+  padding: 9px 14px;
+  border: none;
+  background: #fff;
+  color: var(--color-ink-900);
+  font-family: 'IBM Plex Sans KR', sans-serif;
+  font-size: 12.5px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.lang-item:hover {
+  background: #FAF9FF;
+}
+
+.lang-item-active {
+  color: var(--color-primary-500);
+  font-weight: 600;
 }
 
 .profile-area {
   position: relative;
-  width: 34px;
-  min-width: 34px;
-  height: 34px;
+  width: var(--menu-icon-size);
+  min-width: var(--menu-icon-size);
+  height: var(--menu-icon-size);
 }
 
 .profile-menu {
@@ -51,17 +145,17 @@
   right: 0;
   width: 238px;
   background: #fff;
-  border: 1px solid #EFEDFA;
-  border-radius: 20px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg-max);
   box-shadow: 0 8px 32px rgba(109, 87, 252, 0.18);
   overflow: hidden;
   z-index: 999;
-  color: #201E1D;
+  color: var(--color-ink-900);
 }
 
 .profile-summary {
   padding: 14px 16px 10px;
-  border-bottom: 1px solid #EFEDFA;
+  border-bottom: 1px solid var(--color-border);
   display: flex;
   align-items: center;
   gap: 10px;
@@ -72,8 +166,8 @@
   height: 36px;
   min-width: 36px;
   border-radius: 12px;
-  background: #F0EEFF;
-  color: #6D57FC;
+  background: var(--color-primary-100);
+  color: var(--color-primary-500);
   font-family: 'Urbanist', sans-serif;
   font-size: 14px;
   font-weight: 600;
@@ -94,7 +188,7 @@
   font-size: 13px;
   line-height: 16.25px;
   font-weight: 600;
-  color: #201E1D;
+  color: var(--color-ink-900);
 }
 
 .profile-summary-text span {
@@ -136,7 +230,7 @@
   height: 32px;
   min-width: 32px;
   border-radius: 10px;
-  background: #F0EEFF;
+  background: var(--color-primary-100);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -157,7 +251,7 @@
   font-size: 13px;
   line-height: 16.25px;
   font-weight: 600;
-  color: #201E1D;
+  color: var(--color-ink-900);
 }
 
 .menu-copy small {
@@ -181,7 +275,7 @@
 .menu-divider {
   height: 1px;
   margin: 4px 16px 0;
-  background: #EFEDFA;
+  background: var(--color-border);
 }
 
 .logout-item {

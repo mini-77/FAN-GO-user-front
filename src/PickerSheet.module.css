@@ -1,0 +1,100 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 13, 26, 0.55);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  z-index: 1200;
+}
+
+/* 다크모드 해제 - 흰 배경 라이트 시트로 변경. color-scheme:light를 명시해서 이 안의
+   네이티브 달력/시계 피커도 OS 다크 모드와 무관하게 항상 라이트로 뜨게 함 (사용자 요청) */
+.sheet {
+  width: 100%;
+  max-width: 430px;
+  background: #fff;
+  border-radius: var(--radius-lg-max) var(--radius-lg-max) 0 0;
+  padding: 20px 20px 22px;
+  box-sizing: border-box;
+  box-shadow: 0px -8px 24px rgba(27, 22, 63, 0.12);
+  color-scheme: light;
+}
+
+.label {
+  margin: 0 0 12px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  color: rgba(27, 22, 63, 0.55);
+}
+
+.nativeInput {
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 52px;
+  padding: 10px 14px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--input-radius);
+  background: #F7F7FA;
+  font-family: 'Urbanist', 'IBM Plex Sans KR', sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--color-ink-900);
+  /* index.css :root의 color-scheme: light dark를 그대로 물려받으면 OS/브라우저가
+     다크 모드일 때 이 네이티브 input이 여는 달력·시계 팝업(브라우저가 직접 그리는
+     OS 피커)이 다크로 뜸 - 라이트로 고정 (사용자 요청) */
+  color-scheme: light;
+}
+
+.actions {
+  margin-top: 18px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 24px;
+}
+
+.closeBtn,
+.selectBtn {
+  border: none;
+  background: none;
+  padding: 4px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.closeBtn {
+  color: rgba(27, 22, 63, 0.5);
+}
+
+.selectBtn {
+  color: var(--color-primary-500);
+}
+
+.selectBtn:disabled {
+  color: rgba(27, 22, 63, 0.25);
+  cursor: default;
+}
+
+/* 날짜/시간 선택창임을 바로 알 수 있게 캘린더·시계 아이콘을 오른쪽에 표시 */
+.trigger {
+  cursor: pointer;
+  text-align: left;
+  color: var(--color-ink-900);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.triggerText {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.trigger.placeholder {
+  color: rgba(12, 10, 28, 0.4);
+}

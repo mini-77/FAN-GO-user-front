@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import Icon from './Icon'
 import styles from './LocationSearchModal.module.css'
 
 const SEOUL_CENTER = { lat: 37.5665, lng: 126.978 }
@@ -194,7 +195,7 @@ export default function LocationSearchModal({ title, initialPlace, onConfirm, on
   }
 
   return (
-    <div className={styles['search-overlay']} onClick={handleOverlayClick}>
+    <div className={styles['search-overlay']} onClick={handleOverlayClick} data-fab-hide="true">
       <div
         className={styles['search-panel']}
         style={{ maxHeight: '95vh', overflowY: 'auto', borderRadius: 24 }}
@@ -202,7 +203,7 @@ export default function LocationSearchModal({ title, initialPlace, onConfirm, on
         <div className={styles['search-panel-header']}>
           <span>{title}</span>
           <button type="button" className={styles['close-btn']} onClick={onClose}>
-            ✕
+            <Icon name="close" size={14} />
           </button>
         </div>
 
@@ -222,9 +223,9 @@ export default function LocationSearchModal({ title, initialPlace, onConfirm, on
               type="button"
               onClick={() => setQuery('')}
               aria-label="검색어 지우기"
-              style={{ border: 0, background: 'transparent', fontSize: 16, cursor: 'pointer', padding: 6 }}
+              style={{ border: 0, background: 'transparent', cursor: 'pointer', padding: 6, display: 'flex' }}
             >
-              ✕
+              <Icon name="close" size={14} />
             </button>
           )}
         </div>
@@ -278,7 +279,7 @@ export default function LocationSearchModal({ title, initialPlace, onConfirm, on
         </div>
 
         {locationError && (
-          <p className={styles.hint} style={{ color: '#E64545' }}>
+          <p className={styles.hint} style={{ color: 'var(--color-danger)' }}>
             {locationError}
           </p>
         )}
@@ -287,7 +288,7 @@ export default function LocationSearchModal({ title, initialPlace, onConfirm, on
           <p className={styles.hint}>'{query}'(으)로 검색된 곳이 없어요. 다른 키워드로 검색해보세요.</p>
         )}
         {searchStatus === 'error' && (
-          <p className={styles.hint} style={{ color: '#E64545' }}>
+          <p className={styles.hint} style={{ color: 'var(--color-danger)' }}>
             검색 중 문제가 생겼어요. 잠시 후 다시 시도해주세요.
           </p>
         )}
@@ -316,14 +317,14 @@ export default function LocationSearchModal({ title, initialPlace, onConfirm, on
             style={{
               margin: '12px 18px 0',
               padding: '12px 14px',
-              border: '1px solid #EFEDFA',
+              border: '1px solid var(--color-border)',
               borderRadius: 14,
               background: '#FAF9FF',
             }}
           >
             <div style={{ fontSize: 13, fontWeight: 700 }}>{pickedPlace.name}</div>
             <div style={{ marginTop: 4, fontSize: 11.5, color: 'rgba(27,22,63,0.58)' }}>{pickedPlace.address}</div>
-            <div style={{ marginTop: 5, fontSize: 11, color: '#6D57FC' }}>
+            <div style={{ marginTop: 5, fontSize: 11, color: 'var(--color-primary-500)' }}>
               지도 위 마커를 드래그해서 위치를 조정할 수 있어요.
             </div>
           </div>
@@ -331,15 +332,15 @@ export default function LocationSearchModal({ title, initialPlace, onConfirm, on
 
         <div style={{ flex: 1 }} />
 
-        <div style={{ padding: '14px 18px 18px' }}>
+        <div style={{ padding: '14px 16px 16px' }}>
           <button
             type="button"
             className={styles['btn-primary']}
             disabled={!pickedPlace}
-            style={!pickedPlace ? { opacity: 0.45, cursor: 'default', width: '100%' } : { width: '100%' }}
+            style={!pickedPlace ? { background: 'var(--button-bg-disabled)', color: '#fff', cursor: 'default', width: '100%' } : { width: '100%' }}
             onClick={() => pickedPlace && onConfirm(pickedPlace)}
           >
-            {!pickedPlace ? '지도에서 장소를 골라주세요' : `${pickedPlace.name}(으)로 정하기 →`}
+            {!pickedPlace ? '지도에서 장소를 골라주세요' : `${pickedPlace.name}(으)로 정하기`}
           </button>
         </div>
       </div>

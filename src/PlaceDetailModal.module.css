@@ -12,13 +12,15 @@
   position: relative;
   width: 100%;
   max-width: 390px;
-  max-height: 88vh;
+  max-height: 92vh;
+  max-height: 92dvh;
   background: #fff;
   border-radius: 24px 24px 0 0;
   overflow-y: auto;
   box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.25);
 }
 
+/* 접근성 - 터치 영역 44×44px 이상. 시각적 크기는 30px 유지, ::before로 히트박스만 확장 */
 .closeBtn {
   position: absolute;
   top: 12px;
@@ -35,4 +37,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.closeBtn::before {
+  content: '';
+  position: absolute;
+  inset: -7px;
 }

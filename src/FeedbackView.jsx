@@ -1,14 +1,15 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTrip } from './TripContext';
-import { apiFetch } from './api';
+import { apiFetch, safeText } from './api';
 import AppHeader from './AppHeader';
 import BottomNav from './BottomNav';
+import Icon from './Icon';
 import { useLanguage } from './LanguageContext';
 import styles from './FeedbackView.module.css';
 
 // 이 화면은 "오늘 하루"가 아니라 "여행 전체가 끝난 후" 딱 1번 뜨는 평가 화면임.
-// 정책: 여행이 완전히 끝난 후에만 제출 가능 (MyTripView에서 status==='완료'인 여행만 유도함).
+// 정책: 여행이 완전히 끝난 후에만 제출 가능 (HistoryView에서 status==='완료'인 여행만 유도함).
 // 제출한다고 이미 짜여진 동선이 바뀌지는 않음 - 순수 소감 기록 + 다음 여행 추천 참고용.
 export default function FeedbackView() {
   const navigate = useNavigate();
@@ -33,6 +34,7 @@ export default function FeedbackView() {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState('');
+  const [isSubmitted, setIsSubmitted] = useState(false); // 제출 성공 후 "완료" 안내 오버레이 표시용
 
   // '한마디 더' 칩 목록
   useEffect(() => {
@@ -56,6 +58,10 @@ export default function FeedbackView() {
       cancelled = true;
     };
   }, []);
+
+  // 08 부분 영역 에러 규칙 - 이 목록만 실패해도 별점·태그 등 나머지 폼은 그대로 쓸 수 있게,
+  // 여기만 재시도할 수 있는 별도 키를 둠
+  const [placesRetryKey, setPlacesRetryKey] = useState(0);
 
   // 여행 전체 장소 목록 (날짜 구분 없이 전부) - visit_day를 안 주면 전체가 옴
   useEffect(() => {
@@ -87,7 +93,7 @@ export default function FeedbackView() {
     return () => {
       cancelled = true;
     };
-  }, [tripNo]);
+  }, [tripNo, placesRetryKey]);
 
   async function togglePlaceLike(place) {
     const id = place.trip_route_event_no;
@@ -146,16 +152,18 @@ export default function FeedbackView() {
       if (!res.ok) {
         const data = await res.json().catch(() => null);
         const detail = data?.detail;
-        let message = '리뷰를 저장하지 못했어요. 잠시 후 다시 시도해주세요.';
-        if (typeof detail === 'string') message = detail;
-        else if (detail?.message) message = detail.message;
-        else if (Array.isArray(detail) && detail[0]?.msg) message = detail[0].msg;
-        setSubmitError(message);
+        let rawMessage = null;
+        if (typeof detail === 'string') rawMessage = detail;
+        else if (detail?.message) rawMessage = detail.message;
+        else if (Array.isArray(detail) && detail[0]?.msg) rawMessage = detail[0].msg;
+        // 08 에러 화면 규칙 - 백엔드 detail이 영어 기술 메시지일 수 있어 그대로 노출하지 않음
+        setSubmitError(safeText(rawMessage, '리뷰를 저장하지 못했어요. 잠시 후 다시 시도해주세요.'));
         setIsSubmitting(false);
         return;
       }
 
-      navigate('/trip/my');
+      setIsSubmitting(false);
+      setIsSubmitted(true);
     } catch (e) {
       setSubmitError('서버에 연결할 수 없어요. 잠시 후 다시 시도해주세요.');
       setIsSubmitting(false);
@@ -164,8 +172,41 @@ export default function FeedbackView() {
 
   // "이번엔 넘길게요" 버튼 - 절대 리뷰 저장 API를 호출하면 안 됨 (평가를 안 남기고 건너뜀).
   const handleSkip = () => {
-    navigate('/trip/my');
+    navigate('/trip/history');
   };
+
+  if (isSubmitted) {
+    return (
+      <div className={styles.screen}>
+        <div className={styles.card}>
+          <AppHeader />
+          <div className={styles.doneWrap}>
+            <div className={styles.doneCircle} aria-hidden="true">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+                <path
+                  d="M5 13l4 4L19 7"
+                  style={{ stroke: 'var(--color-primary-500)' }}
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </div>
+            {/* 09 카피&용어 - 부드러운 해요체로 (합쇼체 사용 금지) */}
+            <p className={styles.doneTitle}>리뷰 작성이 완료됐어요</p>
+            <p className={styles.doneSub}>소중한 후기 남겨주셔서 감사해요.</p>
+            <button
+              type="button"
+              className={styles.submitButton}
+              onClick={() => navigate('/trip/history')}
+            >
+              확인
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.screen}>
@@ -234,7 +275,19 @@ export default function FeedbackView() {
             <p className={styles.sectionLabel}>{t('feedback.placeSectionLabel')}</p>
 
             {isLoadingPlaces && <p className={styles.starHint}>불러오는 중이에요...</p>}
-            {!isLoadingPlaces && placesError && <p className={styles.starHint}>{placesError}</p>}
+            {/* 08 부분 영역 에러 - 별점·태그 등 나머지 폼은 그대로 두고 이 목록 구역만 회색 박스로 */}
+            {!isLoadingPlaces && placesError && (
+              <div className={styles['partial-error']}>
+                <p className={styles['partial-error-text']}>{placesError}</p>
+                <button
+                  type="button"
+                  className={styles['partial-error-retry']}
+                  onClick={() => setPlacesRetryKey((k) => k + 1)}
+                >
+                  다시 시도
+                </button>
+              </div>
+            )}
             {!isLoadingPlaces && !placesError && places.length === 0 && (
               <p className={styles.starHint}>다녀온 장소가 없어요.</p>
             )}
@@ -254,7 +307,7 @@ export default function FeedbackView() {
                       className={`${styles.placeThumb} ${place.liked ? styles.placeThumbActive : ''}`}
                       aria-hidden="true"
                     >
-                      👍
+                      <Icon name="thumbsUp" size={14} />
                     </span>
                   </button>
                 ))}
@@ -263,12 +316,14 @@ export default function FeedbackView() {
           </div>
 
           {submitError && (
-            <p className={styles.starHint} style={{ color: '#E64545' }}>
+            <p className={styles.starHint} style={{ color: 'var(--color-danger)' }}>
               {submitError}
             </p>
           )}
 
-          <div className={styles.actionRow}>
+          {/* 이 화면은 원래도 고정 바가 아니라 .body 안 마지막 항목이었음 - 잘못 붙어있던
+              data-bottom-bar만 제거(사용자 요청과 일치하도록 정리) */}
+          <div className={styles.actionRow} data-bottom-bar="true">
             <button type="button" className={styles.skipButton} onClick={handleSkip}>
               {t('feedback.skipButton')}
             </button>

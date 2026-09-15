@@ -4,19 +4,19 @@
   min-height: 100vh;
   display: flex;
   justify-content: center;
-  background: #ececec;
+  background: var(--color-screen-bg);
   padding: 24px 16px;
   font-family: 'IBM Plex Sans KR', sans-serif;
 }
 
 .card {
   width: 100%;
-  max-width: 390px;
-  min-height: 844px;
+  max-width: 100%;
+  height: 844px;
   background: #fff;
-  border-radius: 32px;
+  border-radius: 20px;
   box-shadow: 0px 3px 10px rgba(181, 179, 193, 0.11);
-  outline: 1px solid #EFEDFA;
+  outline: 1px solid var(--color-border);
   outline-offset: -1px;
   box-sizing: border-box;
   display: flex;
@@ -34,15 +34,15 @@
 }
 
 .header {
-  padding: 14px 18px 12px;
+  padding: var(--header-title-gap) 16px 12px; /* 헤더-타이틀 간격 24px 통일 (11_impact_plan.md 3번 섹션) */
 }
 
 .title {
-  font-size: 26px;
-  font-weight: 600;
-  line-height: 30px;
-  letter-spacing: 0.4px;
-  color: #201E1D;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 28px;
+  letter-spacing: -0.3px;
+  color: var(--color-ink-900);
   margin: 0;
 }
 
@@ -50,18 +50,24 @@
   font-family: 'Inter', sans-serif;
 }
 
+/* 07 탭&진행표시 - 세그먼트 탭: 개별 보더 박스가 아니라 트랙(연보라 배경) 안에
+   알약형 활성 탭 하나로 표현 */
 .day-tabs {
   display: flex;
   gap: 2px;
-  padding: 0 18px 12px;
+  margin: 0 16px 12px;
+  padding: 4px;
+  background: var(--color-primary-50);
+  border-radius: 12px;
 }
 
 .day-tab {
   flex: 1;
   padding: 8px 6px;
-  border: 2px solid rgba(27, 22, 63, 0.3);
+  border: none;
+  border-radius: 8px;
   background: transparent;
-  color: rgba(27, 22, 63, 0.5);
+  color: var(--color-ink-600);
   font-family: 'Inter', sans-serif;
   font-size: 11px;
   font-weight: 600;
@@ -69,22 +75,24 @@
 }
 
 .day-tab.active {
-  background: #6D57FC;
-  border-color: #6D57FC;
+  background: var(--color-primary-500);
   color: #fff;
 }
 
 .list {
-  border-top: 1px solid #EFEDFA;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  border-top: 1px solid var(--color-border);
   display: flex;
   flex-direction: column;
 }
 
 /* 출발/도착 지점 행 */
 .place-row {
-  padding: 16px 18px;
-  background: #F8F7FF;
-  border-bottom: 1px solid #EFEDFA;
+  padding: 16px 16px;
+  background: var(--color-primary-50);
+  border-bottom: 1px solid var(--color-border);
   display: flex;
   align-items: center;
   gap: 10px;
@@ -100,7 +108,7 @@
 .place-name {
   font-size: 15px;
   font-weight: 600;
-  color: #201E1D;
+  color: var(--color-ink-900);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -117,15 +125,15 @@
   min-width: 56px;
   font-size: 12px;
   font-weight: 700;
-  color: #6D57FC;
+  color: var(--color-primary-500);
   white-space: nowrap;
 }
 
 .place-edit-btn {
   padding: 7px 12px;
   border-radius: 12px;
-  background: #F8F7FF;
-  border: 1px solid #E8E4FF;
+  background: var(--color-primary-50);
+  border: 1px solid var(--color-primary-200);
   color: #757575;
   font-family: 'Urbanist', sans-serif;
   font-size: 11px;
@@ -136,8 +144,8 @@
 
 /* 장소 목록 행 */
 .event-row {
-  padding: 18px;
-  border-bottom: 1px solid #EFEDFA;
+  padding: 16px;
+  border-bottom: 1px solid var(--color-border);
   display: flex;
   align-items: center;
   gap: 10px;
@@ -154,7 +162,7 @@
 .event-name {
   font-size: 15px;
   font-weight: 600;
-  color: #201E1D;
+  color: var(--color-ink-900);
 }
 
 .event-sub {
@@ -172,15 +180,12 @@
 }
 
 .event-row.pinned {
-  background: #6D57FC;
+  border-left: 4px solid var(--color-primary-500);
+  padding-left: 14px;
 }
 
-.event-row.pinned .event-name {
-  color: #fff;
-}
-
-.event-row.pinned .event-sub {
-  color: rgba(255, 255, 255, 0.85);
+.event-row.pinned .event-time-big {
+  color: var(--color-primary-500);
 }
 
 .event-time-block {
@@ -193,68 +198,101 @@
   font-family: 'Inter', sans-serif;
   font-size: 13px;
   font-weight: 600;
-  color: #fff;
+  color: var(--color-ink-600);
 }
 
 .event-time-big {
   font-family: 'Inter', sans-serif;
   font-size: 22px;
   font-weight: 600;
-  color: #fff;
+  color: var(--color-ink-900);
 }
 
 .empty-day {
-  padding: 40px 18px;
+  padding: 40px 16px;
   text-align: center;
   color: rgba(27, 22, 63, 0.4);
   font-size: 13px;
 }
 
+/* 08 부분 영역 에러 - 옅은 회색(#F7F7FA) 박스, "다시 시도" 1개만 작게(Small, Outline) */
+.partial-error {
+  margin: 12px 16px;
+  padding: 16px;
+  background: #F7F7FA;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  text-align: center;
+}
+
+.partial-error-text {
+  margin: 0;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--color-ink-600);
+}
+
+/* Outline 스타일로 통일 (2차 검수 반영) */
+.partial-error-retry {
+  padding: 7px 16px;
+  border-radius: 12px;
+  border: var(--button-border-outline);
+  background: #fff;
+  color: var(--color-ink-900);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
 .spacer {
-  flex: 1;
+  flex-shrink: 0;
 }
 
 /* 하단 3버튼 */
 .action-row {
-  padding: 12px 18px 20px;
-  border-top: 1px solid #EFEDFA;
+  padding: 12px 16px calc(20px + env(safe-area-inset-bottom));
+  border-top: 1px solid var(--color-border);
   display: flex;
   gap: 8px;
+  margin-top: auto;
 }
 
 .btn-outline {
   flex: 1;
-  padding: 9px 8px;
-  border-radius: 100px;
-  background: #F8F7FF;
-  border: 1px solid #E8E4FF;
-  color: #1B163F;
-  font-size: 13px;
+  padding: 13px 8px;
+  border-radius: 12px;
+  background: var(--color-primary-50);
+  border: 1px solid var(--color-primary-200);
+  color: var(--color-ink-900);
+  font-size: 13.5px;
   font-weight: 600;
   cursor: pointer;
 }
 
 .btn-primary {
   flex: 1;
-  padding: 9px 8px;
-  border-radius: 100px;
-  background: #6D57FC;
+  padding: 13px 8px;
+  border-radius: 12px;
+  background: var(--color-primary-500);
   border: none;
   color: #fff;
-  font-size: 13px;
+  font-size: 13.5px;
   font-weight: 600;
   cursor: pointer;
 }
 
 .btn-primary:hover {
-  background: #5a45e0;
+  background: var(--color-primary-600);
 }
 
 .feedback-banner {
-  margin: 8px 18px 0;
+  margin: 8px 16px 0;
   padding: 12px 14px;
-  background: #F0EEFF;
-  border: 1px solid #6D57FC;
+  background: var(--color-primary-100);
+  border: 1px solid var(--color-primary-500);
   border-radius: 14px;
   display: flex;
   align-items: center;
@@ -266,11 +304,11 @@
   flex: 1;
   font-size: 12.5px;
   font-weight: 600;
-  color: #6D57FC;
+  color: var(--color-primary-500);
 }
 
 .feedback-banner-arrow {
-  color: #6D57FC;
+  color: var(--color-primary-500);
   font-size: 18px;
 }
 
@@ -287,7 +325,7 @@
 
 .search-panel {
   width: 100%;
-  max-width: 390px;
+  max-width: 100%;
   background: #fff;
   border-radius: 24px 24px 0 0;
   padding: 16px;
@@ -304,7 +342,7 @@
   justify-content: space-between;
   font-size: 13px;
   font-weight: 600;
-  color: #201E1D;
+  color: var(--color-ink-900);
 }
 
 .close-btn {
@@ -312,8 +350,8 @@
   height: 26px;
   border-radius: 13px;
   border: none;
-  background: #F8F7FF;
-  color: #6D57FC;
+  background: var(--color-primary-50);
+  color: var(--color-primary-500);
   cursor: pointer;
 }
 
@@ -321,14 +359,14 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  background: #F8F7FF;
-  border: 1px solid #E8E4FF;
+  background: #F7F7FA; /* 빈 값일 때는 연보라 대신 흰색/연회색 중간톤 (사용자 요청) */
+  border: 1px solid var(--color-primary-200);
   border-radius: 14px;
   padding: 11px 14px;
 }
 
 .search-icon {
-  color: #6D57FC;
+  color: var(--color-primary-500);
   font-size: 14px;
 }
 
@@ -338,7 +376,7 @@
   background: transparent;
   font-family: 'IBM Plex Sans KR', sans-serif;
   font-size: 14px;
-  color: #0C0A1C;
+  color: var(--color-ink-900);
   outline: none;
 }
 
@@ -379,8 +417,8 @@
 .result-list-item {
   padding: 9px 12px;
   border-radius: 12px;
-  background: #F8F7FF;
-  border: 1px solid #E8E4FF;
+  background: var(--color-primary-50);
+  border: 1px solid var(--color-primary-200);
   cursor: pointer;
   display: flex;
   flex-direction: column;
@@ -388,17 +426,34 @@
 }
 
 .result-list-item.active {
-  background: #F0EEFF;
-  border-color: #6D57FC;
+  background: var(--color-primary-100);
+  border-color: var(--color-primary-500);
 }
 
 .result-list-name {
   font-size: 12.5px;
   font-weight: 600;
-  color: #201E1D;
+  color: var(--color-ink-900);
 }
 
 .result-list-address {
   font-size: 10.5px;
   color: rgba(27, 22, 63, 0.55);
+}
+/* 실제 폰 화면(카드 최대폭보다 좁은 뷰포트)에서는 데스크톱 미리보기용 "폰 목업" 프레임
+   (회색 배경 · 여백 · 둥근 모서리)을 없애고 화면 전체를 꽉 채움 */
+@media (max-width: 430px) {
+  .screen {
+    background: #fff;
+    padding: 0;
+  }
+
+  .card {
+    max-width: 100%;
+    height: 100vh;
+    height: 100dvh;
+    border-radius: 0;
+    box-shadow: none;
+    outline: none;
+  }
 }

@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTrip } from './TripContext'
+import { safeText } from './api'
 import AppHeader from './AppHeader'
 import styles from './ArtistSelectView.module.css'
 
 // 카드 왼쪽 점 색깔 - API에 색상 정보가 없어서 순서대로 돌려가며 씀
-const DOT_COLORS = ['#6D57FC', '#FF7AC8', '#9747FF', '#A2E0C1', '#FFA502', '#4FC3F7']
+const DOT_COLORS = ['var(--color-primary-500)', '#FF7AC8', '#9747FF', '#A2E0C1', '#FFA502', '#4FC3F7']
 
 // API 응답 하나를 화면에서 쓰기 편한 모양으로 바꿔주는 함수
 function normalizeArtist(raw, index) {
@@ -125,7 +126,9 @@ export default function ArtistSelectView() {
           typeof detail === 'string'
             ? detail
             : detail?.message || (Array.isArray(detail) ? detail[0]?.msg : null)
-        setSubmitError(message || '가입 중 문제가 생겼어요. 잠시 후 다시 시도해주세요.')
+        // 08 에러 화면 규칙 - Pydantic 검증 메시지(detail[0].msg)는 기본이 영어라서
+        // 사용자에게 그대로 보여주면 안 됨 (보안·신뢰 원칙)
+        setSubmitError(safeText(message, '가입 중 문제가 생겼어요. 잠시 후 다시 시도해주세요.'))
         setIsSubmitting(false)
         return
       }
@@ -231,21 +234,24 @@ export default function ArtistSelectView() {
                 </div>
               )
             })}
+
+            {/* 하단 고정 바가 아니라 목록의 마지막 항목으로 스크롤에 같이 움직이게 함
+                (사용자 요청 - 다른 화면과 동일하게 고정 해제) */}
+            <div className={styles.footer} data-bottom-bar="true">
+              <span className={styles['footer-count']}>{selected.size}팀 선택했어요</span>
+              <button
+                type="button"
+                className={`${styles['btn-primary']} ${!isFormValid || isSubmitting ? styles.disabled : ''}`}
+                onClick={handleComplete}
+                disabled={!isFormValid || isSubmitting}
+              >
+                {isSubmitting ? '가입 중...' : '가입 완료'}
+              </button>
+            </div>
           </div>
         </div>
 
-        {submitError && <p className={styles.hint} style={{ padding: '0 18px', color: '#E64545' }}>{submitError}</p>}
-
-        <div className={styles.footer}>
-          <span className={styles['footer-count']}>{selected.size}팀 선택했어요</span>
-          <button
-            type="button"
-            className={`${styles['btn-primary']} ${!isFormValid || isSubmitting ? styles.disabled : ''}`}
-            onClick={handleComplete}
-          >
-            {isSubmitting ? '가입 중...' : '가입 완료 →'}
-          </button>
-        </div>
+        {submitError && <p className={styles.hint} style={{ padding: '0 16px', color: 'var(--color-danger)' }}>{submitError}</p>}
       </div>
     </div>
   )

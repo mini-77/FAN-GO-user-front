@@ -1,9 +1,10 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTrip } from './TripContext'
-import { apiFetch } from './api'
-import logoImg from './assets/fango-logo-mark.png'
+import { apiFetch, safeErrorMessage } from './api'
+import AppHeader from './AppHeader'
 import BottomNav from './BottomNav'
+import Icon from './Icon'
 import styles from './HomeView.module.css'
 
 // 실제 status 값(진행중/완료/예정) → 화면에 보여줄 라벨/스타일 매핑.
@@ -48,12 +49,18 @@ function splitArtistFromEventName(eventNm) {
   return { artist: '', displayTitle: eventNm }
 }
 
+// 08 리스트 섹션 규칙 — 길이가 정해지지 않은 리스트는 무한스크롤 대신 8~10개씩 "더보기"로 불러옴.
+// 예전엔 홈에서 최근 5개만 미리보기로 자르고 "전체 보기"로 HistoryView로 보냈는데, 그러면
+// 다른 화면으로 이동해야만 나머지를 볼 수 있어서 불편함 - 홈에서 바로 더보기로 펼치게 바꿈.
+const PAGE_SIZE = 8
+
 export default function HomeView() {
   const navigate = useNavigate()
   const { tripData, updateTrip } = useTrip()
   const [trips, setTrips] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [loadError, setLoadError] = useState('')
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE)
 
   useEffect(() => {
     let cancelled = false
@@ -65,9 +72,12 @@ export default function HomeView() {
         if (res.status === 401) throw new Error('로그인이 만료됐어요. 다시 로그인해주세요.')
         if (!res.ok) throw new Error('일정 목록을 불러오지 못했어요.')
         const data = await res.json()
-        if (!cancelled) setTrips(data)
+        if (!cancelled) {
+          setTrips(data)
+          setVisibleCount(PAGE_SIZE)
+        }
       } catch (e) {
-        if (!cancelled) setLoadError(e.message || '일정 목록을 불러오지 못했어요. 잠시 후 다시 시도해주세요.')
+        if (!cancelled) setLoadError(safeErrorMessage(e, '일정 목록을 불러오지 못했어요. 잠시 후 다시 시도해주세요.'))
       } finally {
         if (!cancelled) setIsLoading(false)
       }
@@ -89,8 +99,9 @@ export default function HomeView() {
         if (!res.ok) throw new Error('일정 목록을 불러오지 못했어요.')
         const data = await res.json()
         setTrips(data)
+        setVisibleCount(PAGE_SIZE)
       } catch (e) {
-        setLoadError(e.message || '일정 목록을 불러오지 못했어요. 잠시 후 다시 시도해주세요.')
+        setLoadError(safeErrorMessage(e, '일정 목록을 불러오지 못했어요. 잠시 후 다시 시도해주세요.'))
       } finally {
         setIsLoading(false)
       }
@@ -110,15 +121,8 @@ export default function HomeView() {
   return (
     <div className={styles.screen}>
       <div className={styles.card}>
-        <div className={styles['top-bar']}>
-          <button type="button" className={styles['top-bar-btn']} onClick={() => navigate(-1)}>
-            ←
-          </button>
-          <img src={logoImg} alt="FAN:GO" className={styles['top-bar-logo-img']} />
-          <button type="button" className={styles['top-bar-btn']} onClick={() => navigate('/account')}>
-            👤
-          </button>
-        </div>
+        {/* 05 헤더 규칙 - 진입점(홈)은 뒤로가기 없이 로고만 중앙, 메뉴 아이콘은 표시(사용자 요청) */}
+        <AppHeader showBack={false} showProfile />
 
         <div className={styles.body}>
           <h1 className={styles.title}>다가오는 이벤트</h1>
@@ -127,7 +131,7 @@ export default function HomeView() {
           <button type="button" className={styles['new-trip-btn']} onClick={() => navigate('/trip/events')}>
             <div className={styles['new-trip-icon']}>+</div>
             <div className={styles['new-trip-text']}>
-              <div className={styles['new-trip-title']}>새 동선 만들기</div>
+              <div className={styles['new-trip-title']}>일정 만들기</div>
               <div className={styles['new-trip-sub']}>아티스트 · 공연을 선택해 동선 시작</div>
             </div>
             <span className={styles['new-trip-chevron']}>›</span>
@@ -137,7 +141,7 @@ export default function HomeView() {
 
           {!isLoading && loadError && (
             <div>
-              <p className={styles['load-text']} style={{ color: '#E64545' }}>{loadError}</p>
+              <p className={styles['load-text']} style={{ color: 'var(--color-danger)' }}>{loadError}</p>
               <button type="button" className={styles['retry-btn']} onClick={retry}>
                 다시 시도
               </button>
@@ -162,7 +166,7 @@ export default function HomeView() {
                   )
                 })()}
                 <div className={styles['hero-meta-row']}>
-                  <span>📅</span>
+                  <Icon name="calendar" size={13} />
                   <span>{formatKoreanDate(upcoming.start_dt)}</span>
                 </div>
                 <div className={styles['hero-meta-sub']}>
@@ -172,29 +176,22 @@ export default function HomeView() {
             </div>
           )}
 
-          {!isLoading && !loadError && !upcoming && (
-            <p className={styles['load-text']}>등록된 일정이 없습니다.</p>
-          )}
-
           <div className={styles['section-head']}>
             <span className={styles['section-title']}>내 공연 동선</span>
-            <button type="button" className={styles['section-link']} onClick={() => navigate('/trip/history')}>
-              전체 {trips.length}
-            </button>
           </div>
 
           {!isLoading && !loadError && trips.length === 0 && (
-            <p className={styles['load-text']}>등록된 일정이 없습니다.</p>
+            <div className={styles['empty-state']}>
+              <Icon name="folder" size={32} color="#C0BCD8" />
+              <p className={styles['load-text']}>아직 등록된 일정이 없어요.</p>
+            </div>
           )}
 
           <div className={styles['trip-list']}>
-            {trips.map((trip) => {
+            {trips.slice(0, visibleCount).map((trip) => {
               const { artist, displayTitle } = splitArtistFromEventName(trip.event_nm)
               return (
                 <div key={trip.trip_no} className={styles['trip-row']} onClick={() => openTrip(trip)}>
-                  <div className={styles['trip-avatar']}>
-                    {(artist || displayTitle)?.slice(0, 1) || '?'}
-                  </div>
                   <div className={styles['trip-text']}>
                     <div className={styles['trip-name-row']}>
                       <span className={styles['trip-title']}>{displayTitle}</span>
@@ -205,7 +202,7 @@ export default function HomeView() {
                     {artist && <div className={styles['trip-artist']}>{artist}</div>}
                     <div className={styles['trip-meta']}>{trip.event_add} · 동선 {trip.place_count}곳</div>
                     <div className={styles['trip-date-row']}>
-                      <span>📅</span>
+                      <Icon name="calendar" size={13} />
                       <span>{formatKoreanDate(trip.start_dt)}</span>
                     </div>
                   </div>
@@ -214,6 +211,16 @@ export default function HomeView() {
               )
             })}
           </div>
+
+          {!isLoading && !loadError && trips.length > visibleCount && (
+            <button
+              type="button"
+              className={styles['load-more-btn']}
+              onClick={() => setVisibleCount((v) => v + PAGE_SIZE)}
+            >
+              더보기 <Icon name="chevronDown" size={14} />
+            </button>
+          )}
         </div>
 
         <div className={styles.spacer} />

@@ -234,7 +234,7 @@ export default function SignupView() {
       if (data.available) {
         setEmailChecked(true)
         setEmailCheckError('')
-        setEmailCheckSuccess('사용 가능한 이메일 주소입니다.')
+        setEmailCheckSuccess('사용 가능한 이메일 주소예요.')
       } else {
         // ⚠️ 이 상태(emailChecked=false + emailCheckError 있음)일 땐 가입 버튼이
         // 실제로 눌리지 않게(disabled 속성) 처리함 - isFormValid가 false가 되고,
@@ -283,7 +283,7 @@ export default function SignupView() {
     const hasFieldError = Object.values(nextFieldErrors).some(Boolean)
 
     if (hasFieldError || !isFormValid) {
-      if (!emailChecked) setErrorMessage('이메일 중복확인을 눌러주세요.')
+      if (!emailChecked) setErrorMessage('이메일 중복확인이 필요해요. 이메일 입력 후 다른 곳을 탭해주세요.')
       else if (!nationality) setErrorMessage('국적을 선택해주세요.')
       else if (!agreedTerms || !agreedPrivacy || !agreedLocation) setErrorMessage('필수 약관에 동의해주세요.')
       else setErrorMessage('입력값을 확인해 주세요.')
@@ -314,16 +314,16 @@ export default function SignupView() {
       <div className={styles.card}>
         <AppHeader showProfile={false} />
         <div className={styles.body}>
-          <h1 className={styles.title}>계정 생성</h1>
+          <h1 className={styles.title}>가입하기</h1>
 
-        <label className={styles['field-label']}>이메일</label>
-        <div className={styles['row-with-btn']}>
+        <div className={styles['form-field']}>
+          <label className={styles['field-label']}>이메일</label>
           <input
-            className={`${styles.input} ${email ? styles['input-highlighted'] : ''}`}
+            className={`${styles.input} ${email ? styles['input-highlighted'] : ''} ${fieldErrors.email || emailCheckError ? styles.inputError : ''}`}
             type="text"
             name="signup-email-x92"
             autoComplete="off"
-            placeholder="mina_tan@google.com"
+            placeholder="fango@gmail.com"
             value={email}
             onChange={(e) => {
               setEmail(e.target.value)
@@ -333,45 +333,30 @@ export default function SignupView() {
               setFieldErrors((prev) => ({ ...prev, email: '' }))
             }}
             onBlur={(e) => {
+              // 다른 영역을 탭하면 자동으로 유효성 검사(빈값 -> 형식) 후 중복확인까지 이어서 실행
               if (e.target.value) {
-                setFieldErrors((prev) => ({ ...prev, email: validateEmail(e.target.value) }))
+                handleCheckDuplicate()
               }
             }}
           />
-          <button
-            type="button"
-            className={styles['btn-mini']}
-            onClick={handleCheckDuplicate}
-            disabled={isCheckingEmail}
-          >
-            {isCheckingEmail ? '확인 중...' : '중복확인'}
-          </button>
-        </div>
-        {fieldErrors.email ? (
-          <p className={styles['field-hint-warning']}>
-            <span className={styles['warning-mark']}>!</span> {fieldErrors.email}
-          </p>
-        ) : emailCheckError ? (
-          <p className={styles['field-hint-warning']}>
-            <span className={styles['warning-mark']}>!</span> {emailCheckError}
-          </p>
-        ) : emailCheckSuccess ? (
-          <p className={styles['field-hint-success']}>
-            <span className={styles['success-mark']}>✓</span> {emailCheckSuccess}
-          </p>
-        ) : (
-          !emailChecked && (
-            <p className={styles['field-hint-warning']}>
-              <span className={styles['warning-mark']}>!</span> 중복확인을 눌러 주세요.
+          {fieldErrors.email ? (
+            <p className={styles['field-hint-warning']}>{fieldErrors.email}</p>
+          ) : isCheckingEmail ? (
+            <p className={styles.hint}>중복확인 중이에요...</p>
+          ) : emailCheckError ? (
+            <p className={styles['field-hint-warning']}>{emailCheckError}</p>
+          ) : emailCheckSuccess ? (
+            <p className={styles['field-hint-success']}>
+              <span className={styles['success-mark']}>✓</span> {emailCheckSuccess}
             </p>
-          )
-        )}
+          ) : null}
+        </div>
 
         {/* 비밀번호 / 비밀번호 확인 - 이메일 바로 다음, 세로로 하나씩 */}
         <div className={styles['form-field']}>
           <label className={styles['field-label']}>비밀번호</label>
           <input
-            className={`${styles.input} ${styles['input-en']}`}
+            className={`${styles.input} ${styles['input-en']} ${fieldErrors.password ? styles.inputError : ''}`}
             type="password"
             name="signup-pw-x92"
             autoComplete="off"
@@ -384,7 +369,7 @@ export default function SignupView() {
           />
           {fieldErrors.password && (
             <p className={styles['field-hint-warning']}>
-              <span className={styles['warning-mark']}>!</span> {fieldErrors.password}
+              {fieldErrors.password}
             </p>
           )}
         </div>
@@ -392,7 +377,7 @@ export default function SignupView() {
         <div className={styles['form-field']}>
           <label className={styles['field-label']}>비밀번호 확인</label>
           <input
-            className={`${styles.input} ${styles['input-en']}`}
+            className={`${styles.input} ${styles['input-en']} ${fieldErrors.passwordConfirm ? styles.inputError : ''}`}
             type="password"
             name="signup-pw-confirm-x92"
             autoComplete="off"
@@ -408,17 +393,36 @@ export default function SignupView() {
           />
           {fieldErrors.passwordConfirm && (
             <p className={styles['field-hint-warning']}>
-              <span className={styles['warning-mark']}>!</span> {fieldErrors.passwordConfirm}
+              {fieldErrors.passwordConfirm}
             </p>
           )}
         </div>
 
-        {/* 국적: 국가번호 자동채움을 위해 휴대전화번호보다 먼저 선택하도록 배치 */}
+        <div className={styles['form-field']}>
+          <label className={styles['field-label']}>닉네임</label>
+          <input
+            className={`${styles.input} ${fieldErrors.nickname ? styles.inputError : ''}`}
+            type="text"
+            placeholder="닉네임"
+            value={nickname}
+            onChange={(e) => setNickname(e.target.value)}
+            onBlur={(e) =>
+              setFieldErrors((prev) => ({ ...prev, nickname: validateNickname(e.target.value) }))
+            }
+          />
+          {fieldErrors.nickname && (
+            <p className={styles['field-hint-warning']}>
+              {fieldErrors.nickname}
+            </p>
+          )}
+        </div>
+
+        {/* 국적: 국가번호 자동채움을 위해 휴대전화번호보다는 먼저 선택하도록 배치 */}
         <div className={styles['two-col']}>
-          <div>
+          <div className={styles['form-field']}>
             <label className={styles['field-label']}>국적</label>
             <select
-              className={styles.input}
+              className={`${styles.input} ${fieldErrors.nationality ? styles.inputError : ''}`}
               value={nationality}
               onChange={(e) => {
                 handleNationalityChange(e.target.value)
@@ -441,41 +445,23 @@ export default function SignupView() {
             </select>
             {fieldErrors.nationality && (
               <p className={styles['field-hint-warning']}>
-                <span className={styles['warning-mark']}>!</span> {fieldErrors.nationality}
+                {fieldErrors.nationality}
               </p>
             )}
           </div>
-          <div>
-            <label className={styles['field-label']}>국적 기준 기본 언어</label>
-            <div className={styles['input-outline-only']}>{defaultLangHint}</div>
+          <div className={styles['form-field']}>
+            <p className={styles['default-lang-hint']}>
+              국적 기준 기본 언어: <strong>{defaultLangHint}</strong>
+            </p>
           </div>
         </div>
 
         {optionsError && <p className={styles.error}>{optionsError}</p>}
 
         <div className={styles['form-field']}>
-          <label className={styles['field-label']}>닉네임</label>
-          <input
-            className={styles.input}
-            type="text"
-            placeholder="닉네임"
-            value={nickname}
-            onChange={(e) => setNickname(e.target.value)}
-            onBlur={(e) =>
-              setFieldErrors((prev) => ({ ...prev, nickname: validateNickname(e.target.value) }))
-            }
-          />
-          {fieldErrors.nickname && (
-            <p className={styles['field-hint-warning']}>
-              <span className={styles['warning-mark']}>!</span> {fieldErrors.nickname}
-            </p>
-          )}
-        </div>
-
-        <div className={styles['form-field']}>
           <label className={styles['field-label']}>휴대전화번호</label>
           {/* 국가번호 + 전화번호를 하나의 박스 안에서, 국가번호가 맨 앞에 오게 */}
-          <div className={styles['phone-single-box']}>
+          <div className={`${styles['phone-single-box']} ${fieldErrors.phone ? styles.inputError : ''}`}>
             <span className={styles['phone-code-plus']}>+</span>
             <input
               className={styles['phone-code-input']}
@@ -505,35 +491,9 @@ export default function SignupView() {
           </div>
           {fieldErrors.phone && (
             <p className={styles['field-hint-warning']}>
-              <span className={styles['warning-mark']}>!</span> {fieldErrors.phone}
+              {fieldErrors.phone}
             </p>
           )}
-        </div>
-
-        <div className={styles['lang-block']}>
-          <div className={styles['lang-header']}>
-            <span className={styles['lang-label']}>화면 언어</span>
-            <span className={styles['lang-current']}>
-              {langs.find((l) => l.lang_no === selectedLanguage)?.lang_nm || ''}
-            </span>
-          </div>
-          <div className={styles['lang-chips']}>
-            {langs.map((lang) => (
-              <button
-                key={lang.lang_no}
-                type="button"
-                className={`${styles['lang-chip']} ${selectedLanguage === lang.lang_no ? styles.active : ''}`}
-                onClick={() => setSelectedLanguage(lang.lang_no)}
-              >
-                {lang.lang_nm}
-              </button>
-            ))}
-          </div>
-          <p className={styles.hint}>
-            국적을 고르면 그 나라 언어가 먼저 잡히고, 여기서 다르게 바꿀 수 있어요.
-            <br />
-            화면과 장소 이름 표기에 쓰입니다.
-          </p>
         </div>
 
         <div className={styles['agree-block']}>
@@ -643,13 +603,14 @@ export default function SignupView() {
         {errorMessage && <p className={styles.error}>{errorMessage}</p>}
 
         <div className={styles['footer-row']}>
+          {/* 09 카피&용어 - "다음 단계로 이동"은 콜론(:)+다음 화면명으로 표기.
+              06 버튼 규칙 - 비활성 상태는 .disabled(#D9D4F5)만으로 구분, opacity 이중 적용 금지 */}
           <button
             className={`${styles['btn-primary']} ${!isFormValid ? styles.disabled : ''}`}
             onClick={goNext}
             disabled={!isFormValid}
-            style={!isFormValid ? { opacity: 0.5, cursor: 'default' } : undefined}
           >
-            다음 →
+            다음: 아티스트 선택
           </button>
         </div>
         </div>

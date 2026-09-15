@@ -2,6 +2,8 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useTrip } from './TripContext'
 import AppHeader from './AppHeader'
+import Icon from './Icon'
+import DateRangeSheet from './DateRangeSheet'
 import styles from './StaySearchView.module.css'
 
 function nightsBetween(checkIn, checkOut) {
@@ -65,10 +67,11 @@ export default function StaySearchView() {
   const [locationError, setLocationError] = useState('')
   const [dateRangeError, setDateRangeError] = useState('')
 
-  // 백엔드 규칙: accom.check_in_dt/check_out_dt는 이벤트 날짜(event_date) 기준 ±2일 안에 있어야 함.
-  const eventDate = tripData.selectedEvent?.event_date
-  const allowedMinDate = eventDate ? addDaysToIso(eventDate, -2) : null
-  const allowedMaxDate = eventDate ? addDaysToIso(eventDate, 2) : null
+  // 숙소 체크인/체크아웃은 TripDateView에서 정한 여행 기간(시작일~종료일) 기준 전후 +1일까지만
+  // 고를 수 있게 함 - 여행 기간이 3일이면 숙소는 그 앞뒤로 하루씩 여유를 두고 잡을 수 있는 정도로 제한.
+  const { startDate: tripStartDate, endDate: tripEndDate } = tripData.tripDates || {}
+  const allowedMinDate = tripStartDate ? addDaysToIso(tripStartDate, -1) : null
+  const allowedMaxDate = tripEndDate ? addDaysToIso(tripEndDate, 1) : null
 
   function validateStayDates(nextCheckIn, nextCheckOut) {
     if (!allowedMinDate || !allowedMaxDate) return ''
@@ -354,12 +357,13 @@ export default function StaySearchView() {
             />
             {query && (
               <button type="button" className={styles['clear-btn']} onClick={() => setQuery('')}>
-                ✕
+                <Icon name="close" size={14} />
               </button>
             )}
           </div>
         </div>
 
+        <div className={styles.scrollArea}>
         {/* 실제 카카오맵이 그려지는 영역 */}
         <div className={styles['map-area']}>
           <div ref={mapRef} className={styles['map-canvas']} />
@@ -386,7 +390,7 @@ export default function StaySearchView() {
         </div>
 
         {locationError && (
-          <p className={styles['field-label']} style={{ padding: '10px 18px 0', color: '#E64545' }}>
+          <p className={styles['field-label']} style={{ padding: '10px 16px 0', color: 'var(--color-danger)' }}>
             {locationError}
           </p>
         )}
@@ -398,7 +402,7 @@ export default function StaySearchView() {
             </p>
           )}
           {searchStatus === 'error' && (
-            <p className={styles['field-label']} style={{ color: '#E64545' }}>
+            <p className={styles['field-label']} style={{ color: 'var(--color-danger)' }}>
               검색 중 문제가 생겼어요. 잠시 후 다시 시도해주세요.
             </p>
           )}
@@ -425,7 +429,7 @@ export default function StaySearchView() {
 
           {selected ? (
             <div className={styles['result-card']}>
-              <div className={styles['result-icon']}>🏠</div>
+              <div className={styles['result-icon']}><Icon name="building" size={18} color="var(--color-primary-500)" /></div>
               <div>
                 <div className={styles['result-name-row']}>
                   <span className={styles['result-name']}>{selected.name}</span>
@@ -449,64 +453,59 @@ export default function StaySearchView() {
 
               {allowedMinDate && allowedMaxDate && (
                 <p className={styles['field-label']}>
-                  이벤트 기준 {allowedMinDate.slice(5)} ~ {allowedMaxDate.slice(5)} 사이만 가능해요.
+                  여행 기간 기준 {allowedMinDate.slice(5)} ~ {allowedMaxDate.slice(5)} 사이만 가능해요.
                 </p>
               )}
 
-              <div className={styles['date-row']}>
-                <div className={styles['date-field']}>
-                  <label className={styles['field-label']}>체크인</label>
-                  <input
-                    type="date"
-                    className={styles['date-input']}
-                    value={checkIn}
-                    min={allowedMinDate || undefined}
-                    max={allowedMaxDate || undefined}
-                    onChange={(e) => setCheckIn(e.target.value)}
-                  />
-                </div>
-                <span className={styles['date-dash']}>—</span>
-                <div className={styles['date-field']}>
-                  <label className={styles['field-label']}>체크아웃</label>
-                  <input
-                    type="date"
-                    className={styles['date-input']}
-                    value={checkOut}
-                    min={allowedMinDate || undefined}
-                    max={allowedMaxDate || undefined}
-                    onChange={(e) => setCheckOut(e.target.value)}
-                  />
-                </div>
-              </div>
+              <DateRangeSheet
+                checkIn={checkIn}
+                checkOut={checkOut}
+                min={allowedMinDate || undefined}
+                max={allowedMaxDate || undefined}
+                onConfirm={(nextCheckIn, nextCheckOut) => {
+                  setCheckIn(nextCheckIn)
+                  setCheckOut(nextCheckOut)
+                }}
+              />
 
               {stayDateError && (
-                <p className={styles['field-label']} style={{ color: '#E64545' }}>
+                <p className={styles['field-label']} style={{ color: 'var(--color-danger)' }}>
                   {stayDateError}
                 </p>
               )}
               {maxStaysError && (
-                <p className={styles['field-label']} style={{ color: '#E64545' }}>
+                <p className={styles['field-label']} style={{ color: 'var(--color-danger)' }}>
                   {maxStaysError}
                 </p>
               )}
             </>
           )}
 
+          {/* 06 버튼 규칙 - 정보(숙박일수)는 버튼 밖 캡션으로, 버튼엔 행동만 담음 */}
+          {!isLocationOnlyMode && nights && selected && (
+            <p style={{ margin: '0 0 8px', fontSize: 12.5, color: 'var(--color-ink-600)' }}>
+              {nights}박 · {selected.name}
+            </p>
+          )}
+        </div>
+        </div>
+
+        <div className={styles.footer}>
           <div className={styles['bottom-row']}>
             <button
               type="button"
               className={styles['btn-primary']}
               disabled={!canAdd}
-              style={!canAdd ? { opacity: 0.45, cursor: 'default' } : undefined}
+              style={!canAdd ? { background: 'var(--button-bg-disabled)', color: '#fff', cursor: 'default' } : undefined}
               onClick={addStay}
             >
               {isLocationOnlyMode
                 ? selected
-                  ? `${selected.name}(으)로 정하기 →`
+                  ? `${selected.name}(으)로 정하기`
                   : '지도에서 장소를 골라주세요'
-                : nights
-                  ? `${nights}박 · 이 숙소로 ${editStay ? '수정' : '추가'} →`
-                  : `이 숙소로 ${editStay ? '수정' : '추가'} →`}
+                : !selected
+                  ? '지도에서 장소를 골라주세요'
+                  : `숙소로 ${editStay ? '수정' : '추가'}`}
             </button>
           </div>
         </div>

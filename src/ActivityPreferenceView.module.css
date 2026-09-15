@@ -4,18 +4,18 @@
   min-height: 100vh;
   display: flex;
   justify-content: center;
-  background: #ececec;
+  background: var(--color-screen-bg);
   padding: 24px 16px;
   font-family: 'IBM Plex Sans KR', sans-serif;
 }
 
 .card {
   width: 100%;
-  max-width: 390px;
+  max-width: 100%;
   background: #fff;
-  border-radius: 32px;
+  border-radius: 20px;
   box-shadow: 0px 3px 10px rgba(181, 179, 193, 0.11);
-  outline: 1px solid #EFEDFA;
+  outline: 1px solid var(--color-border);
   outline-offset: -1px;
   box-sizing: border-box;
   display: flex;
@@ -33,8 +33,8 @@
 }
 
 .header {
-  padding: 14px 18px 12px;
-  border-bottom: 1px solid #EFEDFA;
+  padding: var(--header-title-gap) 16px 12px; /* 헤더-타이틀 간격 24px 통일 (11_impact_plan.md 3번 섹션) */
+  border-bottom: 1px solid var(--color-border);
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -51,9 +51,9 @@
   height: 30px;
   min-width: 30px;
   border-radius: 15px;
-  background: #F8F7FF;
-  border: 1px solid #E8E4FF;
-  color: #6D57FC;
+  background: var(--color-primary-50);
+  border: 1px solid var(--color-primary-200);
+  color: var(--color-primary-500);
   font-family: 'Urbanist', sans-serif;
   font-size: 13px;
   font-weight: 600;
@@ -63,42 +63,58 @@
   cursor: pointer;
 }
 
+/* 다중 선택 화면 텍스트 위계 - 스텝 카운터 11px Regular Ink-400 */
 .step-label {
   margin-left: auto;
   font-family: 'Inter', sans-serif;
   font-size: 11px;
-  font-weight: 600;
-  color: #201E1D;
+  font-weight: 400;
+  color: var(--color-ink-400);
 }
 
+/* 화면 타이틀은 20px Bold (일반 H1 22px과 별도 기준) */
 .title {
-  font-size: 25px;
-  font-weight: 600;
+  font-size: 20px;
+  font-weight: 700;
   line-height: 28px;
-  letter-spacing: 0.38px;
-  color: #201E1D;
+  letter-spacing: -0.3px;
+  color: var(--color-ink-900);
   margin: 0;
 }
 
+/* 07 탭&진행표시 - 단계 진행률: 세그먼트 블록 대신 연속형 바 + "n/4 단계 · x%" 캡션 */
 .progress-bar {
-  display: flex;
-  gap: 3px;
-  padding-top: 4px;
-}
-
-.progress-seg {
-  flex: 1;
   height: 4px;
   border-radius: 2px;
   background: rgba(27, 22, 63, 0.18);
+  overflow: hidden;
+  margin-top: 4px;
 }
 
-.progress-seg.active {
-  background: #6D57FC;
+.progress-fill {
+  height: 100%;
+  border-radius: 2px;
+  background: var(--color-primary-500);
+}
+
+.progress-caption {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 6px;
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--color-ink-400);
+}
+
+.scrollArea {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
 }
 
 .section {
-  padding: 14px 18px;
+  padding: 14px 16px;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -112,24 +128,23 @@
 
 .section-label {
   font-family: 'Urbanist', sans-serif;
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 1.4px;
-  color: rgba(27, 22, 63, 0.55);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color-ink-700);
 }
 
 .section-count {
   font-family: 'Inter', sans-serif;
-  font-size: 11px;
-  font-weight: 600;
-  color: #6D57FC;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color-primary-500);
 }
 
 .hint {
-  font-size: 11.5px;
+  font-size: 12.5px;
   font-weight: 400;
   line-height: 18.4px;
-  color: rgba(27, 22, 63, 0.55);
+  color: var(--color-ink-600);
   margin: 0;
 }
 
@@ -156,8 +171,8 @@
 
 .category-card {
   border-radius: 16px;
-  background: #F8F7FF;
-  box-shadow: 0 0 0 1px #E8E4FF;
+  background: var(--color-primary-50);
+  box-shadow: 0 0 0 1px var(--color-primary-200);
   padding: 12px;
   cursor: pointer;
   position: relative;
@@ -171,17 +186,17 @@
   cursor: default;
 }
 
+/* 우선순위 선택 카드 - 항목명 13.5px Bold, 부가설명 11px Regular Ink-600 */
 .category-name {
-  font-size: 14px;
-  font-weight: 600;
-  color: #0C0A1C;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--color-ink-900);
 }
 
 .category-sub {
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 400;
-  color: #0C0A1C;
-  opacity: 0.65;
+  color: var(--color-ink-600);
 }
 
 .rank-badge {
@@ -189,7 +204,7 @@
   top: 8px;
   right: 10px;
   font-family: 'Urbanist', sans-serif;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.4px;
   color: #fff;
@@ -200,8 +215,8 @@
   box-shadow: 0 0 0 1px #51A8FF;
 }
 .category-card.rank-2 {
-  background: #6D57FC;
-  box-shadow: 0 0 0 1px #6D57FC;
+  background: var(--color-primary-500);
+  box-shadow: 0 0 0 1px var(--color-primary-500);
 }
 .category-card.rank-3 {
   background: #9747FF;
@@ -224,11 +239,14 @@
 }
 
 .footer {
-  padding: 12px 18px 22px;
-  border-top: 1px solid #EFEDFA;
+  padding: 12px 16px calc(22px + env(safe-area-inset-bottom));
+  border-top: 1px solid var(--color-border);
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
+  /* 목록이 짧아 화면을 다 못 채울 때 버튼이 콘텐츠 바로 밑에 붕 뜨고 그 아래
+     빈 흰 공간이 남던 문제 - 고정 없이 스크롤 영역 맨 아래로 붙임 */
+  margin-top: auto;
 }
 
 .footer-count {
@@ -237,11 +255,34 @@
   color: rgba(27, 22, 63, 0.55);
 }
 
-.btn-primary {
-  padding: 13.6px 20px 15.4px;
+/* 초기화 버튼 공통 가이드 - 카테고리 그리드 바로 아래, 스코프가 분명한 텍스트 링크 */
+.reset-link {
+  align-self: flex-start;
+  margin-top: 4px;
+  padding: 6px 2px;
   border: none;
-  border-radius: 100px;
-  background: #6D57FC;
+  background: none;
+  color: var(--color-primary-500);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.reset-link:disabled {
+  color: var(--color-ink-400);
+  cursor: default;
+}
+
+.btn-primary {
+  padding: 13.6px 24px 15.4px;
+  min-height: var(--button-height-lg);
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 12px;
+  background: var(--color-primary-500);
   color: #fff;
   font-size: 14px;
   font-weight: 600;
@@ -251,10 +292,28 @@
 }
 
 .btn-primary.disabled {
-  opacity: 0.45;
+  background: var(--button-bg-disabled);
+  color: #fff;
   cursor: default;
 }
 
 .btn-primary:not(.disabled):hover {
-  background: #5a45e0;
+  background: var(--color-primary-600);
+}
+/* 실제 폰 화면(카드 최대폭보다 좁은 뷰포트)에서는 데스크톱 미리보기용 "폰 목업" 프레임
+   (회색 배경 · 여백 · 둥근 모서리)을 없애고 화면 전체를 꽉 채움 */
+@media (max-width: 430px) {
+  .screen {
+    background: #fff;
+    padding: 0;
+  }
+
+  .card {
+    max-width: 100%;
+    height: 100vh;
+    height: 100dvh;
+    border-radius: 0;
+    box-shadow: none;
+    outline: none;
+  }
 }

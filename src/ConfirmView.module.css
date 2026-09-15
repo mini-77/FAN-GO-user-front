@@ -4,18 +4,18 @@
   min-height: 100vh;
   display: flex;
   justify-content: center;
-  background: #ececec;
+  background: var(--color-screen-bg);
   padding: 24px 16px;
   font-family: 'IBM Plex Sans KR', sans-serif;
 }
 
 .card {
   width: 100%;
-  max-width: 390px;
+  max-width: 100%;
   background: #fff;
-  border-radius: 32px;
+  border-radius: 20px;
   box-shadow: 0px 3px 10px rgba(181, 179, 193, 0.11);
-  outline: 1px solid #EFEDFA;
+  outline: 1px solid var(--color-border);
   outline-offset: -1px;
   box-sizing: border-box;
   display: flex;
@@ -29,8 +29,8 @@
 }
 
 .header {
-  padding: 14px 22px 12px;
-  border-bottom: 1px solid #EFEDFA;
+  padding: var(--header-title-gap) 22px 12px; /* 헤더-타이틀 간격 24px 통일 (11_impact_plan.md 3번 섹션) */
+  border-bottom: 1px solid var(--color-border);
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -47,9 +47,9 @@
   height: 30px;
   min-width: 30px;
   border-radius: 15px;
-  background: #F8F7FF;
-  border: 1px solid #E8E4FF;
-  color: #5A45D6;
+  background: var(--color-primary-50);
+  border: 1px solid var(--color-primary-200);
+  color: var(--color-primary-600);
   font-family: 'Urbanist', sans-serif;
   font-size: 13px;
   font-weight: 600;
@@ -64,33 +64,49 @@
   font-family: 'Inter', sans-serif;
   font-size: 11px;
   font-weight: 600;
-  color: #201E1D;
+  color: var(--color-ink-900);
 }
 
+/* 화면 타이틀은 20px Bold (일반 H1 22px과 별도 기준) - 여행 만들기 단계별(마법사) 화면 통일,
+   ActivityPreferenceView/PaceView/ArtistSelectView와 동일 기준 (2026-09-14) */
 .title {
-  font-size: 25px;
-  font-weight: 600;
+  font-size: 20px;
+  font-weight: 700;
   line-height: 28px;
-  letter-spacing: 0.38px;
-  color: #201E1D;
+  letter-spacing: -0.3px;
+  color: var(--color-ink-900);
   margin: 0;
 }
 
+/* 07 탭&진행표시 - 단계 진행률: 세그먼트 블록 대신 연속형 바 + "n/4 단계 · x%" 캡션 */
 .progress-bar {
-  display: flex;
-  gap: 3px;
-  padding-top: 4px;
-}
-
-.progress-seg {
-  flex: 1;
   height: 4px;
   border-radius: 2px;
   background: #F4F2FF;
+  overflow: hidden;
+  margin-top: 4px;
 }
 
-.progress-seg.active {
-  background: #6D57FC;
+.progress-fill {
+  height: 100%;
+  border-radius: 2px;
+  background: var(--color-primary-500);
+}
+
+.progress-caption {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 6px;
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--color-ink-400);
+}
+
+.scrollArea {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
 }
 
 /* 요약 리스트 */
@@ -118,20 +134,20 @@
   font-size: 14px;
   font-weight: 600;
   line-height: 1.45;
-  color: #201E1D;
+  color: var(--color-ink-900);
 }
 
 .summary-sub {
   font-size: 12px;
   font-weight: 400;
   line-height: 1.5;
-  color: #201E1D;
+  color: var(--color-ink-900);
 }
 
 .event-item {
   margin-top: 2px;
   padding: 12px 14px;
-  background: #F0EEFF;
+  background: var(--color-primary-100);
   border: 1px solid #DCD5FF;
   border-radius: 12px;
   display: flex;
@@ -143,7 +159,7 @@
   font-size: 14px;
   font-weight: 700;
   line-height: 1.4;
-  color: #5a45e0;
+  color: var(--color-primary-600);
 }
 
 .event-sub {
@@ -155,7 +171,7 @@
 
 /* 여유도 선택 */
 .pace-section {
-  padding: 14px 18px 0;
+  padding: 14px 16px 0;
   display: flex;
   flex-direction: column;
   gap: 9px;
@@ -177,7 +193,7 @@
 
 .pace-option {
   padding: 14px;
-  background: #F8F7FF;
+  background: var(--color-primary-50);
   border-radius: 16px;
   border: 1px solid #F4F2FF;
   display: flex;
@@ -187,7 +203,7 @@
 }
 
 .pace-option.selected {
-  background: #E8E4FF;
+  background: var(--color-primary-200);
 }
 
 .pace-letter {
@@ -214,23 +230,24 @@
 .pace-desc {
   font-family: 'Urbanist', sans-serif;
   font-size: 11.5px;
-  color: #0C0A1C;
+  color: var(--color-ink-900);
 }
 
 .pace-check {
   font-family: 'Urbanist', sans-serif;
   font-size: 11px;
   font-weight: 600;
-  color: #201E1D;
+  color: var(--color-ink-900);
 }
 
 /* 하단 */
 .footer {
-  padding: 12px 22px 22px;
-  border-top: 1px solid #EFEDFA;
+  padding: 12px 22px calc(22px + env(safe-area-inset-bottom));
+  border-top: 1px solid var(--color-border);
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-top: auto;
 }
 
 .footer-note {
@@ -240,10 +257,14 @@
 }
 
 .btn-primary {
-  padding: 13.6px 18px 15.4px;
+  padding: 13.6px 16px 15.4px;
+  min-height: var(--button-height-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border: none;
-  border-radius: 100px;
-  background: #6D57FC;
+  border-radius: 12px;
+  background: var(--color-primary-500);
   color: #fff;
   font-size: 14px;
   font-weight: 600;
@@ -253,5 +274,22 @@
 }
 
 .btn-primary:hover {
-  background: #5a45e0;
+  background: var(--color-primary-600);
+}
+/* 실제 폰 화면(카드 최대폭보다 좁은 뷰포트)에서는 데스크톱 미리보기용 "폰 목업" 프레임
+   (회색 배경 · 여백 · 둥근 모서리)을 없애고 화면 전체를 꽉 채움 */
+@media (max-width: 430px) {
+  .screen {
+    background: #fff;
+    padding: 0;
+  }
+
+  .card {
+    max-width: 100%;
+    height: 100vh;
+    height: 100dvh;
+    border-radius: 0;
+    box-shadow: none;
+    outline: none;
+  }
 }

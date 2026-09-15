@@ -51,4 +51,21 @@ export async function apiFetch(path, options = {}) {
   return fetch(url, finalOptions)
 }
 
+// 08 에러 화면 규칙 - 보안·신뢰 원칙: 사용자는 원본 에러(브라우저 fetch 실패 메시지,
+// JSON 파싱 오류 등 영어 기술 문구)를 절대 보면 안 되고, 항상 사람이 이해할 문장만 봐야 함.
+// 이 앱에서 직접 던지는 에러는 항상 친절한 한국어 문장이라 e.message를 그대로 써도 안전하고,
+// 그 외(네트워크 예외 등 영어/기술적 메시지)는 안전한 대체 문구로 치환함.
+// 한글 포함 여부로 "우리가 직접 던진 에러인지"를 구분함 - 원본 영어 에러가 실수로라도
+// 화면에 노출되는 걸 막는 마지막 방어선.
+// 백엔드가 돌려준 에러 문구(회원가입 검증 실패 등)도 마찬가지 - FastAPI/Pydantic 검증
+// 메시지 같은 건 기본적으로 영어라서 그대로 노출하면 안 됨. 문자열 하나만 검사할 때 씀.
+export function safeText(text, fallback) {
+  if (text && /[가-힣]/.test(text)) return text
+  return fallback
+}
+
+export function safeErrorMessage(e, fallback) {
+  return safeText(e?.message, fallback)
+}
+
 export { API_BASE }

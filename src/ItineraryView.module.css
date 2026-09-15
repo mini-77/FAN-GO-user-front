@@ -4,19 +4,19 @@
   min-height: 100vh;
   display: flex;
   justify-content: center;
-  background: #ececec;
+  background: var(--color-screen-bg);
   padding: 24px 16px;
   font-family: 'IBM Plex Sans KR', sans-serif;
 }
 
 .card {
   width: 100%;
-  max-width: 390px;
-  min-height: 844px;
+  max-width: 100%;
+  height: 844px;
   background: #fff;
-  border-radius: 32px;
+  border-radius: 20px;
   box-shadow: 0px 3px 10px rgba(181, 179, 193, 0.11);
-  outline: 1px solid #EFEDFA;
+  outline: 1px solid var(--color-border);
   outline-offset: -1px;
   box-sizing: border-box;
   display: flex;
@@ -30,15 +30,15 @@
 }
 
 .header {
-  padding: 12px 18px 10px;
+  padding: var(--header-title-gap) 16px 10px; /* 헤더-타이틀 간격 24px 통일 (11_impact_plan.md 3번 섹션) */
 }
 
 .title {
-  font-size: 25px;
-  font-weight: 600;
-  line-height: 30px;
-  letter-spacing: 0.38px;
-  color: #201E1D;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 28px;
+  letter-spacing: -0.3px;
+  color: var(--color-ink-900);
   margin: 6px 0 0;
 }
 
@@ -54,18 +54,24 @@
 }
 
 /* ---- 날짜 탭 (지도/타임라인 토글을 대체) ---- */
+/* 07 탭&진행표시 - 세그먼트 탭: 개별 보더 박스가 아니라 트랙(연보라 배경) 안에
+   알약형 활성 탭 하나로 표현 */
 .day-tabs {
   display: flex;
   gap: 2px;
-  padding: 12px 18px;
+  margin: 8px 16px 10px;
+  padding: 4px;
+  background: var(--color-primary-50);
+  border-radius: 12px;
 }
 
 .day-tab {
   flex: 1;
   padding: 8px 6px;
-  border: 2px solid rgba(27, 22, 63, 0.3);
+  border: none;
+  border-radius: 8px;
   background: transparent;
-  color: rgba(27, 22, 63, 0.5);
+  color: var(--color-ink-600);
   font-family: 'Inter', sans-serif;
   font-size: 11px;
   font-weight: 600;
@@ -74,8 +80,7 @@
 }
 
 .day-tab.active {
-  background: #6D57FC;
-  border-color: #6D57FC;
+  background: var(--color-primary-500);
   color: #fff;
 }
 
@@ -87,11 +92,23 @@
   display: block;
 }
 
+/* 지도를 더 크게 키움(사용자 요청) - 마커가 다닥다닥 붙어 경로가 안 보이던 문제.
+   지도 영역이 커지면 같은 동선을 fitBounds할 때 자동으로 덜 축소된(더 확대된)
+   상태로 보여서, 헤더·탭 쪽 여백을 줄여 그만큼을 지도 쪽으로 옮김 */
 .map-area {
   position: relative;
-  height: 220px;
-  background: #F0EEFF;
+  height: 280px;
+  min-height: 120px;
+  flex-shrink: 1;
+  background: var(--color-primary-100);
   overflow: hidden;
+}
+
+/* 화면 세로가 짧을 땐 지도를 줄여서라도 목록(.timeline)이 최소 높이를 확보하게 함 */
+@media (max-height: 700px) {
+  .map-area {
+    height: 190px;
+  }
 }
 
 .map-canvas {
@@ -107,12 +124,12 @@
   justify-content: center;
   font-size: 12px;
   color: rgba(27, 22, 63, 0.5);
-  background: #F0EEFF;
+  background: var(--color-primary-100);
 }
 
 .map-summary-bar {
-  padding: 10px 18px;
-  border-bottom: 1px solid #EFEDFA;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--color-border);
   display: flex;
   align-items: baseline;
   gap: 8px;
@@ -130,7 +147,7 @@
   font-family: 'Urbanist', sans-serif;
   font-size: 14px;
   font-weight: 600;
-  color: #0C0A1C;
+  color: var(--color-ink-900);
 }
 
 /* 지도 위 마커 (CustomOverlay에서 className으로 직접 붙임) */
@@ -138,7 +155,7 @@
   width: 30px;
   height: 30px;
   border-radius: 15px;
-  background: #6D57FC;
+  background: var(--color-primary-500);
   color: #fff;
   font-family: 'Urbanist', sans-serif;
   font-size: 14px;
@@ -152,8 +169,8 @@
 
 .map-pinned-badge {
   padding: 5px 10px;
-  border-radius: 100px;
-  background: #201E1D;
+  border-radius: 20px;
+  background: var(--color-ink-900);
   color: #fff;
   font-family: 'Urbanist', sans-serif;
   font-size: 10px;
@@ -163,15 +180,21 @@
   white-space: nowrap;
 }
 
-/* 타임라인 */
+/* 타임라인 - 장소가 몇 개든 최소 2~3개는 보이고 그 아래는 스크롤되게, 화면이 낮아도
+   이 아래로는 줄어들지 않게 최소 높이를 둠 (모자란 공간은 지도 쪽에서 줄어듦) */
 .timeline {
+  flex: 1;
+  min-height: 190px;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
 }
 
 .pinned-bar {
-  padding: 10px 18px;
-  background: #6D57FC;
+  padding: 10px 16px 10px 14px;
+  border-left: 4px solid var(--color-primary-500);
+  border-top: 1px solid var(--color-border);
+  background: #fff;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -181,7 +204,7 @@
   font-family: 'Inter', sans-serif;
   font-size: 12px;
   font-weight: 600;
-  color: #fff;
+  color: var(--color-primary-500);
 }
 
 .pinned-title {
@@ -192,23 +215,25 @@
   white-space: nowrap;
   font-size: 13px;
   font-weight: 600;
-  color: #fff;
+  color: var(--color-ink-900);
 }
 
 .pinned-tag {
-  margin-left: auto;
   flex-shrink: 0;
   white-space: nowrap;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: var(--color-primary-500);
   font-family: 'Urbanist', sans-serif;
-  font-size: 9px;
-  font-weight: 600;
-  letter-spacing: 0.9px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
   color: #fff;
 }
 
 .stop-row {
-  padding: 12px 18px;
-  border-bottom: 1px solid #EFEDFA;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--color-border);
   display: flex;
   align-items: center;
   gap: 14px;
@@ -219,8 +244,8 @@
   height: 32px;
   min-width: 32px;
   border-radius: 12px;
-  background: #F0EEFF;
-  color: #6D57FC;
+  background: var(--color-primary-100);
+  color: var(--color-primary-500);
   font-family: 'Urbanist', sans-serif;
   font-size: 13px;
   font-weight: 600;
@@ -239,7 +264,7 @@
 .stop-name {
   font-size: 14px;
   font-weight: 600;
-  color: #201E1D;
+  color: var(--color-ink-900);
 }
 
 .stop-meta {
@@ -253,29 +278,30 @@
   font-family: 'Inter', sans-serif;
   font-size: 12px;
   font-weight: 600;
-  color: #6D57FC;
+  color: var(--color-primary-500);
 }
 
 .spacer {
-  flex: 1;
+  flex-shrink: 0;
 }
 
 /* ---- 하단 3버튼 ---- */
 .action-row {
-  padding: 12px 18px 20px;
-  border-top: 1px solid #EFEDFA;
+  padding: 12px 16px calc(20px + env(safe-area-inset-bottom));
+  border-top: 1px solid var(--color-border);
   display: flex;
   gap: 8px;
+  margin-top: auto;
 }
 
 .btn-outline {
   flex: 1;
-  padding: 9px 8px;
-  border-radius: 100px;
-  background: #F8F7FF;
-  border: 1px solid #E8E4FF;
-  color: #1B163F;
-  font-size: 13px;
+  padding: 13px 8px;
+  border-radius: 12px;
+  background: var(--color-primary-50);
+  border: 1px solid var(--color-primary-200);
+  color: var(--color-ink-900);
+  font-size: 13.5px;
   font-weight: 600;
   text-align: center;
   cursor: pointer;
@@ -283,17 +309,34 @@
 
 .btn-primary {
   flex: 1;
-  padding: 9px 8px;
-  border-radius: 100px;
-  background: #6D57FC;
+  padding: 13px 8px;
+  border-radius: 12px;
+  background: var(--color-primary-500);
   border: none;
   color: #fff;
-  font-size: 13px;
+  font-size: 13.5px;
   font-weight: 600;
   text-align: center;
   cursor: pointer;
 }
 
 .btn-primary:hover {
-  background: #5a45e0;
+  background: var(--color-primary-600);
+}
+/* 실제 폰 화면(카드 최대폭보다 좁은 뷰포트)에서는 데스크톱 미리보기용 "폰 목업" 프레임
+   (회색 배경 · 여백 · 둥근 모서리)을 없애고 화면 전체를 꽉 채움 */
+@media (max-width: 430px) {
+  .screen {
+    background: #fff;
+    padding: 0;
+  }
+
+  .card {
+    max-width: 100%;
+    height: 100vh;
+    height: 100dvh;
+    border-radius: 0;
+    box-shadow: none;
+    outline: none;
+  }
 }

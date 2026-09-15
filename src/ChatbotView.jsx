@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { apiFetch } from './api'
+import { apiFetch, safeText } from './api'
 import BottomNav from './BottomNav'
 import FenggoIcon from './FenggoIcon'
+import Icon from './Icon'
 import styles from './ChatbotView.module.css'
 
 const WELCOME_MESSAGE = {
@@ -11,7 +12,7 @@ const WELCOME_MESSAGE = {
 }
 
 // 빠른 질문 칩 - 누르면 그 문장 그대로 전송됨 (목업 기준 고정 문구)
-const QUICK_REPLIES = ['🕒 영업시간 알려줘', '📖 여기에 어떤 에피소드가 있어?']
+const QUICK_REPLIES = ['영업시간 알려줘', '여기에 어떤 에피소드가 있어?']
 
 // 세션 목록의 last_message_at을 "방금 / N분 전 / 어제 / N일 전 / 지난주" 식으로 표시
 function formatRelativeTime(isoString) {
@@ -47,7 +48,8 @@ const DEMO_CONGESTION = {
   ],
 }
 
-const LEVEL_COLOR = { 1: '#DED9FF', 2: '#A89BFF', 3: '#6D57FC' }
+// 01 컬러 규칙 — 여유/혼잡 같은 점수·상태 색은 브랜드색이 아니라 Success/Warning/Danger로 고정
+const LEVEL_COLOR = { 1: 'var(--color-success)', 2: 'var(--color-warning)', 3: 'var(--color-danger)' }
 const LEVEL_HEIGHT = { 1: 18, 2: 34, 3: 52 }
 
 function CongestionCard({ data }) {
@@ -87,6 +89,10 @@ export default function ChatbotView() {
 
   const [sessions, setSessions] = useState([])
   const [isLoadingSessions, setIsLoadingSessions] = useState(true)
+  // 08 리스트 섹션 규칙 — 길이가 정해지지 않은 리스트는 무한스크롤 대신 8~10개씩 "더보기"로
+  // 불러옴 (EventSelectView/HistoryView와 동일 기준, 11_impact_plan.md 12번 섹션)
+  const HISTORY_PAGE_SIZE = 8
+  const [historyVisibleCount, setHistoryVisibleCount] = useState(HISTORY_PAGE_SIZE)
   const [currentSessionNo, setCurrentSessionNo] = useState(null)
   const [messages, setMessages] = useState([WELCOME_MESSAGE])
   const [input, setInput] = useState('')
@@ -104,7 +110,10 @@ export default function ChatbotView() {
         const res = await apiFetch('/chat/sessions')
         if (!res.ok) throw new Error('대화 목록을 불러오지 못했어요.')
         const data = await res.json()
-        if (!cancelled) setSessions(data)
+        if (!cancelled) {
+          setSessions(data)
+          setHistoryVisibleCount(HISTORY_PAGE_SIZE)
+        }
       } catch (e) {
         // 히스토리를 못 불러와도 새 대화 자체는 계속 가능해야 함
       } finally {
@@ -181,10 +190,9 @@ export default function ChatbotView() {
         }
         const data = await res.json().catch(() => null)
         const detail = data?.detail
-        const message =
-          typeof detail === 'string'
-            ? detail
-            : detail?.message || '메시지를 보내는 중 문제가 생겼어요. 잠시 후 다시 시도해주세요.'
+        const rawMessage = typeof detail === 'string' ? detail : detail?.message
+        // 08 에러 화면 규칙 - 백엔드 detail이 영어 기술 메시지일 수 있어 그대로 노출하지 않음
+        const message = safeText(rawMessage, '메시지를 보내는 중 문제가 생겼어요. 잠시 후 다시 시도해주세요.')
         setMessages((prev) => [...prev, { role: 'assistant', content: message, isError: true }])
         return
       }
@@ -248,9 +256,9 @@ export default function ChatbotView() {
             type="button"
             className={styles.headerIconBtn}
             onClick={() => navigate(-1)}
-            aria-label="뒤로가기"
+            aria-label="닫기"
           >
-            ←
+            <Icon name="close" size={16} color="#fff" />
           </button>
           <div className={styles.headerBotInfo}>
             <div className={styles.headerAvatar}><FenggoIcon size={44} /></div>
@@ -258,18 +266,10 @@ export default function ChatbotView() {
               <span className={styles.headerTitle}>트립 버디</span>
               <span className={styles.headerStatus}>
                 <span className={styles.statusDot} />
-                FENGGO 지금 응답 가능
+                지금 응답 가능
               </span>
             </div>
           </div>
-          <button
-            type="button"
-            className={styles.headerIconBtn}
-            onClick={startNewChat}
-            aria-label="새 대화"
-          >
-            ⟳
-          </button>
         </div>
 
         {/* 대화 히스토리 */}
@@ -286,7 +286,7 @@ export default function ChatbotView() {
               <p className={styles.historyHint}>아직 대화 기록이 없어요.</p>
             )}
             {!isLoadingSessions &&
-              sessions.map((s) => (
+              sessions.slice(0, historyVisibleCount).map((s) => (
                 <button
                   type="button"
                   key={s.chat_session_no}
@@ -295,13 +295,22 @@ export default function ChatbotView() {
                   }`}
                   onClick={() => openSession(s.chat_session_no)}
                 >
-                  <span className={styles.historyIcon}>💬</span>
+                  <span className={styles.historyIcon}><Icon name="chat" size={16} color="var(--color-primary-500)" /></span>
                   <span className={styles.historyTexts}>
                     <span className={styles.historyTitle}>{s.preview || '대화'}</span>
                     <span className={styles.historyMeta}>{formatRelativeTime(s.last_message_at)}</span>
                   </span>
                 </button>
               ))}
+            {!isLoadingSessions && sessions.length > historyVisibleCount && (
+              <button
+                type="button"
+                className={styles.historyLoadMoreBtn}
+                onClick={() => setHistoryVisibleCount((v) => v + HISTORY_PAGE_SIZE)}
+              >
+                더보기 <Icon name="chevronDown" size={14} />
+              </button>
+            )}
           </div>
         </div>
 
@@ -361,28 +370,30 @@ export default function ChatbotView() {
           ))}
         </div>
 
-        {/* 입력창 */}
+        {/* 입력창 - 입력창과 전송 버튼을 하나의 둥근 알약 안에 담음(레퍼런스 목업 기준) */}
         <div className={styles.inputBar}>
-          <input
-            className={styles.input}
-            type="text"
-            placeholder="장소명이나 아티스트 이름을 입력해 보세요"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={handleKeyDown}
-            maxLength={1000}
-          />
-          <button
-            type="button"
-            className={styles.sendBtn}
-            onClick={() => sendMessage()}
-            disabled={isSending || !input.trim()}
-            aria-label="전송"
-          >
-            ➤
-          </button>
+          <div className={styles.inputWrap}>
+            <input
+              className={styles.input}
+              type="text"
+              placeholder="장소명이나 아티스트 이름을 입력해 보세요"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={handleKeyDown}
+              maxLength={1000}
+            />
+            <button
+              type="button"
+              className={styles.sendBtn}
+              onClick={() => sendMessage()}
+              disabled={isSending || !input.trim()}
+              aria-label="전송"
+            >
+              <Icon name="send" size={16} color="#fff" />
+            </button>
+          </div>
         </div>
-        <BottomNav />
+        <BottomNav noBorder />
       </div>
     </div>
   )

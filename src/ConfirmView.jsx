@@ -53,6 +53,18 @@ export default function ConfirmView() {
   const firstDeparture = departure || null
   const finalArrival = arrival || null
 
+  // 필수 값이 하나라도 비어있으면 "일정 만들기" 버튼 자체를 막음 (handleCreateItinerary의
+  // 개별 검증과 동일한 조건 - 버튼을 disabled로도 표시해서 클릭 자체가 안 되게 함)
+  const isFormValid = Boolean(
+    selectedEvent &&
+      rankedCategoryIds.length > 0 &&
+      firstDeparture &&
+      finalArrival &&
+      (isWholeGroupSelected
+        ? paceArtistGroupNo
+        : (paceMembers?.length > 0 || allEventMemberIds?.length > 0))
+  )
+
   // 저장소에 쌓인 실제 값들로 요약 목록 구성
   // "팬덤" 항목은 삭제, "참여행사"가 01번(제일 위)으로 옴
   const summary = [
@@ -144,59 +156,65 @@ export default function ConfirmView() {
   return (
     <div className={styles.screen}>
       <div className={styles.card}>
-        <AppHeader />
+        {/* 뒤로가기는 브라우저 history(-1) 대신 화면을 명시적으로 지정 - 새로고침·직접 진입으로
+            히스토리가 없어도 항상 올바른 이전 화면(동선 스타일)으로 감 */}
+        <AppHeader onBack={() => navigate('/trip/pace')} />
         <div className={styles.header}>
-          <div className={styles['header-row']}>
-            <span className={styles['step-label']}>04 — 04</span>
-          </div>
           <h1 className={styles.title}>이대로 진행할까요?</h1>
           <div className={styles['progress-bar']}>
-            <div className={`${styles['progress-seg']} ${styles.active}`} />
-            <div className={`${styles['progress-seg']} ${styles.active}`} />
-            <div className={`${styles['progress-seg']} ${styles.active}`} />
-            <div className={`${styles['progress-seg']} ${styles.active}`} />
+            <div className={styles['progress-fill']} style={{ width: '100%' }} />
+          </div>
+          <div className={styles['progress-caption']}>
+            <span>4 / 4</span>
+            <span>100%</span>
           </div>
         </div>
 
-        <div className={styles['summary-list']}>
-          {summary.map((row) => (
-            <div key={row.num} className={styles['summary-row']}>
-              {!row.events && <span className={styles['summary-label']}>{row.label}</span>}
-              {row.value && <span className={styles['summary-value']}>{row.value}</span>}
-              {row.sub && <span className={styles['summary-sub']}>{row.sub}</span>}
-              {row.events &&
-                row.events.map((ev) => (
-                  <div key={ev.title} className={styles['event-item']}>
-                    <div className={styles['event-title']}>
-                      {splitEventTitle(ev.title).map((line, i) => (
-                        <span key={i}>
-                          {i > 0 && <br />}
-                          {line}
-                        </span>
-                      ))}
+        <div className={styles.scrollArea}>
+          <div className={styles['summary-list']}>
+            {summary.map((row) => (
+              <div key={row.num} className={styles['summary-row']}>
+                {!row.events && <span className={styles['summary-label']}>{row.label}</span>}
+                {row.value && <span className={styles['summary-value']}>{row.value}</span>}
+                {row.sub && <span className={styles['summary-sub']}>{row.sub}</span>}
+                {row.events &&
+                  row.events.map((ev) => (
+                    <div key={ev.title} className={styles['event-item']}>
+                      <div className={styles['event-title']}>
+                        {splitEventTitle(ev.title).map((line, i) => (
+                          <span key={i}>
+                            {i > 0 && <br />}
+                            {line}
+                          </span>
+                        ))}
+                      </div>
+                      <div className={styles['event-sub']}>{ev.sub}</div>
                     </div>
-                    <div className={styles['event-sub']}>{ev.sub}</div>
-                  </div>
-                ))}
-            </div>
-          ))}
-        </div>
+                  ))}
+              </div>
+            ))}
+          </div>
 
-        {submitError && (
-          <p className={styles.hint} style={{ padding: '10px 22px 0', color: '#E64545' }}>
-            {submitError}
-          </p>
-        )}
+          {submitError && (
+            <p className={styles.hint} style={{ padding: '10px 22px 0', color: 'var(--color-danger)' }}>
+              {submitError}
+            </p>
+          )}
 
-        <div className={styles.footer}>
-          <span className={styles['footer-note']}>선택한 스타일로 동선을 만들어요</span>
-          <button
-            type="button"
-            className={styles['btn-primary']}
-            onClick={handleCreateItinerary}
-          >
-            동선 만들기 →
-          </button>
+          {/* 하단 고정 바가 아니라 목록의 마지막 항목으로 스크롤에 같이 움직이게 함
+              (사용자 요청 - 다른 화면과 동일하게 고정 해제) */}
+          <div className={styles.footer} data-bottom-bar="true">
+            <span className={styles['footer-note']}>선택한 스타일로 동선을 만들어요</span>
+            <button
+              type="button"
+              className={styles['btn-primary']}
+              style={!isFormValid ? { background: 'var(--button-bg-disabled)', cursor: 'default' } : undefined}
+              onClick={handleCreateItinerary}
+              disabled={!isFormValid}
+            >
+              일정 만들기
+            </button>
+          </div>
         </div>
       </div>
     </div>

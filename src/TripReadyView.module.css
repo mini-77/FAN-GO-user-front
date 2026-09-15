@@ -2,6 +2,7 @@
   width: 100%;
   max-width: 430px;
   height: 100vh;
+  height: 100dvh;
   max-height: 932px;
   margin: 0 auto;
   background: #fff;
@@ -23,7 +24,7 @@
   width: 88px;
   height: 88px;
   border-radius: 50%;
-  background: #6D57FC;
+  background: var(--color-primary-500);
   box-shadow: 0px 8px 32px rgba(109, 87, 252, 0.35);
   display: flex;
   align-items: center;
@@ -32,7 +33,7 @@
 }
 
 .title {
-  color: #201E1D;
+  color: var(--color-ink-900);
   font-size: 22px;
   font-weight: 600;
   line-height: 30px;
@@ -51,17 +52,24 @@
 }
 
 .footer {
-  padding: 10px 18px;
-  border-top: 0.8px solid #EFEDFA;
+  padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
+  border-top: 0.8px solid var(--color-border);
   display: flex;
   justify-content: flex-end;
 }
 
+/* 06 버튼 규칙 - 하단 고정 영역에 혼자 있는 CTA는 폭 전체를 채움(Large 52px) */
 .btn-primary {
+  width: 100%;
+  min-height: var(--button-height-lg);
+  box-sizing: border-box;
   padding: 10px 20px;
-  border-radius: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
   border: none;
-  background: #6D57FC;
+  background: var(--color-primary-500);
   color: #fff;
   font-size: 14px;
   font-weight: 600;

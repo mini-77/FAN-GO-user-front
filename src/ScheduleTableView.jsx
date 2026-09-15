@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { useTrip } from './TripContext'
-import { apiFetch } from './api'
+import { apiFetch, safeErrorMessage } from './api'
 import AppHeader from './AppHeader'
 import BottomNav from './BottomNav'
 import PlaceDetailModal from './PlaceDetailModal'
@@ -40,6 +40,7 @@ function formatDateRange(startIso, endIso) {
 
 export default function ScheduleTableView() {
   const navigate = useNavigate()
+  const location = useLocation()
   const { tripData, updateTrip } = useTrip()
   const { startDate, endDate } = tripData.tripDates || {}
   const stays = tripData.stays || []
@@ -48,7 +49,8 @@ export default function ScheduleTableView() {
       ? Math.max(1, Math.round((new Date(endDate) - new Date(startDate)) / (1000 * 60 * 60 * 24)) + 1)
       : 3
 
-  const [activeDay, setActiveDay] = useState(1)
+  // ItineraryView(지도+목록)의 "목록보기" 버튼에서 넘어올 때 보고 있던 날짜를 그대로 이어감
+  const [activeDay, setActiveDay] = useState(location.state?.visitDay || 1)
   const [routesByDay, setRoutesByDay] = useState({})
   const [isLoading, setIsLoading] = useState(true)
   const [loadError, setLoadError] = useState('')
@@ -82,7 +84,7 @@ export default function ScheduleTableView() {
         const dayRoute = Array.isArray(data) && data.length > 0 ? data[0] : null
         if (!cancelled) setRoutesByDay((prev) => ({ ...prev, [activeDay]: dayRoute }))
       } catch (e) {
-        if (!cancelled) setLoadError(e.message || '일정을 불러오지 못했어요. 잠시 후 다시 시도해주세요.')
+        if (!cancelled) setLoadError(safeErrorMessage(e, '일정을 불러오지 못했어요. 잠시 후 다시 시도해주세요.'))
       } finally {
         if (!cancelled) setIsLoading(false)
       }
@@ -191,7 +193,7 @@ export default function ScheduleTableView() {
               className={`${styles['day-tab']} ${activeDay === d ? styles.active : ''}`}
               onClick={() => setActiveDay(d)}
             >
-              {d}일
+              {d}일차
             </button>
           ))}
         </div>
@@ -215,10 +217,11 @@ export default function ScheduleTableView() {
 
           {isLoading && <div className={styles['empty-day']}>일정을 불러오는 중이에요...</div>}
 
+          {/* 08 부분 영역 에러 - 출발/도착 지점 행은 정상 표시 유지, 실패한 구역만 회색 박스로 */}
           {!isLoading && loadError && (
-            <div className={styles['empty-day']}>
-              <p>{loadError}</p>
-              <button type="button" className={styles['btn-outline']} onClick={retry} style={{ marginTop: 10 }}>
+            <div className={styles['partial-error']}>
+              <p className={styles['partial-error-text']}>{loadError}</p>
+              <button type="button" className={styles['partial-error-retry']} onClick={retry}>
                 다시 시도
               </button>
             </div>
@@ -236,7 +239,8 @@ export default function ScheduleTableView() {
                 <div
                   key={ev.trip_route_event_no}
                   className={`${styles['event-row']} ${isPinned ? styles.pinned : ''}`}
-                  onClick={() => openPlace(ev)}
+                  onClick={isPinned ? undefined : () => openPlace(ev)}
+                  style={isPinned ? { cursor: 'default' } : undefined}
                 >
                   <div className={styles['event-text']}>
                     <span className={styles['event-name']}>{ev.event_nm}</span>
@@ -271,33 +275,37 @@ export default function ScheduleTableView() {
               위치변경
             </button>
           </div>
-        </div>
 
-        {isLastDay && (
-          <div className={styles['feedback-banner']} onClick={() => navigate('/trip/feedback')}>
-            <span className={styles['feedback-banner-text']}>
-              오늘이 마지막 날이에요! 여행 다 끝나기 전에 미리 평가하러 가볼까요?
-            </span>
-            <span className={styles['feedback-banner-arrow']}>›</span>
+          {isLastDay && (
+            <div className={styles['feedback-banner']} onClick={() => navigate('/trip/feedback')}>
+              <span className={styles['feedback-banner-text']}>
+                오늘이 마지막 날이에요! 여행 다 끝나기 전에 미리 평가하러 가볼까요?
+              </span>
+              <span className={styles['feedback-banner-arrow']}>›</span>
+            </div>
+          )}
+
+          {/* 하단 고정 바가 아니라 목록의 마지막 항목으로 스크롤에 같이 움직이게 함
+              (사용자 요청 - 다른 화면과 동일하게 고정 해제) */}
+          <div className={styles['action-row']} data-bottom-bar="true">
+            <button
+              type="button"
+              className={styles['btn-outline']}
+              onClick={() => navigate('/trip/itinerary', { state: { visitDay: activeDay } })}
+            >
+              동선보기
+            </button>
+            <button
+              type="button"
+              className={styles['btn-outline']}
+              onClick={() => navigate('/trip/itinerary/edit', { state: { visitDay: activeDay } })}
+            >
+              동선 수정
+            </button>
+            <button type="button" className={styles['btn-primary']} onClick={() => navigate('/trip/history')}>
+              확인
+            </button>
           </div>
-        )}
-
-        <div className={styles.spacer} />
-
-        <div className={styles['action-row']}>
-          <button type="button" className={styles['btn-outline']} onClick={() => navigate('/trip/itinerary')}>
-            지도 열기
-          </button>
-          <button
-            type="button"
-            className={styles['btn-outline']}
-            onClick={() => navigate('/trip/itinerary/edit', { state: { visitDay: activeDay } })}
-          >
-            동선 수정
-          </button>
-          <button type="button" className={styles['btn-primary']} onClick={() => navigate('/trip/my')}>
-            다음: 확정→
-          </button>
         </div>
 
         <BottomNav />

@@ -4,19 +4,19 @@
   min-height: 100vh;
   display: flex;
   justify-content: center;
-  background: #ececec;
+  background: var(--color-screen-bg);
   padding: 24px 16px;
   font-family: 'IBM Plex Sans KR', sans-serif;
 }
 
 .card {
   width: 100%;
-  max-width: 390px;
-  min-height: 844px;
-  background: #F8F7FF;
-  border-radius: 32px;
+  max-width: 100%;
+  height: 844px;
+  background: var(--color-surface);
+  border-radius: 20px;
   box-shadow: 0px 3px 10px rgba(181, 179, 193, 0.11);
-  outline: 1px solid #EFEDFA;
+  outline: 1px solid var(--color-border);
   outline-offset: -1px;
   box-sizing: border-box;
   display: flex;
@@ -34,6 +34,14 @@
 }
 
 /* 위/아래 스페이서 비율로 계정 액션 버튼 위치를 조정 - 위를 더 크게 둬서 살짝 아래쪽에 위치하게 함 */
+.scrollArea {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
 .spacer-top {
   flex: 2;
 }
@@ -95,8 +103,8 @@
   background: #3A3648;
 }
 
-.card.dark .logout-btn {
-  background: #221F2E;
+.card.dark .logout-btn,
+.card.dark .delete-link {
   color: rgba(244, 242, 255, 0.8);
 }
 
@@ -107,8 +115,8 @@
 
 /* 상단 헤더바 */
 .top-bar {
-  background: #6D57FC;
-  padding: 14px 18px;
+  background: var(--color-primary-500);
+  padding: 14px 16px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -146,12 +154,12 @@
 }
 
 .title {
-  padding: 20px 22px 0;
+  padding: var(--header-title-gap) 22px 0; /* 헤더-타이틀 간격 24px 통일 (11_impact_plan.md 3번 섹션) */
   font-family: 'Urbanist', sans-serif;
   font-size: 22px;
   font-weight: 600;
   letter-spacing: 0.33px;
-  color: #201E1D;
+  color: var(--color-ink-900);
   margin: 0;
 }
 
@@ -160,10 +168,11 @@
 }
 
 /* 프로필 카드 */
+/* 04 라운드&그림자 - Level 0 기본 카드는 그림자 없이 1px 보더만 */
 .profile-card {
   background: #fff;
-  border-radius: 24px;
-  box-shadow: 0px 3px 10px rgba(181, 179, 193, 0.11);
+  border-radius: 20px;
+  border: 1px solid var(--color-border);
   padding: 20px;
   display: flex;
   align-items: center;
@@ -175,8 +184,8 @@
   height: 56px;
   min-width: 56px;
   border-radius: 28px;
-  background: #F0EEFF;
-  color: #6D57FC;
+  background: var(--color-primary-100);
+  color: var(--color-primary-500);
   font-family: 'Urbanist', sans-serif;
   font-size: 22px;
   font-weight: 600;
@@ -195,7 +204,7 @@
   font-size: 17px;
   font-weight: 600;
   letter-spacing: 0.25px;
-  color: #201E1D;
+  color: var(--color-ink-900);
 }
 
 .profile-email {
@@ -214,13 +223,13 @@
 
 .profile-tag {
   padding: 3px 9px;
-  background: #F0EEFF;
-  border-radius: 100px;
+  background: var(--color-primary-100);
+  border-radius: 20px;
   font-family: 'Urbanist', sans-serif;
   font-size: 10px;
   font-weight: 600;
   letter-spacing: 0.6px;
-  color: #6D57FC;
+  color: var(--color-primary-500);
 }
 
 .edit-btn {
@@ -228,9 +237,9 @@
   height: 32px;
   min-width: 32px;
   border-radius: 16px;
-  background: #F8F7FF;
-  border: 1px solid #E8E4FF;
-  color: #6D57FC;
+  background: var(--color-primary-50);
+  border: 1px solid var(--color-primary-200);
+  color: var(--color-primary-500);
   font-size: 13px;
   cursor: pointer;
   display: flex;
@@ -241,14 +250,14 @@
 /* 메뉴 리스트 카드 */
 .menu-card {
   background: #fff;
-  border-radius: 24px;
-  box-shadow: 0px 3px 10px rgba(181, 179, 193, 0.11);
+  border-radius: 20px;
+  border: 1px solid var(--color-border);
   overflow: hidden;
 }
 
 .menu-row {
-  padding: 14px 18px;
-  border-bottom: 1px solid #EFEDFA;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--color-border);
   display: flex;
   align-items: center;
   gap: 14px;
@@ -264,7 +273,7 @@
   height: 38px;
   min-width: 38px;
   border-radius: 14px;
-  background: #F0EEFF;
+  background: var(--color-primary-100);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -281,7 +290,7 @@
   font-size: 14.5px;
   font-weight: 600;
   letter-spacing: 0.22px;
-  color: #0C0A1C;
+  color: var(--color-ink-900);
 }
 
 .menu-sub {
@@ -300,14 +309,14 @@
 /* 토글 카드 */
 .toggle-card {
   background: #fff;
-  border-radius: 24px;
-  box-shadow: 0px 3px 10px rgba(181, 179, 193, 0.11);
+  border-radius: 20px;
+  border: 1px solid var(--color-border);
   overflow: hidden;
 }
 
 .toggle-row {
-  padding: 13px 18px;
-  border-bottom: 1px solid #EFEDFA;
+  padding: 13px 16px;
+  border-bottom: 1px solid var(--color-border);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -322,7 +331,7 @@
   font-size: 14.5px;
   font-weight: 600;
   letter-spacing: 0.22px;
-  color: #201E1D;
+  color: var(--color-ink-900);
 }
 
 .toggle-switch {
@@ -330,7 +339,7 @@
   height: 26px;
   min-width: 44px;
   border-radius: 100px;
-  background: #E8E4FF;
+  background: var(--color-primary-200);
   position: relative;
   cursor: pointer;
   border: none;
@@ -338,7 +347,7 @@
 }
 
 .toggle-switch.on {
-  background: #6D57FC;
+  background: var(--color-primary-500);
 }
 
 .toggle-knob {
@@ -361,20 +370,20 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
+  gap: 4px;
   padding-bottom: 28px;
 }
 
+/* 로그아웃/계정 탈퇴 - 같은 색·밑줄로 통일 (사용자 요청) */
 .logout-btn {
-  width: 100%;
-  min-height: 48px;
-  border-radius: 100px;
-  background: #F8F7FF;
-  border: 1px solid #E8E4FF;
-  color: #1B163F;
+  background: none;
+  border: none;
+  padding: 4px;
+  color: rgba(27, 22, 63, 0.4);
   font-family: 'Urbanist', sans-serif;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
+  text-decoration: underline;
   text-align: center;
   cursor: pointer;
 }
@@ -385,7 +394,7 @@
   padding: 4px;
   color: rgba(27, 22, 63, 0.4);
   font-family: 'Urbanist', sans-serif;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 500;
   text-decoration: underline;
   cursor: pointer;
@@ -394,7 +403,7 @@
 /* 하단 탭바 (아이콘 전용) */
 .bottom-tabs {
   margin-top: 18px;
-  border-top: 1px solid #EFEDFA;
+  border-top: 1px solid var(--color-border);
   background: #fff;
   display: flex;
 }
@@ -417,4 +426,21 @@
 
 .bottom-tab.active .bottom-tab-icon {
   opacity: 1;
+}
+/* 실제 폰 화면(카드 최대폭보다 좁은 뷰포트)에서는 데스크톱 미리보기용 "폰 목업" 프레임
+   (회색 배경 · 여백 · 둥근 모서리)을 없애고 화면 전체를 꽉 채움 */
+@media (max-width: 430px) {
+  .screen {
+    background: #fff;
+    padding: 0;
+  }
+
+  .card {
+    max-width: 100%;
+    height: 100vh;
+    height: 100dvh;
+    border-radius: 0;
+    box-shadow: none;
+    outline: none;
+  }
 }

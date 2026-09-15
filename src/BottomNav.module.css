@@ -1,14 +1,21 @@
 .bottom-tabs {
   margin-top: auto;
   flex-shrink: 0;
-  border-top: 1px solid #EFEDFA;
+  border-top: 1px solid var(--color-border);
   background: #fff;
   display: flex;
+  /* 아이폰(홈 인디케이터가 있는 기종)에서 탭 아이콘이 그 막대에 가려지지 않게,
+     안전영역만큼 아래쪽에 여유를 더 줌 - 그런 기종이 아니면 0이라 다른 화면엔 영향 없음 */
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.no-border {
+  border-top: none;
 }
 
 .bottom-tab {
   flex: 1;
-  padding: 12px 0;
+  padding: var(--nav-padding-y) 0;
   background: none;
   border: none;
   cursor: pointer;
@@ -24,17 +31,14 @@
   justify-content: center;
 }
 
+/* 활성 탭 - 4개 탭 전부 같은 방식(아이콘 색 + 아래 밑줄)으로 표시. 예전엔 홈 탭만
+   항상 강조색으로 고정돼 있어서, 다른 탭에 있을 때도 홈이 활성처럼 보이는 문제가 있었음 */
 .bottom-tab.active {
-  color: #6D57FC;
-}
-
-/* 홈 버튼 - 항상 가운데, 활성일 땐 채워진 아이콘 + 아래 밑줄 바로 표시 */
-.bottom-tab.home-tab {
   position: relative;
-  color: #6D57FC;
+  color: var(--color-primary-500);
 }
 
-.bottom-tab.home-tab::after {
+.bottom-tab.active::after {
   content: '';
   position: absolute;
   bottom: 6px;
@@ -42,6 +46,6 @@
   transform: translateX(-50%);
   width: 28px;
   height: 2px;
-  background: #6D57FC;
+  background: var(--color-primary-500);
   border-radius: 100px;
 }

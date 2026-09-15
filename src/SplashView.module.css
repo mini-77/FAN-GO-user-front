@@ -2,19 +2,23 @@
 
 .screen {
   min-height: 100vh;
+  /* 모바일 브라우저는 100vh를 "주소창까지 포함한 전체 높이"로 계산해서, 실제 보이는
+     화면보다 살짝 크게 잡힐 때가 있음(주소창이 떠 있는 동안). 100dvh(동적 뷰포트 높이)를
+     지원하는 브라우저에서는 이 값이 우선 적용돼서 실제로 보이는 높이에 맞춰짐 */
+  min-height: 100dvh;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #6D57FC;
+  background: var(--color-primary-500);
   padding: 24px 16px;
 }
 
 .phone {
   width: 100%;
-  max-width: 390px;
+  max-width: 100%;
   height: 844px;
-  background: #6D57FC;
-  border-radius: 32px;
+  background: var(--color-primary-500);
+  border-radius: 20px;
   box-shadow: 0px 3px 10px rgba(181, 179, 193, 0.11);
   outline: 1px solid rgba(255, 255, 255, 0.15);
   outline-offset: -1px;
@@ -23,7 +27,14 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  /* 로고+태그라인을 화면 가운데로, 진행 바는 하단에 고정 */
   justify-content: center;
+  box-sizing: border-box;
+}
+
+/* 03 스플래시 규칙 - 로고는 화면 정중앙 근처에 위치(사용자 요청으로 더 아래로 조정) */
+.center-group {
+  margin-bottom: 24px;
 }
 
 /* 로고 (실제 이미지 파일 사용) - 왼쪽에서 쓱 들어와서 착지 임팩트 */
@@ -37,7 +48,10 @@
 .logo-visual {
   position: relative;
   width: 260px;
-  aspect-ratio: 1293 / 717;
+  /* aspect-ratio 대신 원본 이미지 비율(1293:717)로 직접 계산한 고정 높이를 씀 -
+     일부 브라우저 환경에서 aspect-ratio가 절대위치 자식들과 같이 있을 때
+     의도한 비율로 안 잡히는 경우가 있어서, 계산값을 고정해 항상 같은 비율로 나오게 함 */
+  height: 144px;
   animation: impactPunch 0.4s ease-out 1s both;
 }
 
@@ -53,6 +67,8 @@
   width: 100%;
   height: 100%;
   display: block;
+  /* 이미지 비율이 컨테이너와 어긋나도 위아래로 눌리거나 늘어나지 않게 원본 비율 유지 */
+  object-fit: contain;
   /* 원본 이미지에 이미 그려진 삼각형(노치)은 잘라내고 글자+흰 배경만 남김 */
   clip-path: polygon(0% 0%, 58% 0%, 58% 100%, 0% 100%);
 }
@@ -60,11 +76,11 @@
 .logo-notch {
   position: absolute;
   inset: 0;
-  background: #6D57FC; /* 스플래시 배경색과 동일 → 삼각형이 "베어문 자국"처럼 보임 */
+  background: var(--color-primary-500); /* 스플래시 배경색과 동일 → 삼각형이 "베어문 자국"처럼 보임 */
   clip-path: polygon(57.2% 70.7%, 100.5% 40.9%, 100.5% 100.5%);
   animation: logoBite 1.6s ease-in-out 1.15s both;
   /* clip-path 대각선 경계에 생기는 안티앨리어싱 실선을 덮기 위한 미세한 번짐 */
-  filter: drop-shadow(0 0 1px #6D57FC) drop-shadow(0 0 1px #6D57FC);
+  filter: drop-shadow(0 0 1px var(--color-primary-500)) drop-shadow(0 0 1px var(--color-primary-500));
 }
 
 @keyframes slideIn {
@@ -108,6 +124,7 @@
   }
 }
 
+/* 03 스플래시 규칙 - 태그라인은 영문 소문자 + 트래킹(자간) 확장, 흰색 70% 투명도 */
 .tagline {
   margin-top: 22px;
   color: rgba(255, 255, 255, 0.7);
@@ -115,14 +132,14 @@
   font-size: 13px;
   font-weight: 500;
   letter-spacing: 3px;
-  text-transform: uppercase;
+  text-transform: lowercase;
   text-align: center;
 }
 
-/* 하단 진행 바 */
+/* 하단 진행 바 - 화면 맨 아래 고정 */
 .progress-block {
   position: absolute;
-  bottom: 48px;
+  bottom: 64px;
   left: 0;
   right: 0;
   display: flex;
@@ -130,6 +147,7 @@
   align-items: center;
   gap: 12px;
   padding: 0 48px;
+  box-sizing: border-box;
 }
 
 .progress-track {
@@ -145,7 +163,7 @@
   background: rgba(255, 255, 255, 0.9);
   border-radius: 4px;
   width: 0%;
-  animation: fillProgress 3s linear forwards;
+  animation: fillProgress 1.5s linear forwards;
 }
 
 @keyframes fillProgress {
@@ -160,4 +178,21 @@
   font-weight: 500;
   letter-spacing: 1.2px;
   text-transform: uppercase;
+}
+
+/* 실제 폰 화면(카드 최대폭보다 좁은 뷰포트)에서는 데스크톱 미리보기용 "폰 목업" 프레임
+   (여백 · 둥근 모서리 · 고정 높이)을 없애고 화면 전체를 꽉 채움 */
+@media (max-width: 430px) {
+  .screen {
+    padding: 0;
+  }
+
+  .phone {
+    max-width: 100%;
+    height: 100vh;
+    height: 100dvh;
+    border-radius: 0;
+    box-shadow: none;
+    outline: none;
+  }
 }

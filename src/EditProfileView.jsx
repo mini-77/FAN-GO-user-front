@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTrip } from './TripContext'
-import { apiFetch } from './api'
+import { apiFetch, safeErrorMessage, safeText } from './api'
 import AppHeader from './AppHeader'
 import BottomNav from './BottomNav'
 import styles from './EditProfileView.module.css'
@@ -53,7 +53,7 @@ export default function EditProfileView() {
       setLangs(langData)
       setArtistGroups(artistData)
     } catch (e) {
-      setLoadError(e.message || '설정에 필요한 목록을 불러오지 못했어요. 잠시 후 다시 시도해주세요.')
+      setLoadError(safeErrorMessage(e, '설정에 필요한 목록을 불러오지 못했어요. 잠시 후 다시 시도해주세요.'))
     } finally {
       setIsLoading(false)
     }
@@ -196,9 +196,9 @@ export default function EditProfileView() {
       if (!res.ok) {
         const data = await res.json().catch(() => null)
         const detail = data?.detail
-        setSaveError(
-          typeof detail === 'string' ? detail : detail?.message || '사진 업로드에 실패했어요.'
-        )
+        const rawMessage = typeof detail === 'string' ? detail : detail?.message
+        // 08 에러 화면 규칙 - 백엔드 detail이 영어 기술 메시지일 수 있어 그대로 노출하지 않음
+        setSaveError(safeText(rawMessage, '사진 업로드에 실패했어요.'))
         return
       }
       const me = await res.json()
@@ -225,8 +225,8 @@ export default function EditProfileView() {
 
         {loadError && (
           <div style={{ padding: '0 22px' }}>
-            <p className={styles.hint} style={{ color: '#E64545' }}>{loadError}</p>
-            <button type="button" className={styles['avatar-change-btn']} onClick={loadOptions}>
+            <p className={styles.hint} style={{ color: 'var(--color-danger)' }}>{loadError}</p>
+            <button type="button" className={styles['retry-btn']} onClick={loadOptions}>
               다시 시도
             </button>
           </div>
@@ -294,25 +294,9 @@ export default function EditProfileView() {
             </select>
           </div>
 
-          <div className={styles['lang-block']}>
-            <span className={styles['section-label']}>화면 언어</span>
-            <div className={styles['lang-pills']}>
-              {langs.map((lang) => (
-                <button
-                  key={lang.lang_no}
-                  type="button"
-                  className={`${styles['lang-pill']} ${selectedLanguage === lang.lang_no ? styles.active : ''}`}
-                  onClick={() => setSelectedLanguage(lang.lang_no)}
-                >
-                  {lang.lang_nm}
-                </button>
-              ))}
-            </div>
-          </div>
-
           <div className={styles['pw-block']}>
             <span className={styles['section-label']}>비밀번호 변경</span>
-            <p className={styles.hint}>비밀번호 변경 기능은 아직 준비 중이에요 (관련 API 대기 중).</p>
+            <p className={styles.infoBannerMuted}>비밀번호 변경 기능은 아직 준비 중이에요 (관련 API 대기 중).</p>
             <div className={styles.field}>
               <label className={styles['field-label']}>현재 비밀번호</label>
               <input
@@ -356,18 +340,20 @@ export default function EditProfileView() {
             </div>
             <p className={styles.hint}>고른 팀 기준으로 이벤트와 성지가 다시 정렬돼요.</p>
           </div>
-        </div>
 
-        {saveError && (
-          <p className={styles.hint} style={{ padding: '0 22px', color: '#E64545' }}>
-            {saveError}
-          </p>
-        )}
+          {saveError && (
+            <p className={styles.hint} style={{ padding: '0 22px', color: 'var(--color-danger)' }}>
+              {saveError}
+            </p>
+          )}
 
-        <div className={styles.footer}>
-          <button type="button" className={styles['save-btn']} onClick={handleSave} disabled={isSaving}>
-            {isSaving ? '저장 중...' : '저장'}
-          </button>
+          {/* 하단 고정 바가 아니라 콘텐츠의 마지막 항목으로 스크롤에 같이 움직이게 함
+              (사용자 요청 - 다른 화면과 동일하게 고정 해제) */}
+          <div className={styles.footer} data-bottom-bar="true">
+            <button type="button" className={styles['save-btn']} onClick={handleSave} disabled={isSaving}>
+              {isSaving ? '저장 중...' : '저장'}
+            </button>
+          </div>
         </div>
 
         <BottomNav />

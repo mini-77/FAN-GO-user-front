@@ -4,19 +4,19 @@
   min-height: 100vh;
   display: flex;
   justify-content: center;
-  background: #ececec;
+  background: var(--color-screen-bg);
   padding: 24px 16px;
   font-family: 'IBM Plex Sans KR', sans-serif;
 }
 
 .card {
   width: 100%;
-  max-width: 390px;
-  min-height: 844px;
+  max-width: 100%;
+  height: 844px;
   background: #fff;
-  border-radius: 32px;
+  border-radius: 20px;
   box-shadow: 0px 3px 10px rgba(181, 179, 193, 0.11);
-  outline: 1px solid #EFEDFA;
+  outline: 1px solid var(--color-border);
   outline-offset: -1px;
   box-sizing: border-box;
   display: flex;
@@ -25,23 +25,23 @@
 }
 
 .header {
-  padding: 14px 18px 12px;
-  border-bottom: 1px solid #EFEDFA;
+  padding: var(--header-title-gap) 16px 12px; /* 헤더-타이틀 간격 24px 통일 (11_impact_plan.md 3번 섹션) */
+  border-bottom: 1px solid var(--color-border);
 }
 
 .title {
-  font-size: 25px;
-  font-weight: 600;
+  font-size: 22px;
+  font-weight: 700;
   line-height: 28px;
-  letter-spacing: 0.38px;
-  color: #201E1D;
+  letter-spacing: -0.3px;
+  color: var(--color-ink-900);
   margin: 0;
 }
 
 .tab-row {
   display: flex;
-  padding: 0 18px;
-  border-bottom: 1px solid #EFEDFA;
+  padding: 0 16px;
+  border-bottom: 1px solid var(--color-border);
 }
 
 .tab-btn {
@@ -56,25 +56,46 @@
 }
 
 .tab-btn.active {
-  color: #0C0A1C;
-  border-bottom-color: #6D57FC;
+  color: var(--color-ink-900);
+  border-bottom-color: var(--color-primary-500);
 }
 
 .list {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
 }
 
 .trip-row {
-  padding: 13px 18px;
-  border-bottom: 1px solid #EFEDFA;
+  padding: 13px 16px;
+  border-bottom: 1px solid var(--color-border);
   display: flex;
   gap: 11px;
   cursor: pointer;
 }
 
 .trip-row.ongoingRow {
-  background: #F0EEFF;
+  background: var(--color-primary-100);
+}
+
+.load-more-btn {
+  width: calc(100% - 36px);
+  margin: 10px 16px 0;
+  padding: 12px;
+  border: 1px solid var(--color-primary-200);
+  border-radius: 12px;
+  background: #fff;
+  color: var(--color-primary-500);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
 }
 
 .trip-date-col {
@@ -95,7 +116,7 @@
   font-family: 'Inter', sans-serif;
   font-size: 12px;
   font-weight: 600;
-  color: #0C0A1C;
+  color: var(--color-ink-900);
   margin-top: 4px;
 }
 
@@ -110,7 +131,7 @@
 .trip-title {
   font-size: 13.5px;
   font-weight: 600;
-  color: #201E1D;
+  color: var(--color-ink-900);
 }
 
 .trip-meta {
@@ -140,60 +161,87 @@
   font-family: 'Inter', sans-serif;
   font-size: 12px;
   font-weight: 600;
-  color: #6D57FC;
+  color: var(--color-primary-500);
 }
 
+/* 07 배지 규칙 - 진행 상태는 알약형 배지로 통일 (텍스트만 색칠하지 않음) */
 .trip-status {
+  padding: 2px 8px;
+  border-radius: 20px;
   font-size: 10.5px;
   font-weight: 600;
+  white-space: nowrap;
 }
 
 .trip-status.ongoing {
-  color: #5A45D6;
+  background: #FFF0DE;
+  color: #C97A00;
 }
 
 .trip-status.done {
+  background: #F1F0F6;
   color: rgba(27, 22, 63, 0.5);
 }
 
 .trip-status.upcoming {
-  color: #6D57FC;
+  background: var(--color-primary-100);
+  color: var(--color-primary-500);
 }
 
 .empty-hint {
-  padding: 40px 18px;
+  padding: 40px 16px;
   text-align: center;
   color: rgba(27, 22, 63, 0.4);
   font-size: 13px;
 }
 
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.empty-state .empty-hint {
+  padding: 0 16px;
+}
+
+/* "다시 시도" 버튼을 Outline 스타일로 통일 (2차 검수 반영) */
 .retry-btn {
   margin-top: 10px;
   padding: 8px 16px;
-  border-radius: 100px;
-  background: #F8F7FF;
-  border: 1px solid #E8E4FF;
-  color: #6D57FC;
+  border-radius: 12px;
+  background: #fff;
+  border: var(--button-border-outline);
+  color: var(--color-ink-900);
   font-size: 12px;
   font-weight: 600;
   cursor: pointer;
 }
 
 .spacer {
-  flex: 1;
+  flex-shrink: 0;
 }
 
 .footer {
-  padding: 12px 18px 20px;
-  border-top: 1px solid #EFEDFA;
+  padding: 12px 16px calc(20px + env(safe-area-inset-bottom));
+  border-top: 1px solid var(--color-border);
   display: flex;
   justify-content: flex-end;
+  margin-top: auto;
 }
 
+/* 06 버튼 규칙 - 하단 고정 영역에 혼자 있는 CTA는 폭 전체를 채움(Large 52px) */
 .new-btn {
+  width: 100%;
+  min-height: var(--button-height-lg);
+  box-sizing: border-box;
   padding: 12px 20px;
-  border-radius: 100px;
-  background: #6D57FC;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  background: var(--color-primary-500);
   border: none;
   color: #fff;
   font-size: 14px;
@@ -202,5 +250,22 @@
 }
 
 .new-btn:hover {
-  background: #5a45e0;
+  background: var(--color-primary-600);
+}
+/* 실제 폰 화면(카드 최대폭보다 좁은 뷰포트)에서는 데스크톱 미리보기용 "폰 목업" 프레임
+   (회색 배경 · 여백 · 둥근 모서리)을 없애고 화면 전체를 꽉 채움 */
+@media (max-width: 430px) {
+  .screen {
+    background: #fff;
+    padding: 0;
+  }
+
+  .card {
+    max-width: 100%;
+    height: 100vh;
+    height: 100dvh;
+    border-radius: 0;
+    box-shadow: none;
+    outline: none;
+  }
 }

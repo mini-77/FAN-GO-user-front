@@ -4,18 +4,19 @@
   min-height: 100vh;
   display: flex;
   justify-content: center;
-  background: #ececec;
+  background: var(--color-screen-bg);
   padding: 24px 16px;
   font-family: 'IBM Plex Sans KR', sans-serif;
 }
 
 .card {
   width: 100%;
-  max-width: 390px;
+  max-width: 100%;
+  height: 844px;
   background: #fff;
-  border-radius: 32px;
+  border-radius: 20px;
   box-shadow: 0px 3px 10px rgba(181, 179, 193, 0.11);
-  outline: 1px solid #EFEDFA;
+  outline: 1px solid var(--color-border);
   outline-offset: -1px;
   box-sizing: border-box;
   display: flex;
@@ -34,8 +35,8 @@
 
 /* 헤더 */
 .header {
-  padding: 14px 18px 12px;
-  border-bottom: 1px solid #EFEDFA;
+  padding: var(--header-title-gap) 16px 12px; /* 헤더-타이틀 간격 24px 통일 (11_impact_plan.md 3번 섹션) */
+  border-bottom: 1px solid var(--color-border);
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -52,9 +53,9 @@
   height: 30px;
   min-width: 30px;
   border-radius: 15px;
-  background: #F8F7FF;
-  border: 1px solid #E8E4FF;
-  color: #6D57FC;
+  background: var(--color-primary-50);
+  border: 1px solid var(--color-primary-200);
+  color: var(--color-primary-500);
   font-family: 'Urbanist', sans-serif;
   font-size: 13px;
   font-weight: 600;
@@ -69,42 +70,50 @@
   font-family: 'Inter', sans-serif;
   font-size: 11px;
   font-weight: 600;
-  color: #201E1D;
+  color: var(--color-ink-900);
 }
 
 .title {
-  font-size: 25px;
-  font-weight: 600;
+  font-size: 22px;
+  font-weight: 700;
   line-height: 28px;
-  letter-spacing: 0.38px;
-  color: #201E1D;
+  letter-spacing: -0.3px;
+  color: var(--color-ink-900);
   margin: 0;
 }
 
+/* 07 탭&진행표시 - 단계 진행률: 세그먼트 블록 대신 연속형 바 + "n/4 단계 · x%" 캡션 */
 .progress-bar {
-  display: flex;
-  gap: 3px;
-  padding-top: 4px;
-}
-
-.progress-seg {
-  flex: 1;
   height: 4px;
   border-radius: 2px;
   background: rgba(27, 22, 63, 0.18);
+  overflow: hidden;
+  margin-top: 4px;
 }
 
-.progress-seg.active {
-  background: #6D57FC;
+.progress-fill {
+  height: 100%;
+  border-radius: 2px;
+  background: var(--color-primary-500);
+}
+
+.progress-caption {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 6px;
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--color-ink-400);
 }
 
 /* 필터 섹션 */
 .filter-section {
-  padding: 10px 18px;
-  border-bottom: 1px solid #EFEDFA;
+  padding: 8px 16px;
+  border-bottom: 1px solid var(--color-border);
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
 }
 
 .field-label {
@@ -117,23 +126,32 @@
   margin-bottom: 5px;
 }
 
+/* 06 입력 필드 규칙 - 기본 1.5px #ECECF2 / Focus 1.5px Primary+Glow, radius는
+   Medium(버튼·입력필드) 12px. 배경은 "공식 이벤트 기준" 필터임을 살짝 드러내려
+   연보라를 유지하되, 테두리·라운드·포커스 상태는 다른 입력 필드와 통일함 */
 .select {
   width: 100%;
   box-sizing: border-box;
   min-height: 36px;
-  padding: 13px 30px 13px 18px;
-  border: 1px solid #E8E4FF;
-  border-radius: 16px;
-  background: #F8F7FF;
+  padding: 13px 30px 13px 16px;
+  border: 1.5px solid var(--color-border);
+  border-radius: 12px;
+  background: var(--color-primary-50);
   font-family: 'IBM Plex Sans KR', sans-serif;
   font-size: 14px;
   font-weight: 400;
-  color: #0C0A1C;
+  color: var(--color-ink-900);
   cursor: pointer;
   appearance: none;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath fill='none' stroke='%236b6b7d' stroke-width='1.5' d='M1 1l4 4 4-4'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 14px center;
+}
+
+.select:focus {
+  outline: none;
+  border-color: var(--color-primary-500);
+  box-shadow: 0 0 0 3px rgba(109, 87, 252, 0.15);
 }
 
 .hint {
@@ -144,23 +162,45 @@
   margin: 0;
 }
 
-/* 이벤트 리스트 */
+/* 이벤트 리스트 - 헤더/필터는 고정, 이 목록만 스크롤됨(모바일 기준) */
 .event-list {
   display: flex;
   flex-direction: column;
+  flex: 1;
+  overflow-y: auto;
+  min-height: 0;
+}
+
+.load-more-btn {
+  margin: 12px 16px;
+  padding: 10px;
+  border-radius: 12px;
+  border: 1px solid var(--color-primary-200);
+  background: #fff;
+  color: var(--color-primary-500);
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
 }
 
 .event-row {
-  padding: 13px 18px;
-  border-bottom: 1px solid #EFEDFA;
+  padding: 13px 16px;
+  border-bottom: 1px solid var(--color-border);
   display: flex;
   align-items: center;
   gap: 14px;
   cursor: pointer;
 }
 
+/* 03 컬러 규칙 - 강조는 배경 전면 채움 대신 좌측 액센트 바로 (Primary 사용 비중 절제) */
 .event-row.pinned {
-  background: #6D57FC;
+  border-left: 4px solid var(--color-primary-500);
+  padding-left: 14px;
+  background: #fff;
 }
 
 .event-datetime {
@@ -175,21 +215,17 @@
   font-family: 'Inter', sans-serif;
   font-size: 12px;
   font-weight: 600;
-  color: #0C0A1C;
+  color: var(--color-ink-900);
 }
 
 .event-time {
   font-family: 'Inter', sans-serif;
   font-size: 11px;
   font-weight: 600;
-  color: #0C0A1C;
+  color: var(--color-ink-900);
   opacity: 0.75;
 }
 
-.event-row.pinned .event-date,
-.event-row.pinned .event-time {
-  color: #fff;
-}
 
 .event-text {
   flex: 1;
@@ -202,20 +238,15 @@
 .event-title {
   font-size: 13.5px;
   font-weight: 600;
-  color: #0C0A1C;
+  color: var(--color-ink-900);
 }
 
 .event-venue {
   font-family: 'Urbanist', sans-serif;
   font-size: 11.5px;
   font-weight: 400;
-  color: #0C0A1C;
+  color: var(--color-ink-900);
   opacity: 0.72;
-}
-
-.event-row.pinned .event-title,
-.event-row.pinned .event-venue {
-  color: #fff;
 }
 
 .event-toggle {
@@ -227,47 +258,67 @@
 }
 
 .event-row.pinned .event-toggle {
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: var(--color-primary-500);
   color: #fff;
 }
 
 /* 지도 요약 */
 .map-summary {
-  padding: 14px 18px;
-  background: #F0EEFF;
-  border-top: 1px solid #EFEDFA;
+  padding: 10px 16px;
+  background: var(--color-primary-100);
+  border-top: 1px solid var(--color-border);
   position: relative;
-  overflow: hidden;
-}
-
-.map-label {
-  font-family: 'Inter', sans-serif;
-  font-size: 10px;
-  font-weight: 300;
-  letter-spacing: 0.15px;
-  color: rgba(27, 22, 63, 0.65);
-  margin: 0;
+  /* 목록이 짧아 화면을 다 못 채울 때, 이 아래(map-summary+footer)가 콘텐츠 바로 밑
+     붕 뜬 채로 남고 그 아래에 빈 흰 공간이 생기던 문제 - 고정(position:fixed) 없이도
+     이 블록을 스크롤 영역 맨 아래로 붙여서, 목록이 길어지면 여전히 자연스럽게
+     같이 스크롤되고 짧을 땐 화면 하단에 붙어 보이게 함 */
+  margin-top: auto;
+  /* overflow:hidden이 있으면 flex 아이템의 자동 최소 높이가 0이 되어, 이 부모
+     (.event-list)가 overflow-y:auto라도 스크롤 대신 이 카드 자체가 찌그러져
+     선택한 이벤트 제목(2줄)이 잘려 보이는 문제가 있었음 - flex-shrink:0으로
+     이 카드는 절대 찌그러지지 않게 하고, overflow도 visible로 되돌림 */
+  overflow: visible;
+  flex-shrink: 0;
 }
 
 .map-summary-text {
   font-size: 14px;
   font-weight: 600;
-  color: #0C0A1C;
+  color: var(--color-ink-900);
+  margin: 0;
+}
+
+.map-summary-sub {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  color: rgba(27, 22, 63, 0.6);
   margin: 3px 0 0;
 }
 
 /* 하단 */
 .footer {
-  padding: 12px 18px 22px;
-  border-top: 1px solid #EFEDFA;
+  flex-shrink: 0;
+  padding: 12px 16px calc(22px + env(safe-area-inset-bottom));
+  border-top: 1px solid var(--color-border);
   display: flex;
   justify-content: flex-end;
 }
 
+/* 이 화면은 카드 선택 요약이 위에 이미 있어서, CTA를 폭 전체가 아니라 하단 우측에
+   작게 둠 (전체 폭 CTA 규칙의 예외) */
 .btn-primary {
-  padding: 13.6px 20px 15.4px;
+  padding: 13.6px 24px 15.4px;
+  min-height: var(--button-height-lg);
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border: none;
-  border-radius: 100px;
-  background: #6D57FC;
+  border-radius: 12px;
+  background: var(--color-primary-500);
   color: #fff;
   font-size: 14px;
   font-weight: 600;
@@ -277,5 +328,22 @@
 }
 
 .btn-primary:hover {
-  background: #5a45e0;
+  background: var(--color-primary-600);
+}
+/* 실제 폰 화면(카드 최대폭보다 좁은 뷰포트)에서는 데스크톱 미리보기용 "폰 목업" 프레임
+   (회색 배경 · 여백 · 둥근 모서리)을 없애고 화면 전체를 꽉 채움 */
+@media (max-width: 430px) {
+  .screen {
+    background: #fff;
+    padding: 0;
+  }
+
+  .card {
+    max-width: 100%;
+    height: 100vh;
+    height: 100dvh;
+    border-radius: 0;
+    box-shadow: none;
+    outline: none;
+  }
 }

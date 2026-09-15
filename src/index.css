@@ -1,4 +1,157 @@
 :root {
+  /* ===== FAN:GO 디자인 가이드 v13 - 01 컬러 토큰 =====
+     화면 CSS에서 하드코딩된 hex 대신 이 변수들을 참조함. 나중에 브랜드 색을
+     바꿔야 할 때 여기 한 곳만 고치면 되게 하기 위함 (가이드의 "일관성" 원칙).
+     CSS 변수는 CSS Modules로 스코프되지 않고 전역으로 참조 가능함. */
+  /* 2026-09-13 디자인 토큰(design-tokens_v1) 기준 갱신 - 근거:
+     docs/design-audit/09_v1_v2_master.md, 10_token_mapping.md.
+     단계 수(8단계)·변수명 구조는 기존 그대로 유지하고 값만 최종 가이드 기준으로 맞춤.
+     첨부 토큰에 없는 200/400/900 단계는 실사용 중이라 기존 값을 그대로 둠. */
+  --color-primary-50: #F5F3FF; /* 값 갱신: F8F7FF -> F5F3FF */
+  --color-primary-100: #E4DEFF; /* 값 갱신: F0EEFF -> E4DEFF */
+  --color-primary-200: #E8E4FF; /* 첨부 토큰에 없는 단계 - 기존 값 유지 */
+  --color-primary-400: #A89BFF; /* 첨부 토큰에 없는 단계 - 기존 값 유지(실사용 3곳) */
+  --color-primary-500: #6D57FC; /* Base - 값 동일 */
+  --color-primary-600: #5A46E0; /* 값 갱신: 5A45E0 -> 5A46E0 */
+  --color-primary-700: #4B36D6; /* 값 갱신: 4A3AC9 -> 4B36D6 */
+  --color-primary-900: #2B2140; /* 첨부 토큰에 없음, 코드 미사용 - 이번 단계에서는 삭제하지 않고 유지 */
+
+  --color-success: #2E9E5B;
+  --color-warning: #E5A02E;
+  --color-danger: #E5484D;
+  --color-danger-bg: #FCEBEC; /* 신규 - 에러 배경용 */
+  --color-info: #2E7CE9;
+
+  --color-ink-900: #17161F;
+  --color-ink-700: #3A3B47; /* 값 갱신: 3F3F4D -> 3A3B47 */
+  --color-ink-600: #5C5D6E;
+  --color-ink-400: #93949F;
+  --color-ink-200: #E2E2E9;
+
+  --color-surface: #FFFFFF;
+  --color-bg: #FCFCFD; /* 신규 - surface보다 살짝 어두운 화면 배경(선택적 사용) */
+  --color-partial-error-bg: #F7F7FA; /* 부분 영역 에러 박스 배경 - V1-P38-002, PartialErrorBox.jsx */
+  --color-border: #ECECF2; /* 04 라운드&그림자 - 기본 구분선 규정값 */
+  --color-screen-bg: #ECECEC; /* 폰 목업 프레임 배경 - 첨부 토큰엔 없음, 실사용 중이라 유지 */
+
+  /* ===== FAN:GO 디자인 가이드 - 02 타이포그래피 토큰 (신규) =====
+     한글 본문 IBM Plex Sans KR, 브랜드 워드마크 Urbanist, 영문 UI Inter.
+     (※ "맑은 고딕"이 아님 - 실제 개발 화면 폰트 기준으로 확정된 값,
+      09_v1_v2_master.md M-T-001 참고) */
+  --font-kr: 'IBM Plex Sans KR', 'Apple SD Gothic Neo', -apple-system, sans-serif;
+  --font-brand: 'Urbanist', sans-serif;
+  --font-en: 'Inter', sans-serif;
+
+  --text-display: 28px;
+  --text-h1: 22px;
+  --text-h2: 18px;
+  --text-subtitle: 15px;
+  --text-body: 14px;
+  --text-caption: 12px;
+  --text-micro: 11px;
+
+  --font-weight-regular: 400;
+  --font-weight-medium: 500; /* Inter 전용 예외 */
+  --font-weight-bold: 700;
+  --font-weight-heavy: 800;
+
+  --line-height-body: 1.5;
+  --line-height-title: 1.3;
+  --letter-spacing-title: -0.3px;
+
+  /* ===== 03 여백(Spacing) 토큰 (신규) - 4px 최소값, 8px 배수 기본 ===== */
+  --space-2: 2px;
+  --space-4: 4px;
+  --space-8: 8px;
+  --space-12: 12px;
+  --space-16: 16px;
+  --space-20: 20px;
+  --space-24: 24px;
+  --space-32: 32px;
+  --screen-padding-x: 16px;
+
+  /* ===== 04 라운드(Radius) 토큰 (신규) ===== */
+  --radius-sm: 20px; /* 칩·배지 */
+  --radius-md: 12px; /* 버튼·입력필드·squircle 아이콘 */
+  --radius-lg-min: 16px;
+  --radius-lg-max: 20px; /* 카드·모달 */
+
+  /* ===== 04 보더 / 엘리베이션 토큰 (신규) ===== */
+  --border-default: 1px solid var(--color-border);
+  --border-focus: 1.5px solid var(--color-primary-500);
+  --elevation-0: none;
+  --elevation-1: 0 2px 8px rgba(20, 10, 50, 0.08); /* FAB·드롭다운 */
+  --elevation-2: 0 20px 44px rgba(20, 10, 50, 0.14), 0 2px 6px rgba(20, 10, 50, 0.06); /* 바텀시트·모달 */
+
+  /* ===== 레이아웃 토큰 (신규) =====
+     헤더 높이는 가이드 기준 56px이지만, 실제 AppHeader는 약 48px(패딩 10px+버튼 28px)로
+     다르게 유지하기로 확정함 - 세션 중 사용자가 "헤더가 너무 길어 보인다"고 요청해
+     패딩을 14px→10px로 줄인 결정. 가이드 값보다 이 결정을 우선함(2차 검수에서 재확인,
+     AppHeader.module.css는 의도적으로 건드리지 않음. 09_v1_v2_master.md M-H-004 참고). */
+  --header-height: 56px; /* 참고용 - 실제로는 사용하지 않음, 위 이유로 48px가 확정값 */
+  --list-row-min-height: 56px;
+
+  /* ===== 헤더 토큰 (신규) ===== */
+  --header-bg: var(--color-primary-500);
+  --header-title-gap: 24px;
+
+  /* ===== 언어 표시 필("KR ⌄") 토큰 (신규 - 화면엔 아직 미구현, 컴포넌트 단계 참고용) ===== */
+  --lang-pill-height: 22px;
+  --lang-pill-padding-x-min: 9px;
+  --lang-pill-padding-x-max: 11px;
+  --lang-pill-radius: 20px;
+
+  /* ===== 계정 메뉴 아이콘(헤더 우측 ≡) 토큰 (신규 - 값은 기존 AppHeader 코드와 이미 일치) ===== */
+  --menu-icon-size: 28px;
+  --menu-icon-radius: 12px;
+  --menu-icon-bg: rgba(255, 255, 255, 0.22);
+
+  /* ===== 05 아이콘(일반) 토큰 (신규 - 값은 Icon.jsx 기본값과 이미 일치) ===== */
+  --icon-size-default: 24px;
+  --icon-stroke-width: 1.5px;
+
+  /* ===== 06 버튼 토큰 (신규) ===== */
+  --button-height-lg: 52px; /* 하단 고정 CTA */
+  --button-height-md: 48px; /* 일반 버튼 */
+  --button-height-sm: 36px; /* 리스트 행 내부 */
+  --button-radius: 12px;
+  --button-bg-primary: var(--color-primary-500);
+  --button-bg-secondary: var(--color-primary-50);
+  --button-text-secondary: var(--color-primary-700);
+  --button-border-outline: 1.5px solid var(--color-primary-100);
+  --button-bg-disabled: #D9D4F5; /* 이번 세션에 확정한 비활성 버튼 톤과 일치 */
+  --button-max-count-per-row: 2;
+
+  /* ===== 06 입력 필드 토큰 (신규) =====
+     radius 12px로 확정(2026-09-14 사용자 결정). 첨부 토큰은 11px였지만 v1 PDF·v2 HTML·
+     기존 코드(74곳)가 전부 12px로 일치해서, 1px 차이만 나는 첨부값 대신 12px로 통일함
+     (10_token_mapping.md 13번, 13_step2_implementation.md 6번 참고). */
+  --input-radius: 12px;
+  --input-border-default: 1.5px solid var(--color-border);
+  --input-border-focus: 1.5px solid var(--color-primary-500);
+  --input-border-error: 1.5px solid var(--color-danger);
+  --input-bg-disabled: #F6F6F9;
+  --input-error-text: var(--color-danger);
+  --input-error-text-size: 11.5px;
+
+  /* ===== 07 배지 & 칩 토큰 (신규) ===== */
+  --badge-radius: 20px;
+  --badge-padding: 4px 11px;
+  --badge-font-size: 11.5px;
+
+  /* ===== 08 하단 내비게이션 토큰 (신규) =====
+     stroke 1.6px·padding-y 13px 반영 확정(2026-09-14 사용자 결정, BottomNav.jsx/.module.css에 적용). */
+  --nav-icon-size: 22px;
+  --nav-icon-stroke-width: 1.6px;
+  --nav-padding-y: 13px;
+  --nav-tab-count: 4;
+
+  /* ===== 다크 바텀시트 토큰 (신규) =====
+     PickerSheet/DateRangeSheet의 다크 시트 배경 - 첨부 토큰에 대응 값이 없어
+     기존 코드 값을 그대로 옮겨 한 곳에서 관리되게 함(09_v1_v2_master.md, 11_impact_plan.md
+     "모달과 바텀시트" 섹션 참고, 언어 선택용 다크시트는 별도 결정 보류). */
+  --sheet-bg-dark: #2B2A3A;
+
   --text: #6b6375;
   --text-h: #08060d;
   --bg: #fff;
@@ -55,15 +208,35 @@ body {
 }
 
 #root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
   min-height: 100svh;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
+}
+
+/* 모바일(실기기) 폭에서만 페이지(html/body) 자체를 못 움직이게 잠금 - 각 화면은 이미
+   .card{overflow:hidden} + 안쪽 .list/.body{overflow-y:auto} 구조로 헤더·BottomNav는
+   고정, 콘텐츠만 스크롤되게 짜여 있는데, html/body에는 이걸 막는 장치가 없어서 iOS
+   Safari/WebView가 100vh를 실제 보이는 영역보다 살짝 크게 계산하는 순간 페이지 전체가
+   스크롤되며 헤더·BottomNav까지 같이 움직이는 문제가 있었음.
+   ⚠ overflow:hidden만으로는 iOS Safari에서 body 스크롤/바운스가 완전히 안 막히는
+   경우가 있어서(잘 알려진 iOS 특성), position:fixed + inset:0으로 body 자체를
+   레이아웃 흐름에서 완전히 떼어내는 더 확실한 방식으로 보강함. 데스크톱 미리보기(카드
+   전체를 보려고 창을 스크롤하는 것)는 그대로 둬야 해서 이 잠금은 모바일 폭에서만 적용함. */
+@media (max-width: 430px) {
+  html,
+  body {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    overscroll-behavior: none;
+  }
+
+  #root {
+    height: 100%;
+  }
 }
 
 h1,
@@ -93,6 +266,17 @@ h2 {
 }
 p {
   margin: 0;
+}
+
+/* iOS Safari는 입력 필드 font-size가 16px보다 작으면 포커스할 때 페이지 전체를
+   확대해버림(로그인 이메일 필드를 탭하면 화면이 커지면서 밖으로 벗어나던 문제).
+   각 화면 디자인상의 폰트 크기는 그대로 두고, 입력 요소에서만 이 줌을 막음. */
+@media (max-width: 430px) {
+  input,
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
 }
 
 code,

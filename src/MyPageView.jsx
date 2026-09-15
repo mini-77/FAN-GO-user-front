@@ -3,13 +3,14 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import { useTrip } from './TripContext'
 import { useTheme } from './ThemeContext'
 import { apiFetch } from './api'
-import logoImg from './assets/fango-logo-mark.png'
+import AppHeader from './AppHeader'
 import BottomNav from './BottomNav'
+import Icon from './Icon'
 import styles from './MyPageView.module.css'
 
 const MENU_ITEMS = [
-  { icon: '✈️', title: '여행 히스토리', sub: '지난 동선 · 별점 · 재사용', path: '/trip/history' },
-  { icon: '🌐', title: '앱 언어', sub: '한국어' },
+  { icon: 'plane', title: '여행 히스토리', sub: '지난 동선 · 별점 · 재사용', path: '/trip/history' },
+  { icon: 'globe', title: '앱 언어', sub: '한국어' },
 ]
 
 export default function MyPageView() {
@@ -69,6 +70,9 @@ export default function MyPageView() {
     } catch (e) {
       // 서버 로그아웃 실패해도 프론트 쪽 세션 정보는 지우고 로그인 화면으로 보냄
     }
+    // "로그인 유지" 체크로 저장해둔 자동로그인 플래그도 같이 지워야
+    // 로그아웃한 다음 앱을 다시 열었을 때 또 자동으로 로그인 시도하지 않음
+    localStorage.removeItem('fango_auto_login')
     resetTrip()
     navigate('/login')
   }
@@ -95,18 +99,9 @@ export default function MyPageView() {
   return (
     <div className={styles.screen}>
       <div className={`${styles.card} ${isDarkMode ? styles.dark : ''}`}>
-        <div className={styles['top-bar']}>
-          <button type="button" className={styles['top-bar-btn']} onClick={() => navigate('/trip/itinerary')}>
-            ←
-          </button>
-          <span className={styles['top-bar-logo']}>
-            <img src={logoImg} alt="FAN:GO" className={styles['top-bar-logo-img']} />
-          </span>
-          <button type="button" className={styles['top-bar-btn']} onClick={() => navigate('/account/edit')}>
-            👤
-          </button>
-        </div>
+        <AppHeader onBack={() => navigate('/trip/itinerary')} />
 
+        <div className={styles.scrollArea}>
         <h1 className={styles.title}>마이 페이지</h1>
 
         <div className={styles.section}>
@@ -132,7 +127,7 @@ export default function MyPageView() {
               className={styles['edit-btn']}
               onClick={() => navigate('/account/edit')}
             >
-              ✎
+              <Icon name="edit" size={14} />
             </button>
           </div>
         </div>
@@ -145,7 +140,7 @@ export default function MyPageView() {
                 className={styles['menu-row']}
                 onClick={() => item.path && navigate(item.path)}
               >
-                <div className={styles['menu-icon']}>{item.icon}</div>
+                <div className={styles['menu-icon']}><Icon name={item.icon} size={18} color="var(--color-primary-500)" /></div>
                 <div className={styles['menu-text']}>
                   <div className={styles['menu-title']}>{item.title}</div>
                   <div className={styles['menu-sub']}>{item.sub}</div>
@@ -195,6 +190,7 @@ export default function MyPageView() {
         </div>
 
         <div className={styles['spacer-bottom']} />
+        </div>
 
         <BottomNav />
       </div>

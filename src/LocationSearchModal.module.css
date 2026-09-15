@@ -12,7 +12,7 @@
 .search-panel {
   width: 100%;
   background: #fff;
-  border-radius: 24px;
+  border-radius: 20px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
   display: flex;
   flex-direction: column;
@@ -21,17 +21,19 @@
 
 .search-panel-header {
   flex-shrink: 0;
-  padding: 16px 18px;
+  padding: 16px 16px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid #EFEDFA;
+  border-bottom: 1px solid var(--color-border);
   font-size: 15px;
   font-weight: 700;
-  color: #201E1D;
+  color: var(--color-ink-900);
 }
 
+/* 접근성 - 터치 영역 44×44px 이상. 시각적 크기는 30px 유지, ::before로 히트박스만 확장 */
 .close-btn {
+  position: relative;
   width: 30px;
   height: 30px;
   border-radius: 50%;
@@ -45,17 +47,30 @@
   justify-content: center;
 }
 
+.close-btn::before {
+  content: '';
+  position: absolute;
+  inset: -7px;
+}
+
 .search-row {
   flex-shrink: 0;
-  margin: 14px 18px 0;
+  margin: 14px 16px 0;
   display: flex;
   align-items: center;
   gap: 8px;
   padding: 0 14px;
   height: 44px;
-  background: #F8F7FF;
-  border: 1px solid #E8E4FF;
+  background: #F7F7FA; /* 빈 값일 때는 연보라 대신 흰색/연회색 중간톤 (사용자 요청) */
+  border: 1.5px solid var(--color-primary-200);
   border-radius: 999px;
+}
+
+/* 06 입력 필드 규칙 - Focus 1.5px Primary + Glow (내부 input 자체엔 테두리가 없어
+   :focus-within으로 감싸는 검색창 쪽에 표시함) */
+.search-row:focus-within {
+  border-color: var(--color-primary-500);
+  box-shadow: 0 0 0 3px rgba(109, 87, 252, 0.15);
 }
 
 .search-icon {
@@ -70,7 +85,7 @@
   background: transparent;
   font-family: 'IBM Plex Sans KR', sans-serif;
   font-size: 14px;
-  color: #0C0A1C;
+  color: var(--color-ink-900);
 }
 
 .search-input::placeholder {
@@ -80,10 +95,10 @@
 .map-area {
   flex-shrink: 0;
   position: relative;
-  margin: 14px 18px 0;
+  margin: 14px 16px 0;
   border-radius: 16px;
   overflow: hidden;
-  background: #F0EEFF;
+  background: var(--color-primary-100);
 }
 
 .map-canvas {
@@ -105,13 +120,13 @@
 }
 
 .hint {
-  margin: 10px 18px 0;
+  margin: 10px 16px 0;
   font-size: 12px;
   color: rgba(27, 22, 63, 0.55);
 }
 
 .result-list {
-  margin: 10px 18px 0;
+  margin: 10px 16px 0;
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -129,19 +144,19 @@
 }
 
 .result-list-item:hover {
-  background: #F8F7FF;
+  background: var(--color-primary-50);
 }
 
 .result-list-item.active {
   background: #EFEBFF;
-  outline: 1px solid #6D57FC;
+  outline: 1px solid var(--color-primary-500);
   outline-offset: -1px;
 }
 
 .result-list-name {
   font-size: 13.5px;
   font-weight: 600;
-  color: #201E1D;
+  color: var(--color-ink-900);
 }
 
 .result-list-address {
@@ -151,9 +166,13 @@
 
 .btn-primary {
   padding: 13.6px 20px 15.4px;
+  min-height: var(--button-height-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border: none;
-  border-radius: 100px;
-  background: #6D57FC;
+  border-radius: 12px;
+  background: var(--color-primary-500);
   color: #fff;
   font-size: 14px;
   font-weight: 600;
@@ -163,5 +182,5 @@
 }
 
 .btn-primary:hover {
-  background: #5a45e0;
+  background: var(--color-primary-600);
 }

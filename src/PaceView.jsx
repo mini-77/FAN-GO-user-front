@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTrip } from './TripContext'
-import { apiFetch } from './api'
+import { apiFetch, safeErrorMessage } from './api'
 import AppHeader from './AppHeader'
 import styles from './PaceView.module.css'
 
@@ -18,6 +18,7 @@ export default function PaceView() {
   const navigate = useNavigate()
   const { tripData, updateTrip } = useTrip()
   const [isOpen, setIsOpen] = useState(true)
+  const memberListRef = useRef(null)
   const [members, setMembers] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [loadError, setLoadError] = useState('')
@@ -54,7 +55,7 @@ export default function PaceView() {
         const data = await res.json()
         if (!cancelled) setMembers(data)
       } catch (e) {
-        if (!cancelled) setLoadError(e.message || '멤버 목록을 불러오지 못했어요. 잠시 후 다시 시도해주세요.')
+        if (!cancelled) setLoadError(safeErrorMessage(e, '멤버 목록을 불러오지 못했어요. 잠시 후 다시 시도해주세요.'))
       } finally {
         if (!cancelled) setIsLoading(false)
       }
@@ -85,9 +86,12 @@ export default function PaceView() {
     })
   }
 
+  // 초기화 버튼 공통 가이드 - 그리드 밖에서 전체 선택을 지우는 별도 동작.
+  // 선택만 지우는 게 아니라 스크롤도 목록 맨 위로 되돌려서, 뭐가 다 풀렸는지 바로 보이게 함.
   function resetSelection() {
     setSelectedMembers(new Set())
     setIsWholeGroupSelected(false)
+    memberListRef.current?.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
   const selectedNames = members
@@ -118,20 +122,21 @@ export default function PaceView() {
   return (
     <div className={styles.screen}>
       <div className={styles.card}>
-        <AppHeader />
+        {/* 뒤로가기는 브라우저 history(-1) 대신 화면을 명시적으로 지정 - 새로고침·직접 진입으로
+            히스토리가 없어도 항상 올바른 이전 화면(선호 액티비티)으로 감 */}
+        <AppHeader onBack={() => navigate('/trip/activities')} />
         <div className={styles.header}>
-          <div className={styles['header-row']}>
-            <span className={styles['step-label']}>04 — 04</span>
-          </div>
           <h1 className={styles.title}>동선 스타일을 정해 주세요</h1>
           <div className={styles['progress-bar']}>
-            <div className={`${styles['progress-seg']} ${styles.active}`} />
-            <div className={`${styles['progress-seg']} ${styles.active}`} />
-            <div className={`${styles['progress-seg']} ${styles.active}`} />
-            <div className={`${styles['progress-seg']} ${styles.active}`} />
+            <div className={styles['progress-fill']} style={{ width: '100%' }} />
+          </div>
+          <div className={styles['progress-caption']}>
+            <span>4 / 4</span>
+            <span>100%</span>
           </div>
         </div>
 
+        <div className={styles.scrollArea}>
         <div className={styles.section}>
           <span className={styles['field-label']}>일정 기준</span>
 
@@ -144,23 +149,34 @@ export default function PaceView() {
             <span className={`${styles['picker-arrow']} ${isOpen ? styles.open : ''}`}>▼</span>
           </button>
 
+          {/* 04 팝업&모달 - 바텀시트 멀티선택: 화면 하단에서 올라오는 시트 + 딤 배경,
+              바깥을 탭하면 취소(닫기) 가능. X 버튼은 따로 안 둠(초기화/확인 두 버튼이 곧 닫는 방법). */}
           {isOpen && (
+            <div
+              className={styles.sheetOverlay}
+              onClick={(e) => {
+                if (e.target === e.currentTarget) setIsOpen(false)
+              }}
+              data-fab-hide="true"
+            >
             <div className={styles['picker-panel']}>
               {isLoading && <p className={styles.hint}>멤버 목록을 불러오는 중이에요...</p>}
               {!isLoading && loadError && <p className={styles.hint}>{loadError}</p>}
 
               {!isLoading && !loadError && (
                 <>
+                  {/* 배지&칩 확정사항 - 다중 인원(멤버) 선택은 2열 칩 그리드로 고정.
+                      "전체(선택 안 함)"은 목록 맨 앞 칩 하나로 두고, 별도 텍스트 링크로
+                      만들지 않음. 다중 선택 가능하되 "전체" 칩을 고르면 나머지는 자동 해제 */}
                   <div>
-                    <span className={styles['panel-group-label']}>멤버</span>
-                    <div className={styles['chip-row']}>
-                      {/* 그룹 전체 선택 칩 — 개별 멤버 칩보다 앞에 표시 */}
+                    <span className={styles['panel-group-label']}>멤버 선택</span>
+                    <div className={styles['member-list']} ref={memberListRef}>
                       <button
                         type="button"
-                        className={`${styles['member-chip']} ${isWholeGroupSelected ? styles.active : ''}`}
+                        className={`${styles['member-chip']} ${isWholeGroupSelected ? styles.selected : ''}`}
                         onClick={toggleWholeGroup}
                       >
-                        그룹 전체
+                        전체 (선택 안 함)
                       </button>
                       {members.map((m) => {
                         const isSelected = selectedMembers.has(m.artist_no)
@@ -168,7 +184,7 @@ export default function PaceView() {
                           <button
                             key={m.artist_no}
                             type="button"
-                            className={`${styles['member-chip']} ${isSelected ? styles.active : ''}`}
+                            className={`${styles['member-chip']} ${isSelected ? styles.selected : ''}`}
                             onClick={() => toggleMember(m.artist_no)}
                           >
                             {m.artist_nm}
@@ -181,19 +197,27 @@ export default function PaceView() {
                   <div className={styles['selection-summary-row']}>
                     <span className={styles['selection-summary']}>
                       {isWholeGroupSelected
-                        ? '그룹 전체 선택됨'
+                        ? '전체(선택 안 함) 선택됨'
                         : selectedNames.length > 0
                           ? `${selectedNames.join(', ')} 선택됨`
                           : '선택 안 함'}
                     </span>
                   </div>
 
-                  {/* 초기화/확인을 50:50 한 줄로 - 인라인 flex로 확실하게 고정 */}
+                  {/* 안내 문구 - 선택이 결과에 미치는 영향을 1줄로, 그리드와 버튼 사이 */}
+                  <p className={styles['info-banner']}>
+                    ⓘ{' '}
+                    {isWholeGroupSelected
+                      ? '그룹 전체를 선택하면 그룹 활동 일정 위주로 추천받아요.'
+                      : '멤버를 선택하면 그 멤버 일정을 우선 추천받아요.'}
+                  </p>
+
+                  {/* 초기화 버튼 공통 가이드 - 확인 버튼과 짝을 이뤄 왼쪽에, 비율 40:60 */}
                   <div style={{ display: 'flex', gap: 8, width: '100%' }}>
                     <button
                       type="button"
                       className={styles['reset-btn']}
-                      style={{ flex: 1, textAlign: 'center' }}
+                      style={{ flex: '0 1 40%', textAlign: 'center' }}
                       onClick={resetSelection}
                     >
                       초기화
@@ -201,7 +225,7 @@ export default function PaceView() {
                     <button
                       type="button"
                       className={styles['confirm-btn']}
-                      style={{ flex: 1 }}
+                      style={{ flex: '0 1 60%' }}
                       onClick={() => setIsOpen(false)}
                     >
                       확인
@@ -209,6 +233,7 @@ export default function PaceView() {
                   </div>
                 </>
               )}
+            </div>
             </div>
           )}
 
@@ -219,33 +244,40 @@ export default function PaceView() {
           </p>
         </div>
 
-        <div className={styles['pace-section']}>
-          <span className={styles['pace-label']}>받아볼 동선 안</span>
-          <div className={styles['pace-list']}>
-            {PACE_OPTIONS.map((opt) => (
-              <div
-                key={opt.id}
-                className={`${styles['pace-option']} ${selectedPace === opt.id ? styles.selected : ''}`}
-                onClick={() => setSelectedPace(opt.id)}
-              >
-                <span className={styles['pace-letter']}>{opt.id}</span>
-                <div className={styles['pace-text']}>
-                  <span className={styles['pace-name']}>{opt.name}</span>
-                  <span className={styles['pace-desc']}>{opt.desc}</span>
-                </div>
-                {selectedPace === opt.id && <span className={styles['pace-check']}>✓</span>}
-              </div>
-            ))}
-          </div>
-        </div>
-
+        {/* 멤버 선택을 먼저 끝내야("확인") 받아볼 동선 안 선택이 보이게 함 - 한 번에
+            고를 게 너무 많아 보이지 않도록 단계를 나눔 */}
         {!isOpen && (
-          <div className={styles.footer}>
+          <div className={styles['pace-section']}>
+            <span className={styles['pace-label']}>받아볼 동선 안</span>
+            <div className={styles['pace-list']}>
+              {PACE_OPTIONS.map((opt) => (
+                <div
+                  key={opt.id}
+                  className={`${styles['pace-option']} ${selectedPace === opt.id ? styles.selected : ''}`}
+                  onClick={() => setSelectedPace(opt.id)}
+                >
+                  <span className={styles['pace-letter']}>{opt.id}</span>
+                  <div className={styles['pace-text']}>
+                    <span className={styles['pace-name']}>{opt.name}</span>
+                    <span className={styles['pace-desc']}>{opt.desc}</span>
+                  </div>
+                  {selectedPace === opt.id && <span className={styles['pace-check']}>✓</span>}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* 하단 고정 바가 아니라 콘텐츠의 마지막 항목으로 스크롤에 같이 움직이게 함
+            (사용자 요청 - 다른 화면과 동일하게 고정 해제) */}
+        {!isOpen && (
+          <div className={styles.footer} data-bottom-bar="true">
             <button type="button" className={styles['btn-primary']} onClick={goNext}>
-              다음: 확인 →
+              다음: 확인
             </button>
           </div>
         )}
+        </div>
       </div>
     </div>
   )

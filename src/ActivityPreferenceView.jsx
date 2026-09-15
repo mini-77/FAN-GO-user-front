@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTrip } from './TripContext'
-import { apiFetch } from './api'
+import { apiFetch, safeErrorMessage } from './api'
 import AppHeader from './AppHeader'
 import styles from './ActivityPreferenceView.module.css'
 
@@ -141,20 +141,21 @@ export default function ActivityPreferenceView() {
   return (
     <div className={styles.screen}>
       <div className={styles.card}>
-        <AppHeader />
+        {/* 뒤로가기는 브라우저 history(-1) 대신 화면을 명시적으로 지정 - 새로고침·직접 진입으로
+            히스토리가 없어도 항상 올바른 이전 화면(날짜·숙소 선택)으로 감 */}
+        <AppHeader onBack={() => navigate('/trip/date')} />
         <div className={styles.header}>
-          <div className={styles['header-row']}>
-            <span className={styles['step-label']}>03 — 04</span>
-          </div>
           <h1 className={styles.title}>선호 액티비티</h1>
           <div className={styles['progress-bar']}>
-            <div className={`${styles['progress-seg']} ${styles.active}`} />
-            <div className={`${styles['progress-seg']} ${styles.active}`} />
-            <div className={`${styles['progress-seg']} ${styles.active}`} />
-            <div className={styles['progress-seg']} />
+            <div className={styles['progress-fill']} style={{ width: '75%' }} />
+          </div>
+          <div className={styles['progress-caption']}>
+            <span>3 / 4</span>
+            <span>75%</span>
           </div>
         </div>
 
+        <div className={styles.scrollArea}>
         <div className={styles.section}>
           <div className={styles['section-head']}>
             <span className={styles['section-label']}>선호 카테고리</span>
@@ -163,14 +164,10 @@ export default function ActivityPreferenceView() {
             </span>
           </div>
           {isPreview && (
-            <p className={styles.hint} style={{ color: '#E64545' }}>
+            <p className={styles.hint} style={{ color: 'var(--color-danger)' }}>
               ⚠ 실제 DB 데이터가 아직 없어서, 화면 확인용 미리보기 카테고리를 보여주고 있어요.
             </p>
           )}
-          <p className={styles.hint}>
-            고른 순서가 아니라 개수만 봐요. 많이 고르면 후보가 늘고, 적게 고르면 정확해져요.
-          </p>
-
           {isLoading && <p className={styles.hint}>카테고리 목록을 불러오는 중이에요...</p>}
           {!isLoading && loadError && <p className={styles.hint}>{loadError}</p>}
 
@@ -209,62 +206,38 @@ export default function ActivityPreferenceView() {
             </div>
           )}
 
+          {/* 초기화는 카테고리 그리드 바로 아래, 스코프가 분명한 텍스트 링크로 배치 -
+              하단 고정 버튼 자리에 확인 버튼과 묶어두지 않음 */}
+          <button
+            type="button"
+            className={styles['reset-link']}
+            onClick={resetRanking}
+            disabled={rankedIds.length === 0}
+          >
+            초기화
+          </button>
+
           <p className={styles.hint}>고른 순서대로 순위가 정해져요.</p>
         </div>
 
         {errorMessage && (
-          <p className={styles.hint} style={{ padding: '0 18px', color: '#E64545' }}>
+          <p className={styles.hint} style={{ padding: '0 16px', color: 'var(--color-danger)' }}>
             {errorMessage}
           </p>
         )}
 
-        <div className={styles.footer}>
-          <div
-            style={{
-              flex: 1,
-              display: 'flex',
-              borderRadius: 100,
-              overflow: 'hidden',
-              border: '1px solid #E8E4FF',
-            }}
+        {/* 하단 고정 바가 아니라 목록의 마지막 항목으로 스크롤에 같이 움직이게 함
+            (사용자 요청 - 다른 화면과 동일하게 고정 해제) */}
+        <div className={styles.footer} data-bottom-bar="true">
+          <button
+            type="button"
+            className={`${styles['btn-primary']} ${!isFormValid ? styles.disabled : ''}`}
+            onClick={goNext}
+            disabled={!isFormValid}
           >
-            <button
-              type="button"
-              onClick={resetRanking}
-              disabled={rankedIds.length === 0}
-              style={{
-                flex: 1,
-                border: 'none',
-                borderRight: '1px solid #E8E4FF',
-                background: '#F8F7FF',
-                color: '#6D57FC',
-                fontWeight: 600,
-                fontSize: 14,
-                padding: '12px 0',
-                cursor: rankedIds.length === 0 ? 'default' : 'pointer',
-                opacity: rankedIds.length === 0 ? 0.45 : 1,
-              }}
-            >
-              초기화
-            </button>
-            <button
-              type="button"
-              onClick={goNext}
-              disabled={!isFormValid}
-              style={{
-                flex: 1,
-                border: 'none',
-                background: isFormValid ? '#6D57FC' : '#C9C1FF',
-                color: '#fff',
-                fontWeight: 600,
-                fontSize: 14,
-                padding: '12px 0',
-                cursor: isFormValid ? 'pointer' : 'default',
-              }}
-            >
-              확인
-            </button>
-          </div>
+            동선 스타일
+          </button>
+        </div>
         </div>
       </div>
     </div>

@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTrip } from './TripContext'
-import { apiFetch } from './api'
+import { apiFetch, safeErrorMessage } from './api'
 import AppHeader from './AppHeader'
-import EventDetailModal from './EventDetailModal'
+import Icon from './Icon'
 import styles from './EventSelectView.module.css'
 
 // 오늘 날짜의 00:00 기준 - 이미 지난 날짜는 화면에 안 보여줌
@@ -79,8 +79,10 @@ export default function EventSelectView() {
       ? { key: `${tripData.selectedEvent.event_no}-${tripData.selectedEvent.event_date}` }
       : null
   )
-  const [detailCard, setDetailCard] = useState(null) // 팝업용 - 정보 확인 목적으로 띄우는 카드
   const [errorMessage, setErrorMessage] = useState('')
+  // 08 리스트 섹션 규칙 — 길이가 정해지지 않은 리스트는 무한스크롤 대신 8~10개씩 "더보기"로 불러옴
+  const PAGE_SIZE = 8
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE)
 
   // 즐겨찾기 그룹 목록 (드롭다운용) - 최초 1회만
   useEffect(() => {
@@ -123,9 +125,12 @@ export default function EventSelectView() {
         }
         if (!res.ok) throw new Error('이벤트 목록을 불러오지 못했어요.')
         const data = await res.json()
-        if (!cancelled) setEvents(data)
+        if (!cancelled) {
+          setEvents(data)
+          setVisibleCount(PAGE_SIZE)
+        }
       } catch (e) {
-        if (!cancelled) setLoadError(e.message || '이벤트 목록을 불러오지 못했어요. 잠시 후 다시 시도해주세요.')
+        if (!cancelled) setLoadError(safeErrorMessage(e, '이벤트 목록을 불러오지 못했어요. 잠시 후 다시 시도해주세요.'))
       } finally {
         if (!cancelled) setIsLoading(false)
       }
@@ -138,10 +143,11 @@ export default function EventSelectView() {
 
   const dayCards = useMemo(() => events.flatMap(expandEventToDayCards), [events])
 
+  // 이벤트마다 포스터 사진을 매번 등록/교체할 수 없어서, 사진을 보여주는 정보확인
+  // 팝업은 없애고 리스트에서 바로 선택만 하는 방식으로 단순화함 (하단 요약에 선택 내용 표시)
   function selectCard(card) {
     setSelectedCard(card)
     setErrorMessage('')
-    setDetailCard(card) // 선택과 동시에 정보 확인 팝업도 띄움
   }
 
   const selectedCardData = dayCards.find((c) => selectedCard && c.key === selectedCard.key)
@@ -173,17 +179,17 @@ export default function EventSelectView() {
   return (
     <div className={styles.screen}>
       <div className={styles.card}>
-        <AppHeader />
+        {/* 뒤로가기는 브라우저 history(-1) 대신 화면을 명시적으로 지정 - 이 화면에 새로고침이나
+            직접 URL 진입으로 왔을 때도(히스토리가 없어도) 항상 올바른 이전 화면으로 감 */}
+        <AppHeader onBack={() => navigate('/home')} />
         <div className={styles.header}>
-          <div className={styles['header-row']}>
-            <span className={styles['step-label']}>01 — 04</span>
-          </div>
           <h1 className={styles.title}>어떤 이벤트에 참여하시나요?</h1>
           <div className={styles['progress-bar']}>
-            <div className={`${styles['progress-seg']} ${styles.active}`} />
-            <div className={styles['progress-seg']} />
-            <div className={styles['progress-seg']} />
-            <div className={styles['progress-seg']} />
+            <div className={styles['progress-fill']} style={{ width: '25%' }} />
+          </div>
+          <div className={styles['progress-caption']}>
+            <span>1 / 4</span>
+            <span>25%</span>
           </div>
         </div>
 
@@ -204,9 +210,8 @@ export default function EventSelectView() {
             </select>
           </div>
           <p className={styles.hint}>
-            가입할 때 고른 팀의 콘서트와 공식 팬미팅만 보여 드려요. 하나만 고를 수 있고, 고른
-            <br />
-            이벤트는 시작일시와 주소가 그대로 지도에 꽂혀요.
+            가입할 때 고른 팀의 콘서트와 공식 팬미팅만 보여 드려요. 하나만 고를 수 있고, 고른 이벤트는
+            시작일시와 주소가 그대로 지도에 꽂혀요.
           </p>
         </div>
 
@@ -221,7 +226,7 @@ export default function EventSelectView() {
           )}
           {!isLoading &&
             !loadError &&
-            dayCards.map((card) => {
+            dayCards.slice(0, visibleCount).map((card) => {
               const isSelected = selectedCard?.key === card.key
               return (
                 <div
@@ -241,39 +246,50 @@ export default function EventSelectView() {
                 </div>
               )
             })}
-        </div>
+          {!isLoading && !loadError && dayCards.length > visibleCount && (
+            <button
+              type="button"
+              className={styles['load-more-btn']}
+              onClick={() => setVisibleCount((v) => v + PAGE_SIZE)}
+            >
+              더보기 <Icon name="chevronDown" size={14} />
+            </button>
+          )}
 
-        <div className={styles['map-summary']}>
-          <p className={styles['map-label']}>MAP</p>
-          <p className={styles['map-summary-text']}>
-            {selectedCardData ? `고른 이벤트 · ${districtLabel}` : '아직 고른 이벤트가 없어요'}
-          </p>
-        </div>
+          {/* 하단 고정 바가 아니라 목록의 마지막 항목으로 스크롤에 같이 움직이게 함
+              (사용자 요청 - 다른 화면과 동일하게 고정 해제) */}
+          <div className={styles['map-summary']}>
+            {selectedCardData ? (
+              <>
+                <p className={styles['map-summary-text']}>{selectedCardData.title}</p>
+                <p className={styles['map-summary-sub']}>
+                  {selectedCardData.dateLabel} · {selectedCardData.timeLabel} · {districtLabel}
+                </p>
+              </>
+            ) : (
+              <p className={styles['map-summary-text']}>아직 고른 이벤트가 없어요</p>
+            )}
+          </div>
 
-        {errorMessage && (
-          <p className={styles.hint} style={{ padding: '0 18px', color: '#E64545' }}>
-            {errorMessage}
-          </p>
-        )}
+          {errorMessage && (
+            <p className={styles.hint} style={{ padding: '0 16px', color: 'var(--color-danger)' }}>
+              {errorMessage}
+            </p>
+          )}
 
-        <div className={styles.footer}>
-          <button
-            type="button"
-            className={styles['btn-primary']}
-            style={!selectedCardData ? { opacity: 0.45, cursor: 'default' } : undefined}
-            onClick={goNext}
-          >
-            다음: 기간·숙소 →
-          </button>
+          <div className={styles.footer} data-bottom-bar="true">
+            <button
+              type="button"
+              className={styles['btn-primary']}
+              style={!selectedCardData ? { background: 'var(--button-bg-disabled)', color: '#fff', cursor: 'default' } : undefined}
+              onClick={goNext}
+              disabled={!selectedCardData}
+            >
+              기간·숙소
+            </button>
+          </div>
         </div>
       </div>
-
-      {detailCard && (
-        <EventDetailModal
-          card={detailCard}
-          onClose={() => setDetailCard(null)}
-        />
-      )}
     </div>
   )
 }

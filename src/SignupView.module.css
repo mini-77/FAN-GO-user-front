@@ -4,7 +4,7 @@
   min-height: 100vh;
   display: flex;
   justify-content: center;
-  background: #ececec;
+  background: var(--color-screen-bg);
   padding: 24px 16px;
   font-family: 'IBM Plex Sans KR', sans-serif;
 }
@@ -12,11 +12,11 @@
 /* 전체 틀 유지 */
 .card {
   width: 100%;
-  max-width: 390px;
+  max-width: 100%;
   background: #fff;
-  border-radius: 32px;
+  border-radius: 20px;
   box-shadow: 0px 3px 10px rgba(181, 179, 193, 0.11);
-  outline: 1px solid #EFEDFA;
+  outline: 1px solid var(--color-border);
   outline-offset: -1px;
   display: flex;
   flex-direction: column;
@@ -36,18 +36,21 @@
 
 /* AppHeader는 JSX/CSS 모두 수정하지 않음 */
 .body {
-  padding: 16px 18px 20px;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: var(--header-title-gap) 16px 20px; /* 헤더-타이틀 간격 24px 통일 (11_impact_plan.md 3번 섹션) */
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
 
 .title {
-  font-size: 25px;
-  font-weight: 600;
+  font-size: 22px;
+  font-weight: 700;
   line-height: 28px;
-  letter-spacing: 0.38px;
-  color: #201E1D;
+  letter-spacing: -0.3px;
+  color: var(--color-ink-900);
   margin: 0 0 4px;
 }
 
@@ -68,19 +71,38 @@
   margin: 0;
 }
 
+/* 국적 기준 기본 언어 - "라벨 위 / 값 아래" 두 줄 대신 한 줄로("국적 기준 기본 언어: English") */
+.default-lang-hint {
+  margin: 0;
+  min-height: 41px;
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 18.6px;
+  letter-spacing: 0.18px;
+  color: rgba(27, 22, 63, 0.65);
+}
+
+.default-lang-hint strong {
+  margin-left: 4px;
+  font-weight: 400;
+  color: var(--color-ink-900);
+}
+
 .input {
   width: 100%;
   height: 41px;
   min-height: 41px;
   padding: 8px 14px;
-  border: 1px solid #E8E4FF;
-  border-radius: 4px;
-  background: #F8F7FF;
+  border: 1px solid var(--color-primary-200);
+  border-radius: var(--input-radius);
+  background: #F7F7FA; /* 빈 값일 때는 연보라 대신 흰색/연회색 중간톤 (사용자 요청) */
   font-family: 'IBM Plex Sans KR', sans-serif;
   font-size: 14px;
   font-weight: 400;
   line-height: 21.7px;
-  color: #0C0A1C;
+  color: var(--color-ink-900);
 }
 
 .input.input-en {
@@ -88,17 +110,18 @@
 }
 
 .input::placeholder {
-  color: rgba(12, 10, 28, 0.45);
+  color: rgba(12, 10, 28, 0.28);
 }
 
 .input:focus {
   outline: none;
-  border-color: #6D57FC;
+  border: 1.5px solid var(--color-primary-500);
+  box-shadow: 0 0 0 3px rgba(109, 87, 252, 0.15);
 }
 
 .input-highlighted {
-  background: #F0EEFF;
-  border-color: #6D57FC;
+  background: var(--color-primary-100);
+  border-color: var(--color-primary-500);
   font-family: 'Urbanist', sans-serif;
 }
 
@@ -127,11 +150,11 @@ select.input {
   flex: 0 0 68px;
   height: 41px;
   padding: 0 10px;
-  border-radius: 100px;
+  border-radius: 12px;
   border: none;
-  background: #F8F7FF;
-  box-shadow: 0 0 0 1px #E8E4FF inset;
-  color: #1B163F;
+  background: var(--color-primary-50);
+  box-shadow: 0 0 0 1px var(--color-primary-200) inset;
+  color: var(--color-ink-900);
   font-family: 'IBM Plex Sans KR', sans-serif;
   font-size: 12px;
   font-weight: 600;
@@ -149,7 +172,7 @@ select.input {
   font-size: 11px;
   font-weight: 600;
   line-height: 16.5px;
-  color: #E64545;
+  color: var(--color-danger);
   margin: 0;
 }
 
@@ -165,7 +188,7 @@ select.input {
   font-size: 11px;
   font-weight: 600;
   line-height: 16.5px;
-  color: #2E9E5B;
+  color: var(--color-success);
   margin: 0;
 }
 
@@ -175,7 +198,7 @@ select.input {
 
 /* 화면 언어 */
 .lang-block {
-  border-top: 1px solid #EFEDFA;
+  border-top: 1px solid var(--color-border);
   padding-top: 12px;
   display: flex;
   flex-direction: column;
@@ -200,7 +223,7 @@ select.input {
   font-family: 'Inter', sans-serif;
   font-size: 11px;
   font-weight: 600;
-  color: #6D57FC;
+  color: var(--color-primary-500);
 }
 
 .lang-chips {
@@ -215,12 +238,12 @@ select.input {
   height: 44px;
   padding: 0 14px;
   border-radius: 16px;
-  border: 1px solid #E8E4FF;
-  background: #F8F7FF;
+  border: 1px solid var(--color-primary-200);
+  background: var(--color-primary-50);
   font-family: 'Urbanist', 'IBM Plex Sans KR', sans-serif;
   font-size: 12.5px;
   font-weight: 600;
-  color: #1B163F;
+  color: var(--color-ink-900);
   cursor: pointer;
   white-space: nowrap;
   display: flex;
@@ -229,8 +252,8 @@ select.input {
 }
 
 .lang-chip.active {
-  background: #6D57FC;
-  border-color: #6D57FC;
+  background: var(--color-primary-500);
+  border-color: var(--color-primary-500);
   color: #fff;
 }
 
@@ -243,13 +266,18 @@ select.input {
 }
 
 .error {
-  color: #E64545;
+  color: var(--color-danger);
   font-size: 12px;
   margin: 0;
 }
 
+/* 06 입력 필드 규칙 - 에러 상태는 테두리 색으로도 보이게 */
+.inputError {
+  border: var(--input-border-error) !important;
+}
+
 .agree-block {
-  border-top: 1px solid #EFEDFA;
+  border-top: 1px solid var(--color-border);
   padding-top: 12px;
   display: flex;
   flex-direction: column;
@@ -269,12 +297,12 @@ select.input {
   min-width: 16px;
   margin: 0;
   border-radius: 3px;
-  accent-color: #6D57FC;
+  accent-color: var(--color-primary-500);
   cursor: pointer;
 }
 
 .agree-link {
-  color: #6D57FC;
+  color: var(--color-primary-500);
   font-size: 12.5px;
   font-weight: 600;
   text-decoration: underline;
@@ -288,22 +316,28 @@ select.input {
 .agree-text {
   font-size: 12.5px;
   font-weight: 400;
-  color: #0C0A1C;
+  color: var(--color-ink-900);
 }
 
 .footer-row {
-  border-top: 1px solid #EFEDFA;
+  border-top: 1px solid var(--color-border);
   padding-top: 12px;
   display: flex;
   justify-content: flex-end;
 }
 
+/* 06 버튼 규칙 - 하단 고정 영역에 혼자 있는 CTA는 폭 전체를 채움(Large 52px) */
 .btn-primary {
-  min-height: 46px;
+  width: 100%;
+  min-height: var(--button-height-lg);
+  box-sizing: border-box;
   padding: 13px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border: none;
-  border-radius: 100px;
-  background: #6D57FC;
+  border-radius: 12px;
+  background: var(--color-primary-500);
   color: #fff;
   font-family: 'IBM Plex Sans KR', sans-serif;
   font-size: 14px;
@@ -315,11 +349,12 @@ select.input {
 }
 
 .btn-primary.disabled {
-  opacity: 0.45;
+  background: var(--button-bg-disabled);
+  color: #fff;
 }
 
 .btn-primary:not(.disabled):hover {
-  background: #5a45e0;
+  background: var(--color-primary-600);
 }
 
 /* ===== 아래부터 SignupView.module.css 맨 끝에 추가 ===== */
@@ -330,15 +365,16 @@ select.input {
   min-height: 41px;
   display: flex;
   align-items: center;
-  border: 1px solid #E8E4FF;
-  border-radius: 4px;
-  background: #F8F7FF;
+  border: 1px solid var(--color-primary-200);
+  border-radius: 12px;
+  background: #F7F7FA; /* 빈 값일 때는 연보라 대신 흰색/연회색 중간톤 (사용자 요청) */
   padding: 0 14px;
   gap: 6px;
 }
 
 .phone-single-box:focus-within {
-  border-color: #6D57FC;
+  border: 1.5px solid var(--color-primary-500);
+  box-shadow: 0 0 0 3px rgba(109, 87, 252, 0.15);
 }
 
 .phone-code-plus {
@@ -356,13 +392,13 @@ select.input {
   height: 100%;
   font-family: 'Urbanist', sans-serif;
   font-size: 14px;
-  color: #0C0A1C;
+  color: var(--color-ink-900);
 }
 
 .phone-divider {
   width: 1px;
   height: 18px;
-  background: #E8E4FF;
+  background: var(--color-primary-200);
   flex-shrink: 0;
 }
 
@@ -376,10 +412,27 @@ select.input {
   height: 100%;
   font-family: 'Urbanist', sans-serif;
   font-size: 14px;
-  color: #0C0A1C;
+  color: var(--color-ink-900);
 }
 
 .phone-local-input::placeholder,
 .phone-code-input::placeholder {
-  color: rgba(12, 10, 28, 0.45);
+  color: rgba(12, 10, 28, 0.28);
+}
+/* 실제 폰 화면(카드 최대폭보다 좁은 뷰포트)에서는 데스크톱 미리보기용 "폰 목업" 프레임
+   (회색 배경 · 여백 · 둥근 모서리)을 없애고 화면 전체를 꽉 채움 */
+@media (max-width: 430px) {
+  .screen {
+    background: #fff;
+    padding: 0;
+  }
+
+  .card {
+    max-width: 100%;
+    height: 100vh;
+    height: 100dvh;
+    border-radius: 0;
+    box-shadow: none;
+    outline: none;
+  }
 }

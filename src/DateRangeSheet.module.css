@@ -1,0 +1,194 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 13, 26, 0.55);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  z-index: 1200;
+}
+
+/* 다크모드 해제 - 흰 배경 라이트 시트로 변경. color-scheme:light 명시로 OS 다크 모드와
+   무관하게 항상 라이트로 뜨게 함 (사용자 요청) */
+.sheet {
+  width: 100%;
+  max-width: 430px;
+  max-height: 88vh;
+  max-height: 88dvh;
+  overflow-y: auto;
+  background: #fff;
+  border-radius: var(--radius-lg-max) var(--radius-lg-max) 0 0;
+  padding: 20px 20px calc(22px + env(safe-area-inset-bottom));
+  box-sizing: border-box;
+  box-shadow: 0px -8px 24px rgba(27, 22, 63, 0.12);
+  color-scheme: light;
+}
+
+.label {
+  margin: 0 0 14px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  color: rgba(27, 22, 63, 0.55);
+  text-align: center;
+}
+
+.monthNav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 12px;
+}
+
+.monthLabel {
+  min-width: 76px;
+  text-align: center;
+  font-family: 'Urbanist', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--color-ink-900);
+}
+
+.navBtn {
+  width: 28px;
+  height: 28px;
+  border-radius: 14px;
+  border: none;
+  background: var(--color-primary-50);
+  color: var(--color-ink-900);
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.weekdayRow {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  margin-bottom: 4px;
+}
+
+.weekdayCell {
+  text-align: center;
+  font-size: 11px;
+  font-weight: 500;
+  color: rgba(27, 22, 63, 0.4);
+  padding: 4px 0;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  row-gap: 2px;
+}
+
+.cell {
+  height: 38px;
+}
+
+.day {
+  height: 38px;
+  border: none;
+  background: transparent;
+  color: var(--color-ink-900);
+  font-family: 'Urbanist', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  border-radius: 10px;
+}
+
+.day:hover:not(:disabled) {
+  background: var(--color-primary-50);
+}
+
+.dayDisabled {
+  color: rgba(27, 22, 63, 0.2);
+  cursor: default;
+}
+
+.dayInRange {
+  background: rgba(109, 87, 252, 0.28);
+  border-radius: 0;
+}
+
+.dayStart,
+.dayEnd {
+  background: var(--color-primary-500);
+  color: #fff;
+  font-weight: 700;
+}
+
+.dayStart {
+  border-radius: 10px 0 0 10px;
+}
+
+.dayEnd {
+  border-radius: 0 10px 10px 0;
+}
+
+/* 체크인만 고르고 체크아웃을 아직 안 고른 상태 - 시작점 하나만 있으니 양쪽 다 둥글게 */
+.dayStart:not(.dayEnd) {
+  border-radius: 10px;
+}
+
+.actions {
+  margin-top: 16px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 24px;
+}
+
+.closeBtn,
+.selectBtn {
+  border: none;
+  background: none;
+  padding: 4px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.closeBtn {
+  color: rgba(27, 22, 63, 0.5);
+}
+
+.selectBtn {
+  color: var(--color-primary-500);
+}
+
+.selectBtn:disabled {
+  color: rgba(27, 22, 63, 0.25);
+  cursor: default;
+}
+
+.trigger {
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 14px;
+  border: 1px solid var(--color-primary-200);
+  border-radius: 12px;
+  background: #F7F7FA; /* 빈 값일 때는 연보라 대신 흰색/연회색 중간톤 (사용자 요청) */
+  cursor: pointer;
+  text-align: left;
+  color: var(--color-ink-900);
+  font-family: 'IBM Plex Sans KR', sans-serif;
+  font-size: 13.5px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  box-sizing: border-box;
+}
+
+.triggerText {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.trigger.placeholder {
+  color: rgba(12, 10, 28, 0.45);
+}

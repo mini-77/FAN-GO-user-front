@@ -1,0 +1,32 @@
+/* 부분 영역 에러 패턴 (V1-P37-005/006, V1-P38-001~004) - 화면 전체가 아니라 한 구역만
+   실패했을 때, 그 구역 안에서만 회색 박스로 실패를 보여줌. Primary·Danger 색은 쓰지 않음. */
+.box {
+  padding: 14px 12px;
+  border-radius: 12px;
+  background: var(--color-partial-error-bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+}
+
+.message {
+  margin: 0;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--color-ink-600);
+}
+
+/* Small, Outline (V1-P38-003) */
+.retry-btn {
+  height: var(--button-height-sm);
+  padding: 0 16px;
+  border-radius: var(--button-radius);
+  border: var(--button-border-outline);
+  background: #fff;
+  color: var(--color-ink-900);
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+}
