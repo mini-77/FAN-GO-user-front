@@ -167,7 +167,7 @@ export default function PlaceDetailModal({ eventNo, tripRouteEventNo, liked: ini
 
               {/* 혼잡도 - 알고리즘팀이 실측 데이터 붙이기 전까지는 준비중으로 표시 */}
               <div className={styles['congestion-row']}>
-                <span className={styles['congestion-label']}>예상 혼잡도</span>
+                <span className={styles['congestion-label']}>현시각 예상 혼잡도</span>
                 <div className={styles['congestion-bars']}>
                   {[0, 1, 2, 3, 4].map((i) => (
                     <div key={i} className={styles['congestion-bar']} />
