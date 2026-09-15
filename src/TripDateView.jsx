@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTrip } from './TripContext'
 import AppHeader from './AppHeader'
+import BottomNav from './BottomNav'
 import Icon from './Icon'
 import PickerSheet from './PickerSheet'
 import DateRangeSheet from './DateRangeSheet'
@@ -665,6 +666,8 @@ export default function TripDateView() {
           </button>
         </div>
         </div>
+
+        <BottomNav />
       </div>
 
       {/* 공용 지도 검색 오버레이 - StaySearchView 기능을 이 화면 안의 모달로 통합 */}

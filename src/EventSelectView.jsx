@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useTrip } from './TripContext'
 import { apiFetch, safeErrorMessage } from './api'
 import AppHeader from './AppHeader'
+import BottomNav from './BottomNav'
 import Icon from './Icon'
 import styles from './EventSelectView.module.css'
 
@@ -103,17 +104,21 @@ export default function EventSelectView() {
     }
   }, [])
 
-  // 이벤트 목록 - groupFilter 바뀔 때마다 다시 불러옴
+  // 이벤트 목록 - 아티스트를 고르기 전까진 아예 불러오지 않음(전체 목록을 먼저
+  // 다 뿌리지 않게 함). groupFilter가 실제로 선택된 뒤에만 그 그룹 이벤트를 불러옴.
   useEffect(() => {
+    if (!groupFilter) {
+      setEvents([])
+      setIsLoading(false)
+      setLoadError('')
+      return
+    }
     let cancelled = false
     async function loadEvents() {
       setIsLoading(true)
       setLoadError('')
       try {
-        const url = groupFilter
-          ? `/events/main?artist_group_no=${groupFilter}`
-          : '/events/main'
-        const res = await apiFetch(url)
+        const res = await apiFetch(`/events/main?artist_group_no=${groupFilter}`)
         if (res.status === 401) {
           throw new Error('로그인이 만료됐어요. 다시 로그인해주세요.')
         }
@@ -151,12 +156,6 @@ export default function EventSelectView() {
   }
 
   const selectedCardData = dayCards.find((c) => selectedCard && c.key === selectedCard.key)
-
-  const districtLabel = useMemo(() => {
-    if (!selectedCardData) return null
-    const match = selectedCardData.address?.match(/(\S+구)/)
-    return match ? match[1] : selectedCardData.address
-  }, [selectedCardData])
 
   function goNext() {
     setErrorMessage('')
@@ -201,7 +200,7 @@ export default function EventSelectView() {
               value={groupFilter}
               onChange={(e) => setGroupFilter(e.target.value)}
             >
-              <option value="">전체 아티스트</option>
+              <option value="">아티스트를 선택해주세요</option>
               {favoriteGroups.map((g) => (
                 <option key={g.artist_group_no} value={g.artist_group_no}>
                   {g.group_nm}
@@ -216,15 +215,19 @@ export default function EventSelectView() {
         </div>
 
         <div className={styles['event-list']}>
-          {isLoading && <p className={styles.hint}>이벤트 목록을 불러오는 중이에요...</p>}
-          {!isLoading && loadError && <p className={styles.hint}>{loadError}</p>}
-          {!isLoading && !loadError && dayCards.length === 0 && (
+          {!groupFilter && (
+            <p className={styles.hint}>위에서 아티스트를 먼저 선택해주세요.</p>
+          )}
+          {groupFilter && isLoading && <p className={styles.hint}>이벤트 목록을 불러오는 중이에요...</p>}
+          {groupFilter && !isLoading && loadError && <p className={styles.hint}>{loadError}</p>}
+          {groupFilter && !isLoading && !loadError && dayCards.length === 0 && (
             <p className={styles.hint}>
               고를 수 있는 이벤트가 없어요. 가입할 때 고른 팀의 예정된 콘서트/팬미팅이 없거나,
               팬덤을 먼저 골라야 해요.
             </p>
           )}
-          {!isLoading &&
+          {groupFilter &&
+            !isLoading &&
             !loadError &&
             dayCards.slice(0, visibleCount).map((card) => {
               const isSelected = selectedCard?.key === card.key
@@ -242,11 +245,10 @@ export default function EventSelectView() {
                     <span className={styles['event-title']}>{card.title}</span>
                     <span className={styles['event-venue']}>{card.address}</span>
                   </div>
-                  <span className={styles['event-toggle']}>{isSelected ? '고정 ✓' : '＋'}</span>
                 </div>
               )
             })}
-          {!isLoading && !loadError && dayCards.length > visibleCount && (
+          {groupFilter && !isLoading && !loadError && dayCards.length > visibleCount && (
             <button
               type="button"
               className={styles['load-more-btn']}
@@ -255,21 +257,6 @@ export default function EventSelectView() {
               더보기 <Icon name="chevronDown" size={14} />
             </button>
           )}
-
-          {/* 하단 고정 바가 아니라 목록의 마지막 항목으로 스크롤에 같이 움직이게 함
-              (사용자 요청 - 다른 화면과 동일하게 고정 해제) */}
-          <div className={styles['map-summary']}>
-            {selectedCardData ? (
-              <>
-                <p className={styles['map-summary-text']}>{selectedCardData.title}</p>
-                <p className={styles['map-summary-sub']}>
-                  {selectedCardData.dateLabel} · {selectedCardData.timeLabel} · {districtLabel}
-                </p>
-              </>
-            ) : (
-              <p className={styles['map-summary-text']}>아직 고른 이벤트가 없어요</p>
-            )}
-          </div>
 
           {errorMessage && (
             <p className={styles.hint} style={{ padding: '0 16px', color: 'var(--color-danger)' }}>
@@ -289,6 +276,8 @@ export default function EventSelectView() {
             </button>
           </div>
         </div>
+
+        <BottomNav />
       </div>
     </div>
   )
