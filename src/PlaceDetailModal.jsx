@@ -191,29 +191,31 @@ export default function PlaceDetailModal({ eventNo, tripRouteEventNo, liked: ini
 
               {/* 혼잡도 - GET /events/{event_no}/congestion. cong_level 0~3(한산~매우혼잡)을
                   막대 5개 중 (cong_level+1)개를 채우는 방식으로 표현. 데이터가 없으면(has_data:false)
-                  기존처럼 "준비 중"으로 표시 */}
-              <div className={styles['congestion-row']}>
-                <span className={styles['congestion-label']}>현시각 예상 혼잡도</span>
-                <div className={styles['congestion-bars']}>
-                  {[0, 1, 2, 3, 4].map((i) => (
-                    <div
-                      key={i}
-                      className={styles['congestion-bar']}
-                      style={
-                        congestion?.has_data && i <= congestion.cong_level
-                          ? { background: CONGESTION_COLORS[congestion.cong_level] }
-                          : undefined
-                      }
-                    />
-                  ))}
+                  혼잡도 영역 자체를 표시하지 않음 */}
+              {congestion?.has_data && (
+                <div className={styles['congestion-row']}>
+                  <span className={styles['congestion-label']}>현시각 예상 혼잡도</span>
+                  <div className={styles['congestion-bars']}>
+                    {[0, 1, 2, 3, 4].map((i) => (
+                      <div
+                        key={i}
+                        className={styles['congestion-bar']}
+                        style={
+                          i <= congestion.cong_level
+                            ? { background: CONGESTION_COLORS[congestion.cong_level] }
+                            : undefined
+                        }
+                      />
+                    ))}
+                  </div>
+                  <span
+                    className={styles['congestion-text']}
+                    style={{ color: CONGESTION_COLORS[congestion.cong_level] }}
+                  >
+                    {congestion.cong_label}
+                  </span>
                 </div>
-                <span
-                  className={styles['congestion-text']}
-                  style={congestion?.has_data ? { color: CONGESTION_COLORS[congestion.cong_level] } : { color: 'rgba(27,22,63,0.4)' }}
-                >
-                  {congestion?.has_data ? congestion.cong_label : '준비 중'}
-                </span>
-              </div>
+              )}
 
               <div className={styles['link-row']}>
                 <a
