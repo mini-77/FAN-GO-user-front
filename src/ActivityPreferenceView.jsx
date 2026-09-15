@@ -207,7 +207,7 @@ export default function ActivityPreferenceView() {
                       <span className={styles['rank-badge']}>{RANK_LABELS[rankIndex]}</span>
                     )}
                     <span className={styles['category-name']}>{displayName}</span>
-                    {subtitle && <span className={styles['category-sub']}>{subtitle}</span>}
+                    <span className={styles['category-sub']}>{subtitle || ''}</span>
                   </div>
                 )
               })}
