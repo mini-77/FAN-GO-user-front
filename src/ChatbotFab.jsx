@@ -10,6 +10,10 @@ const FAB_SIZE = 56
 const DRAG_POS_KEY = 'fango_chatbot_fab_pos'
 // 드래그와 탭(클릭)을 구분하는 최소 이동 거리(px) - 이보다 적게 움직였으면 탭으로 봄
 const DRAG_THRESHOLD = 6
+// 신규 유저 첫 로그인 때 드래그 가능하다는 걸 알려주는 말풍선 - 한 번 보여주면
+// 이 기기에 표시 여부를 저장해서 다음부턴 다시 안 띄움
+const TOOLTIP_SHOWN_KEY = 'fango_chatbot_fab_tooltip_shown'
+const TOOLTIP_AUTO_HIDE_MS = 5000
 
 function loadSavedPos() {
   try {
@@ -92,6 +96,33 @@ export default function ChatbotFab() {
   const dragStateRef = useRef(null) // { startX, startY, originX, originY, moved, pointerId } | null
   const fabRef = useRef(null)
 
+  const [showTooltip, setShowTooltip] = useState(false)
+
+  function dismissTooltip() {
+    setShowTooltip(false)
+    try {
+      window.localStorage.setItem(TOOLTIP_SHOWN_KEY, '1')
+    } catch (e) {
+      // 무시
+    }
+  }
+
+  useEffect(() => {
+    if (!isLoggedIn || !isShown) return
+    let alreadyShown = false
+    try {
+      alreadyShown = window.localStorage.getItem(TOOLTIP_SHOWN_KEY) === '1'
+    } catch (e) {
+      alreadyShown = false
+    }
+    if (alreadyShown) return
+
+    setShowTooltip(true)
+    const timer = setTimeout(dismissTooltip, TOOLTIP_AUTO_HIDE_MS)
+    return () => clearTimeout(timer)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLoggedIn, isShown])
+
   useEffect(() => {
     function recalcPopup() {
       setIsPopupOpen(hasOpenPopup())
@@ -161,6 +192,7 @@ export default function ChatbotFab() {
   }, [dragPos])
 
   function handlePointerDown(e) {
+    if (showTooltip) dismissTooltip()
     const rect = fabRef.current.getBoundingClientRect()
     dragStateRef.current = {
       startX: e.clientX,
@@ -210,18 +242,25 @@ export default function ChatbotFab() {
     : { right: anchor.right, bottom: anchor.bottom }
 
   return (
-    <button
-      ref={fabRef}
-      type="button"
-      className={styles.fab}
-      style={positionStyle}
-      onPointerDown={handlePointerDown}
-      onPointerMove={handlePointerMove}
-      onPointerUp={handlePointerUp}
-      onPointerCancel={handlePointerUp}
-      aria-label="트립 버디 챗봇 열기 (누르고 있으면 위치를 옮길 수 있어요)"
-    >
-      <FenggoIcon size={56} />
-    </button>
+    <div className={styles.fabWrapper} style={positionStyle}>
+      {showTooltip && (
+        <div className={styles.tooltip} role="status">
+          챗봇을 꾹 눌러서 원하는곳으로 이동할 수 있어요
+          <span className={styles.tooltipArrow} />
+        </div>
+      )}
+      <button
+        ref={fabRef}
+        type="button"
+        className={styles.fab}
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
+        onPointerCancel={handlePointerUp}
+        aria-label="트립 버디 챗봇 열기 (누르고 있으면 위치를 옮길 수 있어요)"
+      >
+        <FenggoIcon size={56} />
+      </button>
+    </div>
   )
 }

@@ -1,14 +1,20 @@
-.fab {
+.fabWrapper {
+  /* right·bottom(또는 드래그 후엔 left·top)은 ChatbotFab.jsx가 현재 화면(.screen)의
+     실제 렌더 위치와 하단 버튼 줄 높이를 재서 인라인 style로 넣어줌 - 여기 값은 JS가
+     계산하기 전 아주 짧은 순간의 기본값일 뿐. */
   position: fixed;
-  /* right·bottom은 ChatbotFab.jsx가 현재 화면(.screen)의 실제 렌더 위치와 하단 버튼 줄
-     높이를 재서 인라인 style로 넣어줌 - 여기 값은 JS가 계산하기 전 아주 짧은 순간의
-     기본값일 뿐. (데스크톱 미리보기처럼 .screen이 뷰포트를 꽉 채우지 않을 때도 항상
-     화면 안쪽 우측 하단에 붙도록 화면 자체의 위치를 기준으로 계산함) */
   right: 16px;
   bottom: 24px;
   z-index: 999;
   width: 56px;
   height: 56px;
+  transition: right 0.15s ease, bottom 0.15s ease, left 0.15s ease, top 0.15s ease;
+}
+
+.fab {
+  position: relative;
+  width: 100%;
+  height: 100%;
   border-radius: 50%;
   border: none;
   padding: 0;
@@ -19,9 +25,48 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: right 0.15s ease, bottom 0.15s ease;
 }
 
 .fab:active {
   transform: scale(0.94);
+}
+
+.tooltip {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  right: 0;
+  width: max-content;
+  max-width: 180px;
+  background: #333;
+  color: #fff;
+  font-size: 12px;
+  line-height: 1.4;
+  padding: 8px 12px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  text-align: left;
+  pointer-events: none;
+  animation: fango-tooltip-fade-in 0.25s ease;
+}
+
+.tooltipArrow {
+  position: absolute;
+  top: 100%;
+  right: 18px;
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid #333;
+}
+
+@keyframes fango-tooltip-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
