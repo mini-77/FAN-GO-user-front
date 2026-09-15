@@ -121,12 +121,13 @@
 }
 
 .place-tag {
-  width: 56px;
-  min-width: 56px;
+  flex-shrink: 0;
+  max-width: 64px;
   font-size: 12px;
   font-weight: 700;
   color: var(--color-primary-500);
-  white-space: nowrap;
+  line-height: 1.3;
+  word-break: keep-all;
 }
 
 .place-edit-btn {
