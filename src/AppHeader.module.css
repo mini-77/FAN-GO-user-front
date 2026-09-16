@@ -94,8 +94,7 @@
 }
 
 .lang-pill-caret {
-  font-size: 0.625rem;
-  line-height: 1;
+  flex-shrink: 0;
 }
 
 .lang-menu-dim {
@@ -234,16 +233,19 @@
 }
 
 .menu-icon {
-  width: 32px;
-  height: 32px;
-  min-width: 32px;
+  width: 34px;
+  height: 34px;
+  min-width: 34px;
   border-radius: 10px;
-  background: var(--color-primary-100);
+  background: #F3F3F7;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1rem;
-  line-height: 1;
+}
+
+/* 09 마이페이지 화면 규칙 - 로그아웃 행만 Danger 톤 배경으로 구분 */
+.menu-icon-danger {
+  background: var(--color-danger-bg);
 }
 
 .menu-copy {

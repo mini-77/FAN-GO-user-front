@@ -151,7 +151,20 @@ export default function AppHeader({ showBack = true, showProfile = true, onBack,
             aria-expanded={isLangMenuOpen}
           >
             {LANGUAGE_LABELS[language]?.pill || language.toUpperCase()}
-            <span className={styles['lang-pill-caret']} aria-hidden="true">⌄</span>
+            <svg
+              className={styles['lang-pill-caret']}
+              width="8"
+              height="8"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="var(--color-primary-500)"
+              strokeWidth="3"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M6 9l6 6 6-6" />
+            </svg>
           </button>
 
           {isLangMenuOpen && (
@@ -182,7 +195,7 @@ export default function AppHeader({ showBack = true, showProfile = true, onBack,
             aria-label={t('appHeader.menu')}
             aria-expanded={isProfileMenuOpen}
           >
-            <Icon name="menu" size={18} color="#fff" />
+            <Icon name="menu" size={18} strokeWidth={1.8} color="#fff" />
           </button>
 
           {isProfileMenuOpen && !onProfileClick && (
@@ -199,7 +212,7 @@ export default function AppHeader({ showBack = true, showProfile = true, onBack,
 
                   <div className={styles['menu-list']}>
                     <button type="button" className={styles['menu-item']} onClick={() => goTo('/account')}>
-                      <span className={styles['menu-icon']}><Icon name="person" size={16} color="var(--color-primary-500)" /></span>
+                      <span className={styles['menu-icon']}><Icon name="person" size={18} strokeWidth={1.7} color="var(--color-ink-700)" /></span>
                       <span className={styles['menu-copy']}>
                         <strong>{t('appHeader.myPage')}</strong>
                         <small>{t('appHeader.myPageDesc')}</small>
@@ -208,7 +221,7 @@ export default function AppHeader({ showBack = true, showProfile = true, onBack,
                     </button>
 
                     <button type="button" className={styles['menu-item']} onClick={() => goTo('/account')}>
-                      <span className={styles['menu-icon']}><Icon name="gear" size={16} color="var(--color-primary-500)" /></span>
+                      <span className={styles['menu-icon']}><Icon name="settings" size={18} strokeWidth={1.7} color="var(--color-ink-700)" /></span>
                       <span className={styles['menu-copy']}>
                         <strong>{t('appHeader.settings')}</strong>
                         <small>{t('appHeader.settingsDesc')}</small>
@@ -217,7 +230,7 @@ export default function AppHeader({ showBack = true, showProfile = true, onBack,
                     </button>
 
                     <button type="button" className={styles['menu-item']} onClick={() => goTo('/trip/history')}>
-                      <span className={styles['menu-icon']}><Icon name="plane" size={16} color="var(--color-primary-500)" /></span>
+                      <span className={styles['menu-icon']}><Icon name="envelope" size={18} strokeWidth={1.7} color="var(--color-ink-700)" /></span>
                       <span className={styles['menu-copy']}>
                         <strong>{t('appHeader.tripHistory')}</strong>
                         <small>{t('appHeader.tripHistoryDesc')}</small>
@@ -229,7 +242,7 @@ export default function AppHeader({ showBack = true, showProfile = true, onBack,
                   <div className={styles['menu-divider']} />
 
                   <button type="button" className={`${styles['menu-item']} ${styles['logout-item']}`} onClick={handleLogout}>
-                    <span className={styles['menu-icon']}><Icon name="logout" size={16} color="var(--color-primary-500)" /></span>
+                    <span className={`${styles['menu-icon']} ${styles['menu-icon-danger']}`}><Icon name="logout" size={18} strokeWidth={1.7} color="var(--color-danger)" /></span>
                     <span className={styles['menu-copy']}>
                       <strong>{t('auth.logout')}</strong>
                       <small>{t('appHeader.logoutDesc')}</small>
@@ -239,7 +252,7 @@ export default function AppHeader({ showBack = true, showProfile = true, onBack,
                 </>
               ) : (
                 <button type="button" className={styles['menu-item']} onClick={() => goTo('/login')}>
-                  <span className={styles['menu-icon']}><Icon name="key" size={16} color="var(--color-primary-500)" /></span>
+                  <span className={styles['menu-icon']}><Icon name="key" size={18} strokeWidth={1.7} color="var(--color-ink-700)" /></span>
                   <span className={styles['menu-copy']}>
                     <strong>{t('appHeader.loginRequired')}</strong>
                     <small>{t('appHeader.loginRequiredDesc')}</small>

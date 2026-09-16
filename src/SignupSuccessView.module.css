@@ -43,7 +43,7 @@
 .title {
   font-size: 1.25rem; /* 2026-09-15 갱신: 22px -> 20px (design-tokens_v2 --text-h1) */
   font-weight: 700;
-  line-height: 1.75rem;
+  line-height: 1.625rem; /* 09 헤더-타이틀 규칙: 줄간격 1.3 */
   letter-spacing: -0.3px;
   color: var(--color-ink-900);
   margin: 0;
