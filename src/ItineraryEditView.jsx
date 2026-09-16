@@ -19,13 +19,12 @@ function haversineKm(lat1, lon1, lat2, lon2) {
   return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
 }
 
-// 그 날짜 "밤"에 묵는 숙소 찾기 (checkIn <= date < checkOut) - 그날의 도착지점 후보
+// 그 날짜 "밤"에 묵는 숙소 찾기 (checkIn <= date < checkOut) - 그날의 도착지점 후보이자,
+// 다음날 아침 "전날 밤 묵은 숙소"를 그대로 이어받는 출발지점 후보로도 씀.
+// (예전엔 "체크아웃 날짜 === 이 날짜"로 출발지점을 찾았는데, 여러 밤을 묵는 숙소는 체크아웃일이
+// 마지막날에만 해당돼서 2·3일차처럼 중간 날짜에서 출발지점이 항상 비어 보이는 버그가 있었음)
 function findStayForNight(stays, date) {
   return stays.find((s) => s.checkIn <= date && date < s.checkOut)
-}
-// 그 날짜 아침에 체크아웃하는 숙소 찾기 (checkOut === date) - 그날의 출발지점 후보
-function findStayCheckingOutOn(stays, date) {
-  return stays.find((s) => s.checkOut === date)
 }
 
 function addDays(iso, n) {
@@ -54,6 +53,7 @@ export default function ItineraryEditView() {
   const [isSaving, setIsSaving] = useState(false)
   const [saveError, setSaveError] = useState('')
   const [myLocation, setMyLocation] = useState(null) // { lat, lon } | null
+  const [dayDepot, setDayDepot] = useState({ start: null, end: null }) // GET routes가 내려주는 depot_start/depot_end
 
   // 지금 내 위치 - 허용 안 하거나 실패해도 화면은 그냥 거리 없이 보여주면 됨
   useEffect(() => {
@@ -77,18 +77,22 @@ export default function ItineraryEditView() {
   const isFirstDay = visitDay === 1
   const isLastDay = visitDay === totalDays
 
-  // 출발지점: 1일차는 사용자가 지정한 전체 출발지, 그 외엔 그날 아침 체크아웃하는 숙소
-  // 도착지점: 마지막날은 사용자가 지정한 전체 도착지, 그 외엔 그날 밤 묵는 숙소
+  // 출발/도착지점 우선순위: 사용자가 직접 지정한 전체 출발지(1일차)/도착지(마지막날)
+  // → GET /trips/{tripNo}/routes가 날짜별로 내려주는 depot_start/depot_end
+  // → (depot이 아직 없는 옛 응답 대비) 로컬 stays 기반 계산 - ScheduleTableView.jsx와 동일한 우선순위.
+  function placeFromDepot(depot) {
+    if (!depot) return null
+    return { name: depot.label, address: '', lat: depot.lat, lon: depot.lon }
+  }
+
+  const previousDate = !isFirstDay && activeDate ? addDays(activeDate, -1) : null
+
   const departurePlace = isFirstDay
-    ? tripData.departure
-    : activeDate
-      ? findStayCheckingOutOn(stays, activeDate)
-      : null
+    ? tripData.departure || placeFromDepot(dayDepot.start)
+    : placeFromDepot(dayDepot.start) || (previousDate ? findStayForNight(stays, previousDate) : null)
   const arrivalPlace = isLastDay
-    ? tripData.arrival
-    : activeDate
-      ? findStayForNight(stays, activeDate)
-      : null
+    ? tripData.arrival || placeFromDepot(dayDepot.end)
+    : placeFromDepot(dayDepot.end) || (activeDate ? findStayForNight(stays, activeDate) : null)
 
   // 이 날짜의 relevance(추천 점수)는 GET /trips/{tripNo}/routes에는 없고,
   // ConfirmView에서 AL-02 생성 직후 받아둔 tripData.generatedDays에만 있음.
@@ -122,6 +126,10 @@ export default function ItineraryEditView() {
         const data = await routesRes.json()
         const dayRoute = Array.isArray(data) && data.length > 0 ? data[0] : null
         const events = (dayRoute?.events || []).slice().sort((a, b) => a.seq - b.seq)
+
+        if (!cancelled) {
+          setDayDepot({ start: dayRoute?.depot_start || null, end: dayRoute?.depot_end || null })
+        }
 
         if (events.length === 0) {
           if (!cancelled) {
