@@ -157,33 +157,43 @@ export default function HomeView() {
             </div>
           )}
 
-          {!isLoading && !loadError && upcoming && (
-            <div className={styles['hero-card']}>
-              <div className={styles['hero-blob-1']} />
-              <div className={styles['hero-blob-2']} />
-              <div className={styles['hero-content']}>
-                <span className={styles['hero-badge']}>
-                  {daysUntil(upcoming.start_dt) === 0 ? 'D-DAY' : `D-${daysUntil(upcoming.start_dt)}`}
-                </span>
-                {(() => {
-                  const { artist, displayTitle } = splitArtistFromEventName(upcoming.event_nm)
-                  return (
-                    <>
-                      <div className={styles['hero-title']}>{displayTitle}</div>
-                      {artist && <div className={styles['hero-artist']}>{artist}</div>}
-                    </>
-                  )
-                })()}
-                <div className={styles['hero-meta-row']}>
-                  <Icon name="calendar" size={13} />
-                  <span>{formatKoreanDate(upcoming.start_dt, t)}</span>
+          {/* 히어로 카드(hero-content)는 다가오는 일정이 없거나 로딩/에러 상태여도 화면에서
+              통째로 사라지면 안 됨(사용자 요청) - 카드 자체는 항상 띄우고, 안쪽 내용만 상태별로 바꿈 */}
+          <div className={styles['hero-card']}>
+            <div className={styles['hero-blob-1']} />
+            <div className={styles['hero-blob-2']} />
+            <div className={styles['hero-content']}>
+              {isLoading ? (
+                <div className={styles['hero-title']}>{t('common.loading')}</div>
+              ) : upcoming ? (
+                <>
+                  <span className={styles['hero-badge']}>
+                    {daysUntil(upcoming.start_dt) === 0 ? 'D-DAY' : `D-${daysUntil(upcoming.start_dt)}`}
+                  </span>
+                  {(() => {
+                    const { artist, displayTitle } = splitArtistFromEventName(upcoming.event_nm)
+                    return (
+                      <>
+                        <div className={styles['hero-title']}>{displayTitle}</div>
+                        {artist && <div className={styles['hero-artist']}>{artist}</div>}
+                      </>
+                    )
+                  })()}
+                  <div className={styles['hero-meta-row']}>
+                    <Icon name="calendar" size={13} />
+                    <span>{formatKoreanDate(upcoming.start_dt, t)}</span>
+                  </div>
+                  <div className={styles['hero-meta-sub']}>
+                    {t('home.placesReady')(upcoming.event_add, upcoming.place_count)}
+                  </div>
+                </>
+              ) : (
+                <div className={styles['hero-title']}>
+                  {loadError ? loadError : t('home.noUpcomingEvent')}
                 </div>
-                <div className={styles['hero-meta-sub']}>
-                  {t('home.placesReady')(upcoming.event_add, upcoming.place_count)}
-                </div>
-              </div>
+              )}
             </div>
-          )}
+          </div>
 
           <div className={styles['section-head']}>
             <span className={styles['section-title']}>{t('home.myRoutes')}</span>
