@@ -221,7 +221,7 @@ export default function AppHeader({ showBack = true, showProfile = true, onBack,
                     </button>
 
                     <button type="button" className={styles['menu-item']} onClick={() => goTo('/account')}>
-                      <span className={styles['menu-icon']}><Icon name="gear" size={18} strokeWidth={1.7} color="var(--color-ink-700)" /></span>
+                      <span className={styles['menu-icon']}><Icon name="settings" size={18} strokeWidth={1.7} color="var(--color-ink-700)" /></span>
                       <span className={styles['menu-copy']}>
                         <strong>{t('appHeader.settings')}</strong>
                         <small>{t('appHeader.settingsDesc')}</small>
@@ -230,7 +230,7 @@ export default function AppHeader({ showBack = true, showProfile = true, onBack,
                     </button>
 
                     <button type="button" className={styles['menu-item']} onClick={() => goTo('/trip/history')}>
-                      <span className={styles['menu-icon']}><Icon name="plane" size={18} strokeWidth={1.7} color="var(--color-ink-700)" /></span>
+                      <span className={styles['menu-icon']}><Icon name="envelope" size={18} strokeWidth={1.7} color="var(--color-ink-700)" /></span>
                       <span className={styles['menu-copy']}>
                         <strong>{t('appHeader.tripHistory')}</strong>
                         <small>{t('appHeader.tripHistoryDesc')}</small>
