@@ -45,7 +45,7 @@ export default function MyPageView() {
           const me = await res.json()
           if (!cancelled) {
             updateTrip({
-              account: { ...tripData.account, email: me.login_id, nickname: me.nickname },
+              account: { ...tripData.account, email: me.login_id, nickname: me.nickname, profileImg: me.profile_img },
             })
           }
         }
