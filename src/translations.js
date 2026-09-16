@@ -391,7 +391,7 @@ export const translations = {
       locationConsent: '위치정보 수집 및 이용',
       locationModalTitle: '위치정보 수집 및 이용 동의',
       privacyModalTitle: '개인정보 수집 및 활용 동의',
-      nextButton: '다음: 아티스트 선택',
+      nextButton: '아티스트 선택',
       agreeAndClose: '동의하고 닫기',
     },
     artistSelect: {
@@ -408,6 +408,7 @@ export const translations = {
       completeSignup: '가입 완료',
     },
     signupSuccess: {
+      title: '가입이 완료되었습니다',
       headcopy: '가입이 완료됐어요. FAN:GO와 함께 최고의 팬 여정을 시작해 보세요.',
       bulletFandom: '팬덤 일정 생성 — 아티스트 일정을 한눈에 확인할 수 있어요',
       bulletTrip: '여행 일정 계획 — 콘서트에 맞춘 최적의 여행을 계획할 수 있어요',
@@ -459,7 +460,7 @@ export const translations = {
       hintWholeGroup: '그룹 전체를 선택하면 그룹 활동 일정 위주로 추천 받아요.',
       hintMember: '멤버 선택시 멤버별 일정을 우선 추천 받아요.',
       routeOptionsLabel: '받아볼 동선 안',
-      nextButton: '다음: 확인',
+      nextButton: '확인',
     },
     confirm: {
       title: '이대로 진행할까요?',
@@ -590,7 +591,7 @@ export const translations = {
       selectArtistPlaceholder: '아티스트를 선택해주세요',
       selectParticipatingEvent: '참여 행사 선택',
       selectArtistFirst: '위에서 아티스트를 먼저 선택해주세요.',
-      filterHint: '가입할 때 고른 팀의 콘서트와 공식 팬미팅만 보여 드려요. 하나만 고를 수 있고, 고른 이벤트는 시작일시와 주소가 그대로 지도에 꽂혀요.',
+      filterHint: (groupName) => `${groupName}의 다가오는 행사만 보여드려요. 하나만 고를 수 있고, 고른 이벤트는 시작일시와 주소가 그대로 지도에 꽂혀요.`,
       loadingEvents: '이벤트 목록을 불러오는 중이에요...',
       noEventsAvailable: '고를 수 있는 이벤트가 없어요. 가입할 때 고른 팀의 예정된 콘서트/팬미팅이 없거나, 팬덤을 먼저 골라야 해요.',
       loadMore: '더보기',
@@ -1065,7 +1066,7 @@ export const translations = {
       locationConsent: 'Location Data Collection and Use',
       locationModalTitle: 'Agree to Location Data Collection and Use',
       privacyModalTitle: 'Agree to Privacy Policy',
-      nextButton: 'Next: Select Artist',
+      nextButton: 'Select Artist',
       agreeAndClose: 'Agree and Close',
     },
     artistSelect: {
@@ -1082,6 +1083,7 @@ export const translations = {
       completeSignup: 'Complete Sign Up',
     },
     signupSuccess: {
+      title: 'Sign Up Complete',
       headcopy: "You're all signed up. Start your best fan journey with FAN:GO.",
       bulletFandom: "Create Fandom Schedule — see your artist's schedule at a glance",
       bulletTrip: 'Plan Travel Schedule — plan the perfect trip around the concert',
@@ -1133,7 +1135,7 @@ export const translations = {
       hintWholeGroup: "Choosing the whole group prioritizes the group's activity schedule.",
       hintMember: "Choosing a member prioritizes that member's schedule.",
       routeOptionsLabel: 'Route Options',
-      nextButton: 'Next: Confirm',
+      nextButton: 'Confirm',
     },
     confirm: {
       title: 'Shall we go with this?',
@@ -1264,7 +1266,7 @@ export const translations = {
       selectArtistPlaceholder: 'Please select an artist',
       selectParticipatingEvent: 'Select Participating Event',
       selectArtistFirst: 'Please select an artist above first.',
-      filterHint: "We only show concerts and official fan meetings for the group you chose at sign-up. You can pick only one, and the selected event's start time and address will be pinned directly on the map.",
+      filterHint: (groupName) => `We only show upcoming events for ${groupName}. You can pick only one, and the selected event's start time and address will be pinned directly on the map.`,
       loadingEvents: 'Loading the event list...',
       noEventsAvailable: 'There are no events to choose from. Either there are no upcoming concerts/fan meetings for the group you chose at sign-up, or you need to choose your fandom first.',
       loadMore: 'Load More',
@@ -1739,7 +1741,7 @@ export const translations = {
       locationConsent: '位置情報の収集および利用',
       locationModalTitle: '位置情報の収集および利用への同意',
       privacyModalTitle: '個人情報の収集および利用への同意',
-      nextButton: '次へ：アーティスト選択',
+      nextButton: 'アーティスト選択',
       agreeAndClose: '同意して閉じる',
     },
     artistSelect: {
@@ -1756,6 +1758,7 @@ export const translations = {
       completeSignup: '登録完了',
     },
     signupSuccess: {
+      title: '登録が完了しました',
       headcopy: '登録が完了しました。FAN:GOと一緒に最高のファンの旅を始めましょう。',
       bulletFandom: 'ファンダムスケジュール作成 — アーティストのスケジュールを一目で確認できます',
       bulletTrip: '旅行スケジュール計画 — コンサートに合わせた最適な旅行を計画できます',
@@ -1807,7 +1810,7 @@ export const translations = {
       hintWholeGroup: 'グループ全体を選ぶと、グループ活動の日程を優先的におすすめします。',
       hintMember: 'メンバーを選ぶと、そのメンバーの日程を優先的におすすめします。',
       routeOptionsLabel: '受け取る動線案',
-      nextButton: '次へ: 確認',
+      nextButton: '確認',
     },
     confirm: {
       title: 'このまま進めますか？',
@@ -1938,7 +1941,7 @@ export const translations = {
       selectArtistPlaceholder: 'アーティストを選択してください',
       selectParticipatingEvent: '参加イベント選択',
       selectArtistFirst: '上でアーティストを先に選択してください。',
-      filterHint: '登録時に選んだグループのコンサートと公式ファンミーティングのみ表示します。1つだけ選択でき、選んだイベントは開始日時と住所がそのまま地図にピン留めされます。',
+      filterHint: (groupName) => `${groupName}の今後のイベントのみ表示します。1つだけ選択でき、選んだイベントは開始日時と住所がそのまま地図にピン留めされます。`,
       loadingEvents: 'イベントリストを読み込んでいます...',
       noEventsAvailable: '選択できるイベントがありません。登録時に選んだグループの予定されたコンサート/ファンミーティングがないか、先にファンダムを選ぶ必要があります。',
       loadMore: 'もっと見る',
@@ -2412,7 +2415,7 @@ export const translations = {
       locationConsent: '位置信息收集及使用',
       locationModalTitle: '同意位置信息收集及使用',
       privacyModalTitle: '同意个人信息收集及使用',
-      nextButton: '下一步：选择艺人',
+      nextButton: '选择艺人',
       agreeAndClose: '同意并关闭',
     },
     artistSelect: {
@@ -2429,6 +2432,7 @@ export const translations = {
       completeSignup: '完成注册',
     },
     signupSuccess: {
+      title: '注册完成',
       headcopy: '注册完成。和FAN:GO一起开始最棒的追星之旅吧。',
       bulletFandom: '创建粉丝日程 — 一目了然地确认艺人日程',
       bulletTrip: '旅行日程规划 — 规划配合演唱会的最佳旅行',
@@ -2480,7 +2484,7 @@ export const translations = {
       hintWholeGroup: '选择整个团体后，会优先推荐团体活动日程。',
       hintMember: '选择成员后，会优先推荐该成员的日程。',
       routeOptionsLabel: '可选路线方案',
-      nextButton: '下一步：确认',
+      nextButton: '确认',
     },
     confirm: {
       title: '要这样继续吗？',
@@ -2611,7 +2615,7 @@ export const translations = {
       selectArtistPlaceholder: '请选择艺人',
       selectParticipatingEvent: '选择参与活动',
       selectArtistFirst: '请先在上方选择艺人。',
-      filterHint: '我们只显示您在注册时选择的团体的演唱会和官方粉丝见面会。只能选择一个，所选活动的开始时间和地址将直接标记在地图上。',
+      filterHint: (groupName) => `只显示${groupName}即将举行的活动。只能选择一个，所选活动的开始时间和地址将直接标记在地图上。`,
       loadingEvents: '正在加载活动列表...',
       noEventsAvailable: '没有可选择的活动。可能是您在注册时选择的团体没有即将举行的演唱会/粉丝见面会，或者您需要先选择粉丝团体。',
       loadMore: '查看更多',
@@ -2931,7 +2935,7 @@ export const translations = {
       locationConsent: '位置資訊收集及使用',
       locationModalTitle: '同意位置資訊收集及使用',
       privacyModalTitle: '同意個人資料收集及使用',
-      nextButton: '下一步：選擇藝人',
+      nextButton: '選擇藝人',
       agreeAndClose: '同意並關閉',
     },
     artistSelect: {
@@ -2948,6 +2952,7 @@ export const translations = {
       completeSignup: '完成註冊',
     },
     signupSuccess: {
+      title: '註冊完成',
       headcopy: '註冊完成。和FAN:GO一起開始最棒的追星之旅吧。',
       bulletFandom: '建立粉絲行程 — 一目了然掌握藝人行程',
       bulletTrip: '旅行行程規劃 — 規劃配合演唱會的最佳旅行',
@@ -2999,7 +3004,7 @@ export const translations = {
       hintWholeGroup: '選擇整個團體後，會優先推薦團體活動日程。',
       hintMember: '選擇成員後，會優先推薦該成員的日程。',
       routeOptionsLabel: '可選路線方案',
-      nextButton: '下一步：確認',
+      nextButton: '確認',
     },
     confirm: {
       title: '要這樣繼續嗎？',
@@ -3130,7 +3135,7 @@ export const translations = {
       selectArtistPlaceholder: '請選擇藝人',
       selectParticipatingEvent: '選擇參與活動',
       selectArtistFirst: '請先在上方選擇藝人。',
-      filterHint: '我們只顯示您在註冊時選擇的團體的演唱會和官方粉絲見面會。只能選擇一個，所選活動的開始時間和地址將直接標記在地圖上。',
+      filterHint: (groupName) => `只顯示${groupName}即將舉行的活動。只能選擇一個，所選活動的開始時間和地址將直接標記在地圖上。`,
       loadingEvents: '正在載入活動列表...',
       noEventsAvailable: '沒有可選擇的活動。可能是您在註冊時選擇的團體沒有即將舉行的演唱會/粉絲見面會，或者您需要先選擇粉絲團體。',
       loadMore: '查看更多',
@@ -3569,7 +3574,7 @@ export const translations = {
       locationConsent: 'การเก็บรวบรวมและใช้ข้อมูลตำแหน่ง',
       locationModalTitle: 'ยินยอมให้เก็บรวบรวมและใช้ข้อมูลตำแหน่ง',
       privacyModalTitle: 'ยินยอมให้เก็บรวบรวมและใช้ข้อมูลส่วนบุคคล',
-      nextButton: 'ถัดไป: เลือกศิลปิน',
+      nextButton: 'เลือกศิลปิน',
       agreeAndClose: 'ยอมรับและปิด',
     },
     artistSelect: {
@@ -3586,6 +3591,7 @@ export const translations = {
       completeSignup: 'สมัครสมาชิกเสร็จสิ้น',
     },
     signupSuccess: {
+      title: 'สมัครสมาชิกเสร็จสมบูรณ์',
       headcopy: 'สมัครสมาชิกเสร็จสมบูรณ์แล้ว เริ่มต้นการเดินทางสายแฟนที่ดีที่สุดไปกับ FAN:GO',
       bulletFandom: 'สร้างตารางแฟนด้อม — ดูตารางของศิลปินได้ในที่เดียว',
       bulletTrip: 'วางแผนทริปการเดินทาง — วางแผนทริปที่ลงตัวที่สุดตามคอนเสิร์ต',
@@ -3637,7 +3643,7 @@ export const translations = {
       hintWholeGroup: 'หากเลือกทั้งกลุ่ม จะแนะนำตารางกิจกรรมกลุ่มเป็นหลัก',
       hintMember: 'หากเลือกสมาชิก จะแนะนำตารางของสมาชิกคนนั้นก่อน',
       routeOptionsLabel: 'แผนเส้นทางที่จะได้รับ',
-      nextButton: 'ถัดไป: ยืนยัน',
+      nextButton: 'ยืนยัน',
     },
     confirm: {
       title: 'ดำเนินการต่อแบบนี้เลยไหม?',
@@ -3768,7 +3774,7 @@ export const translations = {
       selectArtistPlaceholder: 'โปรดเลือกศิลปิน',
       selectParticipatingEvent: 'เลือกกิจกรรมที่เข้าร่วม',
       selectArtistFirst: 'กรุณาเลือกศิลปินด้านบนก่อน',
-      filterHint: 'เราจะแสดงเฉพาะคอนเสิร์ตและงานแฟนมีตติ้งอย่างเป็นทางการของกลุ่มที่คุณเลือกตอนสมัคร คุณเลือกได้เพียงรายการเดียว และเวลาเริ่มและที่อยู่ของกิจกรรมที่เลือกจะถูกปักหมุดไว้บนแผนที่โดยตรง',
+      filterHint: (groupName) => `แสดงเฉพาะกิจกรรมที่กำลังจะมาถึงของ ${groupName} คุณเลือกได้เพียงรายการเดียว และเวลาเริ่มและที่อยู่ของกิจกรรมที่เลือกจะถูกปักหมุดไว้บนแผนที่โดยตรง`,
       loadingEvents: 'กำลังโหลดรายการกิจกรรม...',
       noEventsAvailable: 'ไม่มีกิจกรรมให้เลือก อาจเป็นเพราะกลุ่มที่คุณเลือกตอนสมัครไม่มีคอนเสิร์ต/แฟนมีตติ้งที่กำลังจะมาถึง หรือคุณต้องเลือกแฟนด้อมก่อน',
       loadMore: 'ดูเพิ่มเติม',
@@ -4207,7 +4213,7 @@ export const translations = {
       locationConsent: 'Pengumpulan dan Penggunaan Data Lokasi',
       locationModalTitle: 'Setuju atas Pengumpulan dan Penggunaan Data Lokasi',
       privacyModalTitle: 'Setuju atas Pengumpulan dan Penggunaan Data Pribadi',
-      nextButton: 'Selanjutnya: Pilih Artis',
+      nextButton: 'Pilih Artis',
       agreeAndClose: 'Setuju dan Tutup',
     },
     artistSelect: {
@@ -4224,6 +4230,7 @@ export const translations = {
       completeSignup: 'Selesaikan Pendaftaran',
     },
     signupSuccess: {
+      title: 'Pendaftaran Selesai',
       headcopy: 'Pendaftaran selesai. Mulai perjalanan fan terbaikmu bersama FAN:GO.',
       bulletFandom: 'Buat Jadwal Fandom — lihat jadwal artis sekilas',
       bulletTrip: 'Rencanakan Jadwal Perjalanan — rencanakan perjalanan terbaik seputar konser',
@@ -4275,7 +4282,7 @@ export const translations = {
       hintWholeGroup: 'Memilih seluruh grup akan memprioritaskan jadwal aktivitas grup.',
       hintMember: 'Memilih member akan memprioritaskan jadwal member tersebut.',
       routeOptionsLabel: 'Opsi Rute',
-      nextButton: 'Lanjut: Konfirmasi',
+      nextButton: 'Konfirmasi',
     },
     confirm: {
       title: 'Lanjutkan dengan ini?',
@@ -4406,7 +4413,7 @@ export const translations = {
       selectArtistPlaceholder: 'Silakan pilih artis',
       selectParticipatingEvent: 'Pilih Acara yang Diikuti',
       selectArtistFirst: 'Silakan pilih artis di atas terlebih dahulu.',
-      filterHint: 'Kami hanya menampilkan konser dan fan meeting resmi untuk grup yang Anda pilih saat mendaftar. Anda hanya bisa memilih satu, dan waktu mulai serta alamat acara yang dipilih akan disematkan langsung di peta.',
+      filterHint: (groupName) => `Kami hanya menampilkan acara mendatang untuk ${groupName}. Anda hanya bisa memilih satu, dan waktu mulai serta alamat acara yang dipilih akan disematkan langsung di peta.`,
       loadingEvents: 'Memuat daftar acara...',
       noEventsAvailable: 'Tidak ada acara yang bisa dipilih. Mungkin tidak ada konser/fan meeting mendatang untuk grup yang Anda pilih saat mendaftar, atau Anda perlu memilih fandom terlebih dahulu.',
       loadMore: 'Muat Lebih Banyak',

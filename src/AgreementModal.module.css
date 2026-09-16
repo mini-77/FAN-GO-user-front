@@ -31,7 +31,7 @@
 }
 
 .title {
-  font-size: 15px;
+  font-size: 0.9375rem;
   font-weight: 600;
   color: var(--color-ink-900);
 }
@@ -40,7 +40,7 @@
   border: none;
   background: transparent;
   color: rgba(27, 22, 63, 0.5);
-  font-size: 15px;
+  font-size: 0.9375rem;
   cursor: pointer;
   padding: 4px;
 }
@@ -56,8 +56,8 @@
   white-space: pre-wrap;
   word-break: break-word;
   font-family: 'IBM Plex Sans KR', sans-serif;
-  font-size: 12.5px;
-  line-height: 20px;
+  font-size: 0.78125rem;
+  line-height: 1.25rem;
   color: rgba(27, 22, 63, 0.8);
 }
 
@@ -76,7 +76,7 @@
   border-radius: 12px;
   background: #fff;
   color: var(--color-ink-900);
-  font-size: 13.5px;
+  font-size: 0.84375rem;
   font-weight: 600;
   cursor: pointer;
 }
@@ -88,7 +88,7 @@
   border-radius: 12px;
   background: var(--color-primary-500);
   color: #fff;
-  font-size: 13.5px;
+  font-size: 0.84375rem;
   font-weight: 600;
   cursor: pointer;
 }

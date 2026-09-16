@@ -39,7 +39,7 @@
   background: rgba(255, 255, 255, 0.15);
   border: none;
   color: #fff;
-  font-size: 15px;
+  font-size: 0.9375rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -60,14 +60,14 @@
 }
 
 .title {
-  font-size: 22px;
+  font-size: 1.25rem; /* 2026-09-15 갱신: 22px -> 20px (design-tokens_v2 --text-h1) */
   font-weight: 600;
   color: var(--color-ink-900);
   margin: 0 0 16px;
 }
 
 .load-text {
-  font-size: 13px;
+  font-size: 0.8125rem;
   color: rgba(27, 22, 63, 0.5);
   padding: 8px 0;
 }
@@ -88,7 +88,7 @@
   border: var(--button-border-outline);
   background: #fff;
   color: var(--color-ink-900);
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 600;
   cursor: pointer;
 }
@@ -136,21 +136,21 @@
   background: rgba(255, 255, 255, 0.2);
   border-radius: 20px;
   color: #fff;
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 600;
   margin-bottom: 12px;
 }
 
 .hero-title {
   color: #fff;
-  font-size: 20px;
+  font-size: 1.25rem;
   font-weight: 600;
-  line-height: 26px;
+  line-height: 1.625rem;
 }
 
 .hero-artist {
   color: rgba(255, 255, 255, 0.9);
-  font-size: 13px;
+  font-size: 0.8125rem;
   font-weight: 600;
   margin-top: 2px;
 }
@@ -160,13 +160,13 @@
   align-items: center;
   gap: 6px;
   color: #fff;
-  font-size: 13px;
+  font-size: 0.8125rem;
   margin-top: 12px;
 }
 
 .hero-meta-sub {
   color: rgba(255, 255, 255, 0.8);
-  font-size: 12px;
+  font-size: 0.75rem;
   margin-top: 6px;
 }
 
@@ -193,7 +193,7 @@
   background: rgba(255, 255, 255, 0.2);
   border-radius: 16px;
   color: #fff;
-  font-size: 20px;
+  font-size: 1.25rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -206,19 +206,19 @@
 
 .new-trip-title {
   color: #fff;
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: 600;
 }
 
 .new-trip-sub {
   color: rgba(255, 255, 255, 0.8);
-  font-size: 12px;
+  font-size: 0.75rem;
   margin-top: 2px;
 }
 
 .new-trip-chevron {
   color: #fff;
-  font-size: 20px;
+  font-size: 1.25rem;
 }
 
 /* ---- 내 공연 동선 목록 ---- */
@@ -229,7 +229,7 @@
 }
 
 .section-title {
-  font-size: 15px;
+  font-size: 0.9375rem;
   font-weight: 600;
   color: var(--color-ink-900);
 }
@@ -239,7 +239,7 @@
   background: none;
   border: none;
   color: var(--color-primary-500);
-  font-size: 12px;
+  font-size: 0.75rem;
   cursor: pointer;
 }
 
@@ -253,7 +253,7 @@
   background: #fff;
   color: var(--color-primary-500);
   font-family: inherit;
-  font-size: 13px;
+  font-size: 0.8125rem;
   font-weight: 600;
   cursor: pointer;
   display: flex;
@@ -293,7 +293,9 @@
 }
 
 .trip-title {
-  font-size: 15px;
+  flex: 1;
+  min-width: 0;
+  font-size: 0.9375rem;
   font-weight: 600;
   color: var(--color-ink-900);
   overflow: hidden;
@@ -302,9 +304,10 @@
 }
 
 .trip-status {
+  flex-shrink: 0;
   padding: 1px 7px;
   border-radius: 20px;
-  font-size: 10px;
+  font-size: 0.625rem;
   white-space: nowrap;
 }
 
@@ -325,14 +328,14 @@
 
 /* 아바타 뱃지 대신 가수 이름 자체를 굵게 강조 (사용자 요청) */
 .trip-artist {
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 700;
   color: var(--color-primary-500);
   margin-top: 3px;
 }
 
 .trip-meta {
-  font-size: 11px;
+  font-size: 0.6875rem;
   color: rgba(27, 22, 63, 0.55);
   margin-top: 2px;
 }
@@ -341,7 +344,7 @@
   display: flex;
   align-items: center;
   gap: 5px;
-  font-size: 11px;
+  font-size: 0.6875rem;
   font-weight: 600;
   color: var(--color-primary-500);
   margin-top: 4px;
@@ -349,7 +352,7 @@
 
 .trip-chevron {
   color: #C0BCD8;
-  font-size: 16px;
+  font-size: 1rem;
 }
 
 .spacer {

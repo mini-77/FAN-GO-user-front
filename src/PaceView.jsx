@@ -215,10 +215,12 @@ export default function PaceView() {
 
                   {/* 안내 문구 - 선택이 결과에 미치는 영향을 1줄로, 그리드와 버튼 사이 */}
                   <p className={styles['info-banner']}>
-                    ⓘ{' '}
-                    {isWholeGroupSelected
-                      ? t('pace.infoBannerWholeGroup')
-                      : t('pace.infoBannerMember')}
+                    <span className={styles['info-banner-icon']}>ⓘ</span>
+                    <span>
+                      {isWholeGroupSelected
+                        ? t('pace.infoBannerWholeGroup')
+                        : t('pace.infoBannerMember')}
+                    </span>
                   </p>
 
                   {/* 초기화 버튼 공통 가이드 - 확인 버튼과 짝을 이뤄 왼쪽에, 비율 40:60 */}

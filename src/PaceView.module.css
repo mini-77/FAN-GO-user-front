@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600&family=Urbanist:wght@400;600;700&family=Inter:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600&family=Urbanist:wght@400;600;700&display=swap');
 
 .screen {
   min-height: 100vh;
@@ -51,7 +51,7 @@
   border: 1px solid var(--color-primary-200);
   color: var(--color-primary-500);
   font-family: 'Urbanist', sans-serif;
-  font-size: 13px;
+  font-size: 0.8125rem;
   font-weight: 600;
   display: flex;
   align-items: center;
@@ -61,16 +61,16 @@
 
 .step-label {
   margin-left: auto;
-  font-family: 'Inter', sans-serif;
-  font-size: 11px;
+  font-family: 'IBM Plex Sans KR', sans-serif;
+  font-size: 0.6875rem;
   font-weight: 400;
   color: var(--color-ink-400);
 }
 
 .title {
-  font-size: 20px;
+  font-size: 1.25rem;
   font-weight: 700;
-  line-height: 28px;
+  line-height: 1.75rem;
   letter-spacing: -0.3px;
   color: var(--color-ink-900);
   margin: 0;
@@ -95,8 +95,8 @@
   display: flex;
   justify-content: space-between;
   margin-top: 6px;
-  font-family: 'Inter', sans-serif;
-  font-size: 11px;
+  font-family: 'IBM Plex Sans KR', sans-serif;
+  font-size: 0.6875rem;
   font-weight: 500;
   color: var(--color-ink-400);
 }
@@ -118,7 +118,7 @@
 
 /* 다중 선택 화면 텍스트 위계 - 메뉴명(드롭다운 라벨) 11.5px Medium Ink-600 */
 .field-label {
-  font-size: 11.5px;
+  font-size: 0.71875rem;
   font-weight: 500;
   color: var(--color-ink-600);
 }
@@ -135,7 +135,7 @@
   border: 1px solid var(--color-primary-200);
   border-radius: 16px;
   font-family: 'IBM Plex Sans KR', sans-serif;
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 600;
   color: var(--color-ink-900);
   cursor: pointer;
@@ -143,7 +143,7 @@
 
 .picker-arrow {
   color: rgba(27, 22, 63, 0.4);
-  font-size: 12px;
+  font-size: 0.75rem;
   transition: transform 0.15s;
 }
 
@@ -179,7 +179,7 @@
 
 .panel-group-label {
   font-family: 'Urbanist', sans-serif;
-  font-size: 10px;
+  font-size: 0.625rem;
   font-weight: 600;
   letter-spacing: 1.4px;
   color: rgba(27, 22, 63, 0.4);
@@ -205,7 +205,7 @@
   border-radius: 20px;
   background: #fff;
   color: var(--color-ink-900);
-  font-size: 13px;
+  font-size: 0.8125rem;
   font-weight: 600;
   cursor: pointer;
   text-align: center;
@@ -227,23 +227,28 @@
 }
 
 .selection-summary {
-  font-size: 11px;
+  font-size: 0.6875rem;
   font-weight: 600;
   color: rgba(27, 22, 63, 0.5);
 }
 
-/* 리스트&카드 - 안내 배너(Info): ⓘ 아이콘 + Info-50 배경 */
+/* 리스트&카드 - 안내 배너(Info): 박스 배경 없이 화면과 동일한 흰색, 아이콘만 Info 색·문구는 Ink-600
+   (11_impact_plan.md 1번 섹션) */
 .info-banner {
   display: flex;
   align-items: flex-start;
   gap: 6px;
   padding: 10px 12px;
-  background: #EAF2FE;
-  border-radius: 12px;
-  color: var(--color-info);
-  font-size: 11.5px;
+  background: transparent;
+  color: var(--color-ink-600);
+  font-size: 0.71875rem;
   font-weight: 500;
   line-height: 1.5;
+}
+
+.info-banner-icon {
+  flex-shrink: 0;
+  color: var(--color-info);
 }
 
 /* 초기화 버튼 공통 가이드 - 항상 Outline (Primary filled 금지) */
@@ -254,7 +259,7 @@
   border-radius: 12px;
   color: var(--color-ink-900);
   font-family: 'Urbanist', sans-serif;
-  font-size: 13px;
+  font-size: 0.8125rem;
   font-weight: 600;
   text-align: center;
   cursor: pointer;
@@ -268,16 +273,16 @@
   background: var(--color-primary-500);
   color: #fff;
   font-family: 'Urbanist', sans-serif;
-  font-size: 13px;
+  font-size: 0.8125rem;
   font-weight: 600;
   text-align: center;
   cursor: pointer;
 }
 
 .hint {
-  font-size: 12.5px;
+  font-size: 0.78125rem;
   font-weight: 400;
-  line-height: 18.4px;
+  line-height: 1.15rem;
   color: var(--color-ink-600);
   margin: 0;
 }
@@ -300,7 +305,7 @@
 
 .pace-label {
   font-family: 'Urbanist', sans-serif;
-  font-size: 10px;
+  font-size: 0.625rem;
   font-weight: 600;
   letter-spacing: 1.4px;
   color: rgba(27, 22, 63, 0.55);
@@ -331,8 +336,8 @@
 .pace-letter {
   width: 22px;
   color: #49475B;
-  font-family: 'Inter', sans-serif;
-  font-size: 15px;
+  font-family: 'IBM Plex Sans KR', sans-serif;
+  font-size: 0.9375rem;
   font-weight: 600;
 }
 
@@ -349,20 +354,20 @@
 }
 
 .pace-name {
-  font-size: 13px;
+  font-size: 0.8125rem;
   font-weight: 600;
   color: #49475B;
 }
 
 .pace-desc {
   font-family: 'Urbanist', sans-serif;
-  font-size: 11.5px;
+  font-size: 0.71875rem;
   color: var(--color-ink-900);
 }
 
 .pace-check {
   font-family: 'Urbanist', sans-serif;
-  font-size: 11px;
+  font-size: 0.6875rem;
   font-weight: 600;
   color: var(--color-ink-900);
 }
@@ -380,7 +385,7 @@
   border-radius: 12px;
   background: var(--color-primary-500);
   color: #fff;
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 600;
   letter-spacing: 0.21px;
   cursor: pointer;

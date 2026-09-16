@@ -129,7 +129,7 @@
   margin-top: 22px;
   color: rgba(255, 255, 255, 0.7);
   font-family: 'IBM Plex Sans KR', sans-serif;
-  font-size: 13px;
+  font-size: 0.8125rem;
   font-weight: 500;
   letter-spacing: 3px;
   text-transform: lowercase;
@@ -174,7 +174,7 @@
 .progress-label {
   color: rgba(255, 255, 255, 0.6);
   font-family: 'IBM Plex Sans KR', sans-serif;
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 500;
   letter-spacing: 1.2px;
   text-transform: uppercase;

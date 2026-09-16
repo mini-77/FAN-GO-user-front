@@ -71,8 +71,8 @@ export default function ScreenIndex() {
           gap: 10,
         }}
       >
-        <strong style={{ fontSize: 13, color: 'var(--color-ink-900)' }}>화면 목록 ({SCREENS.length}개)</strong>
-        <span style={{ marginLeft: 'auto', fontSize: 11.5, color: 'var(--color-ink-600)' }}>
+        <strong style={{ fontSize: '0.8125rem', color: 'var(--color-ink-900)' }}>화면 목록 ({SCREENS.length}개)</strong>
+        <span style={{ marginLeft: 'auto', fontSize: '0.71875rem', color: 'var(--color-ink-600)' }}>
           지금 실제로 로그인·진행해둔 상태 그대로 보여줘요
         </span>
         <button
@@ -83,7 +83,7 @@ export default function ScreenIndex() {
             border: '1px solid var(--color-primary-500)',
             background: isGalleryMode ? 'var(--color-primary-500)' : '#fff',
             color: isGalleryMode ? '#fff' : 'var(--color-primary-500)',
-            fontSize: 12,
+            fontSize: '0.75rem',
             fontWeight: 700,
             cursor: 'pointer',
           }}
@@ -129,7 +129,7 @@ export default function ScreenIndex() {
               <p
                 style={{
                   margin: '6px 0 0',
-                  fontSize: 10.5,
+                  fontSize: '0.65625rem',
                   fontWeight: 600,
                   color: 'var(--color-ink-900)',
                   lineHeight: 1.3,
@@ -165,7 +165,7 @@ export default function ScreenIndex() {
                       borderRadius: 8,
                       border: '1px solid var(--color-primary-200)',
                       color: isActive ? '#fff' : 'var(--color-ink-900)',
-                      fontSize: 12,
+                      fontSize: '0.75rem',
                       fontWeight: 600,
                       textAlign: 'left',
                       cursor: 'pointer',

@@ -12,13 +12,11 @@ export default function SignupSuccessView() {
   return (
     <div className={styles.screen}>
       <div className={styles.card}>
-        <AppHeader showBack={false} showProfile={false} />
+        {/* 완료 화면 헤더 - PDF "5.완료 화면" 규칙: 로그인 후 구성(언어 필 + 메뉴 아이콘) 그대로 유지 */}
+        <AppHeader showBack={false} showProfile />
         <div className={styles.header}>
-          <div className={styles['header-row']}>
-            <span className={styles['step-label']}>01 — 01</span>
-          </div>
-          {/* 09 카피&용어 - "계정" 단독 명사형 대신 확정 표기 "가입하기"로 통일 (SignupView와 동일) */}
-          <h1 className={styles.title}>{t('signup.title')}</h1>
+          {/* 이전 단계 타이틀("가입하기")을 남기지 않고 완료 전용 문구로 교체 */}
+          <h1 className={styles.title}>{t('signupSuccess.title')}</h1>
         </div>
 
         <div className={styles.body}>

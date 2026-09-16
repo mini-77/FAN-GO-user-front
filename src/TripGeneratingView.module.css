@@ -54,9 +54,9 @@
 
 .title {
   color: var(--color-primary-200);
-  font-size: 19px;
+  font-size: 1.1875rem;
   font-weight: 600;
-  line-height: 28px;
+  line-height: 1.75rem;
   letter-spacing: 0.2px;
   text-align: center;
   margin: 0 auto 12px;
@@ -82,7 +82,7 @@
 /* 08 로딩 화면 규칙 - 태그라인은 스플래시와 동일하게 영문 소문자 + 트래킹 확장, 흰색 70% */
 .subtitle {
   color: rgba(255, 255, 255, 0.7);
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 500;
   letter-spacing: 3px;
   text-transform: lowercase;
@@ -143,7 +143,7 @@
 
 .progress-label {
   color: rgba(255, 255, 255, 0.6);
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 500;
   letter-spacing: 1.2px;
   text-transform: uppercase;
@@ -161,7 +161,7 @@
 
 .error-text {
   color: var(--color-ink-900);
-  font-size: 15px;
+  font-size: 0.9375rem;
   font-weight: 600;
   line-height: 1.6;
   margin: 0 0 24px;
@@ -178,7 +178,7 @@
 .btn-white {
   padding: 13px 20px;
   border-radius: 12px;
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 600;
   cursor: pointer;
   text-align: center;

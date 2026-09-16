@@ -44,7 +44,7 @@
   border: none;
   background: rgba(255, 255, 255, 0.22);
   color: #fff;
-  font-size: 16px;
+  font-size: 1rem;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -74,7 +74,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 15px;
+  font-size: 0.9375rem;
   flex-shrink: 0;
 }
 
@@ -86,9 +86,9 @@
 
 .headerTitle {
   color: #F0EEE6;
-  font-size: 15px;
+  font-size: 0.9375rem;
   font-weight: 600;
-  line-height: 20px;
+  line-height: 1.25rem;
 }
 
 .headerStatus {
@@ -96,8 +96,8 @@
   align-items: center;
   gap: 5px;
   color: #F0EEE6;
-  font-size: 10px;
-  line-height: 15.6px;
+  font-size: 0.625rem;
+  line-height: 0.975rem;
 }
 
 .statusDot {
@@ -126,7 +126,7 @@
 
 .historyLabel {
   font-family: 'Urbanist', sans-serif;
-  font-size: 13px;
+  font-size: 0.8125rem;
   font-weight: 600;
   color: var(--color-ink-900);
 }
@@ -135,7 +135,7 @@
   border: none;
   background: transparent;
   color: var(--color-primary-500);
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 600;
   cursor: pointer;
   padding: 0;
@@ -148,7 +148,7 @@
 }
 
 .historyHint {
-  font-size: 12px;
+  font-size: 0.75rem;
   color: rgba(27, 22, 63, 0.5);
   margin: 0;
   text-align: center;
@@ -163,7 +163,7 @@
   border: 1px solid var(--color-primary-200);
   background: #fff;
   color: var(--color-primary-500);
-  font-size: 12.5px;
+  font-size: 0.78125rem;
   font-weight: 600;
   cursor: pointer;
   display: flex;
@@ -198,7 +198,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 12px;
+  font-size: 0.75rem;
   flex-shrink: 0;
 }
 
@@ -210,7 +210,7 @@
 }
 
 .historyTitle {
-  font-size: 13px;
+  font-size: 0.8125rem;
   font-weight: 600;
   color: var(--color-ink-900);
   white-space: nowrap;
@@ -219,7 +219,7 @@
 }
 
 .historyMeta {
-  font-size: 10px;
+  font-size: 0.625rem;
   color: #A9A3C2;
 }
 
@@ -236,7 +236,7 @@
 }
 
 .chatHint {
-  font-size: 12px;
+  font-size: 0.75rem;
   color: rgba(27, 22, 63, 0.5);
   text-align: center;
   margin: auto;
@@ -260,15 +260,15 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 13px;
+  font-size: 0.8125rem;
   flex-shrink: 0;
 }
 
 .bubble {
   max-width: 72%;
   padding: 11px 16px;
-  font-size: 14px;
-  line-height: 21px;
+  font-size: 0.875rem;
+  line-height: 1.3125rem;
   white-space: pre-wrap;
   word-break: break-word;
 }
@@ -293,7 +293,7 @@
 
 .fallbackTag {
   margin-top: 5px;
-  font-size: 10.5px;
+  font-size: 0.65625rem;
   opacity: 0.6;
 }
 
@@ -319,7 +319,7 @@
   flex-shrink: 0;
   padding: 6px 16px 0;
   margin: 0;
-  font-size: 11px;
+  font-size: 0.6875rem;
   color: var(--color-danger);
   background: #FAF9FF;
 }
@@ -341,7 +341,7 @@
   border: 1px solid var(--color-primary-400);
   background: #fff;
   color: var(--color-primary-500);
-  font-size: 13px;
+  font-size: 0.8125rem;
   font-weight: 600;
   white-space: nowrap;
   cursor: pointer;
@@ -384,7 +384,7 @@
   border: none;
   background: transparent;
   font-family: 'IBM Plex Sans KR', sans-serif;
-  font-size: 13px;
+  font-size: 0.8125rem;
   color: var(--color-ink-900);
 }
 
@@ -404,7 +404,7 @@
   border-radius: 999px;
   background: var(--color-primary-500);
   color: #fff;
-  font-size: 15px;
+  font-size: 0.9375rem;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -433,21 +433,21 @@
 }
 
 .congestionEyebrow {
-  font-size: 11px;
+  font-size: 0.6875rem;
   font-weight: 600;
   color: var(--color-primary-500);
   letter-spacing: 0.4px;
 }
 
 .congestionTitle {
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 600;
   color: var(--color-ink-900);
   margin-top: 4px;
 }
 
 .congestionDesc {
-  font-size: 11.5px;
+  font-size: 0.71875rem;
   color: #8E88A8;
   margin-bottom: 6px;
 }
@@ -477,7 +477,7 @@
 }
 
 .congestionBarLabel {
-  font-size: 9px;
+  font-size: 0.5625rem;
   color: #A9A3C2;
 }
 
@@ -493,7 +493,7 @@
   display: flex;
   align-items: center;
   gap: 5px;
-  font-size: 10px;
+  font-size: 0.625rem;
   color: #8E88A8;
 }
 
@@ -517,7 +517,7 @@
   padding: 12px 0;
   border: none;
   background: transparent;
-  font-size: 20px;
+  font-size: 1.25rem;
   color: #C0BCD8;
   cursor: pointer;
 }

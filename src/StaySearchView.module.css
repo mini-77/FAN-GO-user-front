@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600&family=Urbanist:wght@400;600;700&family=Inter:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600&family=Urbanist:wght@400;600;700&display=swap');
 
 .screen {
   min-height: 100vh;
@@ -55,7 +55,7 @@
   border: 1px solid var(--color-primary-200);
   color: var(--color-primary-500);
   font-family: 'Urbanist', sans-serif;
-  font-size: 13px;
+  font-size: 0.8125rem;
   font-weight: 600;
   display: flex;
   align-items: center;
@@ -66,9 +66,9 @@
 /* 화면 타이틀은 20px Bold (일반 H1 22px과 별도 기준) - 여행 만들기 단계별(마법사) 화면 통일,
    ActivityPreferenceView/PaceView/ArtistSelectView와 동일 기준 (2026-09-14) */
 .title {
-  font-size: 20px;
+  font-size: 1.25rem;
   font-weight: 700;
-  line-height: 28px;
+  line-height: 1.75rem;
   letter-spacing: -0.3px;
   color: var(--color-ink-900);
   margin: 0;
@@ -86,7 +86,7 @@
 
 .search-icon {
   color: var(--color-primary-500);
-  font-size: 14px;
+  font-size: 0.875rem;
 }
 
 .search-input {
@@ -94,7 +94,7 @@
   border: none;
   background: transparent;
   font-family: 'IBM Plex Sans KR', sans-serif;
-  font-size: 14px;
+  font-size: 0.875rem;
   color: var(--color-ink-900);
   outline: none;
 }
@@ -107,7 +107,7 @@
   border: none;
   background: rgba(27, 22, 63, 0.14);
   color: #fff;
-  font-size: 10px;
+  font-size: 0.625rem;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -135,7 +135,7 @@
   justify-content: center;
   padding: 0 24px;
   text-align: center;
-  font-size: 12px;
+  font-size: 0.75rem;
   color: rgba(27, 22, 63, 0.5);
   background: #EEF0FB;
 }
@@ -151,7 +151,7 @@
   border: 1px solid var(--color-primary-200);
   box-shadow: 0 4px 12px -4px rgba(63, 52, 140, 0.25);
   color: var(--color-primary-500);
-  font-size: 14px;
+  font-size: 0.875rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -167,7 +167,7 @@
   border-radius: 20px;
   background: rgba(255, 255, 255, 0.95);
   border: 1px solid var(--color-primary-200);
-  font-size: 11px;
+  font-size: 0.6875rem;
   color: rgba(27, 22, 63, 0.65);
   z-index: 2;
 }
@@ -198,13 +198,13 @@
 }
 
 .result-list-name {
-  font-size: 12.5px;
+  font-size: 0.78125rem;
   font-weight: 600;
   color: var(--color-ink-900);
 }
 
 .result-list-address {
-  font-size: 10.5px;
+  font-size: 0.65625rem;
   color: rgba(27, 22, 63, 0.55);
 }
 
@@ -250,7 +250,7 @@
   align-items: center;
   justify-content: center;
   color: #fff;
-  font-size: 14px;
+  font-size: 0.875rem;
 }
 
 .result-name-row {
@@ -260,7 +260,7 @@
 }
 
 .result-name {
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 600;
   color: var(--color-ink-900);
 }
@@ -269,19 +269,19 @@
   padding: 1px 7px;
   background: #fff;
   border-radius: 20px;
-  font-size: 10px;
+  font-size: 0.625rem;
   color: var(--color-primary-500);
 }
 
 .result-address {
-  font-size: 12px;
+  font-size: 0.75rem;
   color: rgba(27, 22, 63, 0.7);
   margin: 3px 0 0;
 }
 
 .result-detail {
-  font-family: 'Inter', sans-serif;
-  font-size: 11px;
+  font-family: 'IBM Plex Sans KR', sans-serif;
+  font-size: 0.6875rem;
   color: rgba(27, 22, 63, 0.55);
   margin: 1px 0 0;
 }
@@ -294,7 +294,7 @@
 
 .stay-label {
   font-family: 'Urbanist', sans-serif;
-  font-size: 10px;
+  font-size: 0.625rem;
   font-weight: 600;
   letter-spacing: 1.4px;
   color: rgba(27, 22, 63, 0.55);
@@ -305,13 +305,13 @@
   padding: 1px 8px;
   background: var(--color-primary-100);
   border-radius: 20px;
-  font-size: 11px;
+  font-size: 0.6875rem;
   font-weight: 600;
   color: var(--color-primary-500);
 }
 
 .field-label {
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 400;
   letter-spacing: 0.18px;
   color: rgba(27, 22, 63, 0.65);
@@ -328,7 +328,7 @@
   border: none;
   padding: 6px;
   color: var(--color-primary-500);
-  font-size: 13px;
+  font-size: 0.8125rem;
   font-weight: 600;
   cursor: pointer;
 }
@@ -342,7 +342,7 @@
   background: var(--color-primary-500);
   box-shadow: 0 8px 18px -6px rgba(109, 87, 252, 0.6);
   color: #fff;
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 600;
   cursor: pointer;
 }

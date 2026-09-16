@@ -272,7 +272,7 @@ export default function ItineraryView() {
             </p>
             {dayErrorByDay[activeDay] && (
               <>
-                <p className={styles['day-label']} style={{ color: 'var(--color-danger)', fontSize: 11, opacity: 0.8 }}>
+                <p className={styles['day-label']} style={{ color: 'var(--color-danger)', fontSize: '0.6875rem', opacity: 0.8 }}>
                   {dayErrorByDay[activeDay]}
                 </p>
                 <button
@@ -286,7 +286,7 @@ export default function ItineraryView() {
                     border: '1px solid var(--color-danger)',
                     background: '#fff',
                     color: 'var(--color-danger)',
-                    fontSize: 12,
+                    fontSize: '0.75rem',
                     fontWeight: 600,
                     cursor: 'pointer',
                   }}

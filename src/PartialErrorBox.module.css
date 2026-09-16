@@ -13,7 +13,7 @@
 
 .message {
   margin: 0;
-  font-size: 12.5px;
+  font-size: 0.78125rem;
   line-height: 1.5;
   color: var(--color-ink-600);
 }
@@ -26,7 +26,7 @@
   border: var(--button-border-outline);
   background: #fff;
   color: var(--color-ink-900);
-  font-size: 12.5px;
+  font-size: 0.78125rem;
   font-weight: 600;
   cursor: pointer;
 }

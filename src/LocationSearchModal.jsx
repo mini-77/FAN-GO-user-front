@@ -250,7 +250,7 @@ export default function LocationSearchModal({ title, initialPlace, onConfirm, on
                 padding: '6px 9px',
                 borderRadius: 999,
                 background: 'rgba(255,255,255,0.94)',
-                fontSize: 11,
+                fontSize: '0.6875rem',
                 fontWeight: 600,
               }}
             >
@@ -324,9 +324,9 @@ export default function LocationSearchModal({ title, initialPlace, onConfirm, on
               background: '#FAF9FF',
             }}
           >
-            <div style={{ fontSize: 13, fontWeight: 700 }}>{pickedPlace.name}</div>
-            <div style={{ marginTop: 4, fontSize: 11.5, color: 'rgba(27,22,63,0.58)' }}>{pickedPlace.address}</div>
-            <div style={{ marginTop: 5, fontSize: 11, color: 'var(--color-primary-500)' }}>
+            <div style={{ fontSize: '0.8125rem', fontWeight: 700 }}>{pickedPlace.name}</div>
+            <div style={{ marginTop: 4, fontSize: '0.71875rem', color: 'rgba(27,22,63,0.58)' }}>{pickedPlace.address}</div>
+            <div style={{ marginTop: 5, fontSize: '0.6875rem', color: 'var(--color-primary-500)' }}>
               {t('locationSearch.dragHint')}
             </div>
           </div>

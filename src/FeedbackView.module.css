@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600&family=Urbanist:wght@400;600;700&family=Inter:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600&family=Urbanist:wght@400;600;700&display=swap');
 
 .screen {
   min-height: 100vh;
@@ -44,9 +44,9 @@
 .title {
   margin: 0;
   font-family: 'IBM Plex Sans KR', sans-serif;
-  font-size: 22px;
+  font-size: 1.25rem; /* 2026-09-15 갱신: 22px -> 20px (design-tokens_v2 --text-h1) */
   font-weight: 700;
-  line-height: 28px;
+  line-height: 1.75rem;
   letter-spacing: -0.3px;
   color: var(--color-ink-900);
 }
@@ -54,9 +54,9 @@
 .subtitle {
   margin: 0;
   font-family: 'IBM Plex Sans KR', sans-serif;
-  font-size: 12.5px;
+  font-size: 0.78125rem;
   font-weight: 400;
-  line-height: 21.88px;
+  line-height: 1.3675rem;
   color: rgba(27, 22, 63, 0.62);
 }
 
@@ -89,8 +89,8 @@
 
 .star {
   font-family: Arial, sans-serif;
-  font-size: 30px;
-  line-height: 30px;
+  font-size: 1.875rem;
+  line-height: 1.875rem;
   color: rgba(27, 22, 63, 0.22);
   transition: color 0.15s ease;
 }
@@ -103,7 +103,7 @@
   flex: 1;
   text-align: right;
   font-family: 'IBM Plex Sans KR', sans-serif;
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 600;
   color: rgba(27, 22, 63, 0.6);
 }
@@ -122,7 +122,7 @@
 
 .partial-error-text {
   margin: 0;
-  font-size: 12.5px;
+  font-size: 0.78125rem;
   line-height: 1.5;
   color: var(--color-ink-600);
 }
@@ -134,7 +134,7 @@
   border: var(--button-border-outline);
   background: #fff;
   color: var(--color-ink-900);
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 600;
   cursor: pointer;
 }
@@ -152,9 +152,9 @@
 .sectionLabel {
   margin: 0;
   font-family: 'IBM Plex Sans KR', sans-serif;
-  font-size: 11.5px;
+  font-size: 0.71875rem;
   font-weight: 400;
-  line-height: 17.83px;
+  line-height: 1.11437rem;
   color: rgba(27, 22, 63, 0.55);
 }
 
@@ -173,7 +173,7 @@
   border: 1px solid var(--color-primary-200);
   border-radius: 20px;
   font-family: 'IBM Plex Sans KR', sans-serif;
-  font-size: 12.5px;
+  font-size: 0.78125rem;
   font-weight: 600;
   color: var(--color-ink-900);
   cursor: pointer;
@@ -194,8 +194,8 @@
   border: 1px solid var(--color-primary-200);
   border-radius: 12px;
   font-family: 'IBM Plex Sans KR', sans-serif;
-  font-size: 12px;
-  line-height: 19.2px;
+  font-size: 0.75rem;
+  line-height: 1.2rem;
   color: var(--color-ink-900);
   resize: vertical;
   box-sizing: border-box;
@@ -228,9 +228,9 @@
   border: 1.11px solid var(--color-primary-200);
   border-radius: 20px;
   font-family: 'IBM Plex Sans KR', sans-serif;
-  font-size: 12.5px;
+  font-size: 0.78125rem;
   font-weight: 600;
-  line-height: 18.75px;
+  line-height: 1.17188rem;
   color: var(--color-ink-900);
   cursor: pointer;
   transition: background 0.15s ease, border-color 0.15s ease;
@@ -242,7 +242,7 @@
 }
 
 .placeThumb {
-  font-size: 12px;
+  font-size: 0.75rem;
   width: 14px;
   display: inline-block;
   text-align: center;
@@ -272,9 +272,9 @@
   background: transparent;
   padding: 8px 4px;
   font-family: 'IBM Plex Sans KR', sans-serif;
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 600;
-  line-height: 16.8px;
+  line-height: 1.05rem;
   letter-spacing: 0.21px;
   color: var(--color-primary-500);
   cursor: pointer;
@@ -290,9 +290,9 @@
   border: none;
   border-radius: 12px;
   font-family: 'IBM Plex Sans KR', sans-serif;
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 600;
-  line-height: 16.8px;
+  line-height: 1.05rem;
   letter-spacing: 0.21px;
   color: #ffffff;
   cursor: pointer;
@@ -346,7 +346,7 @@
 
 .doneTitle {
   font-family: 'IBM Plex Sans KR', sans-serif;
-  font-size: 17px;
+  font-size: 1.0625rem;
   font-weight: 600;
   color: #262232;
   margin: 0;
@@ -354,7 +354,7 @@
 
 .doneSub {
   font-family: 'IBM Plex Sans KR', sans-serif;
-  font-size: 13px;
+  font-size: 0.8125rem;
   color: #8B8797;
   margin: 0 0 16px;
 }

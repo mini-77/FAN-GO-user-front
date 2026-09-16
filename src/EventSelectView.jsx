@@ -150,6 +150,10 @@ export default function EventSelectView() {
   }, [groupFilter])
 
   const dayCards = useMemo(() => events.flatMap((ev) => expandEventToDayCards(ev, t)), [events, t])
+  // 안내문에 "그 그룹의 다가오는 행사만" 처럼 방금 고른 그룹명을 그대로 넣어줌
+  // (20260915 화면1 참고본 - 안내문이 선택한 아티스트 그룹명을 직접 보여줌)
+  const selectedGroupName =
+    favoriteGroups.find((g) => String(g.artist_group_no) === String(groupFilter))?.group_nm || ''
 
   // 이벤트마다 포스터 사진을 매번 등록/교체할 수 없어서, 사진을 보여주는 정보확인
   // 팝업은 없애고 리스트에서 바로 선택만 하는 방식으로 단순화함 (하단 요약에 선택 내용 표시)
@@ -223,7 +227,7 @@ export default function EventSelectView() {
           )}
           {groupFilter && (
             <p className={styles.hint}>
-              {t('eventSelect.filterHint')}
+              {t('eventSelect.filterHint')(selectedGroupName)}
             </p>
           )}
           {groupFilter && isLoading && <p className={styles.hint}>{t('eventSelect.loadingEvents')}</p>}
@@ -252,6 +256,9 @@ export default function EventSelectView() {
                     <span className={styles['event-title']}>{card.title}</span>
                     <span className={styles['event-venue']}>{card.address}</span>
                   </div>
+                  <span className={styles['event-check']}>
+                    {isSelected && <Icon name="check" size={12} strokeWidth={3} color="#fff" />}
+                  </span>
                 </div>
               )
             })}

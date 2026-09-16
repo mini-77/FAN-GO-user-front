@@ -1,0 +1,111 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&family=Urbanist:wght@700;800&display=swap" rel="stylesheet">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <style>
+    :root{
+      --primary:#6D57FC; --primary-50:#F5F3FF; --primary-100:#E4DEFF;
+      --ink-900:#17161F; --ink-700:#3A3B47; --ink-600:#5C5D6E; --ink-400:#93949F; --ink-200:#E2E2E9;
+      --line:#ECECF2; --bg:#FCFCFD;
+    }
+    *{ box-sizing:border-box; }
+    body{ margin:0; font-family:'IBM Plex Sans KR','Apple SD Gothic Neo',-apple-system,sans-serif; }
+    a{ color:var(--primary); } a:hover{ color:#4B36D6; }
+  </style>
+</helmet>
+
+<div style="width:390px; height:844px; background:#fff; display:flex; flex-direction:column; overflow:hidden;">
+
+  <!-- Header -->
+  <div style="flex:0 0 auto; background:var(--primary); padding:14px 16px; display:flex; align-items:center; gap:10px;">
+    <div style="width:28px;height:28px;border-radius:12px;background:rgba(255,255,255,.22);display:flex;align-items:center;justify-content:center;color:#fff;font-size:15px;">‹</div>
+    <div style="flex:1; text-align:center; margin-right:26px; font-family:'Urbanist',sans-serif; font-weight:800; letter-spacing:.02em; color:#fff; font-size:13.5px;">FAN : GO</div>
+    <div style="display:flex; align-items:center; gap:2px; background:#fff; color:var(--primary); font-weight:700; font-size:11.5px; padding:3px 10px; border-radius:20px; height:22px;">KR
+      <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="3"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+  </div>
+
+  <div style="flex:1 1 auto; overflow-y:auto; padding:20px 16px 0;">
+
+    <!-- Step progress -->
+    <div style="display:flex; justify-content:space-between; font-size:11px; color:var(--ink-400); margin-bottom:8px;">
+      <span>1 / 4</span><span>25%</span>
+    </div>
+    <div style="height:3px; background:var(--ink-200); border-radius:2px; margin-bottom:24px; overflow:hidden;">
+      <div style="width:25%; height:100%; background:var(--primary);"></div>
+    </div>
+
+    <h1 style="font-size:20px; font-weight:700; color:var(--ink-900); margin:0 0 6px;">어떤 행사를 참여하시나요?</h1>
+    <p style="font-size:14px; color:var(--ink-600); margin:0 0 24px; line-height:1.5;">참여하시는 행사의 아티스트와 행사를 선택해 주세요.</p>
+
+    <!-- Section: 아티스트 그룹 선택 -->
+    <div style="font-size:12px; font-weight:700; color:var(--ink-700); margin-bottom:8px;">아티스트 그룹 선택</div>
+    <div style="display:flex; align-items:center; justify-content:space-between; border:1.5px solid var(--line); border-radius:11px; padding:13px 15px; margin-bottom:24px;">
+      <span style="font-size:13.5px; font-weight:700; color:var(--ink-900);">엔시티 127 (NCT 127)</span>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--ink-600)" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+
+    <!-- Section: 참여 행사 선택 -->
+    <div style="font-size:12px; font-weight:700; color:var(--ink-700); margin-bottom:8px;">참여 행사 선택</div>
+    <p style="font-size:12.5px; color:var(--ink-600); margin:0 0 16px; line-height:1.5;">엔시티 127의 다가오는 행사만 보여드려요. 하나만 고를 수 있고, 고른 이벤트는 시작일시와 주소가 그대로 지도에 꽂혀요.</p>
+
+    <div style="display:flex; flex-direction:column;">
+
+      <div style="display:flex; gap:14px; padding:14px 8px; border-radius:12px; background:var(--primary-50); border:1.5px solid var(--primary);">
+        <div style="width:52px; flex:0 0 auto; text-align:center;">
+          <div style="font-size:14px; font-weight:700; color:var(--primary);">09.18</div>
+          <div style="font-size:11px; color:var(--ink-600); margin-top:2px;">19:00</div>
+        </div>
+        <div style="flex:1; border-left:1px solid var(--primary-100); padding-left:14px;">
+          <div style="font-size:13.5px; font-weight:700; color:var(--ink-900); line-height:1.35;">NCT 127 5TH TOUR 'NEO CITY : SEOUL - THE REDLINE' - 서울(9/18)</div>
+          <div style="font-size:11px; color:var(--ink-600); margin-top:4px;">서울 송파구 올림픽로 424</div>
+        </div>
+        <div style="width:22px;height:22px;border-radius:50%;background:var(--primary);display:flex;align-items:center;justify-content:center; flex:0 0 auto;">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>
+        </div>
+      </div>
+
+      <div style="display:flex; gap:14px; padding:14px 8px; border-bottom:1px solid var(--line);">
+        <div style="width:52px; flex:0 0 auto; text-align:center;">
+          <div style="font-size:14px; font-weight:700; color:var(--ink-900);">09.19</div>
+          <div style="font-size:11px; color:var(--ink-600); margin-top:2px;">17:00</div>
+        </div>
+        <div style="flex:1; border-left:1px solid var(--line); padding-left:14px;">
+          <div style="font-size:13.5px; font-weight:700; color:var(--ink-900); line-height:1.35;">NCT 127 5TH TOUR 'NEO CITY : SEOUL - THE REDLINE' - 서울(9/19)</div>
+          <div style="font-size:11px; color:var(--ink-600); margin-top:4px;">서울 송파구 올림픽로 424</div>
+        </div>
+        <div style="width:22px;height:22px;border-radius:50%;border:1.5px solid var(--ink-200); flex:0 0 auto;"></div>
+      </div>
+
+      <div style="display:flex; gap:14px; padding:14px 8px; border-bottom:1px solid var(--line);">
+        <div style="width:52px; flex:0 0 auto; text-align:center;">
+          <div style="font-size:14px; font-weight:700; color:var(--ink-900);">09.20</div>
+          <div style="font-size:11px; color:var(--ink-600); margin-top:2px;">16:00</div>
+        </div>
+        <div style="flex:1; border-left:1px solid var(--line); padding-left:14px;">
+          <div style="font-size:13.5px; font-weight:700; color:var(--ink-900); line-height:1.35;">NCT 127 5TH TOUR 'NEO CITY : SEOUL - THE REDLINE' - 서울(9/20)</div>
+          <div style="font-size:11px; color:var(--ink-600); margin-top:4px;">서울 송파구 올림픽로 424</div>
+        </div>
+        <div style="width:22px;height:22px;border-radius:50%;border:1.5px solid var(--ink-200); flex:0 0 auto;"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Bottom fixed summary + CTA -->
+  <div style="flex:0 0 auto; padding:12px 16px 20px; border-top:1px solid var(--line); background:#fff;">
+    <div style="font-size:12px; font-weight:400; color:var(--ink-600); margin-bottom:8px;">NCT 127 5TH TOUR ... - 서울(9/18) · 09.18 · 19:00</div>
+    <div style="height:52px; border-radius:12px; background:var(--primary); color:#fff; display:flex; align-items:center; justify-content:center; font-size:13.5px; font-weight:700;">추천 기간 · 숙소 선택</div>
+  </div>
+
+</div>
+</x-dc>
+</body>
+</html>

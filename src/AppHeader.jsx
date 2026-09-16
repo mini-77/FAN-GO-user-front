@@ -155,18 +155,21 @@ export default function AppHeader({ showBack = true, showProfile = true, onBack,
           </button>
 
           {isLangMenuOpen && (
-            <div className={styles['lang-menu']}>
-              {langOptions.map(({ code, label }) => (
-                <button
-                  type="button"
-                  key={code}
-                  className={`${styles['lang-item']} ${code === language ? styles['lang-item-active'] : ''}`}
-                  onClick={() => handleSelectLanguage(code)}
-                >
-                  {label}
-                </button>
-              ))}
-            </div>
+            <>
+              <div className={styles['lang-menu-dim']} onClick={closeLangMenu} />
+              <div className={styles['lang-menu']}>
+                {langOptions.map(({ code, label }) => (
+                  <button
+                    type="button"
+                    key={code}
+                    className={`${styles['lang-item']} ${code === language ? styles['lang-item-active'] : ''}`}
+                    onClick={() => handleSelectLanguage(code)}
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
+            </>
           )}
         </div>
 

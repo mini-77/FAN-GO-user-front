@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600&family=Urbanist:wght@400;600;700&family=Inter:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600&family=Urbanist:wght@400;600;700&display=swap');
 
 .screen {
   min-height: 100vh;
@@ -38,16 +38,16 @@
 }
 
 .title {
-  font-size: 22px;
+  font-size: 1.25rem; /* 2026-09-15 갱신: 22px -> 20px (design-tokens_v2 --text-h1) */
   font-weight: 700;
-  line-height: 28px;
+  line-height: 1.75rem;
   letter-spacing: -0.3px;
   color: var(--color-ink-900);
   margin: 0;
 }
 
 .date {
-  font-family: 'Inter', sans-serif;
+  font-family: 'IBM Plex Sans KR', sans-serif;
 }
 
 /* 07 탭&진행표시 - 세그먼트 탭: 개별 보더 박스가 아니라 트랙(연보라 배경) 안에
@@ -68,8 +68,8 @@
   border-radius: 8px;
   background: transparent;
   color: var(--color-ink-600);
-  font-family: 'Inter', sans-serif;
-  font-size: 11px;
+  font-family: 'IBM Plex Sans KR', sans-serif;
+  font-size: 0.6875rem;
   font-weight: 600;
   cursor: pointer;
 }
@@ -106,7 +106,7 @@
 }
 
 .place-name {
-  font-size: 15px;
+  font-size: 0.9375rem;
   font-weight: 600;
   color: var(--color-ink-900);
   overflow: hidden;
@@ -116,14 +116,14 @@
 
 .place-sub {
   font-family: 'Urbanist', sans-serif;
-  font-size: 12px;
+  font-size: 0.75rem;
   color: rgba(27, 22, 63, 0.6);
 }
 
 .place-tag {
   width: 56px;
   min-width: 56px;
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 700;
   color: var(--color-primary-500);
   white-space: nowrap;
@@ -136,7 +136,7 @@
   border: 1px solid var(--color-primary-200);
   color: #757575;
   font-family: 'Urbanist', sans-serif;
-  font-size: 11px;
+  font-size: 0.6875rem;
   font-weight: 600;
   cursor: pointer;
   white-space: nowrap;
@@ -160,20 +160,20 @@
 }
 
 .event-name {
-  font-size: 15px;
+  font-size: 0.9375rem;
   font-weight: 600;
   color: var(--color-ink-900);
 }
 
 .event-sub {
   font-family: 'Urbanist', sans-serif;
-  font-size: 12px;
+  font-size: 0.75rem;
   color: rgba(27, 22, 63, 0.6);
 }
 
 .event-hours {
-  font-family: 'Inter', sans-serif;
-  font-size: 13px;
+  font-family: 'IBM Plex Sans KR', sans-serif;
+  font-size: 0.8125rem;
   font-weight: 600;
   color: #757575;
   white-space: nowrap;
@@ -195,15 +195,15 @@
 }
 
 .event-time-label {
-  font-family: 'Inter', sans-serif;
-  font-size: 13px;
+  font-family: 'IBM Plex Sans KR', sans-serif;
+  font-size: 0.8125rem;
   font-weight: 600;
   color: var(--color-ink-600);
 }
 
 .event-time-big {
-  font-family: 'Inter', sans-serif;
-  font-size: 22px;
+  font-family: 'IBM Plex Sans KR', sans-serif;
+  font-size: 1.375rem;
   font-weight: 600;
   color: var(--color-ink-900);
 }
@@ -212,7 +212,7 @@
   padding: 40px 16px;
   text-align: center;
   color: rgba(27, 22, 63, 0.4);
-  font-size: 13px;
+  font-size: 0.8125rem;
 }
 
 /* 08 부분 영역 에러 - 옅은 회색(#F7F7FA) 박스, "다시 시도" 1개만 작게(Small, Outline) */
@@ -230,7 +230,7 @@
 
 .partial-error-text {
   margin: 0;
-  font-size: 12.5px;
+  font-size: 0.78125rem;
   line-height: 1.5;
   color: var(--color-ink-600);
 }
@@ -242,7 +242,7 @@
   border: var(--button-border-outline);
   background: #fff;
   color: var(--color-ink-900);
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 600;
   cursor: pointer;
 }
@@ -267,7 +267,7 @@
   background: var(--color-primary-50);
   border: 1px solid var(--color-primary-200);
   color: var(--color-ink-900);
-  font-size: 13.5px;
+  font-size: 0.84375rem;
   font-weight: 600;
   cursor: pointer;
 }
@@ -279,7 +279,7 @@
   background: var(--color-primary-500);
   border: none;
   color: #fff;
-  font-size: 13.5px;
+  font-size: 0.84375rem;
   font-weight: 600;
   cursor: pointer;
 }
@@ -303,14 +303,14 @@
 
 .feedback-banner-text {
   flex: 1;
-  font-size: 12.5px;
+  font-size: 0.78125rem;
   font-weight: 600;
   color: var(--color-primary-500);
 }
 
 .feedback-banner-arrow {
   color: var(--color-primary-500);
-  font-size: 18px;
+  font-size: 1.125rem;
 }
 
 /* ---- 위치변경 지도 검색 오버레이 ---- */
@@ -341,7 +341,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 13px;
+  font-size: 0.8125rem;
   font-weight: 600;
   color: var(--color-ink-900);
 }
@@ -368,7 +368,7 @@
 
 .search-icon {
   color: var(--color-primary-500);
-  font-size: 14px;
+  font-size: 0.875rem;
 }
 
 .search-input {
@@ -376,7 +376,7 @@
   border: none;
   background: transparent;
   font-family: 'IBM Plex Sans KR', sans-serif;
-  font-size: 14px;
+  font-size: 0.875rem;
   color: var(--color-ink-900);
   outline: none;
 }
@@ -402,7 +402,7 @@
   justify-content: center;
   padding: 0 24px;
   text-align: center;
-  font-size: 12px;
+  font-size: 0.75rem;
   color: rgba(27, 22, 63, 0.5);
   background: #EEF0FB;
 }
@@ -432,13 +432,13 @@
 }
 
 .result-list-name {
-  font-size: 12.5px;
+  font-size: 0.78125rem;
   font-weight: 600;
   color: var(--color-ink-900);
 }
 
 .result-list-address {
-  font-size: 10.5px;
+  font-size: 0.65625rem;
   color: rgba(27, 22, 63, 0.55);
 }
 /* 실제 폰 화면(카드 최대폭보다 좁은 뷰포트)에서는 데스크톱 미리보기용 "폰 목업" 프레임

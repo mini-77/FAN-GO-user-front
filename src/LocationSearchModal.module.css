@@ -26,7 +26,7 @@
   align-items: center;
   justify-content: space-between;
   border-bottom: 1px solid var(--color-border);
-  font-size: 15px;
+  font-size: 0.9375rem;
   font-weight: 700;
   color: var(--color-ink-900);
 }
@@ -40,7 +40,7 @@
   border: none;
   background: #F1F0F6;
   color: #49475B;
-  font-size: 13px;
+  font-size: 0.8125rem;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -75,7 +75,7 @@
 
 .search-icon {
   color: #A9A3C2;
-  font-size: 15px;
+  font-size: 0.9375rem;
 }
 
 .search-input {
@@ -84,7 +84,7 @@
   outline: none;
   background: transparent;
   font-family: 'IBM Plex Sans KR', sans-serif;
-  font-size: 14px;
+  font-size: 0.875rem;
   color: var(--color-ink-900);
 }
 
@@ -113,7 +113,7 @@
   align-items: center;
   justify-content: center;
   background: rgba(255, 255, 255, 0.85);
-  font-size: 12.5px;
+  font-size: 0.78125rem;
   color: rgba(27, 22, 63, 0.6);
   text-align: center;
   padding: 0 24px;
@@ -121,7 +121,7 @@
 
 .hint {
   margin: 10px 16px 0;
-  font-size: 12px;
+  font-size: 0.75rem;
   color: rgba(27, 22, 63, 0.55);
 }
 
@@ -154,13 +154,13 @@
 }
 
 .result-list-name {
-  font-size: 13.5px;
+  font-size: 0.84375rem;
   font-weight: 600;
   color: var(--color-ink-900);
 }
 
 .result-list-address {
-  font-size: 11.5px;
+  font-size: 0.71875rem;
   color: rgba(27, 22, 63, 0.55);
 }
 
@@ -174,7 +174,7 @@
   border-radius: 12px;
   background: var(--color-primary-500);
   color: #fff;
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 600;
   letter-spacing: 0.21px;
   cursor: pointer;

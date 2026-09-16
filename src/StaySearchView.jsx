@@ -485,7 +485,7 @@ export default function StaySearchView() {
 
           {/* 06 버튼 규칙 - 정보(숙박일수)는 버튼 밖 캡션으로, 버튼엔 행동만 담음 */}
           {!isLocationOnlyMode && nights && selected && (
-            <p style={{ margin: '0 0 8px', fontSize: 12.5, color: 'var(--color-ink-600)' }}>
+            <p style={{ margin: '0 0 8px', fontSize: '0.78125rem', color: 'var(--color-ink-600)' }}>
               {t('stay.nightsWithName')(nights, selected.name)}
             </p>
           )}

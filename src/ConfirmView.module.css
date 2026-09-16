@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=Urbanist:wght@400;600;700&family=Inter:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=Urbanist:wght@400;600;700&display=swap');
 
 .screen {
   min-height: 100vh;
@@ -51,7 +51,7 @@
   border: 1px solid var(--color-primary-200);
   color: var(--color-primary-600);
   font-family: 'Urbanist', sans-serif;
-  font-size: 13px;
+  font-size: 0.8125rem;
   font-weight: 600;
   display: flex;
   align-items: center;
@@ -61,8 +61,8 @@
 
 .step-label {
   margin-left: auto;
-  font-family: 'Inter', sans-serif;
-  font-size: 11px;
+  font-family: 'IBM Plex Sans KR', sans-serif;
+  font-size: 0.6875rem;
   font-weight: 600;
   color: var(--color-ink-900);
 }
@@ -70,9 +70,9 @@
 /* 화면 타이틀은 20px Bold (일반 H1 22px과 별도 기준) - 여행 만들기 단계별(마법사) 화면 통일,
    ActivityPreferenceView/PaceView/ArtistSelectView와 동일 기준 (2026-09-14) */
 .title {
-  font-size: 20px;
+  font-size: 1.25rem;
   font-weight: 700;
-  line-height: 28px;
+  line-height: 1.75rem;
   letter-spacing: -0.3px;
   color: var(--color-ink-900);
   margin: 0;
@@ -97,8 +97,8 @@
   display: flex;
   justify-content: space-between;
   margin-top: 6px;
-  font-family: 'Inter', sans-serif;
-  font-size: 11px;
+  font-family: 'IBM Plex Sans KR', sans-serif;
+  font-size: 0.6875rem;
   font-weight: 500;
   color: var(--color-ink-400);
 }
@@ -124,21 +124,21 @@
 }
 
 .summary-label {
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 400;
   letter-spacing: 0.3px;
   color: #B5B2C2;
 }
 
 .summary-value {
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 600;
   line-height: 1.45;
   color: var(--color-ink-900);
 }
 
 .summary-sub {
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 400;
   line-height: 1.5;
   color: var(--color-ink-900);
@@ -156,14 +156,14 @@
 }
 
 .event-title {
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 700;
   line-height: 1.4;
   color: var(--color-primary-600);
 }
 
 .event-sub {
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 400;
   line-height: 1.5;
   color: rgba(90, 69, 224, 0.75);
@@ -179,7 +179,7 @@
 
 .pace-label {
   font-family: 'Urbanist', sans-serif;
-  font-size: 10px;
+  font-size: 0.625rem;
   font-weight: 600;
   letter-spacing: 1.4px;
   color: rgba(27, 22, 63, 0.55);
@@ -209,8 +209,8 @@
 .pace-letter {
   width: 22px;
   color: #49475B;
-  font-family: 'Inter', sans-serif;
-  font-size: 15px;
+  font-family: 'IBM Plex Sans KR', sans-serif;
+  font-size: 0.9375rem;
   font-weight: 600;
 }
 
@@ -222,20 +222,20 @@
 }
 
 .pace-name {
-  font-size: 13px;
+  font-size: 0.8125rem;
   font-weight: 600;
   color: #49475B;
 }
 
 .pace-desc {
   font-family: 'Urbanist', sans-serif;
-  font-size: 11.5px;
+  font-size: 0.71875rem;
   color: var(--color-ink-900);
 }
 
 .pace-check {
   font-family: 'Urbanist', sans-serif;
-  font-size: 11px;
+  font-size: 0.6875rem;
   font-weight: 600;
   color: var(--color-ink-900);
 }
@@ -251,7 +251,7 @@
 }
 
 .footer-note {
-  font-size: 11.5px;
+  font-size: 0.71875rem;
   font-weight: 400;
   color: rgba(27, 22, 63, 0.55);
 }
@@ -266,7 +266,7 @@
   border-radius: 12px;
   background: var(--color-primary-500);
   color: #fff;
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 600;
   letter-spacing: 0.21px;
   cursor: pointer;

@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600&family=Urbanist:wght@400;600;700&family=Inter:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600&family=Urbanist:wght@400;600;700&display=swap');
 
 .screen {
   min-height: 100vh;
@@ -57,7 +57,7 @@
   border: 1px solid var(--color-primary-200);
   color: var(--color-primary-500);
   font-family: 'Urbanist', sans-serif;
-  font-size: 13px;
+  font-size: 0.8125rem;
   font-weight: 600;
   display: flex;
   align-items: center;
@@ -67,23 +67,26 @@
 
 .step-label {
   margin-left: auto;
-  font-family: 'Inter', sans-serif;
-  font-size: 11px;
+  font-family: 'IBM Plex Sans KR', sans-serif;
+  font-size: 0.6875rem;
   font-weight: 600;
   color: var(--color-ink-900);
 }
 
+/* 화면 타이틀 20px Bold - 이 화면도 .step-label/progress-bar가 있는 여행 만들기
+   단계별(마법사) 화면인데 14_step3_partial_implementation.md 1번 반영 때 누락됐던
+   것을 20260915 화면1 참고본(20px 확인)으로 완성함 */
 .title {
-  font-size: 22px;
+  font-size: 1.25rem;
   font-weight: 700;
-  line-height: 28px;
+  line-height: 1.75rem;
   letter-spacing: -0.3px;
   color: var(--color-ink-900);
   margin: 0;
 }
 
 .subcopy {
-  font-size: 13px;
+  font-size: 0.875rem;
   font-weight: 400;
   line-height: 1.5;
   color: var(--color-ink-600);
@@ -109,8 +112,8 @@
   display: flex;
   justify-content: space-between;
   margin-top: 6px;
-  font-family: 'Inter', sans-serif;
-  font-size: 11px;
+  font-family: 'IBM Plex Sans KR', sans-serif;
+  font-size: 0.6875rem;
   font-weight: 500;
   color: var(--color-ink-400);
 }
@@ -124,19 +127,22 @@
   gap: 6px;
 }
 
+/* 02 타이포그래피 "다중 선택 화면 텍스트 위계" - 섹션 라벨 12px Bold Ink-700
+   (20260915 화면1 참고본 "아티스트 그룹 선택"/"참여 행사 선택" 라벨과 동일 근거) */
 .field-label {
   display: block;
-  font-size: 12px;
-  font-weight: 400;
-  line-height: 18.6px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1.1625rem;
   letter-spacing: 0.18px;
-  color: rgba(27, 22, 63, 0.65);
+  color: var(--color-ink-700);
   margin-bottom: 5px;
 }
 
 /* 06 입력 필드 규칙 - 기본 1.5px #ECECF2 / Focus 1.5px Primary+Glow, radius는
    Medium(버튼·입력필드) 12px. 배경은 "공식 이벤트 기준" 필터임을 살짝 드러내려
-   연보라를 유지하되, 테두리·라운드·포커스 상태는 다른 입력 필드와 통일함 */
+   연보라를 유지하되, 테두리·라운드·포커스 상태는 다른 입력 필드와 통일함
+   (배경 유지는 명시적 과거 결정 - 20260915 화면1 참고본도 이 필드는 다루지 않아 그대로 둠) */
 .select {
   width: 100%;
   box-sizing: border-box;
@@ -146,7 +152,7 @@
   border-radius: 12px;
   background: var(--color-primary-50);
   font-family: 'IBM Plex Sans KR', sans-serif;
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 400;
   color: var(--color-ink-900);
   cursor: pointer;
@@ -163,9 +169,9 @@
 }
 
 .hint {
-  font-size: 11.5px;
+  font-size: 0.71875rem;
   font-weight: 400;
-  line-height: 18.4px;
+  line-height: 1.15rem;
   color: rgba(27, 22, 63, 0.55);
   margin: 0;
 }
@@ -186,7 +192,7 @@
   border: 1px solid var(--color-primary-200);
   background: #fff;
   color: var(--color-primary-500);
-  font-size: 12.5px;
+  font-size: 0.78125rem;
   font-weight: 600;
   cursor: pointer;
   display: flex;
@@ -204,11 +210,32 @@
   cursor: pointer;
 }
 
-/* 03 컬러 규칙 - 강조는 배경 전면 채움 대신 좌측 액센트 바로 (Primary 사용 비중 절제) */
+/* 정정 - 이 .pinned는 PDF "3·이벤트 리스트 고정 강조"(관리자가 고정한 이벤트, 좌측 액센트
+   바+흰배경)가 아니라, 이 화면(마법사 1/4단계)에서 사용자가 방금 "선택"한 카드 상태다.
+   20260915 화면1 참고본이 이 화면을 콕 집어 보여줌: 연보라 채움 + 1.5px Primary 풀보더 +
+   우측 원형 체크 배지. 이전 라운드에 "고정" 규칙으로 오인해 배경을 지웠던 것을 되돌림 */
 .event-row.pinned {
-  border-left: 4px solid var(--color-primary-500);
-  padding-left: 14px;
+  box-sizing: border-box;
+  border: 1.5px solid var(--color-primary-500);
+  border-radius: 12px;
   background: var(--color-primary-50);
+}
+
+/* 선택 여부를 나타내는 원형 배지 - 미선택 시 빈 테두리, 선택 시 Primary 채움+체크 아이콘 */
+.event-check {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 1.5px solid var(--color-ink-200);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.event-row.pinned .event-check {
+  border: none;
+  background: var(--color-primary-500);
 }
 
 .event-datetime {
@@ -220,18 +247,23 @@
 }
 
 .event-date {
-  font-family: 'Inter', sans-serif;
-  font-size: 12px;
+  font-family: 'IBM Plex Sans KR', sans-serif;
+  font-size: 0.75rem;
   font-weight: 600;
   color: var(--color-ink-900);
 }
 
 .event-time {
-  font-family: 'Inter', sans-serif;
-  font-size: 11px;
+  font-family: 'IBM Plex Sans KR', sans-serif;
+  font-size: 0.6875rem;
   font-weight: 600;
   color: var(--color-ink-900);
   opacity: 0.75;
+}
+
+/* 선택된 카드는 날짜 숫자도 Primary로 (20260915 화면1 참고본) */
+.event-row.pinned .event-date {
+  color: var(--color-primary-500);
 }
 
 
@@ -244,32 +276,17 @@
 }
 
 .event-title {
-  font-size: 13.5px;
+  font-size: 0.84375rem;
   font-weight: 600;
   color: var(--color-ink-900);
 }
 
 .event-venue {
   font-family: 'Urbanist', sans-serif;
-  font-size: 11.5px;
+  font-size: 0.71875rem;
   font-weight: 400;
   color: var(--color-ink-900);
   opacity: 0.72;
-}
-
-.event-toggle {
-  font-family: 'Urbanist', sans-serif;
-  font-size: 11px;
-  font-weight: 600;
-  color: rgba(27, 22, 63, 0.35);
-  white-space: nowrap;
-}
-
-.event-row.pinned .event-toggle {
-  padding: 3px 9px;
-  border-radius: 999px;
-  background: var(--color-primary-500);
-  color: #fff;
 }
 
 /* 지도 요약 */
@@ -292,15 +309,15 @@
 }
 
 .map-summary-text {
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 600;
   color: var(--color-ink-900);
   margin: 0;
 }
 
 .map-summary-sub {
-  font-family: 'Inter', sans-serif;
-  font-size: 11px;
+  font-family: 'IBM Plex Sans KR', sans-serif;
+  font-size: 0.6875rem;
   font-weight: 500;
   color: rgba(27, 22, 63, 0.6);
   margin: 3px 0 0;
@@ -318,7 +335,7 @@
 
 .footer-summary {
   margin: 0;
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 400;
   color: var(--color-ink-600);
 }
@@ -335,7 +352,7 @@
   border-radius: 12px;
   background: var(--color-primary-500);
   color: #fff;
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 600;
   letter-spacing: 0.21px;
   cursor: pointer;

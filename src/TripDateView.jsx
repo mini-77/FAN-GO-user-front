@@ -496,10 +496,11 @@ export default function TripDateView() {
         <div className={styles.scrollArea}>
         <div className={styles.section}>
           <p className={styles.infoBanner}>
-            <span className={styles.infoBannerIcon}>ⓘ</span> {t('tripDate.infoBanner')(
+            <span className={styles.infoBannerIcon}>ⓘ</span>
+            <span>{t('tripDate.infoBanner')(
               eventDate ? `${formatDot(allowedMinDate)} — ${formatDot(allowedMaxDate)}` : t('tripDate.selectEventFirst'),
               eventDate ? formatDot(eventDate) : '-'
-            )}
+            )}</span>
           </p>
           {/* 시작일/종료일을 다시 칸 두 개로 분리(사용자 요청) - 둘 중 어느 칸을 눌러도
               같은 달력이 열리고, 범위를 고르면 두 칸이 한 번에 채워짐(DateRangeSheet의
@@ -776,7 +777,7 @@ export default function TripDateView() {
                     padding: '6px 9px',
                     borderRadius: 999,
                     background: 'rgba(255,255,255,0.94)',
-                    fontSize: 11,
+                    fontSize: '0.6875rem',
                     fontWeight: 600,
                   }}
                 >
@@ -853,11 +854,11 @@ export default function TripDateView() {
                   background: '#FAF9FF',
                 }}
               >
-                <div style={{ fontSize: 13, fontWeight: 700 }}>{pickedPlace.name}</div>
-                <div style={{ marginTop: 4, fontSize: 11.5, color: 'rgba(27,22,63,0.58)' }}>
+                <div style={{ fontSize: '0.8125rem', fontWeight: 700 }}>{pickedPlace.name}</div>
+                <div style={{ marginTop: 4, fontSize: '0.71875rem', color: 'rgba(27,22,63,0.58)' }}>
                   {pickedPlace.address}
                 </div>
-                <div style={{ marginTop: 5, fontSize: 11, color: 'var(--color-primary-500)' }}>
+                <div style={{ marginTop: 5, fontSize: '0.6875rem', color: 'var(--color-primary-500)' }}>
                   {t('locationSearch.dragHint')}
                 </div>
               </div>
@@ -874,7 +875,8 @@ export default function TripDateView() {
 
                 {stayAllowedMinDate && stayAllowedMaxDate && (
                   <p className={styles.infoBanner}>
-                    <span className={styles.infoBannerIcon}>ⓘ</span> {t('stay.allowedRangeHint')(formatDot(stayAllowedMinDate), formatDot(stayAllowedMaxDate))}
+                    <span className={styles.infoBannerIcon}>ⓘ</span>
+                    <span>{t('stay.allowedRangeHint')(formatDot(stayAllowedMinDate), formatDot(stayAllowedMaxDate))}</span>
                   </p>
                 )}
 
