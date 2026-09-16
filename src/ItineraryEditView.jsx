@@ -137,6 +137,7 @@ export default function ItineraryEditView() {
             let address = ''
             let lat = null
             let lon = null
+            let totalScore = null
             try {
               const evRes = await apiFetch(`/events/${ev.event_no}`)
               if (evRes.ok) {
@@ -144,10 +145,12 @@ export default function ItineraryEditView() {
                 address = detail.add || ''
                 lat = detail.event_lat ?? null
                 lon = detail.event_lon ?? null
+                totalScore = detail.total_score ?? null
               }
             } catch (e) {
               // 상세 정보 못 받아도 이름/순서는 이미 있으니 계속 진행
             }
+            const isPinned = Boolean(ev.fixed_schedule) || ev.event_no === mainEventNo
             return {
               num: ev.seq,
               tripRouteEventNo: ev.trip_route_event_no,
@@ -156,13 +159,19 @@ export default function ItineraryEditView() {
               address,
               lat,
               lon,
-              pinned: ev.event_no === mainEventNo,
-              // 고정(공연) 항목은 교체 대상이 아니라서 추천 점수도 의미 없음 - 아예 안 보여줌
-              score: ev.event_no === mainEventNo
+              // 메인(공연) 이벤트 판정: 백엔드가 내려주는 fixed_schedule을 우선 기준으로 삼고,
+              // (같은 세션에서 방금 고른 경우를 위해) tripData.selectedEvent도 보조로 확인함
+              pinned: isPinned,
+              // 고정(공연) 항목은 교체 대상이 아니라서 추천 점수도 의미 없음 - 아예 안 보여줌.
+              // 점수는 GET /events/{event_no}의 total_score를 우선 쓰고, 없으면 생성 직후
+              // 세션에 남아있는 tripData.generatedDays의 relevance로 보완함.
+              score: isPinned
                 ? null
-                : relevanceByEventNo[ev.event_no] != null
-                  ? Math.round(relevanceByEventNo[ev.event_no] * 100)
-                  : null,
+                : totalScore != null
+                  ? Math.round(totalScore)
+                  : relevanceByEventNo[ev.event_no] != null
+                    ? Math.round(relevanceByEventNo[ev.event_no] * 100)
+                    : null,
             }
           })
         )
