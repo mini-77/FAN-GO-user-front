@@ -150,37 +150,38 @@
   color: var(--color-ink-900);
 }
 
-/* 지도 위 마커 (CustomOverlay에서 className으로 직접 붙임) - 단순 숫자 원이 아니라
-   실제 지도 핀(물방울) 모양 SVG 위에 순번을 올림. 핀 끝(뾰족한 부분)이 실제 좌표를
-   가리켜야 해서 CustomOverlay의 yAnchor를 1로 맞춰서 씀(ItineraryView.jsx 참고). */
+/* 지도 위 마커 (CustomOverlay에서 className으로 직접 붙임) - 숫자만 있던 원을
+   GET /events/{event_no}의 event_img_url 썸네일을 배경으로 쓰는 원형 배지로 교체.
+   순번은 오른쪽 아래 작은 동그라미로만 표시(ItineraryView.jsx에서 backgroundImage로 채움). */
 .map-num-badge {
   position: relative;
-  width: 32px;
+  width: 40px;
   height: 40px;
-  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.45));
+  border-radius: 50%;
+  background-color: var(--color-primary-500);
+  background-size: cover;
+  background-position: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.45);
+  border: 2.5px solid #fff;
 }
 
-.map-num-badge svg {
-  display: block;
-}
-
-.map-num-badge-shape {
-  fill: var(--color-primary-500);
-  stroke: #fff;
-  stroke-width: 2px;
-}
-
-.map-num-badge-text {
+.map-num-badge-num {
   position: absolute;
-  top: 6px;
-  left: 0;
-  width: 100%;
-  text-align: center;
+  bottom: -4px;
+  right: -4px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  border-radius: 9px;
+  background: var(--color-ink-900);
   color: #fff;
   font-family: 'Urbanist', sans-serif;
-  font-size: 0.8125rem;
+  font-size: 0.625rem;
   font-weight: 700;
-  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid #fff;
 }
 
 .map-pinned-badge {
