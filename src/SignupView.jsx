@@ -4,13 +4,13 @@ import { useTrip } from './TripContext'
 import { useLanguage } from './LanguageContext'
 import AppHeader from './AppHeader'
 import AgreementModal from './AgreementModal'
-import { TERMS_TEXT, LOCATION_TEXT, PRIVACY_TEXT } from './agreementTexts'
+import { getTermsText, getLocationText, getPrivacyText } from './agreementTexts'
 import styles from './SignupView.module.css'
 
 export default function SignupView() {
   const navigate = useNavigate()
   const { updateTrip } = useTrip()
-  const { t } = useLanguage()
+  const { t, language } = useLanguage()
 
   // 국적 이름(nationality_nm) → 국제전화 코드. API가 이름만 주고 전화코드는 안 줘서
   // 이름 기준으로 매칭. 예전에 하드코딩했던 국가 목록(DB에 그대로 들어간 이름들) 기준으로 전부 매핑함.
@@ -570,7 +570,7 @@ export default function SignupView() {
         {activeModal === 'terms' && (
           <AgreementModal
             title={t('auth.termsOfService')}
-            content={TERMS_TEXT}
+            content={getTermsText(language)}
             onClose={() => setActiveModal(null)}
             onAgree={() => {
               setAgreedTerms(true)
@@ -581,7 +581,7 @@ export default function SignupView() {
         {activeModal === 'privacy' && (
           <AgreementModal
             title={t('signup.privacyModalTitle')}
-            content={PRIVACY_TEXT}
+            content={getPrivacyText(language)}
             onClose={() => setActiveModal(null)}
             onAgree={() => {
               setAgreedPrivacy(true)
@@ -592,7 +592,7 @@ export default function SignupView() {
         {activeModal === 'location' && (
           <AgreementModal
             title={t('signup.locationModalTitle')}
-            content={LOCATION_TEXT}
+            content={getLocationText(language)}
             onClose={() => setActiveModal(null)}
             onAgree={() => {
               setAgreedLocation(true)
