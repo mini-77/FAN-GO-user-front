@@ -194,7 +194,10 @@
 }
 
 .stop-body {
+  /* flex 아이템 기본 min-width: auto 때문에, 장소명이 길면(영문 등) 옆에 붙은
+     stop-tag 칩을 밀어내며 행이 깨졌음 */
   flex: 1;
+  min-width: 0;
   display: flex;
   flex-direction: column;
   gap: 2px;
@@ -204,12 +207,18 @@
   display: flex;
   align-items: center;
   gap: 6px;
+  min-width: 0;
 }
 
 .stop-name {
   font-size: 0.875rem;
   font-weight: 600;
   color: var(--color-ink-900);
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .stop-row.expanded .stop-name {
@@ -334,7 +343,10 @@
 }
 
 .candidate-info {
+  /* flex 아이템 기본 min-width: auto 때문에, 교체 후보 이름이 길면 옆의
+     candidate-category-tag를 밀어내며 행이 깨졌음 */
   flex: 1;
+  min-width: 0;
   display: flex;
   flex-direction: column;
   gap: 1px;
@@ -344,12 +356,18 @@
   display: flex;
   align-items: center;
   gap: 6px;
+  min-width: 0;
 }
 
 .candidate-name {
   font-size: 0.8125rem;
   font-weight: 600;
   color: var(--color-ink-900);
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .candidate-category-tag {
@@ -366,17 +384,20 @@
   font-family: 'IBM Plex Sans KR', sans-serif;
   font-size: 0.65625rem;
   color: rgba(27, 22, 63, 0.55);
+  overflow-wrap: break-word;
 }
 
 .candidate-diff {
   font-family: 'IBM Plex Sans KR', sans-serif;
   font-size: 0.6875rem;
   color: rgba(27, 22, 63, 0.55);
+  overflow-wrap: break-word;
 }
 
 .candidate-desc {
   font-size: 0.6875rem;
   color: rgba(27, 22, 63, 0.55);
+  overflow-wrap: break-word;
 }
 
 .candidate-action {

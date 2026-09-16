@@ -137,10 +137,9 @@
   line-height: 1rem;
   color: var(--color-ink-900);
   margin: 0;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+  /* 두 줄로 잘라 "..." 처리하던 걸 없애고, 끝까지 다 보이게 줄바꿈만 시킴 -
+     팝업 시트 자체는 내용 높이에 맞춰 늘어나는 구조라 별도 높이 제한은 필요 없음 */
+  overflow-wrap: break-word;
 }
 
 /* 총점수 카드 */

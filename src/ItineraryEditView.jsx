@@ -209,20 +209,65 @@ export default function ItineraryEditView() {
 
   // 후보를 고르면 그 칸의 event_no/이름만 바꿔치기 (순서·다른 칸은 그대로)
   function swapStop(stopNum, candidate) {
-    setStops((prev) =>
-      prev.map((s) =>
-        s.num === stopNum
-          ? {
-              ...s,
-              event_no: candidate.event_no,
-              name: candidate.event_nm,
-              address: '', // 교체 직후엔 상세 주소를 아직 안 받았음 - 저장 후 다시 불러오면 채워짐
-              score: candidate.relevance != null ? Math.round(candidate.relevance * 100) : null,
-            }
-          : s
-      )
+    // toggleStop의 캐시 가드는 event_no를 키로 써서 "이미 불러온 적 있으면 다시 안 부름"
+    // 처리를 하는데, 방금 이 자리에 새로 들어온 candidate.event_no가 우연히 이미
+    // 캐시돼 있으면 이 칸을 다시 눌러도 API 요청 없이 낡은 캐시를 그대로 보여줘버림.
+    // 교체할 때 그 키를 지워서 다음에 이 칸을 열면 항상 새로 요청하게 함.
+    setCandidatesByEventNo((prev) => {
+      if (!(candidate.event_no in prev)) return prev
+      const next = { ...prev }
+      delete next[candidate.event_no]
+      return next
+    })
+
+    const updatedStops = stops.map((s) =>
+      s.num === stopNum
+        ? {
+            ...s,
+            event_no: candidate.event_no,
+            name: candidate.event_nm,
+            address: '', // 교체 직후엔 상세 주소를 아직 안 받았음 - 저장 후 다시 불러오면 채워짐
+            score: candidate.relevance != null ? Math.round(candidate.relevance * 100) : null,
+          }
+        : s
     )
+    setStops(updatedStops)
     setExpandedNum(null)
+    persistSwapImmediately(updatedStops)
+  }
+
+  // 교체를 로컬 상태에만 반영하고 저장을 안 하면, 백엔드는 아직 "이 자리엔 예전 장소가
+  // 있다"고 알고 있는 상태라서 - 방금 교체해 들어온 새 장소 기준으로 다시 교체 후보를
+  // 조회하면(GET .../alternatives) 그 장소가 이 여행의 이 날짜 동선에 속한다는 걸 서버가
+  // 못 찾아서 항상 빈 배열([])만 내려줌. 그래서 교체할 때마다 조용히 바로 저장해서
+  // 다음 조회가 항상 최신 상태 기준으로 동작하게 함. 실패해도 화면엔 따로 안 보여줌 -
+  // 마지막에 "동선 저장" 버튼을 누르면 handleSave가 다시 정식으로 시도/에러 표시함.
+  async function persistSwapImmediately(updatedStops) {
+    if (!tripNo) return
+    try {
+      const editedDayRoutes = updatedStops.map((s) => ({ visit_day: visitDay, event_no: s.event_no }))
+      let allRoutes = editedDayRoutes
+      const method = tripData.routesSaved ? 'PUT' : 'POST'
+
+      if (method === 'PUT') {
+        const currentRes = await apiFetch(`/trips/${tripNo}/routes`)
+        if (!currentRes.ok) return
+        const currentData = await currentRes.json()
+        const otherDaysRoutes = (currentData || [])
+          .filter((day) => day.visit_day !== visitDay)
+          .flatMap((day) => (day.events || []).map((ev) => ({ visit_day: day.visit_day, event_no: ev.event_no })))
+        allRoutes = [...otherDaysRoutes, ...editedDayRoutes]
+      }
+
+      const res = await apiFetch('/trip-routes', {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ trip_no: tripNo, routes: allRoutes }),
+      })
+      if (res.ok) updateTrip({ routesSaved: true })
+    } catch (e) {
+      // 무시 - 위 주석 참고
+    }
   }
 
   async function handleSave() {
@@ -404,6 +449,14 @@ export default function ItineraryEditView() {
                               </span>
                             </div>
                             <div className={styles['candidate-action']}>
+                              {c.relevance != null && (
+                                <span
+                                  className={styles['candidate-score']}
+                                  style={{ color: scoreColor(Math.round(c.relevance * 100)) }}
+                                >
+                                  {Math.round(c.relevance * 100)}
+                                </span>
+                              )}
                               <button
                                 type="button"
                                 className={styles['candidate-swap-btn']}

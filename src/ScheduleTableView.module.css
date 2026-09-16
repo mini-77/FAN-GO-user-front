@@ -88,11 +88,23 @@
   flex-direction: column;
 }
 
-/* 출발/도착 지점 행 */
+/* 출발/도착 지점 행 - 태그(라벨)와 본문(장소명+버튼)을 완전히 별도 행으로 분리 */
 .place-row {
-  padding: 16px 16px;
+  padding: 12px 16px;
   background: var(--color-primary-50);
   border-bottom: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.place-tag {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color-primary-500);
+}
+
+.place-body {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -163,12 +175,14 @@
   font-size: 0.9375rem;
   font-weight: 600;
   color: var(--color-ink-900);
+  overflow-wrap: break-word;
 }
 
 .event-sub {
   font-family: 'Urbanist', sans-serif;
   font-size: 0.75rem;
   color: rgba(27, 22, 63, 0.6);
+  overflow-wrap: break-word;
 }
 
 .event-hours {
@@ -180,8 +194,25 @@
 }
 
 .event-row.pinned {
+  background: var(--color-primary-50);
+  border: 1px solid var(--color-primary-200);
   border-left: 4px solid var(--color-primary-500);
-  padding-left: 14px;
+  border-bottom: 1px solid var(--color-primary-200);
+  border-radius: 12px;
+  padding: 14px 14px 14px 12px;
+  margin: 4px 0;
+}
+
+.event-row.pinned .event-name {
+  color: var(--color-primary-700);
+}
+
+.event-row.pinned .event-sub {
+  color: var(--color-primary-600);
+}
+
+.event-row.pinned .event-time-label {
+  color: var(--color-primary-600);
 }
 
 .event-row.pinned .event-time-big {

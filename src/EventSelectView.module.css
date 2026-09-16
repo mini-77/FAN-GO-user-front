@@ -279,6 +279,7 @@
   font-size: 0.84375rem;
   font-weight: 600;
   color: var(--color-ink-900);
+  overflow-wrap: break-word;
 }
 
 .event-venue {
@@ -287,6 +288,7 @@
   font-weight: 400;
   color: var(--color-ink-900);
   opacity: 0.72;
+  overflow-wrap: break-word;
 }
 
 /* 지도 요약 */

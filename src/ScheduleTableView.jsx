@@ -203,18 +203,20 @@ export default function ScheduleTableView() {
         <div className={styles.list}>
           {/* 출발지점 - 값이 없어도 항상 표시(미정 상태로), 위치변경으로 지정하게 함 */}
           <div className={styles['place-row']}>
-            <span className={styles['place-tag']}>{t('scheduleTable.departurePoint')}</span>
-            <div className={styles['place-text']}>
-              <span className={styles['place-name']}>{departurePlace ? departurePlace.name : t('scheduleTable.notSetYet')}</span>
-              {departurePlace && <span className={styles['place-sub']}>{departurePlace.address}</span>}
+            <div className={styles['place-tag']}>{t('scheduleTable.departurePoint')}</div>
+            <div className={styles['place-body']}>
+              <div className={styles['place-text']}>
+                <span className={styles['place-name']}>{departurePlace ? departurePlace.name : t('scheduleTable.notSetYet')}</span>
+                {departurePlace && <span className={styles['place-sub']}>{departurePlace.address}</span>}
+              </div>
+              <button
+                type="button"
+                className={styles['place-edit-btn']}
+                onClick={() => goEditLocation('departure')}
+              >
+                {t('scheduleTable.changeLocation')}
+              </button>
             </div>
-            <button
-              type="button"
-              className={styles['place-edit-btn']}
-              onClick={() => goEditLocation('departure')}
-            >
-              {t('scheduleTable.changeLocation')}
-            </button>
           </div>
 
           {isLoading && <div className={styles['empty-day']}>{t('scheduleTable.loadingSchedule')}</div>}
@@ -264,18 +266,20 @@ export default function ScheduleTableView() {
 
           {/* 도착지점 - 값이 없어도 항상 표시(미정 상태로), 위치변경으로 지정하게 함 */}
           <div className={styles['place-row']}>
-            <span className={styles['place-tag']}>{t('scheduleTable.arrivalPoint')}</span>
-            <div className={styles['place-text']}>
-              <span className={styles['place-name']}>{arrivalPlace ? arrivalPlace.name : t('scheduleTable.notSetYet')}</span>
-              {arrivalPlace && <span className={styles['place-sub']}>{arrivalPlace.address}</span>}
+            <div className={styles['place-tag']}>{t('scheduleTable.arrivalPoint')}</div>
+            <div className={styles['place-body']}>
+              <div className={styles['place-text']}>
+                <span className={styles['place-name']}>{arrivalPlace ? arrivalPlace.name : t('scheduleTable.notSetYet')}</span>
+                {arrivalPlace && <span className={styles['place-sub']}>{arrivalPlace.address}</span>}
+              </div>
+              <button
+                type="button"
+                className={styles['place-edit-btn']}
+                onClick={() => goEditLocation('arrival')}
+              >
+                {t('scheduleTable.changeLocation')}
+              </button>
             </div>
-            <button
-              type="button"
-              className={styles['place-edit-btn']}
-              onClick={() => goEditLocation('arrival')}
-            >
-              {t('scheduleTable.changeLocation')}
-            </button>
           </div>
 
         </div>

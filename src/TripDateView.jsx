@@ -219,15 +219,18 @@ export default function TripDateView() {
     markersRef.current.forEach((m) => m.setMap(null))
     markersRef.current = []
     if (results.length === 0) return
-    const bounds = new window.kakao.maps.LatLngBounds()
     results.forEach((place) => {
       const position = new window.kakao.maps.LatLng(place.y, place.x)
       const marker = new window.kakao.maps.Marker({ map, position })
       window.kakao.maps.event.addListener(marker, 'click', () => pickPlace(place))
       markersRef.current.push(marker)
-      bounds.extend(position)
     })
-    map.setBounds(bounds)
+    // 검색어가 흔한 상호명(예: "스타벅스")일 때 결과가 전국에 흩어져 있으면
+    // 기존 setBounds() 방식은 지도가 대한민국 전체로 축소돼버려 위치를 알아보기
+    // 어려웠음 - 대신 검색 결과 1번째(가장 관련도 높은 곳) 주소를 기준으로 확대해서 보여줌.
+    const firstPosition = new window.kakao.maps.LatLng(results[0].y, results[0].x)
+    map.setLevel(3)
+    map.panTo(firstPosition)
   }
 
   function runSearch(keyword) {
@@ -600,7 +603,7 @@ export default function TripDateView() {
           <div className={styles['stay-list']}>
             {stays.map((stay) => (
               <div key={stay.id} className={styles['stay-row']}>
-                <div>
+                <div className={styles['stay-info']}>
                   <p className={styles['stay-name']}>{stay.name}</p>
                   <p className={styles['stay-dates']}>
                     {formatDot(stay.checkIn)} — {formatDot(stay.checkOut)} ·{' '}
