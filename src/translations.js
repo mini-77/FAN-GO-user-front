@@ -283,7 +283,7 @@ export const translations = {
       languageHint: (langName) =>
         `지금 보고 있는 언어는 ${langName}입니다. 상단에서 바로 바꿀 수 있고, 가입할 때 국적과 함께 계정에 저장됩니다.`,
       loginButton: '로그인',
-      signupButton: '회원가입',
+      signupButton: '가입하기',
       tagline: '나만의 성지순례, 지금 시작해요',
       showPassword: '비밀번호 보기',
       hidePassword: '비밀번호 숨기기',
@@ -402,7 +402,7 @@ export const translations = {
       memberCountFormat: (count) => `${count}인조`,
       selectedCountFormat: (count) => `${count}팀 선택했어요`,
       signingUp: '가입 중...',
-      completeSignup: '가입 완료',
+      completeSignup: '가입하기',
     },
     signupSuccess: {
       title: '가입이 완료되었습니다',
@@ -955,7 +955,7 @@ export const translations = {
       languageHint: (langName) =>
         `You're currently viewing this in ${langName}. You can change it above anytime — it's saved to your account along with your country when you sign up.`,
       loginButton: 'Log in',
-      signupButton: 'Create account',
+      signupButton: 'Sign Up',
       tagline: 'Start your own artist pilgrimage, right now',
       showPassword: 'Show password',
       hidePassword: 'Hide password',
@@ -1074,7 +1074,7 @@ export const translations = {
       memberCountFormat: (count) => `${count} members`,
       selectedCountFormat: (count) => `${count} group(s) selected`,
       signingUp: 'Signing up...',
-      completeSignup: 'Complete Sign Up',
+      completeSignup: 'Sign Up',
     },
     signupSuccess: {
       title: 'Sign Up Complete',
@@ -1627,7 +1627,7 @@ export const translations = {
       languageHint: (langName) =>
         `現在の表示言語は${langName}です。上部でいつでも変更でき、登録時に国籍と一緒にアカウントに保存されます。`,
       loginButton: 'ログイン',
-      signupButton: 'アカウント作成',
+      signupButton: '会員登録',
       tagline: '自分だけの聖地巡礼、今すぐ始めよう',
       showPassword: 'パスワードを表示',
       hidePassword: 'パスワードを隠す',
@@ -1746,7 +1746,7 @@ export const translations = {
       memberCountFormat: (count) => `${count}人組`,
       selectedCountFormat: (count) => `${count}組選択しました`,
       signingUp: '登録中...',
-      completeSignup: '登録完了',
+      completeSignup: '会員登録',
     },
     signupSuccess: {
       title: '登録が完了しました',
@@ -2298,7 +2298,7 @@ export const translations = {
       languageHint: (langName) =>
         `您当前浏览的语言是${langName}。可以随时在顶部切换,注册时会与国籍一起保存到账户中。`,
       loginButton: '登录',
-      signupButton: '创建账户',
+      signupButton: '注册',
       tagline: '专属追星之旅，现在开始',
       showPassword: '显示密码',
       hidePassword: '隐藏密码',
@@ -2417,7 +2417,7 @@ export const translations = {
       memberCountFormat: (count) => `${count}人组合`,
       selectedCountFormat: (count) => `已选择${count}个组合`,
       signingUp: '注册中...',
-      completeSignup: '完成注册',
+      completeSignup: '注册',
     },
     signupSuccess: {
       title: '注册完成',
@@ -2859,7 +2859,7 @@ export const translations = {
       languageHint: (langName) =>
         `您目前瀏覽的語言是${langName}。可以隨時在上方切換,註冊時會與國籍一起儲存到帳戶中。`,
       loginButton: '登入',
-      signupButton: '建立帳戶',
+      signupButton: '註冊',
       tagline: '專屬追星之旅，現在開始',
       showPassword: '顯示密碼',
       hidePassword: '隱藏密碼',
@@ -2937,7 +2937,7 @@ export const translations = {
       memberCountFormat: (count) => `${count}人組合`,
       selectedCountFormat: (count) => `已選擇${count}個團體`,
       signingUp: '註冊中...',
-      completeSignup: '完成註冊',
+      completeSignup: '註冊',
     },
     signupSuccess: {
       title: '註冊完成',
@@ -3454,7 +3454,7 @@ export const translations = {
       languageHint: (langName) =>
         `ขณะนี้คุณกำลังดูในภาษา${langName} คุณสามารถเปลี่ยนได้ที่ด้านบนได้ตลอดเวลา และจะถูกบันทึกไว้ในบัญชีพร้อมกับสัญชาติเมื่อสมัครสมาชิก`,
       loginButton: 'เข้าสู่ระบบ',
-      signupButton: 'สร้างบัญชี',
+      signupButton: 'สมัครสมาชิก',
       tagline: 'เริ่มต้นทริปตามรอยศิลปินของคุณได้แล้วตอนนี้',
       showPassword: 'แสดงรหัสผ่าน',
       hidePassword: 'ซ่อนรหัสผ่าน',
@@ -3573,7 +3573,7 @@ export const translations = {
       memberCountFormat: (count) => `${count} คน`,
       selectedCountFormat: (count) => `เลือกแล้ว ${count} กลุ่ม`,
       signingUp: 'กำลังสมัครสมาชิก...',
-      completeSignup: 'สมัครสมาชิกเสร็จสิ้น',
+      completeSignup: 'สมัครสมาชิก',
     },
     signupSuccess: {
       title: 'สมัครสมาชิกเสร็จสมบูรณ์',
@@ -4090,7 +4090,7 @@ export const translations = {
       languageHint: (langName) =>
         `Kamu sedang melihat dalam bahasa ${langName}. Bisa diganti kapan saja di atas, dan akan disimpan ke akunmu bersama kewarganegaraan saat mendaftar.`,
       loginButton: 'Masuk',
-      signupButton: 'Buat akun',
+      signupButton: 'Daftar',
       tagline: 'Mulai perjalanan ziarah idolamu sendiri, sekarang',
       showPassword: 'Tampilkan kata sandi',
       hidePassword: 'Sembunyikan kata sandi',
@@ -4209,7 +4209,7 @@ export const translations = {
       memberCountFormat: (count) => `${count} anggota`,
       selectedCountFormat: (count) => `${count} grup dipilih`,
       signingUp: 'Mendaftar...',
-      completeSignup: 'Selesaikan Pendaftaran',
+      completeSignup: 'Daftar',
     },
     signupSuccess: {
       title: 'Pendaftaran Selesai',

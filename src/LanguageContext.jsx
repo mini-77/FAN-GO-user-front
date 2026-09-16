@@ -11,7 +11,9 @@ const STORAGE_KEY = 'fango_language'
 const DEFAULT_LANGUAGE = 'en'
 
 // 드롭다운 등에서 목록을 그릴 때 이 배열을 그대로 쓰면 됨 (순서 = 화면에 보여줄 순서)
-export const SUPPORTED_LANGUAGES = ['ko', 'en', 'ja', 'zh-CN', 'zh-TW', 'th', 'id']
+// 09 헤더 규칙 - 언어 선택 목록은 6개 고정(中文은 간체 하나로 통합, 번체 별도 미노출).
+// 백엔드도 중국어를 간체/번체로 나누지 않고 하나만 내려줌(아래 LANG_NO_TO_CODE 참고).
+export const SUPPORTED_LANGUAGES = ['ko', 'en', 'ja', 'zh-CN', 'th', 'id']
 
 // 헤더 언어 필("KR ⌄") 표기용 - 09 헤더 규칙: 지구본 아이콘 대신 국가코드 2자만 표기.
 // nativeName은 선택 목록(다크시트/드롭다운)에 쓰는 각 언어의 자체 표기.
@@ -41,10 +43,8 @@ function detectBrowserLanguage() {
     if (raw.startsWith('ja')) return 'ja'
     if (raw.startsWith('th')) return 'th'
     if (raw.startsWith('id') || raw === 'in') return 'id'
-    if (raw.startsWith('zh')) {
-      if (raw.includes('tw') || raw.includes('hk') || raw.includes('hant')) return 'zh-TW'
-      return 'zh-CN'
-    }
+    // 09 헤더 규칙 - 언어 목록 6개 고정, 중국어는 간체 하나로 통합(번체 별도 미노출)
+    if (raw.startsWith('zh')) return 'zh-CN'
     if (raw.startsWith('en')) return 'en'
 
     return DEFAULT_LANGUAGE

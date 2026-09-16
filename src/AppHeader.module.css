@@ -12,6 +12,14 @@
   z-index: 50;
 }
 
+/* 06 반응형 규칙 - 세로로 긴 화면(약 22:9, 예: Z Flip6)은 헤더 높이는 그대로 두고
+   위·아래 여백만 8px 늘려서 상단이 빈약해 보이지 않게 함 */
+@media (min-aspect-ratio: 20/9) {
+  .top-bar {
+    padding: calc(18px + env(safe-area-inset-top)) 16px 18px;
+  }
+}
+
 /* 접근성 - 터치 영역 44×44px 이상. 시각적 크기는 가이드 규격(28×28px squircle)을
    그대로 유지하고, ::before로 보이지 않는 확장 히트박스만 덧붙임.
    크기/라운드/배경은 --menu-icon-* 토큰과 값이 이미 일치해서 참조로 전환함(값 변경 없음). */
