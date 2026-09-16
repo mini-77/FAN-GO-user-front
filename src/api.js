@@ -68,4 +68,8 @@ export function safeErrorMessage(e, fallback) {
   return safeText(e?.message, fallback)
 }
 
-export { API_BASE }
+// TokenRefreshScheduler(30분 주기 선제 갱신)도 이 락을 같이 써야 함 - 안 그러면
+// 마침 사용자 요청이 401을 맞아 apiFetch가 refresh 중일 때 스케줄러가 동시에
+// 또 /auth/refresh를 쏴서, 회전형(1회용) refresh_token이 이미 소모된 상태로
+// 두 번째 요청이 도착해 "유효하지 않은 리프레시 토큰입니다" 에러가 남.
+export { API_BASE, callRefresh }
