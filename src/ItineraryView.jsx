@@ -101,6 +101,7 @@ export default function ItineraryView() {
                 name: ev.event_nm,
                 liked: ev.liked,
                 seq: ev.seq,
+                fixedSchedule: ev.fixed_schedule,
                 lat: detail?.event_lat ?? null,
                 lng: detail?.event_lon ?? null,
                 meta: detail?.add || '',
@@ -113,6 +114,7 @@ export default function ItineraryView() {
                 name: ev.event_nm,
                 liked: ev.liked,
                 seq: ev.seq,
+                fixedSchedule: ev.fixed_schedule,
                 lat: null,
                 lng: null,
                 meta: '',
@@ -122,11 +124,13 @@ export default function ItineraryView() {
           })
         )
 
-        // 이 이벤트가 메인 이벤트(selectedEvent)와 같으면 "고정"으로 분리
+        // 이 이벤트가 메인 이벤트인지: 백엔드가 내려주는 fixed_schedule을 우선 기준으로 삼고,
+        // (같은 세션에서 방금 고른 경우를 위해) tripData.selectedEvent도 보조로 확인함
         const mainEventNo = tripData.selectedEvent?.event_no
-        const pinned = detailed.find((d) => d.eventNo === mainEventNo) || null
+        const isMainEvent = (d) => Boolean(d.fixedSchedule) || d.eventNo === mainEventNo
+        const pinned = detailed.find(isMainEvent) || null
         const others = detailed
-          .filter((d) => d.eventNo !== mainEventNo)
+          .filter((d) => !isMainEvent(d))
           .sort((a, b) => a.seq - b.seq)
           .map((d, i) => ({ ...d, num: i + 1 }))
 
