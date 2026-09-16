@@ -170,7 +170,7 @@ export default function ActivityPreferenceView() {
             </span>
           </div>
           {isPreview && (
-            <p className={styles.hint} style={{ color: 'var(--color-danger)' }}>
+            <p className={styles.hint} style={{ color: 'var(--color-warning)' }}>
               {t('activityPreference.previewWarning')}
             </p>
           )}

@@ -516,6 +516,7 @@ export default function ItineraryEditView() {
             className={styles['btn-primary']}
             onClick={handleSave}
             disabled={isSaving || isLoading || stops.length === 0}
+            style={isSaving || isLoading || stops.length === 0 ? { background: 'var(--button-bg-disabled)', color: '#fff', cursor: 'default' } : undefined}
           >
             {isSaving ? t('itineraryEdit.saving') : t('itineraryEdit.saveRoute')}
           </button>

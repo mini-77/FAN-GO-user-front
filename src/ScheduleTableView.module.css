@@ -58,7 +58,7 @@
   margin: 0 16px 12px;
   padding: 4px;
   background: var(--color-primary-50);
-  border-radius: 12px;
+  border-radius: 11px;
 }
 
 .day-tab {
@@ -67,10 +67,10 @@
   border: none;
   border-radius: 8px;
   background: transparent;
-  color: var(--color-ink-600);
+  color: var(--color-primary-700);
   font-family: 'IBM Plex Sans KR', sans-serif;
-  font-size: 0.6875rem;
-  font-weight: 600;
+  font-size: 0.78125rem;
+  font-weight: 700;
   cursor: pointer;
 }
 

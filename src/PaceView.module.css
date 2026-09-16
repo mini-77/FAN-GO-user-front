@@ -253,7 +253,7 @@
 
 /* 초기화 버튼 공통 가이드 - 항상 Outline (Primary filled 금지) */
 .reset-btn {
-  min-height: 42px;
+  min-height: var(--button-height-md);
   background: #fff;
   border: 1px solid var(--color-primary-200);
   border-radius: 12px;
@@ -267,7 +267,7 @@
 
 .confirm-btn {
   width: 100%;
-  min-height: 42px;
+  min-height: var(--button-height-md);
   border: none;
   border-radius: 12px;
   background: var(--color-primary-500);

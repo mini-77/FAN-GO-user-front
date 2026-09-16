@@ -271,7 +271,7 @@ export default function ItineraryView() {
 
         {isPreview && (
           <div style={{ padding: '0 16px' }}>
-            <p className={styles['day-label']} style={{ color: 'var(--color-danger)', marginBottom: 4 }}>
+            <p className={styles['day-label']} style={{ color: 'var(--color-warning)', marginBottom: 4 }}>
               {t('itinerary.previewNotice')}
             </p>
             {dayErrorByDay[activeDay] && (
