@@ -233,6 +233,13 @@ export default function ItineraryView() {
           numBadge.className = styles['map-num-badge-num']
           numBadge.textContent = stop.num
           content.appendChild(numBadge)
+
+          // 지도 배지를 눌러도 타임라인 목록 눌렀을 때와 똑같이 장소 상세 팝업이 뜨게 함
+          // (openPlaceDetail은 이 컴포넌트 아래쪽에서 function 선언 - 호이스팅돼서 여기서 바로 씀)
+          if (stop.eventNo) {
+            content.style.cursor = 'pointer'
+            content.addEventListener('click', () => openPlaceDetail(stop))
+          }
         }
         const overlay = new window.kakao.maps.CustomOverlay({ map, position, content, yAnchor: 0.5, zIndex: 5 })
         overlaysRef.current.push(overlay)
