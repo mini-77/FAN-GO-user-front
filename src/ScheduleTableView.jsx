@@ -110,29 +110,36 @@ export default function ScheduleTableView() {
   const events = dayRoute?.events ? [...dayRoute.events].sort((a, b) => a.seq - b.seq) : []
   const mainEventNo = tripData.selectedEvent?.event_no
 
-  // 이 날짜의 출발지점/도착지점 계산 우선순위:
-  // - 도착지(그 날 밤 묵는 곳): dayOverride(사용자가 직접 지정) → (마지막날이면) 전체 여행
-  //   완료지(tripData.arrival) → 그 외엔 그 날짜에 체크인 중인 숙소로 자동 매칭
-  // - 출발지(그 날 아침 나서는 곳): dayOverride → (1일차면) 전체 여행 출발지(tripData.departure) →
-  //   그 외엔 "전날 밤 묵은 숙소"를 그대로 이어받음
-  // TripDateView에서 여행 전체 기간의 숙소를 미리 다 입력받기 때문에, 이 값들은 항상
-  // 자동으로 채워져 있어야 정상이고, "위치변경"은 그 자동값을 사용자가 바꾸고 싶을 때만 씀.
+  // depot_start/depot_end: GET /trips/{tripNo}/routes가 날짜별로 내려주는 실제 출발/도착 지점
+  // (백엔드가 여행 생성 시 저장한 값을 그대로 돌려줌). 이게 생기기 전엔 tripData.departure/arrival/
+  // stays(로컬 상태)로 매번 다시 계산했는데, /trip/history에서 일정을 다시 열람하면 그 로컬 값이
+  // 없어서 "미정"으로 잘못 뜨는 문제가 있었음 - depot_start/depot_end는 tripNo로 조회하는 값이라
+  // 그 문제가 없음. 아직 이 필드가 없는 옛날 응답(또는 API 실패)을 대비해서 로컬 계산을 fallback으로 둠.
+  function placeFromDepot(depot) {
+    if (!depot) return null
+    return { name: depot.label, address: '', lat: depot.lat, lon: depot.lon }
+  }
+
   const isFirstDay = activeDay === 1
   const isLastDay = activeDay === totalDays
   const dayOverride = activeDate ? tripData.dayLocationOverrides?.[activeDate] : null
 
-  const arrivalPlace = dayOverride?.arrival
-    ? dayOverride.arrival
-    : isLastDay
-      ? tripData.arrival || findStayForNight(stays, activeDate)
-      : findStayForNight(stays, activeDate)
-
   const previousDate = !isFirstDay && startDate ? addDays(startDate, activeDay - 2) : null
-  const departurePlace = dayOverride?.departure
-    ? dayOverride.departure
-    : isFirstDay
-      ? tripData.departure
-      : (tripData.dayLocationOverrides?.[previousDate]?.arrival || findStayForNight(stays, previousDate))
+
+  // 우선순위: 사용자가 "위치변경"으로 직접 고친 값(dayOverride, 또는 1일차/마지막날의
+  // tripData.departure/arrival) → API가 내려주는 depot_start/depot_end → (depot이 아직 없는
+  // 옛 응답 대비) 로컬 stays 기반 계산
+  const arrivalPlace =
+    dayOverride?.arrival ||
+    (isLastDay ? tripData.arrival : null) ||
+    placeFromDepot(dayRoute?.depot_end) ||
+    findStayForNight(stays, activeDate)
+
+  const departurePlace =
+    dayOverride?.departure ||
+    (isFirstDay ? tripData.departure : null) ||
+    placeFromDepot(dayRoute?.depot_start) ||
+    (isFirstDay ? null : (tripData.dayLocationOverrides?.[previousDate]?.arrival || findStayForNight(stays, previousDate)))
 
   const [selectedPlace, setSelectedPlace] = useState(null) // {eventNo, tripRouteEventNo, liked, businessHours} | null
 
@@ -207,7 +214,7 @@ export default function ScheduleTableView() {
             <div className={styles['place-body']}>
               <div className={styles['place-text']}>
                 <span className={styles['place-name']}>{departurePlace ? departurePlace.name : t('scheduleTable.notSetYet')}</span>
-                {departurePlace && <span className={styles['place-sub']}>{departurePlace.address}</span>}
+                {departurePlace?.address && <span className={styles['place-sub']}>{departurePlace.address}</span>}
               </div>
               <button
                 type="button"
@@ -270,7 +277,7 @@ export default function ScheduleTableView() {
             <div className={styles['place-body']}>
               <div className={styles['place-text']}>
                 <span className={styles['place-name']}>{arrivalPlace ? arrivalPlace.name : t('scheduleTable.notSetYet')}</span>
-                {arrivalPlace && <span className={styles['place-sub']}>{arrivalPlace.address}</span>}
+                {arrivalPlace?.address && <span className={styles['place-sub']}>{arrivalPlace.address}</span>}
               </div>
               <button
                 type="button"
