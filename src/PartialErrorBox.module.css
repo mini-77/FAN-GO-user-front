@@ -2,7 +2,7 @@
    실패했을 때, 그 구역 안에서만 회색 박스로 실패를 보여줌. Primary·Danger 색은 쓰지 않음. */
 .box {
   padding: 14px 12px;
-  border-radius: 12px;
+  border-radius: 10px;
   background: var(--color-partial-error-bg);
   display: flex;
   flex-direction: column;

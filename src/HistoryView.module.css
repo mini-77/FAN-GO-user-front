@@ -161,10 +161,16 @@
 }
 
 .trip-rating {
-  font-family: 'IBM Plex Sans KR', sans-serif;
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: var(--color-primary-500);
+  letter-spacing: 1px;
+  font-size: 0.6875rem;
+}
+
+.star-on {
+  color: var(--color-warning);
+}
+
+.star-off {
+  color: var(--color-ink-200);
 }
 
 /* 07 배지 규칙 - 진행 상태는 알약형 배지로 통일 (텍스트만 색칠하지 않음) */
