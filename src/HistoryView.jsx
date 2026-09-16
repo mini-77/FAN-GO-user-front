@@ -170,7 +170,13 @@ export default function HistoryView() {
                 </div>
                 <div className={styles['trip-side']}>
                   <span className={styles['trip-rating']}>
-                    {trip.rating ? `★ ${trip.rating}` : '—'}
+                    {trip.rating
+                      ? [0, 1, 2, 3, 4].map((i) => (
+                          <span key={i} className={i < Math.round(trip.rating) ? styles['star-on'] : styles['star-off']}>
+                            ★
+                          </span>
+                        ))
+                      : '—'}
                   </span>
                   <span className={`${styles['trip-status']} ${styles[statusToKind(trip.status)]}`}>
                     {statusToLabel(trip.status, t)}

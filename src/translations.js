@@ -530,7 +530,7 @@ export const translations = {
       placeInfo: '장소 정보',
       start: '시작',
       lastDayBanner: '오늘이 마지막 날이에요! 여행 다 끝나기 전에 미리 평가하러 가볼까요?',
-      viewRoute: '동선보기',
+      viewRoute: '동선 보기',
       searchDeparture: '출발지 검색',
       searchArrival: '완료지 검색',
     },
