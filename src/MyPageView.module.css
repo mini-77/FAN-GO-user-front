@@ -335,9 +335,9 @@
 }
 
 .toggle-switch {
-  width: 44px;
-  height: 26px;
-  min-width: 44px;
+  width: 40px;
+  height: 22px;
+  min-width: 40px;
   border-radius: 100px;
   background: var(--color-primary-200);
   position: relative;
@@ -351,9 +351,9 @@
 }
 
 .toggle-knob {
-  width: 20px;
-  height: 20px;
-  border-radius: 10px;
+  width: 16px;
+  height: 16px;
+  border-radius: 8px;
   background: #fff;
   position: absolute;
   top: 3px;

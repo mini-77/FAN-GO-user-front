@@ -265,25 +265,24 @@
 }
 
 .bubble {
-  max-width: 72%;
+  max-width: 80%;
   padding: 11px 16px;
-  font-size: 0.875rem;
-  line-height: 1.3125rem;
+  font-size: 0.71875rem;
+  line-height: 1.078125rem;
   white-space: pre-wrap;
   word-break: break-word;
 }
 
 .bubbleAssistant {
-  background: #F1F0F6;
+  background: #fff;
   color: var(--color-ink-900);
-  border-radius: 18px 18px 18px 6px;
+  border-radius: 4px 14px 14px 14px;
 }
 
 .bubbleUser {
   background: var(--color-primary-500);
   color: #fff;
-  border-radius: 18px 18px 6px 18px;
-  box-shadow: 0 6px 14px rgba(109, 87, 252, 0.3);
+  border-radius: 14px 4px 14px 14px;
 }
 
 .bubbleError {
