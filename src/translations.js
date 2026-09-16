@@ -116,7 +116,6 @@ export const translations = {
       loadMore: '더보기',
     },
     auth: {
-      createAccount: '계정 생성',
       signupComplete: '가입되었습니다.',
       checkDuplicate: '중복확인을 눌러 주세요.',
       nickname: '닉네임',
@@ -167,7 +166,6 @@ export const translations = {
       preparingRoute: '동선을 준비중',
       checkRouteNextPage: '다음 페이지에서 동선 정보를 확인하세요',
       newRouteReady: '새로운 동선이 준비되었습니다',
-      goToRoute: '동선 보러가기',
       openList: '목록 열기',
       howAboutThisRoute: '이번 동선, 어땠어요?',
       readyComplete: '준비되었습니다.',
@@ -202,7 +200,6 @@ export const translations = {
       checkIn: '체크인',
       checkOut: '체크아웃',
       stayPeriod: '체류기간',
-      addToThis: '이 숙소로 추가',
     },
     category: {
       birthdayCafe: '생일카페',
@@ -757,7 +754,6 @@ export const translations = {
       loadMore: 'Load more',
     },
     auth: {
-      createAccount: 'Create Account',
       signupComplete: 'Sign up completed.',
       checkDuplicate: 'Please check for duplicates.',
       nickname: 'Nickname',
@@ -809,7 +805,6 @@ export const translations = {
       preparingRoute: 'Preparing Route...',
       checkRouteNextPage: 'Check route info on the next page',
       newRouteReady: 'A new route is ready',
-      goToRoute: 'Go to Route',
       openList: 'Open List',
       howAboutThisRoute: 'How was this route?',
       readyComplete: 'Ready.',
@@ -855,7 +850,6 @@ export const translations = {
       checkIn: 'Check-in',
       checkOut: 'Check-out',
       stayPeriod: 'Number of Nights',
-      addToThis: 'Add this accommodation',
     },
     category: {
       birthdayCafe: 'Birthday Cafe',
@@ -1432,7 +1426,6 @@ export const translations = {
       loadMore: 'もっと見る',
     },
     auth: {
-      createAccount: 'アカウント作成',
       signupComplete: '登録が完了しました。',
       checkDuplicate: '重複確認を押してください。',
       nickname: 'ニックネーム',
@@ -1484,7 +1477,6 @@ export const translations = {
       preparingRoute: '動線を準備中',
       checkRouteNextPage: '次のページで動線情報を確認してください',
       newRouteReady: '新しい動線が準備できました',
-      goToRoute: '動線を見に行く',
       openList: 'リストを開く',
       howAboutThisRoute: '今回の動線はどうでしたか？',
       readyComplete: '準備が完了しました。',
@@ -1530,7 +1522,6 @@ export const translations = {
       checkIn: 'チェックイン',
       checkOut: 'チェックアウト',
       stayPeriod: '滞在期間',
-      addToThis: 'この宿泊施設に追加',
     },
     category: {
       birthdayCafe: '誕生日カフェ',
@@ -2107,7 +2098,6 @@ export const translations = {
       loadMore: '加载更多',
     },
     auth: {
-      createAccount: '创建账号',
       signupComplete: '注册完成。',
       checkDuplicate: '请点击查重。',
       nickname: '昵称',
@@ -2159,7 +2149,6 @@ export const translations = {
       preparingRoute: '正在准备路线',
       checkRouteNextPage: '请在下一页查看路线信息',
       newRouteReady: '新路线已准备好',
-      goToRoute: '查看路线',
       openList: '打开列表',
       howAboutThisRoute: '这次路线怎么样？',
       readyComplete: '准备好了。',
@@ -2205,7 +2194,6 @@ export const translations = {
       checkIn: '入住',
       checkOut: '退房',
       stayPeriod: '停留期间',
-      addToThis: '添加到此住宿',
     },
     category: {
       birthdayCafe: '生日咖啡馆',
@@ -3299,7 +3287,6 @@ export const translations = {
       loadMore: 'โหลดเพิ่มเติม',
     },
     auth: {
-      createAccount: 'สร้างบัญชี',
       signupComplete: 'สมัครสมาชิกสำเร็จ',
       checkDuplicate: 'โปรดกดตรวจสอบความซ้ำซ้อน',
       nickname: 'ชื่อเล่น',
@@ -3350,7 +3337,6 @@ export const translations = {
       preparingRoute: 'กำลังเตรียมเส้นทาง...',
       checkRouteNextPage: 'ตรวจสอบข้อมูลเส้นทางในหน้าถัดไป',
       newRouteReady: 'เส้นทางใหม่พร้อมแล้ว',
-      goToRoute: 'ดูเส้นทาง',
       openList: 'เปิดรายการ',
       howAboutThisRoute: 'เส้นทางครั้งนี้เป็นอย่างไรบ้าง?',
       readyComplete: 'พร้อมแล้ว',
@@ -3385,7 +3371,6 @@ export const translations = {
       checkIn: 'เช็คอิน',
       checkOut: 'เช็คเอาท์',
       stayPeriod: 'ระยะเวลาเข้าพัก',
-      addToThis: 'เพิ่มในที่พักนี้',
     },
     category: {
       birthdayCafe: 'คาเฟ่วันเกิด',
@@ -3938,7 +3923,6 @@ export const translations = {
       loadMore: 'Muat lebih banyak',
     },
     auth: {
-      createAccount: 'Buat Akun',
       signupComplete: 'Pendaftaran Selesai.',
       checkDuplicate: 'Silakan tekan periksa duplikat.',
       nickname: 'Nama Panggilan',
@@ -3989,7 +3973,6 @@ export const translations = {
       preparingRoute: 'Sedang Menyiapkan Rute...',
       checkRouteNextPage: 'Periksa info rute di halaman berikutnya',
       newRouteReady: 'Rute baru sudah siap',
-      goToRoute: 'Lihat Rute',
       openList: 'Buka Daftar',
       howAboutThisRoute: 'Bagaimana rute kali ini?',
       readyComplete: 'Siap.',
@@ -4024,7 +4007,6 @@ export const translations = {
       checkIn: 'Check-in',
       checkOut: 'Check-out',
       stayPeriod: 'Periode Menginap',
-      addToThis: 'Tambahkan ke akomodasi ini',
     },
     category: {
       birthdayCafe: 'Kafe Ulang Tahun',

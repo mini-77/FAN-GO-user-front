@@ -157,7 +157,7 @@
 
 .group-label {
   font-family: 'Urbanist', sans-serif;
-  font-size: 0.625rem;
+  font-size: 0.6875rem;
   font-weight: 600;
   letter-spacing: 1px;
   color: rgba(27, 22, 63, 0.4);
@@ -229,22 +229,25 @@
   right: 10px;
   font-family: 'Urbanist', sans-serif;
   font-size: 0.6875rem;
-  font-weight: 700;
+  font-weight: 800;
   letter-spacing: 0.4px;
   color: #fff;
+  background: rgba(0, 0, 0, 0.18);
+  padding: 2px 9px;
+  border-radius: 20px;
 }
 
 .category-card.rank-1 {
-  background: #51A8FF;
-  box-shadow: 0 0 0 1px #51A8FF;
+  background: #3E86F0;
+  box-shadow: 0 0 0 1px #3E86F0;
 }
 .category-card.rank-2 {
   background: var(--color-primary-500);
   box-shadow: 0 0 0 1px var(--color-primary-500);
 }
 .category-card.rank-3 {
-  background: #9747FF;
-  box-shadow: 0 0 0 1px #9747FF;
+  background: #B98BFF;
+  box-shadow: 0 0 0 1px #B98BFF;
 }
 
 .category-card.rank-1 .category-name,

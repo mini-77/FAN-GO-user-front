@@ -96,7 +96,7 @@
   align-items: center;
   gap: 5px;
   color: #F0EEE6;
-  font-size: 0.625rem;
+  font-size: 0.6875rem;
   line-height: 0.975rem;
 }
 
@@ -219,7 +219,7 @@
 }
 
 .historyMeta {
-  font-size: 0.625rem;
+  font-size: 0.6875rem;
   color: #A9A3C2;
 }
 
@@ -293,7 +293,7 @@
 
 .fallbackTag {
   margin-top: 5px;
-  font-size: 0.65625rem;
+  font-size: 0.6875rem;
   opacity: 0.6;
 }
 
@@ -477,7 +477,7 @@
 }
 
 .congestionBarLabel {
-  font-size: 0.5625rem;
+  font-size: 0.6875rem;
   color: #A9A3C2;
 }
 
@@ -493,7 +493,7 @@
   display: flex;
   align-items: center;
   gap: 5px;
-  font-size: 0.625rem;
+  font-size: 0.6875rem;
   color: #8E88A8;
 }
 

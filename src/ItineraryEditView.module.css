@@ -142,7 +142,7 @@
   padding: 2px 7px;
   background: var(--color-primary-500);
   border-radius: 20px;
-  font-size: 0.59375rem;
+  font-size: 0.6875rem;
   font-weight: 700;
   letter-spacing: 0.4px;
   color: #fff;
@@ -230,7 +230,7 @@
   background: var(--color-primary-100);
   border-radius: 20px;
   font-family: 'Urbanist', sans-serif;
-  font-size: 0.5625rem;
+  font-size: 0.6875rem;
   font-weight: 600;
   letter-spacing: 0.9px;
   color: var(--color-primary-500);
@@ -248,7 +248,7 @@
   padding: 3px 9px;
   background: var(--color-primary-500);
   border-radius: 20px;
-  font-size: 0.65625rem;
+  font-size: 0.6875rem;
   font-weight: 700;
   letter-spacing: 0.2px;
   color: #fff;
@@ -284,7 +284,7 @@
   border-radius: 50%;
   background: var(--color-primary-100);
   color: var(--color-primary-500);
-  font-size: 0.625rem;
+  font-size: 0.6875rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -320,7 +320,7 @@
 
 .candidates-label {
   font-family: 'Urbanist', sans-serif;
-  font-size: 0.625rem;
+  font-size: 0.6875rem;
   font-weight: 600;
   letter-spacing: 1.2px;
   color: var(--color-primary-500);
@@ -329,7 +329,7 @@
 .candidates-sub {
   margin-left: auto;
   font-family: 'IBM Plex Sans KR', sans-serif;
-  font-size: 0.65625rem;
+  font-size: 0.6875rem;
   color: rgba(27, 22, 63, 0.5);
 }
 
@@ -375,14 +375,14 @@
   background: var(--color-primary-100);
   border-radius: 20px;
   font-family: 'Urbanist', sans-serif;
-  font-size: 0.5625rem;
+  font-size: 0.6875rem;
   font-weight: 600;
   color: var(--color-primary-500);
 }
 
 .candidate-en {
   font-family: 'IBM Plex Sans KR', sans-serif;
-  font-size: 0.65625rem;
+  font-size: 0.6875rem;
   color: rgba(27, 22, 63, 0.55);
   overflow-wrap: break-word;
 }
@@ -494,7 +494,7 @@
 
 .summary-label {
   font-family: 'Urbanist', sans-serif;
-  font-size: 0.59375rem;
+  font-size: 0.6875rem;
   font-weight: 600;
   letter-spacing: 0.95px;
   color: rgba(27, 22, 63, 0.5);

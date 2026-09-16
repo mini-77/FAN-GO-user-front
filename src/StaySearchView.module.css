@@ -107,7 +107,7 @@
   border: none;
   background: rgba(27, 22, 63, 0.14);
   color: #fff;
-  font-size: 0.625rem;
+  font-size: 0.6875rem;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -204,7 +204,7 @@
 }
 
 .result-list-address {
-  font-size: 0.65625rem;
+  font-size: 0.6875rem;
   color: rgba(27, 22, 63, 0.55);
 }
 
@@ -269,7 +269,7 @@
   padding: 1px 7px;
   background: #fff;
   border-radius: 20px;
-  font-size: 0.625rem;
+  font-size: 0.6875rem;
   color: var(--color-primary-500);
 }
 
@@ -294,7 +294,7 @@
 
 .stay-label {
   font-family: 'Urbanist', sans-serif;
-  font-size: 0.625rem;
+  font-size: 0.6875rem;
   font-weight: 600;
   letter-spacing: 1.4px;
   color: rgba(27, 22, 63, 0.55);
