@@ -174,7 +174,11 @@
 
   font: 18px/145% var(--sans);
   letter-spacing: 0.18px;
-  color-scheme: light dark;
+  /* 07 접근성 - 자체 다크모드 미지원, 기기 시스템 설정과 무관하게 항상 라이트 고정.
+     "light dark"로 두면 기기가 다크모드일 때 체크박스 등 네이티브 폼 컨트롤의
+     배경/테두리를 브라우저가 OS 다크 팔레트로 자동 렌더링해버림(예: 로그인 유지
+     체크박스가 까맣게 보이는 문제) - light만 명시해서 항상 라이트로 강제함. */
+  color-scheme: light;
   color: var(--text);
   background: var(--bg);
   font-synthesis: none;
