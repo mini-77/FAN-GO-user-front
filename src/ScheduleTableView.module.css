@@ -185,8 +185,25 @@
 }
 
 .event-row.pinned {
+  background: var(--color-primary-50);
+  border: 1px solid var(--color-primary-200);
   border-left: 4px solid var(--color-primary-500);
-  padding-left: 14px;
+  border-bottom: 1px solid var(--color-primary-200);
+  border-radius: 12px;
+  padding: 14px 14px 14px 12px;
+  margin: 4px 0;
+}
+
+.event-row.pinned .event-name {
+  color: var(--color-primary-700);
+}
+
+.event-row.pinned .event-sub {
+  color: var(--color-primary-600);
+}
+
+.event-row.pinned .event-time-label {
+  color: var(--color-primary-600);
 }
 
 .event-row.pinned .event-time-big {
