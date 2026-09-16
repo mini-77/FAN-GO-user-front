@@ -150,21 +150,37 @@
   color: var(--color-ink-900);
 }
 
-/* 지도 위 마커 (CustomOverlay에서 className으로 직접 붙임) */
+/* 지도 위 마커 (CustomOverlay에서 className으로 직접 붙임) - 단순 숫자 원이 아니라
+   실제 지도 핀(물방울) 모양 SVG 위에 순번을 올림. 핀 끝(뾰족한 부분)이 실제 좌표를
+   가리켜야 해서 CustomOverlay의 yAnchor를 1로 맞춰서 씀(ItineraryView.jsx 참고). */
 .map-num-badge {
-  width: 30px;
-  height: 30px;
-  border-radius: 15px;
-  background: var(--color-primary-500);
+  position: relative;
+  width: 32px;
+  height: 40px;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.45));
+}
+
+.map-num-badge svg {
+  display: block;
+}
+
+.map-num-badge-shape {
+  fill: var(--color-primary-500);
+  stroke: #fff;
+  stroke-width: 2px;
+}
+
+.map-num-badge-text {
+  position: absolute;
+  top: 6px;
+  left: 0;
+  width: 100%;
+  text-align: center;
   color: #fff;
   font-family: 'Urbanist', sans-serif;
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
   font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.45);
-  border: 2.5px solid #fff;
+  pointer-events: none;
 }
 
 .map-pinned-badge {

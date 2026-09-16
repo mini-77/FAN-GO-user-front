@@ -216,9 +216,29 @@ export default function ItineraryView() {
         const position = new window.kakao.maps.LatLng(stop.lat, stop.lng)
         bounds.extend(position)
         const content = document.createElement('div')
-        content.className = stop.isPinned ? styles['map-pinned-badge'] : styles['map-num-badge']
-        content.textContent = stop.isPinned ? '고정' : stop.num
-        const overlay = new window.kakao.maps.CustomOverlay({ map, position, content, yAnchor: 0.5, zIndex: 5 })
+        if (stop.isPinned) {
+          content.className = styles['map-pinned-badge']
+          content.textContent = '고정'
+        } else {
+          content.className = styles['map-num-badge']
+          // 순번 숫자만 덜렁 띄우던 걸 실제 지도 핀(물방울) 모양 SVG로 교체 - 핀 끝이
+          // 뾰족하게 좌표를 가리키고, 그 안(머리 부분)에 순번을 흰 글씨로 올림.
+          content.innerHTML =
+            `<svg width="32" height="40" viewBox="0 0 32 40" aria-hidden="true">` +
+            `<path class="${styles['map-num-badge-shape']}" ` +
+            `d="M16 1C8.3 1 2 7.3 2 15c0 10.5 14 23 14 23s14-12.5 14-23C30 7.3 23.7 1 16 1Z" />` +
+            `</svg>` +
+            `<span class="${styles['map-num-badge-text']}">${stop.num}</span>`
+        }
+        // 핀 마커는 뾰족한 끝(하단)이 좌표를 가리켜야 하니 yAnchor: 1, "고정" 알약 배지는
+        // 예전처럼 중앙 정렬(0.5) 유지
+        const overlay = new window.kakao.maps.CustomOverlay({
+          map,
+          position,
+          content,
+          yAnchor: stop.isPinned ? 0.5 : 1,
+          zIndex: 5,
+        })
         overlaysRef.current.push(overlay)
       })
 
