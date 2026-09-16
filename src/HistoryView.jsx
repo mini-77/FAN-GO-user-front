@@ -93,7 +93,14 @@ export default function HistoryView() {
   const filteredTrips = trips
 
   function openTrip(trip) {
-    updateTrip({ tripNo: trip.trip_no })
+    updateTrip({
+      tripNo: trip.trip_no,
+      tripDates: {
+        ...tripData.tripDates,
+        startDate: trip.start_dt,
+        endDate: trip.end_dt,
+      },
+    })
     navigate('/trip/schedule')
   }
 

@@ -238,7 +238,7 @@ export default function ScheduleTableView() {
           {!isLoading &&
             !loadError &&
             events.map((ev) => {
-              const isPinned = ev.event_no === mainEventNo
+              const isPinned = Boolean(ev.fixed_schedule) || ev.event_no === mainEventNo
               return (
                 <div
                   key={ev.trip_route_event_no}
