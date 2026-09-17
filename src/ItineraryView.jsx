@@ -247,10 +247,17 @@ export default function ItineraryView() {
               }
               content.classList.add(styles.selected)
               selectedBadgeElRef.current = content
-              // 같은 배지를 다시 눌러도 반짝임이 다시 재생되도록 클래스를 뗐다 붙임(리플로우로 강제 재시작)
+              // 같은 배지를 다시 눌러도 반짝임이 다시 재생되도록 클래스를 뗐다 붙임(리플로우로 강제 재시작).
+              // pulse 클래스를 계속 남겨두면 카카오맵이 확대/축소·화면 밖-안 이동 시 마커를
+              // display:none↔block으로 다시 그리는 과정에서 CSS 애니메이션이 또 재생돼버려서
+              // (엉뚱한 타이밍에 반짝임) - 애니메이션 재생 시간(2회×0.85s)이 지나면 클래스를 꼭 떼어냄.
+              clearTimeout(content._pulseTimeout)
               content.classList.remove(styles.pulse)
               void content.offsetWidth
               content.classList.add(styles.pulse)
+              content._pulseTimeout = setTimeout(() => {
+                content.classList.remove(styles.pulse)
+              }, 1700)
               map.panTo(position)
               openPlaceDetail(stop)
             })
