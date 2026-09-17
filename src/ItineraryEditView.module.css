@@ -517,7 +517,10 @@
   padding: 0 16px calc(22px + env(safe-area-inset-bottom));
   display: flex;
   gap: 8px;
+  /* margin-top만 auto면 아래쪽에 딱 붙어버림(바닥 정렬) - 위/아래 둘 다 auto로 줘야
+     .list 안에 남는 세로 여백을 위아래로 나눠 가져서 버튼이 박스 정중앙에 옴(사용자 요청) */
   margin-top: auto;
+  margin-bottom: auto;
 }
 
 .btn-outline {
