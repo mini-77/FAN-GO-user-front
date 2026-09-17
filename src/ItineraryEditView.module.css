@@ -41,10 +41,16 @@
   gap: 6px;
 }
 
+/* display:flex + flex-direction:column이 빠져있으면 안쪽 .action-row의 margin-top:auto가
+   먹지 않아서(margin auto는 flex 컨테이너 안에서만 동작) 콘텐츠가 짧을 때 버튼이 화면
+   중앙/하단이 아니라 마지막 항목 바로 아래로 올라붙어 보임 - ScheduleTableView.module.css의
+   .list와 동일하게 맞춤 */
 .list {
   flex: 1;
   min-height: 0;
   overflow-y: auto;
+  display: flex;
+  flex-direction: column;
 }
 
 .header-row {
