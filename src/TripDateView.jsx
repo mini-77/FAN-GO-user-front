@@ -460,6 +460,10 @@ export default function TripDateView() {
       setErrorMessage(t('tripDate.fillRequiredFields'))
       return
     }
+    if (stays.length === 0) {
+      setErrorMessage(t('tripDate.stayRequired'))
+      return
+    }
     if (!departure) {
       setErrorMessage(t('tripDate.departureRequired'))
       return
@@ -635,6 +639,13 @@ export default function TripDateView() {
             </button>
           ) : (
             <p className={styles.hint}>{t('stay.maxStaysError')}</p>
+          )}
+          {/* 숙소를 하나도 등록 안 하면 다음 화면으로 못 넘어가게 goNext에서 막음(사용자 요청) -
+              출발지/완료지처럼 여기도 미리 빨간 안내를 보여줘서 왜 막히는지 알 수 있게 함 */}
+          {stays.length === 0 && (
+            <p className={styles.hint} style={{ color: 'var(--color-danger)' }}>
+              {t('tripDate.stayRequiredHint')}
+            </p>
           )}
         </div>
 
