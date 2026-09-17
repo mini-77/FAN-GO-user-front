@@ -101,6 +101,11 @@
   box-shadow: 0px 10px 24px rgba(109, 87, 252, 0.4);
   overflow: hidden;
   margin-bottom: 14px;
+  /* .body가 flex column이라, overflow:hidden 때문에 이 카드의 자동 최소높이가 0으로 잡혀서
+     트립이 많아 세로 공간이 부족해지면 다른 요소는 안 줄고 이 카드만 찌그러들었음 (고정 카드인데
+     화면에서 사라지면 안 된다는 요구사항 위반). flex-shrink:0으로 완전히 고정 크기로 만듦 -
+     넘치는 건 .body의 overflow-y:auto로 스크롤 처리됨. */
+  flex-shrink: 0;
 }
 
 .hero-blob-1 {
