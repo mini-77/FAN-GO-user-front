@@ -58,6 +58,7 @@ export default function ItineraryView() {
 
   const mapRef = useRef(null)
   const overlaysRef = useRef([])
+  const selectedBadgeElRef = useRef(null) // 지금 하이라이트된 지도 배지 DOM(있으면) - 클릭할 때마다 토글
   const [isSdkReady, setIsSdkReady] = useState(false)
 
   // 실제 동선 데이터 불러오기: GET /trips/{trip_no}/routes?visit_day=로 그날 장소 목록 받고,
@@ -201,6 +202,7 @@ export default function ItineraryView() {
 
       overlaysRef.current.forEach((o) => o.setMap(null))
       overlaysRef.current = []
+      selectedBadgeElRef.current = null // 마커 DOM을 통째로 새로 만드므로 이전 선택 참조도 같이 비움
 
       const linePath = allPoints.map((p) => new window.kakao.maps.LatLng(p.lat, p.lng))
       const polyline = new window.kakao.maps.Polyline({
@@ -238,7 +240,20 @@ export default function ItineraryView() {
           // (openPlaceDetail은 이 컴포넌트 아래쪽에서 function 선언 - 호이스팅돼서 여기서 바로 씀)
           if (stop.eventNo) {
             content.style.cursor = 'pointer'
-            content.addEventListener('click', () => openPlaceDetail(stop))
+            content.addEventListener('click', () => {
+              // 이전에 선택돼 있던 배지는 하이라이트 해제(한 번에 하나만 선택된 느낌)
+              if (selectedBadgeElRef.current && selectedBadgeElRef.current !== content) {
+                selectedBadgeElRef.current.classList.remove(styles.selected)
+              }
+              content.classList.add(styles.selected)
+              selectedBadgeElRef.current = content
+              // 같은 배지를 다시 눌러도 반짝임이 다시 재생되도록 클래스를 뗐다 붙임(리플로우로 강제 재시작)
+              content.classList.remove(styles.pulse)
+              void content.offsetWidth
+              content.classList.add(styles.pulse)
+              map.panTo(position)
+              openPlaceDetail(stop)
+            })
           }
         }
         const overlay = new window.kakao.maps.CustomOverlay({ map, position, content, yAnchor: 0.5, zIndex: 5 })
