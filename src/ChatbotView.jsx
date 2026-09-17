@@ -25,56 +25,6 @@ function formatRelativeTime(isoString, t) {
   return t('chat.lastWeek')
 }
 
-// 혼잡도 관련 답변일 때 보여줄 막대그래프 카드.
-// ⚠️ /chat API가 시간대별 숫자를 안 내려줘서, 지금은 화면 모양만 보여주는 예시 데이터임.
-// 백엔드가 실제 시간대별 혼잡도 수치를 내려주게 되면 이 하드코딩된 값을 그 데이터로 바꾸면 됨.
-function buildDemoCongestion(t) {
-  return {
-    placeName: t('chat.demoPlaceName'),
-    dayLabel: t('chat.demoDayLabel'),
-    hours: [10, 12, 14, 16, 18, 20].map((h, i) => ({
-      label: t('chat.demoHourLabel')(h),
-      level: [1, 2, 2, 3, 3, 2][i],
-    })),
-  }
-}
-
-// 01 컬러 규칙 — 여유/혼잡 같은 점수·상태 색은 브랜드색이 아니라 Success/Warning/Danger로 고정
-const LEVEL_COLOR = { 1: 'var(--color-success)', 2: 'var(--color-warning)', 3: 'var(--color-danger)' }
-const LEVEL_HEIGHT = { 1: 18, 2: 34, 3: 52 }
-
-function CongestionCard({ data, t }) {
-  return (
-    <div className={styles.congestionCard}>
-      <span className={styles.congestionEyebrow}>{t('chat.congestionEyebrow')(data.dayLabel)}</span>
-      <span className={styles.congestionTitle}>{data.placeName}</span>
-      <span className={styles.congestionDesc}>{t('chat.congestionDesc')}</span>
-      <div className={styles.congestionChart}>
-        {data.hours.map((h) => (
-          <div key={h.label} className={styles.congestionBarCol}>
-            <div
-              className={styles.congestionBar}
-              style={{ height: LEVEL_HEIGHT[h.level], background: LEVEL_COLOR[h.level] }}
-            />
-            <span className={styles.congestionBarLabel}>{h.label}</span>
-          </div>
-        ))}
-      </div>
-      <div className={styles.congestionLegend}>
-        <span className={styles.legendItem}>
-          <span className={styles.legendDot} style={{ background: LEVEL_COLOR[1] }} /> {t('chat.legendCalm')}
-        </span>
-        <span className={styles.legendItem}>
-          <span className={styles.legendDot} style={{ background: LEVEL_COLOR[2] }} /> {t('chat.legendNormal')}
-        </span>
-        <span className={styles.legendItem}>
-          <span className={styles.legendDot} style={{ background: LEVEL_COLOR[3] }} /> {t('chat.legendCrowded')}
-        </span>
-      </div>
-    </div>
-  )
-}
-
 export default function ChatbotView() {
   const navigate = useNavigate()
   const { t } = useLanguage()
@@ -333,9 +283,6 @@ export default function ChatbotView() {
                   {m.content}
                   {m.role === 'assistant' && m.isFallback && (
                     <div className={styles.fallbackTag}>{t('chat.fallbackTag')}</div>
-                  )}
-                  {m.role === 'assistant' && !m.isFallback && m.content.includes('혼잡') && (
-                    <CongestionCard data={buildDemoCongestion(t)} t={t} />
                   )}
                 </div>
               </div>
