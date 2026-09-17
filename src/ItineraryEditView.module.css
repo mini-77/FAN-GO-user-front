@@ -41,16 +41,10 @@
   gap: 6px;
 }
 
-/* display:flex + flex-direction:column이 빠져있으면 안쪽 .action-row의 margin-top:auto가
-   먹지 않아서(margin auto는 flex 컨테이너 안에서만 동작) 콘텐츠가 짧을 때 버튼이 화면
-   중앙/하단이 아니라 마지막 항목 바로 아래로 올라붙어 보임 - ScheduleTableView.module.css의
-   .list와 동일하게 맞춤 */
 .list {
   flex: 1;
   min-height: 0;
   overflow-y: auto;
-  display: flex;
-  flex-direction: column;
 }
 
 .header-row {
@@ -513,14 +507,14 @@
   color: var(--color-ink-900);
 }
 
+/* ScheduleTableView.module.css의 .action-row와 동일 - 스크롤(.list) 밖에 있는 형제 요소라
+   flex-shrink:0으로 항상 제 크기를 유지하며 화면 하단에 고정되어 보임(사용자 요청) */
 .action-row {
-  padding: 0 16px calc(22px + env(safe-area-inset-bottom));
+  flex-shrink: 0;
+  padding: 12px 16px calc(20px + env(safe-area-inset-bottom));
+  border-top: 1px solid var(--color-border);
   display: flex;
   gap: 8px;
-  /* margin-top만 auto면 아래쪽에 딱 붙어버림(바닥 정렬) - 위/아래 둘 다 auto로 줘야
-     .list 안에 남는 세로 여백을 위아래로 나눠 가져서 버튼이 박스 정중앙에 옴(사용자 요청) */
-  margin-top: auto;
-  margin-bottom: auto;
 }
 
 .btn-outline {

@@ -509,15 +509,16 @@ export default function ItineraryEditView() {
             </div>
           </div>
         )}
+        </div>
 
         {saveError && (
-          <p className={styles.note} style={{ color: 'var(--color-danger)' }}>
+          <p className={styles.note} style={{ color: 'var(--color-danger)', padding: '0 16px' }}>
             {saveError}
           </p>
         )}
 
-        {/* 하단 고정 바가 아니라 목록의 마지막 항목으로 스크롤에 같이 움직이게 함
-            (사용자 요청 - 다른 화면과 동일하게 고정 해제) */}
+        {/* ScheduleTableView와 동일하게 스크롤 영역(.list) 밖에 둬서 콘텐츠 길이와 상관없이
+            항상 화면 하단에 고정되게 함(사용자 요청) */}
         <div className={styles['action-row']} data-bottom-bar="true">
           <button
             type="button"
@@ -528,7 +529,6 @@ export default function ItineraryEditView() {
           >
             {isSaving ? t('itineraryEdit.saving') : t('itineraryEdit.saveRoute')}
           </button>
-        </div>
         </div>
 
         <BottomNav />
